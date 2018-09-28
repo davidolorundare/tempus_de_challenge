@@ -29,6 +29,8 @@ using all four keywords in the same api-request returned 0 hits. Hence, four sep
 
 - Note security concern of hardcoding the apikey in requests. Might want to encrypt api?
 
+- No S3 bucket link was given in the requirements, I will have to create my own S3 bucket then.
+
 - Need to write unit tests and apply a TDD approach.
 
 - Need to write integration tests (try using Travis CI ? and badge), must make the whole solution startable via 'make run'
