@@ -2,8 +2,8 @@
 
 Describes a data pipeline that would fetch data from the News API based on
 four keywords - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', and 'Immunotherapy'.
-The data is transformed into a tabular structure, and finally stored the
-transformation in an AWS S3 Bucket.
+The data is transformed into a tabular structure, and finally stored the an AWS
+S3 Bucket.
 """
 
 from datetime import datetime, timedelta

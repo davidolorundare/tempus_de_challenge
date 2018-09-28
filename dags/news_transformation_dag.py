@@ -11,6 +11,11 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 
+# Potential Operators to use to solve task
+from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.operators.python_operator import PythonOperator
+from airflow.operators.s3_file_transform_operator import S3FileTransformOperator
+
 
 default_args = {
     'owner': 'airflow',
