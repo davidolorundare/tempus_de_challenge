@@ -16,7 +16,7 @@
 ---
 ### Working Notes
 
-- Where to store the data at rest: locally as files or using a database ?
+- Where to store the data at rest: locally as files or using a database ? What are the tradeoffs ?
 
 - For the bonus challenge, on experimenting with the News API it was discovered that
 using all four keywords in the same api-request returned 0 hits. Hence, four separate api-request calls will be made; for each individual keyword.
