@@ -16,6 +16,8 @@
 ---
 ### Working Notes
 
+- Where to store the data at rest: locally as files or using a database ?
+
 - For the bonus challenge, on experimenting with the News API it was discovered that
 using all four keywords in the same api-request returned 0 hits. Hence, four separate api-request calls will be made; for each individual keyword.
 
@@ -23,7 +25,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, four sep
 
 - Need to decide on whether to use the news api client libray or not.e.g. pip install newsapi-python
 
-- Use json and csv libs for parsing
+- Use json and csv libs for parsing. url-encode the requests ?
 
 - Note security concern of hardcoding the apikey in requests. Might want to encrypt api?
 
