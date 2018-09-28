@@ -33,6 +33,6 @@ using all four keywords in the same api-request returned 0 hits. Hence, four sep
 
 - Need to write unit tests and apply a TDD approach.
 
-- Need to write integration tests (try using Travis CI ? and badge), must make the whole solution startable via 'make run'
+- Need to write integration tests (try using Travis CI ? and badge), use mocking for external services. Must also make the whole solution startable via 'make run'
 
 - Do I need to put any screenshots ?
