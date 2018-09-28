@@ -14,21 +14,21 @@
 - second full day of coding, testing, and developing the solution.
 
 ---
-### Notes
+### Working Notes
 
-- On experimenting with News API it was discovered that
-using all four keywords in the same api-request returned
-0 hits. Hence, four separate api-request calls will be made;
-for each keyword.
+- For the bonus challenge, on experimenting with the News API it was discovered that
+using all four keywords in the same api-request returned 0 hits. Hence, four separate api-request calls will be made; for each individual keyword.
 
-- Note error handling for api endpoint (ok versus not ok)
+- Note error handling needs for the news api endpoint (ok code versus not ok codes)
 
-- Need to decide on whether to use the client lib/ not.e.g. pip install newsapi-python
+- Need to decide on whether to use the news api client libray or not.e.g. pip install newsapi-python
 
 - Use json and csv libs for parsing
 
-- Note security concern of hardcoding the apikey in requests. Might want to encrypt api
+- Note security concern of hardcoding the apikey in requests. Might want to encrypt api?
 
-- Need to write unit tests. Apply a TDD approach.
+- Need to write unit tests and apply a TDD approach.
 
-- Need to write integration tests (try using Travis CI and badge), must be startable via 'make run'
+- Need to write integration tests (try using Travis CI ? and badge), must make the whole solution startable via 'make run'
+
+- Do I need to put any screenshots ?
