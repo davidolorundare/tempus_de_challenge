@@ -50,7 +50,7 @@ flatten_csv_task = DummyOperator(task_id='transform_task', dag=dag)
 upload_csv_task = DummyOperator(task_id='upload_task', dag=dag)
 
 # end workflow
-dummy_task = DummyOperator(task_id='dummy_task', dag=dag)
+end_task = DummyOperator(task_id='end_task', dag=dag)
 
 # arrange the workflow tasks
 # all the news sources are retrieved, the top headlines
@@ -59,4 +59,4 @@ retrieve_news_task >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-flatten_csv_task >> upload_csv_task >> dummy_task
+flatten_csv_task >> upload_csv_task >> end_task

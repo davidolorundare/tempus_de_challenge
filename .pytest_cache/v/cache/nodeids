@@ -1,0 +1,4 @@
+[
+  "tests/unit/challenge/test_operations.py::TestOperations::()::test_retrieve_news",
+  "tests/unit/challenge/test_sample.py::TestSample::()::test_hello_world"
+]
