@@ -6,7 +6,8 @@
 ---
 ### Status
 
-[![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
+|---|---|
+|**Build****| [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge) |
 
 ---
 ### Solution Goals
