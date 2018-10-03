@@ -2,8 +2,10 @@ language: python
 python:
   - "3.6"
 cache: pip
+# install dependencies
 install:
   - pip install -r requirements-test.txt
+# run unit and integration tests
 script:
   - echo "--- Tests ---"
   - python -m pytest -v --cov=dags --cov-branch tests/
