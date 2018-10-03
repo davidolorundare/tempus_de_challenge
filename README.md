@@ -21,6 +21,9 @@ Writing this, will update soon.
 - second full day of coding, testing, and developing the solution.
 
 ---
+
+### Other Sections
+
 ### Working Notes
 
 - Where to store the data at rest: locally as files or using a database ? What are the tradeoffs ? Note size of json returned objects.
