@@ -2,8 +2,13 @@
 
 ## A solution to the Tempus Data Engineer Challenge
 
----
 
+---
+### Status
+
+[![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
+
+---
 ### Solution Goals
 
 Writing this, will update soon.
