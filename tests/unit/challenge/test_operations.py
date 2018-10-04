@@ -12,6 +12,16 @@ from dags import challenge as c
 class TestOperations:
     """Tests the Airflow operator functions"""
 
+    @pytest.mark.skip
+    def test_create_data_store(self):
+        """Tests the creation of a tempoary data storage folder"""
+        pass
+
+    @pytest.mark.skip
+    def test_retrieve_keyword_news(self):
+        """Tests the retrieval of news based on keywords"""
+        pass
+
     def test_retrieve_news(self):
         """Tests the retrieval of all english news sources.
 

@@ -15,6 +15,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
+import challenge as c
+
 
 
 default_args = {
@@ -69,9 +71,13 @@ dag = DAG(
 # begin workflow
 start_task = DummyOperator(task_id='start', retries=3, dag=dag)
 
-# create a folder for storing retrieved data on local filesystem
-# is a PythonOperator
-datastore_creation_task = DummyOperator(task_id='create_storage_task', dag=dag)
+# create a folder for storing retrieved data on the local filesystem
+datastore_creation_task = PythonOperator(
+    task_id='create_storage_task',
+    provide_context=True,
+    python_callable=c.FileStorage.create_data_store,
+    dag=dag
+)
 
 # retrieve all english news sources
 retrieve_news_task = DummyOperator(task_id='get_news_task', retries=3, dag=dag)

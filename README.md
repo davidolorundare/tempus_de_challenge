@@ -25,8 +25,25 @@ Writing this, will update soon.
 ---
 
 ### Other Sections
+
+
+---
+#### Pipeline Overview
+
+
+- DAG Pipeline 1
 ---
 
+- DAG Pipeline 2
+---
+
+---
+#### Setup and Installation
+
+---
+#### Running
+
+---
 ### Working Notes
 
 - Where to store the data at rest: locally as files or using a database ? What are the tradeoffs ? Note size of json returned objects.

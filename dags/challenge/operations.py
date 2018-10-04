@@ -14,6 +14,14 @@ import json
 from airflow.models import Variable
 
 
+class FileStorage:
+    """Handles functionality for data storage"""
+
+    def create_data_store(self):
+        """Create a set of datastore folders in the local filesystem"""
+        pass
+
+
 class Operations:
     """Handles functionality for news retrieval"""
 
