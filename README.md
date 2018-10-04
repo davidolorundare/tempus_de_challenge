@@ -24,7 +24,7 @@ Writing this, will update soon.
 
 
 ---
-### Pipeline Overview
+### Getting Started: Pipeline Overview
 
 
 #### DAG Pipeline 1
@@ -34,15 +34,20 @@ image of pipe1
 #### DAG Pipeline 2
 image of pipe2
 
+
 ---
-### Setup and Installation
+### Prerequisites and Setup
 
 How to setup and install
 
 ---
-### Running
+### Running Code
 
 How to run code via `make run`
+
+---
+### Running Tests (Unit and Integration)
+
 
 ---
 ### Working Notes
