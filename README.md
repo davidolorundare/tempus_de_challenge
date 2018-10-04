@@ -2,21 +2,18 @@
 
 ## A solution to the Tempus Data Engineer Challenge
 
+Solution Goals - Writing this, will update soon.
+
 
 ---
-### Status
+### Project Status
 
 **Build**: [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
 
 **Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
 
 ---
-### Solution Goals
-
-Writing this, will update soon.
-
----
-### Approach
+### Approach to Project
 
 - one full day of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto lib, Python Mocking, and applying TDD in practice.
 
@@ -48,9 +45,10 @@ How to run code via `make run`
 ---
 ### Running Tests (Unit and Integration)
 
+How to run unit and integration tests via `make test`
 
 ---
-### Working Notes
+### Working Footnotes
 
 - Where to store the data at rest: locally as files or using a database ? What are the tradeoffs ? Note size of json returned objects.
 
