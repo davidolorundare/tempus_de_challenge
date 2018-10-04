@@ -21,7 +21,7 @@ Solution Goals - Writing this, will update soon. One paragraph.
 
 
 ---
-### Getting Started: Pipeline Overview
+### Getting Started: Pipeline Overview (with Screenshots)
 
 Discuss how the goals were broken into the two pipelines.
 
@@ -63,7 +63,7 @@ Explain what these tests test and why + coding style tests.
 ---
 ### Built With
 
-List some stuff here.
+List some stuff here. Can add api-references here.
 
 ---
 ### Working Footnotes
