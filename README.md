@@ -22,26 +22,27 @@ Writing this, will update soon.
 
 - second full day of coding, testing, and developing the solution.
 
----
-
-### Other Sections
-
 
 ---
-#### Pipeline Overview
+### Pipeline Overview
 
 
-- DAG Pipeline 1
----
+#### DAG Pipeline 1
+image of pipe1
 
-- DAG Pipeline 2
----
 
----
-#### Setup and Installation
+#### DAG Pipeline 2
+image of pipe2
 
 ---
-#### Running
+### Setup and Installation
+
+How to setup and install
+
+---
+### Running
+
+How to run code via `make run`
 
 ---
 ### Working Notes
