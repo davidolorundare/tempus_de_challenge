@@ -2,7 +2,7 @@
 
 ## A solution to the Tempus Data Engineer Challenge
 
-Solution Goals - Writing this, will update soon.
+Solution Goals - Writing this, will update soon. One paragraph.
 
 
 ---
@@ -23,6 +23,7 @@ Solution Goals - Writing this, will update soon.
 ---
 ### Getting Started: Pipeline Overview
 
+Discuss how the goals were broken into the two pipelines.
 
 #### DAG Pipeline 1
 image of pipe1
@@ -33,19 +34,36 @@ image of pipe2
 
 
 ---
-### Prerequisites and Setup
+### Prerequisites 
 
-How to setup and install
+What things you need to install the software and how to install them.
+
+---
+### Setup
+
+How to setup and install.
+A step by step series of examples that tell you how to get a development env running.
 
 ---
 ### Running Code
 
 How to run code via `make run`
 
+
+End with an example of getting some data out of the system or using it for a little demo
+
 ---
 ### Running Tests (Unit and Integration)
 
 How to run unit and integration tests via `make test`
+Explain how to run the automated tests for this project.
+Break down into end to end tests + 
+Explain what these tests test and why + coding style tests.
+
+---
+### Built With
+
+List some stuff here.
 
 ---
 ### Working Footnotes
