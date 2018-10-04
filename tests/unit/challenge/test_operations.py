@@ -3,6 +3,7 @@
 Describes unit tests for the PythonOperator tasks in the DAG.
 """
 
+
 import datetime
 import pytest
 from dags import challenge as c
@@ -15,6 +16,14 @@ class TestOperations:
         """Tests the retrieval of all english news sources.
 
         Uses a mock of a web service call mimicking the News API.
+        Create a mock of the english new sources call which simulates
+        the *request* and *response*.
+        ISSUES:
+        - creating service mock
+        - storing apikey
+        - error handling
+        - parsing json
+        - data store
         """
         # Arrange
         news = c.Operations()
@@ -22,6 +31,11 @@ class TestOperations:
         result = news.retrieve_english_news()
         # Assert
         assert result == "all news"
+
+    @pytest.mark.skip
+    def test_retrieve_news_failure(self):
+        """Tests the failure mechanism of the news retrieval function"""
+        pass
 
     @pytest.mark.skip
     def test_retrieve_headlines(self):

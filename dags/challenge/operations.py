@@ -8,6 +8,12 @@ class.
 """
 
 
+import json
+
+
+from airflow.models import Variable
+
+
 class Operations:
     """Handles functionality for news retrieval"""
 
@@ -19,6 +25,10 @@ class Operations:
         parameter set to 'en'.
         A json object is returned containing all retrieved
         English news sources.
+        Note APIKey from Variables.
+        - storing apikey
+        - error handling
+        - parsing json
         """
 
         return "all news"

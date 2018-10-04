@@ -8,6 +8,8 @@
 
 **Build**: [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
 
+**Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
+
 ---
 ### Solution Goals
 
@@ -16,13 +18,14 @@ Writing this, will update soon.
 ---
 ### Approach
 
-- one full day of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto lib, and applying TDD in practice.
+- one full day of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto lib, Python Mocking, and applying TDD in practice.
 
 - second full day of coding, testing, and developing the solution.
 
 ---
 
 ### Other Sections
+---
 
 ### Working Notes
 
