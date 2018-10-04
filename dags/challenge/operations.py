@@ -11,7 +11,7 @@ class.
 import json
 
 
-from airflow.models import Variable
+#from airflow.models import Variable
 
 
 class FileStorage:
@@ -21,9 +21,10 @@ class FileStorage:
         """Create a set of datastore folders in the local filesystem.
 
 
-        Creates a 'data' folder in the AIRFLOW_HOME directory in which
-        to temporaily store the JSON data retrieved from the News API
-        for further processing downstream.
+        Creates a 'data' folder in the AIRFLOW_HOME directory, if it doesn't
+        already exist (otherwise it replaces the existing one), in which to
+        temporaily store the JSON data retrieved from the News API for further
+        processing downstream.
         Given the name of the pipeline e.g. 'tempus_challenge' or
         'tempus_bonus_challenge' creates the appropriate subdirectories
         store the intermediary data - the extracted top-headlines and
