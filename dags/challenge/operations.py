@@ -7,18 +7,27 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
-
+import errno
+import logging
+import os
 import json
 import requests
 
 
 #from airflow.models import Variable
 
+log = logging.getLogger(__name__)
+
+# store the current directory of the airflow home folder
+# airflow creates a home environment variable pointing to the location
+HOME_DIRECTORY = str(os.environ['HOME'])
+
 
 class FileStorage:
     """Handles functionality for data storage"""
 
-    def create_data_store(self, pipeline_name):
+    @classmethod
+    def create_data_store(cls, **context):
         """Create a set of datastore folders in the local filesystem.
 
 
@@ -26,18 +35,40 @@ class FileStorage:
         already exist (otherwise it replaces the existing one), in which to
         temporaily store the JSON data retrieved from the News API for further
         processing downstream.
-        Given the name of the pipeline e.g. 'tempus_challenge' or
-        'tempus_bonus_challenge' creates the appropriate subdirectories
-        store the intermediary data - the extracted top-headlines and
-        converted csv, before the transformed data is uploaded to its
-        final destination.
+        Using the name of the pipeline e.g. 'tempus_challenge' or
+        'tempus_bonus_challenge' from the passed in context and creates the
+        appropriate subdirectories for storing the intermediary data - the
+        extracted top-headlines and converted csv, before the transformed data
+        is uploaded to its final destination.
 
 
         # Arguments
-            pipeline_name: String name of the pipeline currently active,
-                and which serves as the name of the subdirectory for datastore.
+            context: the current Airflow context in which the function/operator
+                is being run in.
         """
-        pass
+
+        # list of the directories that will be created to store data
+        data_directories = ['news', 'headlines', 'csv']
+
+        # store the dag_id which will be the name of the created folder
+        dag_id = str(context['dag'].dag_id)
+
+        # create a data folder and subdirectories for the dag
+        # if the data folder doesnt exist, create it and the subdirs
+        # if it exists, create the subdirs
+        for dir_name in data_directories:
+            try:
+                dir_path = os.path.join(HOME_DIRECTORY,
+                                        'tempdata',
+                                        dag_id,
+                                        dir_name)
+                os.makedirs(dir_path, exist_ok=True)
+            except IOError as err:
+                print("I/O error({0}): {1}".format(err.errno, err.strerror))
+            except OSError as err:
+                # Reraise the error if not about an already existing directory
+                if err.errno != errno.EEXIST or not os.path.isdir(dir_path):
+                    raise
 
 
 class NetworkOperations:

@@ -16,10 +16,21 @@ class TestOperations:
     testtransformoperations, and testloadoperations, testprocess_data
     """
 
+    @pytest.fixture(scope='class')
+    def airflow_context(self) -> dict:
+        """https://airflow.apache.org/code.html#default-variables"""
+        return {
+            'ds': datetime.datetime.now().isoformat().split('T')[0],
+            'params': {
+                'name': 'World',
+            },
+            'dag': tempus_challenge_dag
+        }
+
     @pytest.mark.skip
-    def test_create_data_store_should_create_folder_hierachy(self):
+    def test_create_data_store_should_create_folder_hierachy(self, airflow_context):
         """Tests the creation of a tempoary data storage folder"""
-        pass
+        directories = c.FileStorage.create_data_store(**airflow_context)
 
     @pytest.mark.skip
     def test_retrieve_keyword_news(self):

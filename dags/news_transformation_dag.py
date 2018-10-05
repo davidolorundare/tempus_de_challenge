@@ -69,7 +69,7 @@ dag = DAG(
 
 
 # begin workflow
-start_task = DummyOperator(task_id='start', retries=3, dag=dag)
+start_task = DummyOperator(task_id='start', dag=dag)
 
 # create a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(
@@ -80,37 +80,40 @@ datastore_creation_task = PythonOperator(
 )
 
 # retrieve all english news sources
-retrieve_news_task = DummyOperator(task_id='get_news_task', retries=3, dag=dag)
+#retrieve_news_task = DummyOperator(task_id='get_news_task', retries=3, dag=dag)
 
 # detect existence of retrieved data
-file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
+#file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
 
 # retrieve all of the top headlines
-retrieve_headlines_task = DummyOperator(task_id='get_headlines_task', retries=3, dag=dag)
+#retrieve_headlines_task = DummyOperator(task_id='get_headlines_task', retries=3, dag=dag)
 
 # transform the data, resulting in a flattened csv
-flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
+#flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
 
 # upload the flattened csv into my S3 bucket
-upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
+#upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
 
 # end workflow
-end_task = DummyOperator(task_id='end', retries=3, dag=dag)
+end_task = DummyOperator(task_id='end', dag=dag)
 
 
 # arrange the workflow tasks
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> retrieve_news_task
+#start_task >> datastore_creation_task >> retrieve_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-retrieve_news_task >> file_exists_sensor
+#retrieve_news_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+#file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-flatten_csv_task >> upload_csv_task >> end_task
+#flatten_csv_task >> upload_csv_task >> end_task
+
+
+start_task >> datastore_creation_task >> end_task
