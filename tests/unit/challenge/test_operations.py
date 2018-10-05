@@ -10,10 +10,14 @@ from dags import challenge as c
 
 
 class TestOperations:
-    """Tests the Airflow operator functions"""
+    """Tests the Airflow operator functions
+
+    Will need to split out to testnetworkoperations, testextractioperations,
+    testtransformoperations, and testloadoperations, testprocess_data
+    """
 
     @pytest.mark.skip
-    def test_create_data_store(self):
+    def test_create_data_store_should_create_folder_hierachy(self):
         """Tests the creation of a tempoary data storage folder"""
         pass
 
@@ -22,7 +26,12 @@ class TestOperations:
         """Tests the retrieval of news based on keywords"""
         pass
 
-    def test_retrieve_news(self):
+    def test_retrieve_news_should_return_valid_status_code(self):
+        """Tests that the return status code is for a valid response"""
+        #mock that the return status code is 200
+        pass
+
+    def test_retrieve_news_should_use_http_lib_properly(self):
         """Tests the retrieval of all english news sources.
 
         Uses a mock of a web service call mimicking the News API.
@@ -45,6 +54,7 @@ class TestOperations:
     @pytest.mark.skip
     def test_retrieve_news_failure(self):
         """Tests the failure mechanism of the news retrieval function"""
+        # should raise an exception
         pass
 
     @pytest.mark.skip

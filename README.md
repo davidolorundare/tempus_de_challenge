@@ -45,7 +45,7 @@ How to setup and install.
 A step by step series of examples that tell you how to get a development env running.
 
 ---
-### Running Code
+### Running Code and Usage
 
 How to run code via `make run`
 
@@ -61,9 +61,11 @@ Break down into end to end tests +
 Explain what these tests test and why + coding style tests.
 
 ---
-### Built With
+### Packages Used/ Built With
 
-List some stuff here. Can add api-references here.
+List some stuff here. 
+Can add api-references here.
+Note the style-guide and linter used.
 
 ---
 ### Working Footnotes

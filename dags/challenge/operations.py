@@ -9,6 +9,7 @@ class.
 
 
 import json
+import requests
 
 
 #from airflow.models import Variable
@@ -39,8 +40,12 @@ class FileStorage:
         pass
 
 
-class Operations:
-    """Handles functionality for news retrieval"""
+class NetworkOperations:
+    """Handles functionality for news retrieval
+
+
+    Network Call, Extract Headlines, Flatten CSV, Upload CSV
+    """
 
     def retrieve_english_news(self):
         """Returns all english news sources.
@@ -55,5 +60,22 @@ class Operations:
         - error handling
         - parsing json
         """
+        response = requests.get(url)
 
         return "all news"
+
+
+class ExtractOperations:
+    """Handles functionality for extracting headlines"""
+
+
+class TransformOperations:
+    """Handles functionality for flattening CSVs"""
+
+
+class UploadOperations:
+    """Handles functionality for uploading flattened CSVs"""
+
+
+def process_retrieved_data(self):
+    """For each news performs a series of ETL operations"""
