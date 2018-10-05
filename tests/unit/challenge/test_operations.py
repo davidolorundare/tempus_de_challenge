@@ -43,15 +43,29 @@ class TestFileStorage:
             'dag': dag
         }
 
-   @pytest.mark.skip
-    def test_create_data_store_successfully_first_pipe(self, context):
+    @pytest.mark.skip
+    @patch('os.makedirs')
+    @patch('os.path.join')
+    def test_create_data_store_successfully_first_pipe(self,
+                                                       mock_path_func,
+                                                       mock_dir_func,
+                                                       context):
         """Tests the creation of a tempoary data storage folder"""
-        directories = c.FileStorage.create_data_store(**context)
+        directories = c.FileStorage.create_data_store(mock_path_func,
+                                                      mock_dir_func,
+                                                      **context)
 
     @pytest.mark.skip
-    def test_create_data_store_successfully_second_pipe(self, context_bonus):
+    @patch('os.makedirs')
+    @patch('os.path.join')
+    def test_create_data_store_successfully_second_pipe(self,
+                                                        mock_path_func,
+                                                        mock_dir,
+                                                        context_bonus):
         """Tests the creation of a tempoary data storage folder"""
-        directories = c.FileStorage.create_data_store(**context_bonus)
+        directories = c.FileStorage.create_data_store(mock_path_func,
+                                                      mock_dir_func,
+                                                      **context_bonus)
 
 
 class TestOperations:
