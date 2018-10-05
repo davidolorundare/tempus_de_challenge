@@ -6,31 +6,60 @@ Describes unit tests for the PythonOperator tasks in the DAG.
 
 import datetime
 import pytest
+from unittest.mock import patch
+from unittest.mock import MagicMock
+
 from dags import challenge as c
+from airflow.models import DAG
 
 
-class TestOperations:
-    """Tests the Airflow operator functions
+
+class TestFileStorage:
+    """Tests the creation of datastores.
 
     Will need to split out to testnetworkoperations, testextractioperations,
     testtransformoperations, and testloadoperations, testprocess_data
     """
 
     @pytest.fixture(scope='class')
-    def airflow_context(self) -> dict:
+    def context(self) -> dict:
         """https://airflow.apache.org/code.html#default-variables"""
+        dag = MagicMock(spec=DAG)
+        dag.dag_id.return_value = "tempus_challenge_dag"
+
         return {
             'ds': datetime.datetime.now().isoformat().split('T')[0],
-            'params': {
-                'name': 'World',
-            },
-            'dag': tempus_challenge_dag
+            'dag': dag
         }
 
-    @pytest.mark.skip
-    def test_create_data_store_should_create_folder_hierachy(self, airflow_context):
+    @pytest.fixture(scope='class')
+    def context_bonus(self) -> dict:
+        """https://airflow.apache.org/code.html#default-variables"""
+        dag = MagicMock(spec=DAG)
+        dag.dag_id.return_value = "tempus_bonus_challenge_dag"
+
+        return {
+            'ds': datetime.datetime.now().isoformat().split('T')[0],
+            'dag': dag
+        }
+
+   @pytest.mark.skip
+    def test_create_data_store_successfully_first_pipe(self, context):
         """Tests the creation of a tempoary data storage folder"""
-        directories = c.FileStorage.create_data_store(**airflow_context)
+        directories = c.FileStorage.create_data_store(**context)
+
+    @pytest.mark.skip
+    def test_create_data_store_successfully_second_pipe(self, context_bonus):
+        """Tests the creation of a tempoary data storage folder"""
+        directories = c.FileStorage.create_data_store(**context_bonus)
+
+
+class TestOperations:
+    """Tests the Airflow operator functions.
+
+    Will need to split out to testnetworkoperations, testextractioperations,
+    testtransformoperations, and testloadoperations, testprocess_data
+    """
 
     @pytest.mark.skip
     def test_retrieve_keyword_news(self):

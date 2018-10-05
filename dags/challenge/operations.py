@@ -27,7 +27,10 @@ class FileStorage:
     """Handles functionality for data storage"""
 
     @classmethod
-    def create_data_store(cls, **context):
+    def create_data_store(cls,
+                          path_join_func=os.path.join,
+                          dir_func=os.makedirs,
+                          **context):
         """Create a set of datastore folders in the local filesystem.
 
 
@@ -58,17 +61,13 @@ class FileStorage:
         # if it exists, create the subdirs
         for dir_name in data_directories:
             try:
-                dir_path = os.path.join(HOME_DIRECTORY,
-                                        'tempdata',
-                                        dag_id,
-                                        dir_name)
-                os.makedirs(dir_path, exist_ok=True)
+                dir_path = path_join_func(HOME_DIRECTORY,
+                                          'tempdata',
+                                          dag_id,
+                                          dir_name)
+                dir_func(dir_path, exist_ok=True)
             except IOError as err:
                 print("I/O error({0}): {1}".format(err.errno, err.strerror))
-            except OSError as err:
-                # Reraise the error if not about an already existing directory
-                if err.errno != errno.EEXIST or not os.path.isdir(dir_path):
-                    raise
 
 
 class NetworkOperations:

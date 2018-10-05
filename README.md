@@ -15,9 +15,9 @@ Solution Goals - Writing this, will update soon. One paragraph.
 ---
 ### Approach to Project
 
-- one full day of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto lib, Python Integration Testing and Mocking, and applying TDD in practice.
+- two full days of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto libraries, Python Integration Testing, Python Test Doubles, and applying Test-Driven Development in practice.
 
-- second full day of coding, testing, and developing the solution.
+- one full day of coding, testing, and developing the solution.
 
 
 ---
