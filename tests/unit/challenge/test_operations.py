@@ -295,9 +295,9 @@ class TestNetworkOperations:
         """
         # Arrange
         address = MagicMock()
-        news = c.NetworkOperations(address)
+        news = c.NetworkOperations()
         # Act
-        result = news.retrieve_english_news()
+        result = news.retrieve_english_news(address)
         # Assert
         assert result == "all news"
 
