@@ -8,13 +8,14 @@ class.
 """
 
 import errno
+import json
 import logging
 import os
-import json
+
 import requests
 
 
-#from airflow.models import Variable
+# from airflow.models import Variable
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +47,10 @@ class FileStorage:
 
 
         # Arguments
+            path_join_func: the function to use for creating the directory path
+                for the datastore directories. Default is Python's os.path.join
+            dir_func: the function to use for making the actual datastore
+                directories. Default is Python's os.makedirs
             context: the current Airflow context in which the function/operator
                 is being run in.
         """
@@ -77,7 +82,7 @@ class NetworkOperations:
     Network Call, Extract Headlines, Flatten CSV, Upload CSV
     """
 
-    def retrieve_english_news(self):
+    def retrieve_english_news(self, url):
         """Returns all english news sources.
 
         Using the News API, a http request is made to the
@@ -90,7 +95,8 @@ class NetworkOperations:
         - error handling
         - parsing json
         """
-        response = requests.get(url)
+
+        # response = requests.get(url)
 
         return "all news"
 

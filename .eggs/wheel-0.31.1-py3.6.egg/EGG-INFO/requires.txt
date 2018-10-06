@@ -1,0 +1,12 @@
+
+[faster-signatures]
+ed25519ll
+
+[signatures]
+keyring
+keyrings.alt
+pyxdg
+
+[test]
+pytest-cov
+pytest>=3.0.0
