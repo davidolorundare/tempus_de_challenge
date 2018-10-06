@@ -5,6 +5,7 @@ The 'Tempus Bonus Challenge' dag performs similar tasks to those of the
 'Tempus Challenge' dag. Hence, to encourage function reusability, all the
 functions executed by both dag pipelines are implemented in the same Operations
 class.
+Network Call to get News, Extract Headlines, Flatten CSV, Upload CSV
 """
 
 import errno
@@ -28,10 +29,26 @@ class FileStorage:
     """Handles functionality for data storage"""
 
     @classmethod
-    def create_data_store(cls,
-                          path_join_func=os.path.join,
-                          dir_func=os.makedirs,
-                          **context):
+    def create_storage(cls, **context):
+        """Create tempoary data storage for the current DAG pipeline.
+
+        # Arguments
+            context: the current Airflow context in which the function/operator
+                is being run in.
+        """
+
+        # list of the directories that will be created to store data
+        data_directories = ['news', 'headlines', 'csv']
+
+        for name in data_directories:
+            cls.create_data_stores(dir_name=name, **context)
+
+    @classmethod
+    def create_data_stores(cls,
+                           dir_name,
+                           path_join_func=os.path.join,
+                           dir_func=os.makedirs,
+                           **context):
         """Create a set of datastore folders in the local filesystem.
 
 
@@ -47,6 +64,7 @@ class FileStorage:
 
 
         # Arguments
+            dir_name: the name of the datastore directory to create.
             path_join_func: the function to use for creating the directory path
                 for the datastore directories. Default is Python's os.path.join
             dir_func: the function to use for making the actual datastore
@@ -55,32 +73,24 @@ class FileStorage:
                 is being run in.
         """
 
-        # list of the directories that will be created to store data
-        data_directories = ['news', 'headlines', 'csv']
-
         # store the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
 
         # create a data folder and subdirectories for the dag
         # if the data folder doesnt exist, create it and the subdirs
         # if it exists, create the subdirs
-        for dir_name in data_directories:
-            try:
-                dir_path = path_join_func(HOME_DIRECTORY,
-                                          'tempdata',
-                                          dag_id,
-                                          dir_name)
-                dir_func(dir_path, exist_ok=True)
-            except IOError as err:
-                print("I/O error({0}): {1}".format(err.errno, err.strerror))
+        try:
+            dir_path = path_join_func(HOME_DIRECTORY,
+                                      'tempdata',
+                                      dag_id,
+                                      dir_name)
+            dir_func(dir_path, exist_ok=True)
+        except IOError as err:
+            print("I/O error({0}): {1}".format(err.errno, err.strerror))
 
 
 class NetworkOperations:
-    """Handles functionality for news retrieval
-
-
-    Network Call, Extract Headlines, Flatten CSV, Upload CSV
-    """
+    """Handles functionality for news retrieval."""
 
     def retrieve_english_news(self, url):
         """Returns all english news sources.

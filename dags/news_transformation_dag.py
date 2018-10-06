@@ -75,7 +75,7 @@ start_task = DummyOperator(task_id='start', dag=dag)
 datastore_creation_task = PythonOperator(
     task_id='create_storage_task',
     provide_context=True,
-    python_callable=c.FileStorage.create_data_store,
+    python_callable=c.FileStorage.create_storage,
     dag=dag
 )
 

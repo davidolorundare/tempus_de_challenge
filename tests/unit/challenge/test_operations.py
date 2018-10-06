@@ -18,8 +18,12 @@ from dags import challenge as c
 import pytest
 
 
+@pytest.mark.storagetests
 class TestFileStorage:
-    """Tests the creation of the tempoary datastores used during ETL tasks."""
+    """Tests the creation of the tempoary datastores used during ETL tasks.
+    Maybe mock and test that os.path.exists(directory_path) is False before
+    the call and True afterwards.
+    """
 
     @pytest.fixture(scope='class')
     def home_directory_res(self) -> str:
@@ -43,7 +47,7 @@ class TestFileStorage:
         """
 
         dag = MagicMock(spec=DAG)
-        dag.dag_id.return_value = "tempus_challenge_dag"
+        dag.dag_id = "tempus_challenge_dag"
 
         return {
             'ds': datetime.datetime.now().isoformat().split('T')[0],
@@ -61,16 +65,15 @@ class TestFileStorage:
         """
 
         dag = MagicMock(spec=DAG)
-        dag.dag_id.return_value = "tempus_bonus_challenge_dag"
+        dag.dag_id = "tempus_bonus_challenge_dag"
 
         return {
             'ds': datetime.datetime.now().isoformat().split('T')[0],
             'dag': dag
         }
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe1_success(self,
                                                   mock_path_func,
                                                   mock_dir_func,
@@ -84,9 +87,10 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context)
+        c.FileStorage.create_data_stores("news",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context)
 
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
@@ -101,9 +105,8 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe1_success(self,
                                                        mock_path_func,
                                                        mock_dir_func,
@@ -117,9 +120,10 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context)
+        c.FileStorage.create_data_stores("headlines",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context)
 
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
@@ -134,9 +138,8 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe1_success(self,
                                                  mock_path_func,
                                                  mock_dir_func,
@@ -150,9 +153,10 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context)
+        c.FileStorage.create_data_stores("csv",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context)
 
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
@@ -167,9 +171,8 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe2_success(self,
                                                   mock_path_func,
                                                   mock_dir_func,
@@ -183,9 +186,10 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context_bonus)
+        c.FileStorage.create_data_stores("news",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context_bonus)
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
                                           'tempdata',
@@ -199,9 +203,8 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe2_success(self,
                                                        mock_path_func,
                                                        mock_dir_func,
@@ -215,9 +218,10 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context_bonus)
+        c.FileStorage.create_data_stores("headlines",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context_bonus)
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
                                           'tempdata',
@@ -231,9 +235,8 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('os.makedirs')
-    @patch('os.path.join')
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe2_success(self,
                                                  mock_path_func,
                                                  mock_dir_func,
@@ -247,9 +250,76 @@ class TestFileStorage:
         # Arrange
 
         # Act
-        c.FileStorage.create_data_store(mock_path_func,
-                                        mock_dir_func,
-                                        **airflow_context_bonus)
+        c.FileStorage.create_data_stores("csv",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context_bonus)
+        # Assert
+        mock_path_func.assert_called_with(home_directory_res,
+                                          'tempdata',
+                                          'tempus_bonus_challenge_dag',
+                                          data_directories_res[2])
+        mock_path_func.reset_mock()
+        mock_dir_func.assert_called_with(mock_path_func(
+                                         home_directory_res,
+                                         'tempdata',
+                                         'tempus_bonus_challenge_dag',
+                                         data_directories_res[2]),
+                                         exist_ok=True)
+
+    @pytest.mark.skip
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
+    def test_create_data_store_pipe1_failure(self,
+                                             mock_path_func,
+                                             mock_dir_func,
+                                             home_directory_res,
+                                             data_directories_res,
+                                             airflow_context_bonus):
+        """Tests the failure call to create the tempoary datastore folders used
+        by the tempus_bonus_challenge_dag operators.
+        """
+
+        # Arrange
+
+        # Act
+        c.FileStorage.create_data_stores("csv",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context_bonus)
+        # Assert
+        mock_path_func.assert_called_with(home_directory_res,
+                                          'tempdata',
+                                          'tempus_bonus_challenge_dag',
+                                          data_directories_res[2])
+        mock_path_func.reset_mock()
+        mock_dir_func.assert_called_with(mock_path_func(
+                                         home_directory_res,
+                                         'tempdata',
+                                         'tempus_bonus_challenge_dag',
+                                         data_directories_res[2]),
+                                         exist_ok=True)
+
+    @pytest.mark.skip
+    @patch('os.makedirs', autospec=True)
+    @patch('os.path.join', autospec=True)
+    def test_create_data_store_pipe2_failure(self,
+                                             mock_path_func,
+                                             mock_dir_func,
+                                             home_directory_res,
+                                             data_directories_res,
+                                             airflow_context_bonus):
+        """Tests the failure to call to create the tempoary datastore folders used
+        by the tempus_bonus_challenge_dag operators.
+        """
+
+        # Arrange
+
+        # Act
+        c.FileStorage.create_data_stores("csv",
+                                         mock_path_func,
+                                         mock_dir_func,
+                                         **airflow_context_bonus)
         # Assert
         mock_path_func.assert_called_with(home_directory_res,
                                           'tempdata',
@@ -264,6 +334,7 @@ class TestFileStorage:
                                          exist_ok=True)
 
 
+@pytest.mark.networktests
 class TestNetworkOperations:
     """Tests the functions for task to get news by remote call to News APIs."""
 
@@ -328,6 +399,7 @@ class TestNetworkOperations:
         pass
 
 
+@pytest.mark.extractiontests
 class TestExtractOperations:
     """Tests the functions for the task to extract headlines from data."""
 
@@ -337,6 +409,7 @@ class TestExtractOperations:
         pass
 
 
+@pytest.mark.transformtests
 class TestTransformOperations:
     """Tests the functions for task to transform json headlines to csv."""
 
@@ -346,6 +419,7 @@ class TestTransformOperations:
         pass
 
 
+@pytest.mark.uploadtests
 class TestUploadOperations:
     """Tests the functions for task to upload csvs to Amazon S3."""
 
