@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
+# from airflow.models import Variable
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
@@ -54,7 +55,7 @@ dag = DAG(
 # begin workflow
 start_task = DummyOperator(task_id='start', dag=dag)
 
-# create a folder for storing retrieved data on the local filesystem
+# creates a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(
     task_id='create_storage_task',
     provide_context=True,
@@ -64,7 +65,7 @@ datastore_creation_task = PythonOperator(
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # retrieve all english news sources
-get_news_task = SimpleHttpOperator(endpoint='v2/sources?',
+get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',
                                          'apiKey':
@@ -72,22 +73,21 @@ get_news_task = SimpleHttpOperator(endpoint='v2/sources?',
                                    response_check=c.NetworkOperations.get_news,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',
-                                   retries=3,
                                    dag=dag)
 
 # detect existence of retrieved data
-file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
+# file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
 
 # retrieve all of the top headlines
-retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
-                                        retries=3,
-                                        dag=dag)
+# retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
+#                                         retries=3,
+#                                         dag=dag)
 
 # transform the data, resulting in a flattened csv
-flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
+# flatten_csv_task = DummyOperator(task_id='transform_task', retries=3,dag=dag)
 
 # upload the flattened csv into my S3 bucket
-upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
+# upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)

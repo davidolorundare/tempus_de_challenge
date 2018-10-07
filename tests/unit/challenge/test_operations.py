@@ -355,7 +355,7 @@ class TestNetworkOperations:
         the *request* and *response*.
         ISSUES:
         - creating service mock
-        - storing apikey
+        - storing apikey https://12factor.net/config
         - error handling
         - parsing json
         - data store
@@ -382,41 +382,48 @@ class TestNetworkOperations:
         assert response_obj.status_code == result[1]
 
     @pytest.mark.skip
-    def test_get_news_http_call_failure(self):
-        """Tests that the http call return status code is for a failure response.
+    @patch('requests.Response', autospec=True)
+    def test_get_news_http_call_failure(self, response_obj):
+        """return response object fails with failure response-status code.
 
 
         """
         pass
 
     @pytest.mark.skip
-    def test_get_keyword_news(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_keyword_news(self, response_obj):
         """Tests the http call to retrieve news based on keywords."""
         pass
 
     @pytest.mark.skip
-    def test_get_news_failure(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_news_failure(self, response_obj):
         """Tests the failure mechanism on the news retrieval function."""
         # should raise an exception
         pass
 
     @pytest.mark.skip
-    def test_get_first_keyword_news(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_first_keyword_news(self, response_obj):
         """Tests the retrieval of news using the 'Tempus Labs' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_get_second_keyword_news(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_second_keyword_news(self, response_obj):
         """Tests the retrieval of news using the 'Eric Lefkofsky' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_get_third_keyword_news(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_third_keyword_news(self, response_obj):
         """Tests the retrieval of news using the 'Cancer' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_get_fourth_keyword_news(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_fourth_keyword_news(self, response_obj):
         """Tests the retrieval of news using the 'Immunotheraphy' keyword"""
         pass
 

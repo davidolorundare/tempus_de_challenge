@@ -13,10 +13,6 @@ import json
 import logging
 import os
 
-import requests
-
-
-# from airflow.models import Variable
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +35,7 @@ class FileStorage:
 
         # list of the directories that will be created to store data
         data_directories = ['news', 'headlines', 'csv']
-
+        log.info("Running create_storage method")
         for name in data_directories:
             cls.create_data_stores(dir_name=name, **context)
 
@@ -97,13 +93,15 @@ class NetworkOperations:
         """Processes the response from the API call to get all english news sources.
 
 
-        Stores the json content of the response in the 'news' datastore folder.
+        Stores the json content of the response in the 'news' datastore folder
+        based on dag_id context (need to determine this).
 
-        NEED TO KNOW which Context to Save relative directory for storage path.
+        Error Handling code.
 
         Using the News API, a http request is made to the
         News API's 'sources' endpoint, with its 'language'
         parameter set to 'en'.
+
         A json object is returned containing all retrieved
         English news sources.
         Note APIKey from Variables.
@@ -111,10 +109,13 @@ class NetworkOperations:
         - error handling
         - parsing json
         """
+        log.info("Running get_news method")
+        # check the status code, if is is valid then save the result into the
+        # appropriate dags directory.
+        status_code = response.status_code
+        log.info(status_code)
 
-        # response = requests.get(url)
-
-        return [True, 200]
+        return [True, status_code]
         # Needs to return True for the SimpleHTTPOperator response_check param
 
 

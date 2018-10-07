@@ -96,10 +96,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> retrieve_news_kw_task
+start_task >> datastore_creation_task >> get_news_k1_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-retrieve_news_kw_task >> file_exists_sensor
+get_news_k1_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
