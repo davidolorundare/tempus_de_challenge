@@ -73,7 +73,7 @@ class FileStorage:
                 is being run in.
         """
 
-        # store the dag_id which will be the name of the created folder
+        # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
 
         # create a data folder and subdirectories for the dag

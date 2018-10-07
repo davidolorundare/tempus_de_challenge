@@ -10,7 +10,8 @@ from datetime import datetime, timedelta
 
 
 from airflow import DAG
-#from airflow.models import Connection
+from airflow import settings
+from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 
@@ -31,31 +32,14 @@ default_args = {
 
 
 # Connection objects for the News API endpoints
-# conn_news_sources = Connection(
-#         conn_id="newsapi_sources",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/sources?"
-# )
-
-# conn_news_everything = Connection(
-#         conn_id="newsapi_everything",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/everything?"
-# )
-
-# conn_news_headlines = Connection(
-#         conn_id="newsapi_headlines",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/top-headlines?"
-# )
-
+conn_news_api = Connection(conn_id="newsapi",
+                           conn_type="HTTP",
+                           host="https://newsapi.org")
 
 # # Create connection object
-# session = settings.Session()
-# session.add(conn_news_sources)
-# session.add(conn_news_everything)
-# session.add(conn_news_headlines)
-# session.commit()
+session = settings.Session()
+session.add(conn_news_api)
+session.commit()
 
 
 # DAG Object
@@ -74,7 +58,7 @@ start_task = DummyOperator(task_id='start', retries=3, dag=dag)
 datastore_creation_task = PythonOperator(
     task_id='create_storage_task',
     provide_context=True,
-    python_callable=c.FileStorage.create_data_store,
+    python_callable=c.FileStorage.create_storage,
     dag=dag
 )
 

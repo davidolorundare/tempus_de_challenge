@@ -9,14 +9,13 @@ from datetime import datetime, timedelta
 
 
 from airflow import DAG
-#from airflow import settings
-#from airflow.models import Connection
+from airflow import settings
+from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
-
 
 
 default_args = {
@@ -32,31 +31,14 @@ default_args = {
 }
 
 # Connection objects for the News API endpoints
-# conn_news_sources = Connection(
-#         conn_id="newsapi_sources",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/sources?"
-# )
-
-# conn_news_everything = Connection(
-#         conn_id="newsapi_everything",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/everything?"
-# )
-
-# conn_news_headlines = Connection(
-#         conn_id="newsapi_headlines",
-#         conn_type="HTTP",
-#         host="https://newsapi.org/v2/top-headlines?"
-# )
-
+conn_news_api = Connection(conn_id="newsapi",
+                           conn_type="HTTP",
+                           host="https://newsapi.org")
 
 # # Create connection object
-# session = settings.Session()
-# session.add(conn_news_sources)
-# session.add(conn_news_everything)
-# session.add(conn_news_headlines)
-# session.commit()
+session = settings.Session()
+session.add(conn_news_api)
+session.commit()
 
 
 # DAG Object
@@ -80,19 +62,33 @@ datastore_creation_task = PythonOperator(
 )
 
 # retrieve all english news sources
-#retrieve_news_task = DummyOperator(task_id='get_news_task', retries=3, dag=dag)
+retrieve_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
+                                        method='POST',
+                                        data=None,
+                                        headers=None,
+                                        response_check=None,
+                                        extra_options=None,
+                                        xcom_push=False,
+                                        http_conn_id='newsapi',
+                                        task_id='get_news_sources_task',
+                                        retries=3,
+                                        dag=dag)
 
+# TEST USING HTTPSENSOR, SIMPLEHTTPOPERATOR, or PYTHONOPERATOR that calls API
+# STORAGE OF APIKEY in Airflow Variable ?
 # detect existence of retrieved data
-#file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
+file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
 
 # retrieve all of the top headlines
-#retrieve_headlines_task = DummyOperator(task_id='get_headlines_task', retries=3, dag=dag)
+retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
+                                        retries=3,
+                                        dag=dag)
 
 # transform the data, resulting in a flattened csv
-#flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
+flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
 
 # upload the flattened csv into my S3 bucket
-#upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
+upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
@@ -102,18 +98,18 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-#start_task >> datastore_creation_task >> retrieve_news_task
+# start_task >> datastore_creation_task >> retrieve_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-#retrieve_news_task >> file_exists_sensor
+# retrieve_news_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-#file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+# file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-#flatten_csv_task >> upload_csv_task >> end_task
+# flatten_csv_task >> upload_csv_task >> end_task
 
 
 start_task >> datastore_creation_task >> end_task

@@ -21,8 +21,10 @@ import pytest
 @pytest.mark.storagetests
 class TestFileStorage:
     """Tests the creation of the tempoary datastores used during ETL tasks.
+
     Maybe mock and test that os.path.exists(directory_path) is False before
     the call and True afterwards.
+    test if directory already exists after the call. VERY IMPORTANT!
     """
 
     @pytest.fixture(scope='class')
@@ -336,22 +338,15 @@ class TestFileStorage:
 
 @pytest.mark.networktests
 class TestNetworkOperations:
-    """Tests the functions for task to get news by remote call to News APIs."""
+    """Tests the functions for task to get news by remote call to News APIs.
+    test call is made, test call returns with valid code, test call failure,
+    test error handling e.g. url is number not string, test return json goes
+    into directory
+    integration test for actually return json.
+    """
 
     @pytest.mark.skip
-    def test_retrieve_keyword_news(self):
-        """Tests the http call to retrieve news based on keywords."""
-        pass
-
-    @pytest.mark.skip
-    def test_retrieve_news_should_return_valid_status_code(self):
-        """Tests that the http call return status code is for a valid response.
-
-        mock that the return status code is 200
-        """
-        pass
-
-    def test_retrieve_news_should_use_http_lib_properly(self):
+    def test_retrieve_news_should_call_http_lib_properly(self):
         """Tests the http call to retrieve all english news sources.
 
         Uses a mock of a web service call mimicking the News API.
@@ -371,6 +366,27 @@ class TestNetworkOperations:
         result = news.retrieve_english_news(address)
         # Assert
         assert result == "all news"
+
+    @pytest.mark.skip
+    def test_retrieve_news_should_return_valid_status_code(self):
+        """Tests that the http call return status code is for a valid response.
+
+        mock that the return status code is 200
+        """
+        pass
+
+    @pytest.mark.skip
+    def test_retrieve_news_http_call_failure(self):
+        """Tests that the http call return status code is for a failure response.
+
+
+        """
+        pass
+
+    @pytest.mark.skip
+    def test_retrieve_keyword_news(self):
+        """Tests the http call to retrieve news based on keywords."""
+        pass
 
     @pytest.mark.skip
     def test_retrieve_news_failure(self):
