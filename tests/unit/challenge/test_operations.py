@@ -8,6 +8,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 
 import datetime
 import os
+
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -347,7 +348,7 @@ class TestNetworkOperations:
 
     @pytest.mark.skip
     def test_get_news_should_call_http_lib_properly(self):
-        """Tests the http call to retrieve all english news sources.
+        """http call to retrieve all english news sources.
 
         Uses a mock of a web service call mimicking the News API.
         Create a mock of the english new sources call which simulates
@@ -367,13 +368,18 @@ class TestNetworkOperations:
         # Assert
         assert result == "all news"
 
-    @pytest.mark.skip
-    def test_get_news_should_return_valid_status_code(self):
-        """Tests that the http call return status code is for a valid response.
+    @patch('requests.Response', autospec=True)
+    def test_get_news_should_return_valid_status_code(self, response_obj):
+        """returned response object has a valid 200 OK response-status code."""
 
-        mock that the return status code is 200
-        """
-        pass
+        # Arrange
+        response_obj.status_code = 200
+
+        # Act
+        result = c.NetworkOperations.get_news(response_obj)
+
+        # Assert
+        assert response_obj.status_code == result[1]
 
     @pytest.mark.skip
     def test_get_news_http_call_failure(self):

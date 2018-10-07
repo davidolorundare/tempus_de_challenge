@@ -90,10 +90,16 @@ class FileStorage:
 
 
 class NetworkOperations:
-    """Handles functionality for news retrieval."""
+    """Handles functionality for news retrieval via the News API."""
 
-    def get_news(self, response):
+    @classmethod
+    def get_news(cls, response):
         """Processes the response from the API call to get all english news sources.
+
+
+        Stores the json content of the response in the 'news' datastore folder.
+
+        NEED TO KNOW which Context to Save relative directory for storage path.
 
         Using the News API, a http request is made to the
         News API's 'sources' endpoint, with its 'language'
@@ -108,7 +114,8 @@ class NetworkOperations:
 
         # response = requests.get(url)
 
-        return "all news"
+        return [True, 200]
+        # Needs to return True for the SimpleHTTPOperator response_check param
 
 
 class ExtractOperations:

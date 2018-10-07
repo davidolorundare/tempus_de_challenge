@@ -62,20 +62,19 @@ datastore_creation_task = PythonOperator(
     dag=dag
 )
 
+# NEED TO MAINTAIN SECRECY OF API KEYS
 # retrieve all english news sources
-get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
+get_news_task = SimpleHttpOperator(endpoint='v2/sources?',
                                    method='GET',
-                                   data=None,
-                                   headers=None,
+                                   data={'language': 'en',
+                                         'apiKey':
+                                         '68ce2435405b42e5b4a90080249c6962'},
                                    response_check=c.NetworkOperations.get_news,
-                                   xcom_push=False,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',
                                    retries=3,
                                    dag=dag)
 
-# TEST USING HTTPSENSOR, SIMPLEHTTPOPERATOR, or PYTHONOPERATOR that calls API
-# STORAGE OF APIKEY in Airflow Variable ?
 # detect existence of retrieved data
 file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
 
@@ -112,4 +111,4 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # flatten_csv_task >> upload_csv_task >> end_task
 
 
-start_task >> datastore_creation_task >> end_task
+start_task >> get_news_task >> end_task

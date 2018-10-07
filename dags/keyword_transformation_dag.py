@@ -13,6 +13,7 @@ from airflow import DAG
 from airflow import settings
 from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
@@ -63,8 +64,17 @@ datastore_creation_task = PythonOperator(
 )
 
 # retrieve all news based on keywords
-# Need to make four SimpleHTTPOperator calls
-retrieve_news_kw_task = DummyOperator(task_id='get_news_kw_task', dag=dag)
+# Need to make four SimpleHTTPOperator calls run in parallel
+get_news_k1_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                      method='GET',
+                                      data={'q': 'Tempus Labs',
+                                            'apiKey':
+                                            '68ce2435405b42e5b4a90080249c6962'},
+                                      response_check=c.NetworkOperations.get_news,
+                                      http_conn_id='newsapi',
+                                      task_id='get_news_first_kw_task',
+                                      retries=3,
+                                      dag=dag)
 
 # detect existence of retrieved data
 file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
