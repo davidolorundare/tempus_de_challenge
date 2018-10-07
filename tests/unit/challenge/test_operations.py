@@ -346,7 +346,7 @@ class TestNetworkOperations:
     """
 
     @pytest.mark.skip
-    def test_retrieve_news_should_call_http_lib_properly(self):
+    def test_get_news_should_call_http_lib_properly(self):
         """Tests the http call to retrieve all english news sources.
 
         Uses a mock of a web service call mimicking the News API.
@@ -363,12 +363,12 @@ class TestNetworkOperations:
         address = MagicMock()
         news = c.NetworkOperations()
         # Act
-        result = news.retrieve_english_news(address)
+        result = news.get_news(address)
         # Assert
         assert result == "all news"
 
     @pytest.mark.skip
-    def test_retrieve_news_should_return_valid_status_code(self):
+    def test_get_news_should_return_valid_status_code(self):
         """Tests that the http call return status code is for a valid response.
 
         mock that the return status code is 200
@@ -376,7 +376,7 @@ class TestNetworkOperations:
         pass
 
     @pytest.mark.skip
-    def test_retrieve_news_http_call_failure(self):
+    def test_get_news_http_call_failure(self):
         """Tests that the http call return status code is for a failure response.
 
 
@@ -384,33 +384,33 @@ class TestNetworkOperations:
         pass
 
     @pytest.mark.skip
-    def test_retrieve_keyword_news(self):
+    def test_get_keyword_news(self):
         """Tests the http call to retrieve news based on keywords."""
         pass
 
     @pytest.mark.skip
-    def test_retrieve_news_failure(self):
+    def test_get_news_failure(self):
         """Tests the failure mechanism on the news retrieval function."""
         # should raise an exception
         pass
 
     @pytest.mark.skip
-    def test_retrieve_first_keyword_news(self):
+    def test_get_first_keyword_news(self):
         """Tests the retrieval of news using the 'Tempus Labs' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_retrieve_second_keyword_news(self):
+    def test_get_second_keyword_news(self):
         """Tests the retrieval of news using the 'Eric Lefkofsky' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_retrieve_third_keyword_news(self):
+    def test_get_third_keyword_news(self):
         """Tests the retrieval of news using the 'Cancer' keyword"""
         pass
 
     @pytest.mark.skip
-    def test_retrieve_fourth_keyword_news(self):
+    def test_get_fourth_keyword_news(self):
         """Tests the retrieval of news using the 'Immunotheraphy' keyword"""
         pass
 

@@ -63,6 +63,7 @@ datastore_creation_task = PythonOperator(
 )
 
 # retrieve all news based on keywords
+# Need to make four SimpleHTTPOperator calls
 retrieve_news_kw_task = DummyOperator(task_id='get_news_kw_task', dag=dag)
 
 # detect existence of retrieved data

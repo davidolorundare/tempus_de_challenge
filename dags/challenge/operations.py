@@ -92,8 +92,8 @@ class FileStorage:
 class NetworkOperations:
     """Handles functionality for news retrieval."""
 
-    def retrieve_english_news(self, url):
-        """Returns all english news sources.
+    def get_news(self, response):
+        """Processes the response from the API call to get all english news sources.
 
         Using the News API, a http request is made to the
         News API's 'sources' endpoint, with its 'language'

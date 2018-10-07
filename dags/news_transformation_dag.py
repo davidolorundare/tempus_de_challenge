@@ -50,6 +50,7 @@ dag = DAG(
 )
 
 
+# define workflow tasks
 # begin workflow
 start_task = DummyOperator(task_id='start', dag=dag)
 
@@ -62,17 +63,16 @@ datastore_creation_task = PythonOperator(
 )
 
 # retrieve all english news sources
-retrieve_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
-                                        method='POST',
-                                        data=None,
-                                        headers=None,
-                                        response_check=None,
-                                        extra_options=None,
-                                        xcom_push=False,
-                                        http_conn_id='newsapi',
-                                        task_id='get_news_sources_task',
-                                        retries=3,
-                                        dag=dag)
+get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
+                                   method='GET',
+                                   data=None,
+                                   headers=None,
+                                   response_check=c.NetworkOperations.get_news,
+                                   xcom_push=False,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_sources_task',
+                                   retries=3,
+                                   dag=dag)
 
 # TEST USING HTTPSENSOR, SIMPLEHTTPOPERATOR, or PYTHONOPERATOR that calls API
 # STORAGE OF APIKEY in Airflow Variable ?
@@ -98,10 +98,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-# start_task >> datastore_creation_task >> retrieve_news_task
+# start_task >> datastore_creation_task >> get_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-# retrieve_news_task >> file_exists_sensor
+# get_news_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
