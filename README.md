@@ -9,6 +9,40 @@
 
 **Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
 
+
+---
+### Prerequisites 
+
+What things you need to install the software and how to install them.
+
+1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
+	* author's Python and virtualenv versions are 3.6 and 16.0.0 respectively.
+2. [Docker](https://www.docker.com)
+	* docker versions are docker 18.06.1-ce and docker-compose 1.22.0
+3. Register for a [News API key](https://newsapi.org/register)	
+4. Register for an [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
+
+
+---
+### Setup
+
+How to setup and install.
+A step by step series of examples that tell you how to get a development env running.
+
+1. Clone a copy of the github repo into your working directory or Download it as a zip file and extract its content into your working directory.
+
+2. Open a command line terminal and navigate to the root of the repo directory.
+
+3. Run the command `make init` ; this downloads all of the project's dependencies.
+
+4. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
+
+5. Run the command `make run` ; this starts up Docker reads in the Dockerfile and configures Airflow to begin running. 
+	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
+	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
+	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
+
+
 ---
 ### Getting Started: Pipeline Overview 
 
@@ -48,38 +82,6 @@ The pipeline tasks are identical to that of the first. The only difference is in
 
 - Four [Airflow SimpleHTTPOperators](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) are defined, which make separate HTTP GET requests to the News API's 'everything' endpoint with the assigned API Key and a query for specific keywords: 'Tempus Labs', 'Eric Lefokosky', 'Cancer', and Immunotherapy. This fetches data on each of these keywords. The Python callback function which handles the return Response object stores the them as four JSON files in the 'news' folder, created in an earlier step, for the 'tempus_bonus_challenge_dag'.
 
-
----
-### Prerequisites 
-
-What things you need to install the software and how to install them.
-
-1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
-	* author's Python and virtualenv versions are 3.6 and 16.0.0 respectively.
-2. [Docker](https://www.docker.com)
-	* docker versions are docker 18.06.1-ce and docker-compose 1.22.0
-3. Register for a [News API key](https://newsapi.org/register)	
-4. Register for an [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
-
-
----
-### Setup
-
-How to setup and install.
-A step by step series of examples that tell you how to get a development env running.
-
-1. Clone a copy of the github repo into your working directory or Download it as a zip file and extract its content into your working directory.
-
-2. Open a command line terminal and navigate to the root of the repo directory.
-
-3. Run the command `make init` ; this downloads all of the project's dependencies.
-
-4. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
-
-5. Run the command `make run` ; this starts up Docker reads in the Dockerfile and configures Airflow to begin running. 
-	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
-	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
-	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 
 ---
 ### Running Code and Usage
