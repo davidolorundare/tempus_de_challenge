@@ -18,7 +18,7 @@ Discusses the breakdown of the project goals into the two pipelines.
 
 The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks. Its structure is shown below:
 
-image of pipe1
+IMAGE OF PIPE1
 
 The pipeline tasks are as follows:
 - The first task is an Airflow DummyOperator which does nothing and is used merely to visually indicate the beginning of the pipeline. 
@@ -42,7 +42,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 #### DAG Pipeline 2
 The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first; also consisting of eight tasks. It is scheduled to run once a day at 1AM. Its structure is shown below:
 
-image of pipe2
+IMAGE OF PIPE2
 
 The pipeline tasks are identical to that of the first. The only difference is in the third task:
 
@@ -84,8 +84,7 @@ A step by step series of examples that tell you how to get a development env run
 ---
 ### Running Code and Usage
 
-How to run code via `make run`
-
+GIF OF CODE RUNNING/USAGE
 
 End with an example of getting some data out of the system or using it for a little demo
 
