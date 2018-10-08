@@ -1,6 +1,6 @@
 # Tempus Data Engineer Challenge Project
 
-### Two [Apache Airflow](https://airflow.apache.org) data pipeline were developed which fetch news data from a [News REST API](https://newsapi.org), store the data on the local filesystem, and perform a series of [ETL tasks](https://en.wikipedia.org/wiki/Extract,_transform,_load) that extract the top headlines; transform them into a CSV tabular structure; and upload the transformations to a given [Amazon S3] bucket(https://aws.amazon.com/s3/).
+### Two [Apache Airflow](https://airflow.apache.org) data pipeline were developed which fetch news data from a [News REST API](https://newsapi.org), store the data on the local filesystem, and perform a series of [ETL tasks](https://en.wikipedia.org/wiki/Extract,_transform,_load) that extract the top headlines; transform them into a CSV tabular structure; and upload the transformations to a given [Amazon S3](https://aws.amazon.com/s3/) bucket.
 
 ---
 ### Project Status
