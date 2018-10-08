@@ -13,8 +13,6 @@
 ---
 ### Prerequisites 
 
-What things you need to install the software and how to install them.
-
 1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 	* author's Python and virtualenv versions are 3.6 and 16.0.0 respectively.
 2. [Docker](https://www.docker.com)
@@ -25,9 +23,6 @@ What things you need to install the software and how to install them.
 
 ---
 ### Setup
-
-How to setup and install.
-A step by step series of examples that tell you how to get a development env running.
 
 1. Clone a copy of the github repo into your working directory or Download it as a zip file and extract its content into your working directory.
 
@@ -147,6 +142,6 @@ using all four keywords in the same api-request returned 0 hits. Hence, four sep
 ---
 ### Approach to Project
 
-- two full days of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto libraries, Python Integration Testing, Python Test Doubles, and applying Test-Driven Development in practice.
+- A week of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto library, Python Integration Testing, Using Python Test Doubles, and applying Python Test-Driven Development in practice.
 
 - one full day of coding, testing, and developing the solution.
