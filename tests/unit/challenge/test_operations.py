@@ -336,6 +336,10 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
+    def test_is_valid_folder_path_returns_true():
+        """Need to work on this"""
+
 
 @pytest.mark.networktests
 class TestNetworkOperations:
@@ -345,28 +349,6 @@ class TestNetworkOperations:
     into directory
     integration test for actually return json.
     """
-
-    @pytest.mark.skip
-    def test_get_news_should_call_http_lib_properly(self):
-        """http call to retrieve all english news sources.
-
-        Uses a mock of a web service call mimicking the News API.
-        Create a mock of the english new sources call which simulates
-        the *request* and *response*.
-        ISSUES:
-        - creating service mock
-        - storing apikey https://12factor.net/config
-        - error handling
-        - parsing json
-        - data store
-        """
-        # Arrange
-        address = MagicMock()
-        news = c.NetworkOperations()
-        # Act
-        result = news.get_news(address)
-        # Assert
-        assert result == "all news"
 
     @patch('requests.Response', autospec=True)
     def test_get_news_should_return_valid_status_code(self, response_obj):
@@ -379,16 +361,31 @@ class TestNetworkOperations:
         result = c.NetworkOperations.get_news(response_obj)
 
         # Assert
-        assert response_obj.status_code == result[1]
+        assert result[0] is True
+
+    @patch('requests.Response', autospec=True)
+    def test_get_news_http_call_failure(self, response_obj):
+        """returned response object fails with failure response-status code."""
+
+        # Arrange
+        response_obj.status_code = 404
+
+        # Act
+        result = c.NetworkOperations.get_news(response_obj)
+
+        # Assert
+        assert result[0] is False
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
-    def test_get_news_http_call_failure(self, response_obj):
-        """return response object fails with failure response-status code.
+    def test_get_news_success_saves_file_correctly(self, response_obj):
+        """successful returned response object json is store correctly."""
 
+        # Arrange
 
-        """
-        pass
+        # Act
+
+        # Assert
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)

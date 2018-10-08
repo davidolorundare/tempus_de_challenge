@@ -56,15 +56,18 @@ dag = DAG(
 start_task = DummyOperator(task_id='start', dag=dag)
 
 # creates a folder for storing retrieved data on the local filesystem
-datastore_creation_task = PythonOperator(
-    task_id='create_storage_task',
-    provide_context=True,
-    python_callable=c.FileStorage.create_storage,
-    dag=dag
-)
+# datastore_creation_task = PythonOperator(
+#     task_id='create_storage_task',
+#     provide_context=True,
+#     python_callable=c.FileStorage.create_storage,
+#     dag=dag
+# )
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
+# https://12factor.net/config
 # retrieve all english news sources
+# Using the News API, a http request is made to the News API's 'sources'
+# endpoint, with its 'language' parameter set to 'en'.
 get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',

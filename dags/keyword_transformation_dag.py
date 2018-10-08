@@ -76,6 +76,39 @@ get_news_k1_task = SimpleHttpOperator(endpoint='v2/everything?',
                                       retries=3,
                                       dag=dag)
 
+get_news_k2_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                      method='GET',
+                                      data={'q': 'Eric Lefkofsky',
+                                            'apiKey':
+                                            '68ce2435405b42e5b4a90080249c6962'},
+                                      response_check=c.NetworkOperations.get_news,
+                                      http_conn_id='newsapi',
+                                      task_id='get_news_second_kw_task',
+                                      retries=3,
+                                      dag=dag)
+
+get_news_k3_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                      method='GET',
+                                      data={'q': 'Cancer',
+                                            'apiKey':
+                                            '68ce2435405b42e5b4a90080249c6962'},
+                                      response_check=c.NetworkOperations.get_news,
+                                      http_conn_id='newsapi',
+                                      task_id='get_news_third_kw_task',
+                                      retries=3,
+                                      dag=dag)
+
+get_news_k4_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                      method='GET',
+                                      data={'q': 'Immunotherapy',
+                                            'apiKey':
+                                            '68ce2435405b42e5b4a90080249c6962'},
+                                      response_check=c.NetworkOperations.get_news,
+                                      http_conn_id='newsapi',
+                                      task_id='get_news_fourth_kw_task',
+                                      retries=3,
+                                      dag=dag)
+
 # detect existence of retrieved data
 file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
 

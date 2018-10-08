@@ -8,10 +8,12 @@ class.
 Network Call to get News, Extract Headlines, Flatten CSV, Upload CSV
 """
 
-import errno
-import json
+# import errno
+# import json
 import logging
 import os
+
+import requests
 
 
 log = logging.getLogger(__name__)
@@ -27,6 +29,7 @@ class FileStorage:
     @classmethod
     def create_storage(cls, **context):
         """Create tempoary data storage for the current DAG pipeline.
+
 
         # Arguments
             context: the current Airflow context in which the function/operator
@@ -83,44 +86,65 @@ class FileStorage:
             dir_func(dir_path, exist_ok=True)
         except IOError as err:
             print("I/O error({0}): {1}".format(err.errno, err.strerror))
+        # SHOULD VERIFY folder creation (use separate method)
+        if cls.is_valid_folder_path(dir_path):
+            return True
+        else:
+            return False
+
+    @classmethod
+    def is_valid_folder_path(cls, dir_name, path_find_func=os.path.isdir):
+        """Returns True is given folder path exists. False otherwise.
+
+
+        # Arguments
+            dir_name: the name of the datastore directory to create.
+            path_find_func: the function to use for determining if the given
+                path is valid. Default is Python's os.path.isdir
+        """
 
 
 class NetworkOperations:
     """Handles functionality for news retrieval via the News API."""
 
     @classmethod
-    def get_news(cls, response):
+    def get_news(cls, response: requests.Response):
         """Processes the response from the API call to get all english news sources.
 
 
-        Stores the json content of the response in the 'news' datastore folder
-        based on dag_id context (need to determine this).
+        Returns True is the response is valid and stores the content in the
+        folder appropriately. Returns False if the response is invalid.
+        The function also needs to return True for the SimpleHTTPOperator
+        response_check parameter to 'pass' or False to indicate its failure
 
-        Error Handling code.
+        On successful resposne the json content of the response is store in the
+        appropriate 'news' datastore folder based on dag_id context
+        (need to determine this).
 
-        Using the News API, a http request is made to the
-        News API's 'sources' endpoint, with its 'language'
-        parameter set to 'en'.
+        # Arguments
+            response: HTTP Response object returned from the SimpleHTTPOperator
+                http call.
 
-        A json object is returned containing all retrieved
-        English news sources.
-        Note APIKey from Variables.
-        - storing apikey
-        - error handling
-        - parsing json
         """
         log.info("Running get_news method")
-        # check the status code, if is is valid then save the result into the
-        # appropriate dags directory.
+        # check the status code, if is is valid OK then save the result into
+        # the appropriate news directory.
         status_code = response.status_code
         log.info(status_code)
+        if status_code == requests.codes.ok:
+            # save data to directory and return True
 
-        return [True, status_code]
-        # Needs to return True for the SimpleHTTPOperator response_check param
+            return [True, status_code]
+        else:
+            return [False, status_code]
 
 
 class ExtractOperations:
-    """Handles functionality for extracting headlines"""
+    """Handles functionality for extracting headlines.
+
+    - error handling
+    - parsing json
+    """
 
 
 class TransformOperations:
