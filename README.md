@@ -1,9 +1,6 @@
 # Tempus Data Engineer Challenge Project
 
-## A solution to the Tempus Data Engineer Challenge
-
-Solution Goals - Writing this, will update soon. One paragraph.
-
+### Two [Apache Airflow](https://airflow.apache.org) data pipeline were developed which fetch news data from a [News REST API](https://newsapi.org), store the data on the local filesystem, and perform a series of [ETL tasks](https://en.wikipedia.org/wiki/Extract,_transform,_load) that extract the top headlines; transform them into a CSV tabular structure; and upload the transformations to a given [Amazon S3 bucket](https://aws.amazon.com/s3/).
 
 ---
 ### Project Status
@@ -13,23 +10,18 @@ Solution Goals - Writing this, will update soon. One paragraph.
 **Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
 
 ---
-### Approach to Project
-
-- two full days of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto libraries, Python Integration Testing, Python Test Doubles, and applying Test-Driven Development in practice.
-
-- one full day of coding, testing, and developing the solution.
-
-
----
 ### Getting Started: Pipeline Overview (with Screenshots)
 
 Discuss how the goals were broken into the two pipelines.
 
 #### DAG Pipeline 1
+
+The first pipeline does
 image of pipe1
 
 
 #### DAG Pipeline 2
+The second pipeline does
 image of pipe2
 
 
@@ -38,11 +30,21 @@ image of pipe2
 
 What things you need to install the software and how to install them.
 
+1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
+	* author's Python and virtualenv versions are 3.6 and 16.0.0 respectively.
+2. [Docker](https://www.docker.com)
+	* docker versions are docker 18.06.1-ce and docker-compose 1.22.0
+
+
 ---
 ### Setup
 
 How to setup and install.
 A step by step series of examples that tell you how to get a development env running.
+
+1. Clone a copy of the github repo into your working directory or Download it as a zip file.
+
+2. 
 
 ---
 ### Running Code and Usage
@@ -63,9 +65,14 @@ Explain what these tests test and why + coding style tests.
 ---
 ### Packages Used/ Built With
 
-List some stuff here. 
-Can add api-references here.
-Note the style-guide and linter used.
+1. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
+2. [Amazon Python SDK (boto) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
+3. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
+4. [Python Requests library](http://docs.python-requests.org)
+5. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
+6. [Pytest](https://docs.pytest.org/en/latest/)
+7. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
+8. [News API](https://newsapi.org/)
 
 ---
 ### Working Footnotes
@@ -90,3 +97,11 @@ using all four keywords in the same api-request returned 0 hits. Hence, four sep
 - Need to write integration tests (try using Travis CI ? and badge), use mocking for external services. Must also make the whole solution startable via 'make run'
 
 - Do I need to put any screenshots ?
+
+
+---
+### Approach to Project
+
+- two full days of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto libraries, Python Integration Testing, Python Test Doubles, and applying Test-Driven Development in practice.
+
+- one full day of coding, testing, and developing the solution.

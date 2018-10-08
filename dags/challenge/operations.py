@@ -133,7 +133,7 @@ class NetworkOperations:
         log.info(status_code)
         if status_code == requests.codes.ok:
             # save data to directory and return True
-
+            # DO THAT HERE
             return [True, status_code]
         else:
             return [False, status_code]

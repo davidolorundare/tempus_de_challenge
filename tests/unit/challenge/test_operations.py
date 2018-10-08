@@ -379,10 +379,10 @@ class TestNetworkOperations:
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_news_success_saves_file_correctly(self, response_obj):
-        """successful returned response object json is store correctly."""
+        """successful returned response object json is stored correctly."""
 
         # Arrange
-
+        # Need to figure out the context
         # Act
 
         # Assert
