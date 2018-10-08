@@ -24,7 +24,7 @@
 ---
 ### Setup
 
-1. Clone a copy of the github repo into your working directory or Download it as a zip file and extract its content into your working directory.
+1. Clone a copy of the github repo into your working directory or Download it as a zip file and extract its contents into your working directory.
 
 2. Open a command line terminal and navigate to the root of the repo directory.
 
@@ -32,7 +32,7 @@
 
 4. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
 
-5. Run the command `make run` ; this starts up Docker reads in the Dockerfile and configures Airflow to begin running. 
+5. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
 	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
 	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
