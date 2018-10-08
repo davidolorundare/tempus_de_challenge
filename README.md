@@ -118,26 +118,14 @@ The **integration tests** exercise the overall combination of the tasks in the p
 ---
 ### Working Footnotes
 
-- Where to store the data at rest: locally as files or using a database ? What are the tradeoffs ? Note size of json returned objects.
+- Where to store the data at rest: locally as files or using a database ? There are a number of tradeoffs using either, but given the scope of the project I decided to use a local filesystem. In a production environment I would rather configure a real database like PostgreSQL to serve as a data warehouse for the News data retrieved, as well as setup tempoary data-staging areas for the intermediate data created during the ETL tasks.
 
 - For the bonus challenge, on experimenting with the News API it was discovered that
-using all four keywords in the same api-request returned 0 hits. Hence, four separate api-request calls will be made; for each individual keyword.
+using all four keywords in the same api-request returned 0 hits. Hence, I decided four separate api-request calls would made; for each individual keyword.
 
-- Note error-handling needs for each of the functions, e.g. the news api endpoint (ok code versus not ok codes), handling connection failures, etc
+- Note security concern of hardcoding the News apikey the functions used for the http requests. After doing some research on the topic of `api key storage and security`, I decide based on some suggestions from - [here](https://12factor.net/config), [here](https://github.com/geosolutions-it/evo-odas/issues/159), [here](https://github.com/geosolutions-it/evo-odas/issues/118) and [here](https://issues.apache.org/jira/browse/AIRFLOW-45) - to store the key in an environmental variable that is then accessed in Airflow and Python at runtime. Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) Might want to encrypt api? - use Airflow Variable 'apikey' (programmatically create this)
 
-- Need to decide on whether to use the news api client libray or not.e.g. pip install newsapi-python
-
-- Use json and csv libs for parsing. url-encode the requests ?
-
-- Note security concern of hardcoding the apikey in requests. Might want to encrypt api? - use Airflow Variable 'apikey' (programmatically create this)
-
-- No S3 bucket link was given in the requirements, I will have to create my own S3 bucket then.
-
-- Need to write unit tests and apply a TDD approach.
-
-- Need to write integration tests (try using Travis CI ? and badge), use mocking for external services. Must also make the whole solution startable via 'make run'
-
-- Do I need to put any screenshots ?
+- No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
 
 
 ---
