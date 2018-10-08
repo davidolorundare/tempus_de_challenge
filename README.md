@@ -12,7 +12,7 @@
 ---
 ### Getting Started: Pipeline Overview (with Screenshots)
 
-Discuss how the goals were broken into the two pipelines.
+Discusses how the goals were broken into the two pipelines.
 
 #### DAG Pipeline 1
 
