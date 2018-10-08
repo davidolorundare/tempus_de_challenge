@@ -10,13 +10,13 @@
 **Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
 
 ---
-### Getting Started: Pipeline Overview (with Screenshots)
+### Getting Started: Pipeline Overview 
 
 Discusses the breakdown of the project goals into the two pipelines.
 
 #### DAG Pipeline 1
 
-The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks. Its structure is shown below:
+The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks (five of which are the core). Its structure is shown below:
 
 IMAGE OF PIPE1
 
@@ -91,10 +91,18 @@ End with an example of getting some data out of the system or using it for a lit
 ---
 ### Running Tests (Unit and Integration)
 
-How to run unit and integration tests via `make test`
-Explain how to run the automated tests for this project.
-Break down into end to end tests + 
-Explain what these tests test and why + coding style tests.
+This project's unit and integration tests can be found in the `tests` folder in the root directory; with the unit tests in the `unit` directory and the integration tests in the `integration` directory. Running `make test` from the command line runs all the tests for the associated Python functions used in the project.
+The project uses Flake8 as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and this can be further integrated in a [Continuos Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
+
+The **unit tests** consists of five test suites corresponding to five of the core tasks in the two data pipelines. They are in python files with the prefix `test_xxxxx`, where xxxxx is the name of the kind of functionality being tested.
+The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit testing and test coverage, as well as the [Python Mocking library](https://docs.python.org/dev/library/unittest.mock.html) for simulating I/O dependencies such as interacting with the filesystem or making external network calls. The test suites are:
+- *TestFileStorage* which runs tests on the task involving creation of the datastore folders and actions on them.
+- *TestNetworkOperations* which run tests on the task involving HTTP calls to the News API.
+- *TestExtractOperations* which run tests on the task involving extracting headlines from the news data.
+- *TestTransformOperations* which run tests on the task involving conversion of the news headlines JSON data into CSV.
+- *TestUploadOperations* which run tests on the task involving data-transfer of the flattened CSVs to a predefined Amazon S3 bucket.
+
+The **integration tests** exercise the overall combination of the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3.
 
 ---
 ### Packages Used
