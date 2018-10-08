@@ -26,17 +26,17 @@ The pipeline tasks are as follows:
 - Next, using a predefined Airflow PythonOperator, it calls a python function to create three datastore folders for storing the intermediary data for the 'tempus_challenge_dag' that is later on downloaded and transformed. 
 The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdata' directory which is made relative to the airflow home directory.
 	
-- A defined Airflow SimpleHTTPOperator makes an HTTP GET request to the News API's 'sources' endpoint with the assigned API Key, to fetch all english news sources. A Python callback function is defined with this operator, and handles the returned Response object, storing the JSON news data as a file in the 'news' folder.
+- The third task involves a defined Airflow SimpleHTTPOperator makes an HTTP GET request to the News API's 'sources' endpoint with the assigned API Key, to fetch all english news sources. A Python callback function is defined with this operator, and handles the returned Response object, storing the JSON news data as a file in the 'news' folder.
 
-- A defined Airflow FileSensor detects when the JSON news data is in its appropriate directory and kicks off the ETL stage of the pipeline.
+- The fourth task involves a defined Airflow FileSensor detects when the JSON news data is in its appropriate directory and kicks off the ETL stage of the pipeline.
 
-- The Extraction task involves a defined Airflow PythonOperator, which calls a predefined python function that reads the news JSON data from its folder and uses the JSON library to extract the top-headlines from it, storing the result in the 'headlines' folder.
+- The fifth task, the Extraction task, involves a defined Airflow PythonOperator, which calls a predefined python function that reads the news JSON data from its folder and uses the JSON library to extract the top-headlines from it, storing the result in the 'headlines' folder.
 
-- The Transformation task involves a defined Airflow PythonOperator, which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder.
+- The sixth task, the Transformation task, involves a defined Airflow PythonOperator, which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder.
 
-- The Load task involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator makes use of the Amazon Python Boto library to move the transformed data from the 'csv' to an S3 bucket already setup by the author.
+- The seventh task, the Load task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator makes use of the Amazon Python Boto library to move the transformed data from the 'csv' to an S3 bucket already setup by the author.
 
-- The last task is an Airflow DummyOperator which does nothing and is used merely to signify the end of the pipeline.
+- The final task is an Airflow DummyOperator which does nothing and is used merely to signify the end of the pipeline.
 
 
 #### DAG Pipeline 2
