@@ -34,7 +34,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 
 - The sixth task, the Transformation task, involves a defined Airflow PythonOperator, which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder.
 
-- The seventh task, the Load task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator makes use of the Amazon Python Boto library to move the transformed data from the 'csv' to an S3 bucket already setup by the author.
+- The seventh task, the Upload task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator makes use of the Amazon Python Boto library to move the transformed data from the 'csv' to an S3 bucket already setup by the author.
 
 - The final task is an Airflow DummyOperator which does nothing and is used merely to signify the end of the pipeline.
 
@@ -86,7 +86,7 @@ A step by step series of examples that tell you how to get a development env run
 
 GIF OF CODE RUNNING/USAGE
 
-End with an example of getting some data out of the system or using it for a little demo
+End with an example of getting some data out of the system or using it for a little demo.
 
 ---
 ### Running Tests (Unit and Integration)
