@@ -1,11 +1,10 @@
 """Tempus challenge  - Operations and Functions.
 
-Describes the code definition of the PythonOperator tasks in the DAG.
+Describes the code definition of the Airflow Operator for the tasks in the DAG.
 The 'Tempus Bonus Challenge' dag performs similar tasks to those of the
 'Tempus Challenge' dag. Hence, to encourage function reusability, all the
 functions executed by both dag pipelines are implemented in the same Operations
 class.
-Network Call to get News, Extract Headlines, Flatten CSV, Upload CSV
 """
 
 import json
@@ -131,10 +130,10 @@ class FileStorage:
             filename = "sample"
 
         # validate the input json string data
-        try:
-            json.loads(data)
-        except ValueError as err:
-            raise ValueError("{} : Data is not valid JSON".format(err))
+        # try:
+        #     json.loads(data)
+        # except ValueError as err:
+        #     raise ValueError("Error Decoding - Data is not valid JSON")
 
         # create the filename and its extension, append date
         fname = str(create_date) + "_" + str(filename) + ".json"
@@ -145,7 +144,7 @@ class FileStorage:
                 json.dump(data, outputfile)
             return True
         except IOError as err:
-            print("I/O error({0}): {1}".format(err.errno, err.strerror))
+            raise IOError("Reading Error - {}".format(err.value))
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):

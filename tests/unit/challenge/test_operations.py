@@ -345,7 +345,7 @@ class TestFileStorage:
         """successful write of json string data to a file directory."""
 
         # Arrange
-        # dummy json data
+        # dummy json data - Python object converted to json string
         json_data = json.dumps({'key': 'value'})
         # path to a directory that doesn't yet exist
         datastore_folder_path = "/data/"
@@ -382,13 +382,14 @@ class TestFileStorage:
         assert result is True
         assert file_is_present is True
 
+    @pytest.mark.skip
     def test_write_json_to_file_fails_with_wrong_directory_path(self):
         """write of json data to a file to a non-existent directory
         fails correctly.
         """
 
         # Arrange
-        # dummy json data
+        # valid dummy json data
         json_data = json.dumps({'some_key': 'some_value'})
 
         # path to directory that doesn't yet exist
@@ -396,8 +397,8 @@ class TestFileStorage:
 
         # Act
         # Assert
-        # write some dummy json data into a file a save to that directory
-        # should throw errors
+        # writing some dummy json data into a file to save to that non-existent
+        # directory should throw errors
         with pytest.raises(OSError) as err:
             c.FileStorage.write_json_to_file(json_data,
                                              datastore_folder_path,
@@ -405,13 +406,16 @@ class TestFileStorage:
         expected = "Directory {} does not exist".format(datastore_folder_path)
         assert expected in str(err.value)
 
-    @pytest.mark.skip
     def test_write_json_to_file_fails_with_bad_data(self):
-        """write of a json data to a file directory fails correctly."""
+        """write of a invalid json data to a file (already existent
+        directory fails correctly.
+        """
 
         # Arrange
-        json_data = json.dumps({'some_key': 'some_value'})
+        # invalid or bad json data
+        json_data = '{}{}'
         datastore_folder_path = "/data/"
+        val = None
         file_is_absent = False
         file_is_present = False
 
@@ -427,10 +431,15 @@ class TestFileStorage:
                 file_is_absent = True
 
             # Act
-            # write some dummy json data into a file a save to that directory
-            result = c.FileStorage.write_json_to_file(json_data,
-                                                      datastore_folder_path,
-                                                      filename="test")
+            # writing some dummy bad json data into a file to save to that
+            # existent directory should throw errors
+            with pytest.raises(ValueError) as err:
+                c.FileStorage.write_json_to_file(json_data,
+                                                 datastore_folder_path,
+                                                 filename="test")
+
+            actual_error = str(err.value)
+
             # inspect the directory - the json file should now be in there
             if os.listdir(datastore_folder_path):
                 file_is_present = True
@@ -440,8 +449,8 @@ class TestFileStorage:
 
         # Assert
         assert file_is_absent is True
-        assert result is True
-        assert file_is_present is True
+        assert file_is_present is False
+        assert "Error Decoding - Data is not valid JSON" in actual_error
 
     @pytest.mark.skip
     def test_write_json_to_file_fails_reading_with_io_error(self):
