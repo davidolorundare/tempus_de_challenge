@@ -271,17 +271,117 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    def test_get_news_directory_returns_correct_path(self):
+    def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """return correct news path when called correctly with pipeline name"""
 
-    @pytest.mark.skip
-    def test_get_headlines_directory_returns_correct_path(self):
+        # Arrange
+        news_path = os.path.join(home_directory_res,
+                                 'tempdata',
+                                 'tempus_challenge_dag',
+                                 'news')
+
+        # Act
+        path = c.FileStorage.get_news_directory("tempus_challenge_dag")
+
+        # Assert
+        assert path == news_path
+
+    def test_get_headlines_dir_returns_correct_path(self, home_directory_res):
         """return correct headlines path when called correctly with DAG name"""
 
-    @pytest.mark.skip
-    def test_get_csv_directory_returns_correct_path(self):
+        # Arrange
+        news_path = os.path.join(home_directory_res,
+                                 'tempdata',
+                                 'tempus_bonus_challenge_dag',
+                                 'headlines')
+
+        pipeline = "tempus_bonus_challenge_dag"
+
+        # Act
+        path = c.FileStorage.get_headlines_directory(pipeline)
+
+        # Assert
+        assert path == news_path
+
+    def test_get_csv_dir_returns_correct_path(self, home_directory_res):
         """return correct csv path when called correctly with pipeline name"""
+
+        # Arrange
+        news_path = os.path.join(home_directory_res,
+                                 'tempdata',
+                                 'tempus_challenge_dag',
+                                 'csv')
+
+        # Act
+        path = c.FileStorage.get_csv_directory("tempus_challenge_dag")
+
+        # Assert
+        assert path == news_path
+
+    @pytest.mark.skip
+    def test_write_json_to_file_succeeds(self):
+        """successful write of a json data to a file directory."""
+
+        # Arrange
+        # Need to figure out the context to know which pipeline folder to copy
+        # and what filename
+        json_data = json.dumps({'key': 'value'})
+        datastore_folder_path = "/data/"  # NEEDs to be Faked
+        file_is_absent = False
+        file_is_present = False
+
+        # Act
+        # ASSUMPTION that the directory already exists.
+        # OTHERWISE setup&teardown MOCK will be needed to make/del folder
+        # ensure the directory is empty
+
+        if not os.listdir(datastore_folder_path):
+            file_is_absent = True
+        # write the data into a file a save to that directory
+        file_written = c.FileStorage.write_json_to_file(json_data,
+                                                        datastore_folder_path,
+                                                        filename="test")
+        if os.listdir(datastore_folder_path):
+            file_is_present = True
+
+        # Assert
+        assert file_is_absent is True
+        assert file_written is True
+        assert file_is_present is True
+
+    @pytest.mark.skip
+    # @patch('requests.Response', autospec=True)
+    def test_file_sensors_detects_file_correctly(self, response_obj):
+        """successful detection of a new file in a given directory."""
+
+        # Arrange
+        # Need to figure out the context
+        # Act
+
+        # Assert
+
+    @pytest.mark.skip
+    def test_write_json_to_file_fails(self):
+        """write of a json data to a file directory fails correctly."""
+
+        # Arrange
+        # NEED to figure out the context for the folder to save to
+        # NEED to decide on naming convention for subsequent write calls
+        # SHOULD raise exception if the data is not valid json or folder path
+        # is not a valid directory
+        json_data = json.dumps({'key': 'value'})
+        datastore_folder_path = ""
+
+        # Act
+        # ensure the directory is empty
+        file_is_absent = True  # should call os.path.directoryempty
+        # write the data into a file a save to that directory
+        file_written = c.FileStorage.write_json_to_file(json_data,
+                                                        datastore_folder_path)
+        # Assert
+        assert file_is_absent is True
+        assert file_written is False
+        # NEED to assert RAISES EXCEPTION
 
     @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
@@ -349,70 +449,32 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    def test_write_json_to_file_succeeds(self):
-        """successful write of a json data to a file directory."""
+    def test_get_news_directory_fails_with_wrong_name(self):
+        """return error when function is called with wrong pipeline name"""
 
         # Arrange
-        # Need to figure out the context to know which pipeline folder to copy
-        # and what filename
-        json_data = json.dumps({'key': 'value'})
-        datastore_folder_path = "/data/"  # NEEDs to be Faked
-        file_is_absent = False
-        file_is_present = False
-
         # Act
-        # ASSUMPTION that the directory already exists.
-        # OTHERWISE setup&teardown MOCK will be needed to make/del folder
-        # ensure the directory is empty
-
-        if not os.listdir(datastore_folder_path):
-            file_is_absent = True
-        # write the data into a file a save to that directory
-        file_written = c.FileStorage.write_json_to_file(json_data,
-                                                        datastore_folder_path,
-                                                        filename="test")
-        if os.listdir(datastore_folder_path):
-            file_is_present = True
-
         # Assert
-        assert file_is_absent is True
-        assert file_written is True
-        assert file_is_present is True
+        with pytest.raises(ValueError):
+            c.FileStorage.get_news_directory("wrong_name_dag")
 
-    @pytest.mark.skip
-    def test_write_json_to_file_fails(self):
-        """write of a json data to a file directory fails correctly."""
+    def test_get_headlines_directory_fails_with_wrong_name(self):
+        """return error when function is called with wrong pipeline name"""
 
         # Arrange
-        # NEED to figure out the context for the folder to save to
-        # NEED to decide on naming convention for subsequent write calls
-        # SHOULD raise exception if the data is not valid json or folder path
-        # is not a valid directory
-        json_data = json.dumps({'key': 'value'})
-        datastore_folder_path = ""
-
         # Act
-        # ensure the directory is empty
-        file_is_absent = True  # should call os.path.directoryempty
-        # write the data into a file a save to that directory
-        file_written = c.FileStorage.write_json_to_file(json_data,
-                                                        datastore_folder_path)
         # Assert
-        assert file_is_absent is True
-        assert file_written is False
-        # NEED to assert RAISES EXCEPTION
+        with pytest.raises(ValueError):
+            c.FileStorage.get_headlines_directory("wrong_name_dag")
 
-    @pytest.mark.skip
-    # @patch('requests.Response', autospec=True)
-    def test_file_sensors_detects_file_correctly(self, response_obj):
-        """successful detection of a new file in a given directory."""
+    def test_get_csv_directory_fails_with_wrong_name(self):
+        """return error when function is called with wrong pipeline name"""
 
         # Arrange
-        # Need to figure out the context
         # Act
-
         # Assert
+        with pytest.raises(ValueError):
+            c.FileStorage.get_csv_directory("wrong_name_dag")
 
 
 @pytest.mark.networktests
@@ -425,27 +487,27 @@ class TestNetworkOperations:
     """
 
     @patch('requests.Response', autospec=True)
-    def test_get_news_http_call_success(self, response_obj):
+    def test_get_news_data_http_call_success(self, response_obj):
         """returned response object has a valid 200 OK response-status code."""
 
         # Arrange
         response_obj.status_code = 200
 
         # Act
-        result = c.NetworkOperations.get_news(response_obj)
+        result = c.NetworkOperations.get_news_data(response_obj)
 
         # Assert
         assert result[0] is True
 
     @patch('requests.Response', autospec=True)
-    def test_get_news_http_call_failure(self, response_obj):
+    def test_get_news_data_http_call_failure(self, response_obj):
         """returned response object fails with failure response-status code."""
 
         # Arrange
         response_obj.status_code = 404
 
         # Act
-        result = c.NetworkOperations.get_news(response_obj)
+        result = c.NetworkOperations.get_news_data(response_obj)
 
         # Assert
         assert result[0] is False

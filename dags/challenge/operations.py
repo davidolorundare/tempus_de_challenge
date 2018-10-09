@@ -79,7 +79,7 @@ class FileStorage:
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
         # Push the execution date and dag_id to the downstream task
-        Variable.set("current_dag_id", dag_id)
+        # Variable.set("current_dag_id", dag_id)
 
         # create a data folder and subdirectories for the dag
         # if the data folder doesnt exist, create it and the subdirs
@@ -142,10 +142,14 @@ class FileStorage:
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
-        """Return the news directory path for a given pipeline.
+        """Return the news directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
+
+        # Arguments:
+            pipeline_name: the name or ID of the current DAG pipeline
+                running this script.
         """
 
         # mapping of the dag_id to the appropriate 'news' folder
@@ -153,10 +157,12 @@ class FileStorage:
                                  'tempdata',
                                  'tempus_challenge_dag',
                                  'news')
+
         news_bonus_path = os.path.join(HOME_DIRECTORY,
                                        'tempdata',
                                        'tempus_bonus_challenge_dag',
                                        'news')
+
         news_store = {'tempus_challenge_dag': news_path,
                       'tempus_bonus_challenge_dag': news_bonus_path}
 
@@ -167,10 +173,14 @@ class FileStorage:
 
     @classmethod
     def get_headlines_directory(cls, pipeline_name: str):
-        """Return the headlines directory path for a given pipeline.
+        """Return the headlines directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
+
+        # Arguments:
+            pipeline_name: the name or ID of the current DAG pipeline
+                running this script.
         """
 
         # mapping of the dag_id to the appropriate 'headlines' folder
@@ -178,10 +188,12 @@ class FileStorage:
                                       'tempdata',
                                       'tempus_challenge_dag',
                                       'headlines')
+
         headlines_bonus_path = os.path.join(HOME_DIRECTORY,
                                             'tempdata',
                                             'tempus_bonus_challenge_dag',
                                             'headlines')
+
         headlines_store = {'tempus_challenge_dag': headlines_path,
                            'tempus_bonus_challenge_dag': headlines_bonus_path}
 
@@ -192,7 +204,7 @@ class FileStorage:
 
     @classmethod
     def get_csv_directory(cls, pipeline_name: str):
-        """Return the csv directory path for a given pipeline.
+        """Return the csv directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -220,7 +232,7 @@ class NetworkOperations:
     """Handles functionality for news retrieval via the News API."""
 
     @classmethod
-    def get_news(cls, response: requests.Response):
+    def get_news_data(cls, response: requests.Response):
         """Processes the response from the API call to get all english news sources.
 
 
@@ -242,6 +254,7 @@ class NetworkOperations:
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
+        log.info(status_code)
 
         # retrieve the context-specific news directory path from upstream task
         pipeline_name = Variable.get("current_dag_id")
@@ -250,7 +263,7 @@ class NetworkOperations:
         # copy of the json string data
         json_data = response.json()
 
-        log.info(status_code)
+        # write the data to file
         if status_code == requests.codes.ok:
             FileStorage.write_json_to_file(json_data,
                                            news_dir_path,
