@@ -78,8 +78,12 @@ class FileStorage:
 
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
-        # Push the execution date and dag_id to the downstream task
+        # Push the dag_id to the downstream SimpleHTTPOperator task
+        # Using:
         # Variable.set("current_dag_id", dag_id)
+        # gives error when testing locally.
+        # Switch to using Python Environ variables
+        os.environ["current_dag_id"] = dag_id
 
         # create a data folder and subdirectories for the dag
         # if the data folder doesnt exist, create it and the subdirs
@@ -257,7 +261,7 @@ class NetworkOperations:
         log.info(status_code)
 
         # retrieve the context-specific news directory path from upstream task
-        pipeline_name = Variable.get("current_dag_id")
+        pipeline_name = os.environ.get("current_dag_id")
         news_dir_path = FileStorage.get_news_directory(pipeline_name)
 
         # copy of the json string data
