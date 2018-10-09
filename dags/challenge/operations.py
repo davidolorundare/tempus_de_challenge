@@ -8,13 +8,12 @@ class.
 Network Call to get News, Extract Headlines, Flatten CSV, Upload CSV
 """
 
-# import errno
 import json
 import logging
 import os
 import time
 
-from airflow.models import Variable
+# from airflow.models import Variable
 
 import requests
 
@@ -38,6 +37,7 @@ class FileStorage:
             context: the current Airflow context in which the function/operator
                 is being run in.
         """
+        log.info("Running create_storage method")
 
         # list of the directories that will be created to store data
         data_directories = ['news', 'headlines', 'csv']
@@ -75,6 +75,7 @@ class FileStorage:
             context: the current Airflow context in which the function/operator
                 is being run in.
         """
+        log.info("Running create_data_stores method")
 
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
@@ -121,6 +122,7 @@ class FileStorage:
         error exceptions. the files are prefixed with the pipeline execution
         date.
         """
+        log.info("Running write_json_to_file method")
 
         if not os.path.isdir(path_to_dir):
             raise OSError("Directory {} does not exist".format(path_to_dir))
@@ -157,6 +159,8 @@ class FileStorage:
         """
 
         # mapping of the dag_id to the appropriate 'news' folder
+        log.info("Running get_news_directory method")
+
         news_path = os.path.join(HOME_DIRECTORY,
                                  'tempdata',
                                  'tempus_challenge_dag',
@@ -188,6 +192,8 @@ class FileStorage:
         """
 
         # mapping of the dag_id to the appropriate 'headlines' folder
+        log.info("Running get_headlines_directory method")
+
         headlines_path = os.path.join(HOME_DIRECTORY,
                                       'tempdata',
                                       'tempus_challenge_dag',
@@ -215,6 +221,8 @@ class FileStorage:
         """
 
         # mapping of the dag_id to the appropriate 'csv' folder
+        log.info("Running get_csv_directory method")
+
         csv_path = os.path.join(HOME_DIRECTORY,
                                 'tempdata',
                                 'tempus_challenge_dag',
@@ -254,7 +262,7 @@ class NetworkOperations:
                 http call.
 
         """
-        log.info("Running get_news method")
+        log.info("Running get_news_data method")
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
