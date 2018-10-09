@@ -44,6 +44,8 @@ class FileStorage:
         for name in data_directories:
             cls.create_data_stores(dir_name=name, **context)
 
+        # Push the execution date and dag_id to the downstream task
+
     @classmethod
     def create_data_stores(cls,
                            dir_name,
@@ -57,6 +59,7 @@ class FileStorage:
         already exist (otherwise it replaces the existing one), in which to
         temporaily store the JSON data retrieved from the News API for further
         processing downstream.
+
         Using the name of the pipeline e.g. 'tempus_challenge' or
         'tempus_bonus_challenge' from the passed in context and creates the
         appropriate subdirectories for storing the intermediary data - the
@@ -137,7 +140,7 @@ class NetworkOperations:
     """Handles functionality for news retrieval via the News API."""
 
     def __init__(self):
-        news_folders = []
+        """news_folders = []"""
 
     @classmethod
     def get_news(cls, response: requests.Response):
