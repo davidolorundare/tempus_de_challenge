@@ -127,7 +127,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 - Note security concern of hardcoding the News API apikey the functions used for the http requests. 
 	* After doing some research on the topic of `api key storage and security`, I decide based on reading some discussions online for example from [here](https://12factor.net/config), [here](https://github.com/geosolutions-it/evo-odas/issues/159), [here](https://github.com/geosolutions-it/evo-odas/issues/118) and [here](https://issues.apache.org/jira/browse/AIRFLOW-45) - to store the key in an environmental variable that is then accessed in Airflow and Python at runtime. 
-	* Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) Might want to encrypt api? - use Airflow Variable 'apikey' (programmatically create this)
+	* Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) but it based on the Airflow documentation it doesn't seem to be a too secure approach. Might want to look into encrypting the api key ?
 
 - No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
 
