@@ -9,9 +9,11 @@ Network Call to get News, Extract Headlines, Flatten CSV, Upload CSV
 """
 
 # import errno
-# import json
+import json
 import logging
 import os
+import time
+
 
 import requests
 
@@ -86,26 +88,56 @@ class FileStorage:
             dir_func(dir_path, exist_ok=True)
         except IOError as err:
             print("I/O error({0}): {1}".format(err.errno, err.strerror))
-        # SHOULD VERIFY folder creation (use separate method)
-        if cls.is_valid_folder_path(dir_path):
+
+        if os.path.isdir(dir_path):
             return True
         else:
             return False
 
     @classmethod
-    def is_valid_folder_path(cls, dir_name, path_find_func=os.path.isdir):
-        """Returns True is given folder path exists. False otherwise.
+    def write_json_to_file(cls, create_date, json_data, path_to_dir, filename):
+        """write given json news data to an existing directory.
 
 
         # Arguments
-            dir_name: the name of the datastore directory to create.
-            path_find_func: the function to use for determining if the given
-                path is valid. Default is Python's os.path.isdir
+            create_date: date the file was created.
+            json_data: the json string data to be written to file.
+            path_to_dir: folder path where the json file will be stored in.
+            filename: the name of the created json file.
+
+        Checks if the json data and directory are valid, otherwise raises
+        error exceptions. the files are prefixed with the pipeline execution
+        date.
         """
+
+        if not os.path.isdir(path_to_dir):
+            raise OSError("Directory {} does not exist".format(path_to_dir))
+        if create_date == "":
+            create_date = time.strftime("%Y%m%d-%H%M%S")
+        if filename == "":
+            filename = "sample"
+
+        # validate the input json string data
+        try:
+            json.loads(json_data)
+        except ValueError as err:
+            raise ValueError("{} : Data is not valid JSON".format(err))
+
+        # create the filename and its extension, append date
+        fname = str(create_date) + "_" + str(filename) + ".json"
+        fpath = os.path.join(path_to_dir, fname)
+        # open to write the json to that file.
+        with open(fpath, 'w') as outputfile:
+            json.dump(json_data, outputfile)
+
+        return True
 
 
 class NetworkOperations:
     """Handles functionality for news retrieval via the News API."""
+
+    def __init__(self):
+        news_folders = []
 
     @classmethod
     def get_news(cls, response: requests.Response):
@@ -133,10 +165,18 @@ class NetworkOperations:
         log.info(status_code)
         if status_code == requests.codes.ok:
             # save data to directory and return True
+            # NEED to figure out the context for the folder directory path
+            # and for the execution time to save.
             # DO THAT HERE
             return [True, status_code]
+        elif status_code >= 400:
+            return [False, status_code]
         else:
             return [False, status_code]
+
+    @classmethod
+    def get_headlines(cls):
+        """Process the response from the API call to get headlines"""
 
 
 class ExtractOperations:

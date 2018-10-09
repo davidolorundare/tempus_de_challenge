@@ -7,6 +7,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 
 
 import datetime
+import json
 import os
 
 from unittest.mock import MagicMock
@@ -83,8 +84,8 @@ class TestFileStorage:
                                                   home_directory_res,
                                                   data_directories_res,
                                                   airflow_context):
-        """Tests the call to create the tempoary 'news' datastore folders used
-        by the tempus_challenge_dag operators.
+        """call to create the tempoary 'news' datastore folders used by the
+        tempus_challenge_dag operators succeeds.
         """
 
         # Arrange
@@ -116,8 +117,8 @@ class TestFileStorage:
                                                        home_directory_res,
                                                        data_directories_res,
                                                        airflow_context):
-        """Tests the call to create the tempoary 'headlines' datastore folders used
-        by the tempus_challenge_dag operators.
+        """call to create the tempoary 'headlines' datastore folders used by the
+        tempus_challenge_dag operators succeed.
         """
 
         # Arrange
@@ -149,8 +150,8 @@ class TestFileStorage:
                                                  home_directory_res,
                                                  data_directories_res,
                                                  airflow_context):
-        """Tests the call to create the tempoary 'csv' datastore folders used
-        by the tempus_challenge_dag operators.
+        """call to create the tempoary 'csv' datastore folders used by the
+        tempus_challenge_dag operators.
         """
 
         # Arrange
@@ -182,8 +183,8 @@ class TestFileStorage:
                                                   home_directory_res,
                                                   data_directories_res,
                                                   airflow_context_bonus):
-        """Tests the call to create the tempoary 'news' datastore folders used
-        by the tempus_bonus_challenge_dag operators.
+        """call to create the tempoary 'news' datastore folders used by the
+        tempus_bonus_challenge_dag operators succeeds.
         """
 
         # Arrange
@@ -214,8 +215,8 @@ class TestFileStorage:
                                                        home_directory_res,
                                                        data_directories_res,
                                                        airflow_context_bonus):
-        """Tests the call to create the tempoary 'headlines' datastore folders used
-        by the tempus_bonus_challenge_dag operators.
+        """call to create the tempoary 'headlines' datastore folders used by the
+        tempus_bonus_challenge_dag operators succeeds.
         """
 
         # Arrange
@@ -246,8 +247,8 @@ class TestFileStorage:
                                                  home_directory_res,
                                                  data_directories_res,
                                                  airflow_context_bonus):
-        """Tests the call to create the tempoary 'csv' datastore folders used
-        by the tempus_bonus_challenge_dag operators.
+        """call to create the tempoary 'csv' datastore folders used by the
+        tempus_bonus_challenge_dag operators succeeds.
         """
 
         # Arrange
@@ -279,12 +280,12 @@ class TestFileStorage:
                                              home_directory_res,
                                              data_directories_res,
                                              airflow_context_bonus):
-        """Tests the failure call to create the tempoary datastore folders used
-        by the tempus_bonus_challenge_dag operators.
+        """call to create the tempoary datastore folders used by the
+        tempus_bonus_challenge_dag operators fails.
         """
 
         # Arrange
-
+        # NEED TO REFACTOR THIS
         # Act
         c.FileStorage.create_data_stores("csv",
                                          mock_path_func,
@@ -312,12 +313,12 @@ class TestFileStorage:
                                              home_directory_res,
                                              data_directories_res,
                                              airflow_context_bonus):
-        """Tests the failure to call to create the tempoary datastore folders used
-        by the tempus_bonus_challenge_dag operators.
+        """call to create the tempoary datastore folders used by the
+        tempus_bonus_challenge_dag operators fails.
         """
 
         # Arrange
-
+        # NEED TO REFACTOR THIS
         # Act
         c.FileStorage.create_data_stores("csv",
                                          mock_path_func,
@@ -337,8 +338,69 @@ class TestFileStorage:
                                          exist_ok=True)
 
     @pytest.mark.skip
-    def test_is_valid_folder_path_returns_true():
-        """Need to work on this"""
+    def test_write_json_to_file_succeeds(self):
+        """successful write of a json data to a file directory."""
+
+        # Arrange
+        # Need to figure out the context to know which pipeline folder to copy
+        # and what filename
+        json_data = json.dumps({'key': 'value'})
+        datastore_folder_path = "/data/"  # NEEDs to be Faked
+        file_is_absent = False
+        file_is_present = False
+
+        # Act
+        # ASSUMPTION that the directory already exists.
+        # OTHERWISE setup&teardown MOCK will be needed to make/del folder
+        # ensure the directory is empty
+
+        if not os.listdir(datastore_folder_path):
+            file_is_absent = True
+        # write the data into a file a save to that directory
+        file_written = c.FileStorage.write_json_to_file(json_data,
+                                                        datastore_folder_path,
+                                                        "test")
+        if os.listdir(datastore_folder_path):
+            file_is_present = True
+
+        # Assert
+        assert file_is_absent is True
+        assert file_written is True
+        assert file_is_present is True
+
+    @pytest.mark.skip
+    def test_write_json_to_file_fails(self):
+        """write of a json data to a file directory fails correctly."""
+
+        # Arrange
+        # NEED to figure out the context for the folder to save to
+        # NEED to decide on naming convention for subsequent write calls
+        # SHOULD raise exception if the data is not valid json or folder path
+        # is not a valid directory
+        json_data = json.dumps({'key': 'value'})
+        datastore_folder_path = ""
+
+        # Act
+        # ensure the directory is empty
+        file_is_absent = True  # should call os.path.directoryempty
+        # write the data into a file a save to that directory
+        file_written = c.FileStorage.write_json_to_file(json_data,
+                                                        datastore_folder_path)
+        # Assert
+        assert file_is_absent is True
+        assert file_written is False
+        # NEED to assert RAISES EXCEPTION
+
+    @pytest.mark.skip
+    # @patch('requests.Response', autospec=True)
+    def test_file_sensors_detects_file_correctly(self, response_obj):
+        """successful detection of a new file in a given directory."""
+
+        # Arrange
+        # Need to figure out the context
+        # Act
+
+        # Assert
 
 
 @pytest.mark.networktests
@@ -351,7 +413,7 @@ class TestNetworkOperations:
     """
 
     @patch('requests.Response', autospec=True)
-    def test_get_news_should_return_valid_status_code(self, response_obj):
+    def test_get_news_http_call_success(self, response_obj):
         """returned response object has a valid 200 OK response-status code."""
 
         # Arrange
@@ -375,17 +437,6 @@ class TestNetworkOperations:
 
         # Assert
         assert result[0] is False
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_news_success_saves_file_correctly(self, response_obj):
-        """successful returned response object json is stored correctly."""
-
-        # Arrange
-        # Need to figure out the context
-        # Act
-
-        # Assert
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
