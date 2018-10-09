@@ -34,7 +34,7 @@ class FileStorage:
 
 
         # Arguments
-            context: the current Airflow context in which the function/operator
+            context: current Airflow context in which the function/operator
                 is being run in.
         """
         log.info("Running create_storage method")
@@ -68,10 +68,10 @@ class FileStorage:
 
         # Arguments
             dir_name: the name of the datastore directory to create.
-            path_join_func: the function to use for creating the directory path
-                for the datastore directories. Default is Python's os.path.join
-            dir_func: the function to use for making the actual datastore
-                directories. Default is Python's os.makedirs
+            path_join_func: function to use for creating the directory path for
+                the datastore directories. Default is Python's os.path.join()
+            dir_func: function to use for making the actual datastore folders.
+                Default is Python's os.makedirs() function.
             context: the current Airflow context in which the function/operator
                 is being run in.
         """
@@ -119,8 +119,7 @@ class FileStorage:
             filename: the name of the created json file.
 
         Checks if the json data and directory are valid, otherwise raises
-        error exceptions. the files are prefixed with the pipeline execution
-        date.
+        error exceptions. the files are prefixed with the current datetime.
         """
         log.info("Running write_json_to_file method")
 

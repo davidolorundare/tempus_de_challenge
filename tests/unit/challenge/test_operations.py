@@ -17,6 +17,8 @@ from airflow.models import DAG
 
 from dags import challenge as c
 
+from pyfakefs.fake_filesystem_unittest import Patcher
+
 import pytest
 
 
@@ -76,6 +78,7 @@ class TestFileStorage:
             'dag': dag
         }
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe1_success(self,
@@ -109,6 +112,7 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe1_success(self,
@@ -142,6 +146,7 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe1_success(self,
@@ -175,6 +180,7 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe2_success(self,
@@ -207,6 +213,7 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe2_success(self,
@@ -239,6 +246,7 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe2_success(self,
@@ -271,6 +279,18 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
+    # @patch('requests.Response', autospec=True)
+    def test_file_sensors_detects_file_correctly(self, response_obj):
+        """successful detection of a new file in a given directory."""
+
+        # Arrange
+        # Need to figure out the context
+        # Act
+
+        # Assert
+
+    @pytest.mark.skip
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """return correct news path when called correctly with pipeline name"""
 
@@ -286,6 +306,7 @@ class TestFileStorage:
         # Assert
         assert path == news_path
 
+    @pytest.mark.skip
     def test_get_headlines_dir_returns_correct_path(self, home_directory_res):
         """return correct headlines path when called correctly with DAG name"""
 
@@ -303,6 +324,7 @@ class TestFileStorage:
         # Assert
         assert path == news_path
 
+    @pytest.mark.skip
     def test_get_csv_dir_returns_correct_path(self, home_directory_res):
         """return correct csv path when called correctly with pipeline name"""
 
@@ -320,64 +342,144 @@ class TestFileStorage:
 
     @pytest.mark.skip
     def test_write_json_to_file_succeeds(self):
-        """successful write of a json data to a file directory."""
+        """successful write of json string data to a file directory."""
 
         # Arrange
-        # Need to figure out the context to know which pipeline folder to copy
-        # and what filename
+        # dummy json data
         json_data = json.dumps({'key': 'value'})
-        datastore_folder_path = "/data/"  # NEEDs to be Faked
+        # path to a directory that doesn't yet exist
+        datastore_folder_path = "/data/"
+        # detect presence of a file in the directory before and after
+        # calling the method under test.
         file_is_absent = False
         file_is_present = False
 
-        # Act
-        # ASSUMPTION that the directory already exists.
-        # OTHERWISE setup&teardown MOCK will be needed to make/del folder
-        # ensure the directory is empty
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
 
-        if not os.listdir(datastore_folder_path):
-            file_is_absent = True
-        # write the data into a file a save to that directory
-        file_written = c.FileStorage.write_json_to_file(json_data,
-                                                        datastore_folder_path,
-                                                        filename="test")
-        if os.listdir(datastore_folder_path):
-            file_is_present = True
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(datastore_folder_path)
+
+            # ensure that the newly created directory is really empty
+            if not os.listdir(datastore_folder_path):
+                file_is_absent = True
+
+            # Act
+            # write some dummy json data into a file a save to that directory
+            result = c.FileStorage.write_json_to_file(json_data,
+                                                      datastore_folder_path,
+                                                      filename="test")
+            # inspect the directory - the json file should now be in there
+            if os.listdir(datastore_folder_path):
+                file_is_present = True
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
 
         # Assert
         assert file_is_absent is True
-        assert file_written is True
+        assert result is True
         assert file_is_present is True
 
-    @pytest.mark.skip
-    # @patch('requests.Response', autospec=True)
-    def test_file_sensors_detects_file_correctly(self, response_obj):
-        """successful detection of a new file in a given directory."""
+    def test_write_json_to_file_fails_with_wrong_directory_path(self):
+        """write of json data to a file to a non-existent directory
+        fails correctly.
+        """
 
         # Arrange
-        # Need to figure out the context
-        # Act
+        # dummy json data
+        json_data = json.dumps({'some_key': 'some_value'})
 
+        # path to directory that doesn't yet exist
+        datastore_folder_path = "/data/"
+
+        # Act
         # Assert
+        # write some dummy json data into a file a save to that directory
+        # should throw errors
+        with pytest.raises(OSError) as err:
+            c.FileStorage.write_json_to_file(json_data,
+                                             datastore_folder_path,
+                                             filename="test")
+        expected = "Directory {} does not exist".format(datastore_folder_path)
+        assert expected in str(err.value)
 
     @pytest.mark.skip
-    def test_write_json_to_file_fails_with_wrong_path(self):
+    def test_write_json_to_file_fails_with_bad_data(self):
         """write of a json data to a file directory fails correctly."""
 
         # Arrange
-        json_data = json.dumps({'key': 'value'})
-        datastore_folder_path = ""
+        json_data = json.dumps({'some_key': 'some_value'})
+        datastore_folder_path = "/data/"
+        file_is_absent = False
+        file_is_present = False
 
-        # Act
-        # ensure the directory is empty
-        file_is_absent = True  # should call os.path.directoryempty
-        # write the data into a file a save to that directory
-        file_written = c.FileStorage.write_json_to_file(json_data,
-                                                        datastore_folder_path)
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(datastore_folder_path)
+
+            # ensure that the newly created directory is really empty
+            if not os.listdir(datastore_folder_path):
+                file_is_absent = True
+
+            # Act
+            # write some dummy json data into a file a save to that directory
+            result = c.FileStorage.write_json_to_file(json_data,
+                                                      datastore_folder_path,
+                                                      filename="test")
+            # inspect the directory - the json file should now be in there
+            if os.listdir(datastore_folder_path):
+                file_is_present = True
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
         # Assert
         assert file_is_absent is True
-        assert file_written is False
-        # NEED to assert RAISES EXCEPTION
+        assert result is True
+        assert file_is_present is True
+
+    @pytest.mark.skip
+    def test_write_json_to_file_fails_reading_with_io_error(self):
+        """write of a json data to a file directory fails correctly."""
+
+        # Arrange
+        json_data = json.dumps({'some_key': 'some_value'})
+        datastore_folder_path = "/data/"
+        file_is_absent = False
+        file_is_present = False
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(datastore_folder_path)
+
+            # ensure that the newly created directory is really empty
+            if not os.listdir(datastore_folder_path):
+                file_is_absent = True
+
+            # Act
+            # write some dummy json data into a file a save to that directory
+            result = c.FileStorage.write_json_to_file(json_data,
+                                                      datastore_folder_path,
+                                                      filename="test")
+            # inspect the directory - the json file should now be in there
+            if os.listdir(datastore_folder_path):
+                file_is_present = True
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert file_is_absent is True
+        assert result is True
+        assert file_is_present is True
 
     @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
@@ -445,32 +547,38 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
+    @pytest.mark.skip
     def test_get_news_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 
         # Arrange
         # Act
         # Assert
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as err:
             c.FileStorage.get_news_directory("wrong_name_dag")
+        assert "No directory path for given pipeline name" in str(err.value)
 
+    @pytest.mark.skip
     def test_get_headlines_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 
         # Arrange
         # Act
         # Assert
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as err:
             c.FileStorage.get_headlines_directory("wrong_name_dag")
+        assert "No directory path for given pipeline name" in str(err.value)
 
+    @pytest.mark.skip
     def test_get_csv_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 
         # Arrange
         # Act
         # Assert
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as err:
             c.FileStorage.get_csv_directory("wrong_name_dag")
+        assert "No directory path for given pipeline name" in str(err.value)
 
 
 @pytest.mark.networktests
