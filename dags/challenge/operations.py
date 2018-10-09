@@ -14,6 +14,7 @@ import logging
 import os
 import time
 
+from airflow.models import Variable
 
 import requests
 
@@ -43,8 +44,6 @@ class FileStorage:
         log.info("Running create_storage method")
         for name in data_directories:
             cls.create_data_stores(dir_name=name, **context)
-
-        # Push the execution date and dag_id to the downstream task
 
     @classmethod
     def create_data_stores(cls,
@@ -79,6 +78,8 @@ class FileStorage:
 
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
+        # Push the execution date and dag_id to the downstream task
+        Variable.set("current_dag_id", dag_id)
 
         # create a data folder and subdirectories for the dag
         # if the data folder doesnt exist, create it and the subdirs
@@ -98,13 +99,17 @@ class FileStorage:
             return False
 
     @classmethod
-    def write_json_to_file(cls, create_date, json_data, path_to_dir, filename):
+    def write_json_to_file(cls,
+                           data,
+                           path_to_dir,
+                           create_date=None,
+                           filename=None):
         """write given json news data to an existing directory.
 
 
         # Arguments
             create_date: date the file was created.
-            json_data: the json string data to be written to file.
+            data: the json string data to be written to file.
             path_to_dir: folder path where the json file will be stored in.
             filename: the name of the created json file.
 
@@ -115,14 +120,14 @@ class FileStorage:
 
         if not os.path.isdir(path_to_dir):
             raise OSError("Directory {} does not exist".format(path_to_dir))
-        if create_date == "":
+        if not create_date:
             create_date = time.strftime("%Y%m%d-%H%M%S")
-        if filename == "":
+        if not filename:
             filename = "sample"
 
         # validate the input json string data
         try:
-            json.loads(json_data)
+            json.loads(data)
         except ValueError as err:
             raise ValueError("{} : Data is not valid JSON".format(err))
 
@@ -131,16 +136,88 @@ class FileStorage:
         fpath = os.path.join(path_to_dir, fname)
         # open to write the json to that file.
         with open(fpath, 'w') as outputfile:
-            json.dump(json_data, outputfile)
+            json.dump(data, outputfile)
 
         return True
+
+    @classmethod
+    def get_news_directory(cls, pipeline_name: str):
+        """Return the news directory path for a given pipeline.
+
+        For production code this function would be refactored to read-in
+        the directory structure from an external config file.
+        """
+
+        # mapping of the dag_id to the appropriate 'news' folder
+        news_path = os.path.join(HOME_DIRECTORY,
+                                 'tempdata',
+                                 'tempus_challenge_dag',
+                                 'news')
+        news_bonus_path = os.path.join(HOME_DIRECTORY,
+                                       'tempdata',
+                                       'tempus_bonus_challenge_dag',
+                                       'news')
+        news_store = {'tempus_challenge_dag': news_path,
+                      'tempus_bonus_challenge_dag': news_bonus_path}
+
+        if pipeline_name not in news_store:
+            raise ValueError("No directory path for given pipeline name")
+
+        return news_store[pipeline_name]
+
+    @classmethod
+    def get_headlines_directory(cls, pipeline_name: str):
+        """Return the headlines directory path for a given pipeline.
+
+        For production code this function would be refactored to read-in
+        the directory structure from an external config file.
+        """
+
+        # mapping of the dag_id to the appropriate 'headlines' folder
+        headlines_path = os.path.join(HOME_DIRECTORY,
+                                      'tempdata',
+                                      'tempus_challenge_dag',
+                                      'headlines')
+        headlines_bonus_path = os.path.join(HOME_DIRECTORY,
+                                            'tempdata',
+                                            'tempus_bonus_challenge_dag',
+                                            'headlines')
+        headlines_store = {'tempus_challenge_dag': headlines_path,
+                           'tempus_bonus_challenge_dag': headlines_bonus_path}
+
+        if pipeline_name not in headlines_store:
+            raise ValueError("No directory path for given pipeline name")
+
+        return headlines_store[pipeline_name]
+
+    @classmethod
+    def get_csv_directory(cls, pipeline_name: str):
+        """Return the csv directory path for a given pipeline.
+
+        For production code this function would be refactored to read-in
+        the directory structure from an external config file.
+        """
+
+        # mapping of the dag_id to the appropriate 'csv' folder
+        csv_path = os.path.join(HOME_DIRECTORY,
+                                'tempdata',
+                                'tempus_challenge_dag',
+                                'csv')
+        csv_bonus_path = os.path.join(HOME_DIRECTORY,
+                                      'tempdata',
+                                      'tempus_bonus_challenge_dag',
+                                      'csv')
+        csv_store = {'tempus_challenge_dag': csv_path,
+                     'tempus_bonus_challenge_dag': csv_bonus_path}
+
+        if pipeline_name not in csv_store:
+            raise ValueError("No directory path for given pipeline name")
+
+        return csv_store[pipeline_name]
 
 
 class NetworkOperations:
     """Handles functionality for news retrieval via the News API."""
-
-    def __init__(self):
-        """news_folders = []"""
 
     @classmethod
     def get_news(cls, response: requests.Response):
@@ -165,12 +242,19 @@ class NetworkOperations:
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
+
+        # retrieve the context-specific news directory path from upstream task
+        pipeline_name = Variable.get("current_dag_id")
+        news_dir_path = FileStorage.get_news_directory(pipeline_name)
+
+        # copy of the json string data
+        json_data = response.json()
+
         log.info(status_code)
         if status_code == requests.codes.ok:
-            # save data to directory and return True
-            # NEED to figure out the context for the folder directory path
-            # and for the execution time to save.
-            # DO THAT HERE
+            FileStorage.write_json_to_file(json_data,
+                                           news_dir_path,
+                                           filename="english_news_sources")
             return [True, status_code]
         elif status_code >= 400:
             return [False, status_code]

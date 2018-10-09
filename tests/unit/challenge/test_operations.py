@@ -272,6 +272,18 @@ class TestFileStorage:
                                          exist_ok=True)
 
     @pytest.mark.skip
+    def test_get_news_directory_returns_correct_path(self):
+        """return correct news path when called correctly with pipeline name"""
+
+    @pytest.mark.skip
+    def test_get_headlines_directory_returns_correct_path(self):
+        """return correct headlines path when called correctly with DAG name"""
+
+    @pytest.mark.skip
+    def test_get_csv_directory_returns_correct_path(self):
+        """return correct csv path when called correctly with pipeline name"""
+
+    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_data_store_pipe1_failure(self,
@@ -359,7 +371,7 @@ class TestFileStorage:
         # write the data into a file a save to that directory
         file_written = c.FileStorage.write_json_to_file(json_data,
                                                         datastore_folder_path,
-                                                        "test")
+                                                        filename="test")
         if os.listdir(datastore_folder_path):
             file_is_present = True
 
