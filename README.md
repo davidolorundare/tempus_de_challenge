@@ -57,7 +57,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 	
 - The third task involves a defined [Airflow SimpleHTTPOperator](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) makes an HTTP GET request to the News API's 'sources' endpoint with the assigned API Key, to fetch all english news sources. A Python callback function is defined with this operator, and handles the returned Response object, storing the JSON news data as a file in the 'news' folder.
 
-- The fourth task involves a defined [Airflow FileSensor](https://airflow.apache.org/code.html#airflow.contrib.sensors.file_sensor.FileSensor) detects when the JSON news data is in its appropriate directory and kicks off the ETL stage of the pipeline.
+- The fourth task involves a defined [Airflow FileSensor](https://airflow.apache.org/code.html#airflow.contrib.sensors.file_sensor.FileSensor) detects whenever the JSON news data has landed in its appropriate directory and kicks off the subsequent ETL stages of the pipeline.
 
 - The fifth task, the Extraction task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the news JSON data from its folder and uses the JSON library to extract the top-headlines from it, storing the result in the 'headlines' folder.
 
