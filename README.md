@@ -125,7 +125,9 @@ The **integration tests** exercise the overall combination of the tasks in the p
 - For the bonus challenge, on experimenting with the News API it was discovered that
 using all four keywords in the same api-request returned 0 hits. Hence, I decided four separate api-request calls would made; for each individual keyword.
 
-- Note security concern of hardcoding the News apikey the functions used for the http requests. After doing some research on the topic of `api key storage and security`, I decide based on reading some discussions online for example from [here](https://12factor.net/config), [here](https://github.com/geosolutions-it/evo-odas/issues/159), [here](https://github.com/geosolutions-it/evo-odas/issues/118) and [here](https://issues.apache.org/jira/browse/AIRFLOW-45) - to store the key in an environmental variable that is then accessed in Airflow and Python at runtime. Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) Might want to encrypt api? - use Airflow Variable 'apikey' (programmatically create this)
+- Note security concern of hardcoding the News apikey the functions used for the http requests. 
+	* After doing some research on the topic of `api key storage and security`, I decide based on reading some discussions online for example from [here](https://12factor.net/config), [here](https://github.com/geosolutions-it/evo-odas/issues/159), [here](https://github.com/geosolutions-it/evo-odas/issues/118) and [here](https://issues.apache.org/jira/browse/AIRFLOW-45) - to store the key in an environmental variable that is then accessed in Airflow and Python at runtime. 
+	* Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) Might want to encrypt api? - use Airflow Variable 'apikey' (programmatically create this)
 
 - No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
 
