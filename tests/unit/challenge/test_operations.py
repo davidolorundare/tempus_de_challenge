@@ -361,14 +361,10 @@ class TestFileStorage:
         # Assert
 
     @pytest.mark.skip
-    def test_write_json_to_file_fails(self):
+    def test_write_json_to_file_fails_with_wrong_path(self):
         """write of a json data to a file directory fails correctly."""
 
         # Arrange
-        # NEED to figure out the context for the folder to save to
-        # NEED to decide on naming convention for subsequent write calls
-        # SHOULD raise exception if the data is not valid json or folder path
-        # is not a valid directory
         json_data = json.dumps({'key': 'value'})
         datastore_folder_path = ""
 

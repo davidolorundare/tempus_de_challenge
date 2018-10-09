@@ -140,11 +140,13 @@ class FileStorage:
         # create the filename and its extension, append date
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
-        # open to write the json to that file.
-        with open(fpath, 'w') as outputfile:
-            json.dump(data, outputfile)
-
-        return True
+        # write the json string data to file.
+        try:
+            with open(fpath, 'w') as outputfile:
+                json.dump(data, outputfile)
+            return True
+        except IOError as err:
+            print("I/O error({0}): {1}".format(err.errno, err.strerror))
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
@@ -241,7 +243,7 @@ class FileStorage:
 
 
 class NetworkOperations:
-    """Handles functionality for news retrieval via the News API."""
+    """Handles functionality making remote calls to the News API."""
 
     @classmethod
     def get_news_data(cls, response: requests.Response):
