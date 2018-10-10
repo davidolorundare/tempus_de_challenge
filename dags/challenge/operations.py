@@ -34,8 +34,9 @@ class FileStorage:
 
 
         # Arguments
-            context: current Airflow context in which the function/operator
-                is being run in.
+            :param context: current Airflow context in which the function or
+                operator is being run in.
+            :type context: dict
         """
         log.info("Running create_storage method")
 
@@ -67,13 +68,18 @@ class FileStorage:
 
 
         # Arguments
-            dir_name: the name of the datastore directory to create.
-            path_join_func: function to use for creating the directory path for
-                the datastore directories. Default is Python's os.path.join()
-            dir_func: function to use for making the actual datastore folders.
-                Default is Python's os.makedirs() function.
-            context: the current Airflow context in which the function/operator
-                is being run in.
+            :param dir_name: the name of the datastore directory to create.
+            :type dir_name: string
+            :param path_join_func: function to use for creating the directory
+                path for the datastore directories. Default is Python's
+                os.path.join()
+            :type path_join_func: string
+            :param dir_func: function to use for making the actual datastore
+                folders. Default is Python's os.makedirs() function.
+            :type dir_func: string
+            :param context: the current Airflow context in which the function
+                or operator is being run in.
+            :type context: dict
         """
         log.info("Running create_data_stores method")
 
@@ -118,10 +124,15 @@ class FileStorage:
 
 
         # Arguments
-            create_date: date the file was created.
-            data: the json string data to be written to file.
-            path_to_dir: folder path where the json file will be stored in.
-            filename: the name of the created json file.
+            :param create_date: date the file was created.
+            :type create_date: string
+            :param data: the json string data to be written to file.
+            :type data: string
+            :param path_to_dir: folder path where the json file will be
+                stored in.
+            :type path_to_dir: string
+            :param filename: the name of the created json file.
+            :type filename: string
 
         Checks if the json data and directory are valid, otherwise raises
         error exceptions. the files are prefixed with the current datetime.
@@ -160,8 +171,9 @@ class FileStorage:
         the directory structure from an external config file.
 
         # Arguments:
-            pipeline_name: the name or ID of the current DAG pipeline
+            :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
+            :type pipeline_name: string
         """
 
         # mapping of the dag_id to the appropriate 'news' folder
@@ -193,8 +205,9 @@ class FileStorage:
         the directory structure from an external config file.
 
         # Arguments:
-            pipeline_name: the name or ID of the current DAG pipeline
+            :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
+            :type pipeline_name: string
         """
 
         # mapping of the dag_id to the appropriate 'headlines' folder
@@ -224,6 +237,11 @@ class FileStorage:
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
+
+        # Arguments:
+            :param pipeline_name: the name or ID of the current DAG pipeline
+                running this script.
+            :type pipeline_name: string
         """
 
         # mapping of the dag_id to the appropriate 'csv' folder
@@ -264,9 +282,11 @@ class NetworkOperations:
         (need to determine this).
 
         # Arguments
-            news_dir: directory to store the news data to.
-            response: http response object returned from the SimpleHTTPOperator
-                http call.
+            :param response: http response object returned from the
+                SimpleHTTPOperator http call.
+            :type response: Response object
+            :param news_dir: directory to store the news data to.
+            :type news_dir: string
 
         """
         log.info("Running get_news_data method")
