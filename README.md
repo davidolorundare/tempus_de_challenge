@@ -140,8 +140,8 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	* When installing `1.10.0` it throws a RuntimeError:
 	>RuntimeError: By default one of Airflow's dependencies installs a GPL dependency (unidecode). To avoid this dependency set SLUGIFY_USES_TEXT_UNIDECODE=yes in your environment when you install or upgrade Airflow. To force installing the GPL version set AIRFLOW_GPL_UNIDECODE.
 	* More details are discussed [here](https://medium.com/datareply/apache-airflow-1-10-0-released-highlights-6bbe7a37a8e1), [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110) [here](https://github.com/pypa/pipenv/issues/2791), and [here](https://stackoverflow.com/questions/52203441/error-while-install-airflow-by-default-one-of-airflows-dependencies-installs-a) 
-	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` in environment variable at the command line *before* running `make init`
-- This solution still gave errors. Given the **need** to have the FileSensor operator in our pipeline and not have to resort to writing a new one, the author reverted back to Airflow `1.9.0` and just copied the two core source file modules - `fs_hook` and `file_sensor` from the Airflow GitHub repository into this project's working directory.
+	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` as one of the environment variables in the Docker config file, so that it is available to Airflow during installation.
+
 
 
 

@@ -10,6 +10,7 @@ MAINTAINER Puckel_
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
+ENV AIRFLOW_GPL_UNIDECODE yes
 
 # Airflow
 ARG AIRFLOW_HOME=/usr/local/airflow

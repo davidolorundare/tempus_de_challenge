@@ -5,21 +5,18 @@ into a tabular structure, and finally stored the transformation in an Amazon S3
 Bucket.
 """
 
-import os
 
 from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow import settings
-# from airflow.contrib.sensors.file_sensor import FileSensor
+from airflow.contrib.sensors.file_sensor import FileSensor
 from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
-
-from contrib.file_sensor import FileSensor
 
 
 default_args = {
@@ -37,7 +34,6 @@ default_args = {
 # path, relative to AIRFLOW_HOME, to the news folder which
 # stores data from the News API
 NEWS_DIRECTORY = "tempdata/tempus_challenge_dag/news/"
-AIRFLOW_HOME = os.environ['HOME']
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -52,7 +48,7 @@ conn_news_api = Connection(conn_id="newsapi",
 # Connection object for local filesystem access
 conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
-                             extra={"path": AIRFLOW_HOME})
+                             extra="{'path': '/usr/local/airflow'}")
 
 # # Create connection object
 session = settings.Session()
@@ -62,12 +58,10 @@ session.commit()
 
 
 # DAG Object
-dag = DAG(
-    'tempus_challenge_dag',
-    default_args=default_args,
-    schedule_interval='0 0 * * *',
-    catchup=False,
-)
+dag = DAG('tempus_challenge_dag',
+          default_args=default_args,
+          schedule_interval='0 0 * * *',
+          catchup=False)
 
 
 # define workflow tasks
@@ -75,12 +69,14 @@ dag = DAG(
 start_task = DummyOperator(task_id='start', dag=dag)
 
 # creates a folder for storing retrieved data on the local filesystem
-datastore_creation_task = PythonOperator(
-    task_id='create_storage_task',
-    provide_context=True,
-    python_callable=c.FileStorage.create_storage,
-    dag=dag
-)
+# use an alias since the length of the real function call is more than
+# PEP8's 79 line-character limit
+function_alias = c.FileStorage.create_storage
+
+datastore_creation_task = PythonOperator(task_id='create_storage_task',
+                                         provide_context=True,
+                                         python_callable=function_alias,
+                                         dag=dag)
 
 # retrieve all english news sources
 # Using the News API, a http request is made to the News API's 'sources'
@@ -88,7 +84,8 @@ datastore_creation_task = PythonOperator(
 get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',
-                                         'apiKey': API_KEY},
+                                         'apiKey':
+                                         '68ce2435405b42e5b4a90080249c6962'},
                                    response_check=c.NetworkOperations.get_news,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',

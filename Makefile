@@ -2,7 +2,6 @@ SHELL = /bin/bash
 MODULE = dags
 
 init:
-	export SLUGIFY_USES_TEXT_UNIDECODE=yes
 	pip install --upgrade pip
 	pip install --upgrade setuptools
 	pip install -r requirements-setup.txt
