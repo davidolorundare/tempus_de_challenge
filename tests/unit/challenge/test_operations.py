@@ -594,7 +594,7 @@ class TestNetworkOperations:
         response_obj.status_code = 200
 
         # Act
-        result = c.NetworkOperations.get_news_data(response_obj)
+        result = c.NetworkOperations.get_news(response_obj)
 
         # Assert
         assert result[0] is True
@@ -607,7 +607,7 @@ class TestNetworkOperations:
         response_obj.status_code = 404
 
         # Act
-        result = c.NetworkOperations.get_news_data(response_obj)
+        result = c.NetworkOperations.get_news(response_obj)
 
         # Assert
         assert result[0] is False
