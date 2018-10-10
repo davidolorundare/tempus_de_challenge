@@ -132,7 +132,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 - No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
 
-- The Apache Airflow version in the `requirements.txt` file was changed to `1.10.0` (from the original `1.9.0`) this was because the support for the FileSensor operator, used in one of the pipeline tasks, was added in `1.10.0`
+- The Apache Airflow version in the `requirements.txt` file was changed to `1.10.0` (from the original `1.9.0`) this was because the support for the FileSensor operator, used in one of the pipeline tasks, was only added in `1.10.0`
 
 
 ---
