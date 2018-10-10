@@ -458,13 +458,18 @@ class TestFileStorage:
         assert file_is_present is False
         assert "Error Decoding - Data is not valid JSON" in actual_error
 
+    @pytest.mark.skip(reason="wrong_directory_path test checks some of this")
     def test_write_json_to_file_fails_reading_with_io_error(self):
         """write of a json data to a file non-existent directory fails correctly.
 
-        Requires commenting out the first check for directory in the
-        method - as that throws OSError (of which IOError is a child class)
-        This test passes in that scenario and ascertained that the
-        the IOError-checking code works. For that reason it is deactivated.
+        Requires commenting out the first check for directory in the code of
+        the method - as that throws OSError (of which IOError is a child class)
+        This test passes on its own in that scenario and ascertains that the
+        the IOError-checking code that runs later in the method actually works.
+        For that reason it is intentionally deactivated (marked as 'skip').
+
+        The method *could* be however refactored to have just one check,
+        rather than two. i.e. IOError or OSError, but not both.
         """
 
         # Arrange
