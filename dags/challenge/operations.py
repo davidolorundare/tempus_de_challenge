@@ -83,7 +83,7 @@ class FileStorage:
         # Using:
         # Variable.set("current_dag_id", dag_id)
         # gives error when testing locally. As it required Airflow running.
-        # Switched to using Python Environ variables
+        # Switched to using Python Environ variables instead.
         os.environ["current_dag_id"] = dag_id
 
         # create a data folder and subdirectories for the dag
