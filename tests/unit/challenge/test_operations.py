@@ -10,6 +10,7 @@ import datetime
 import json
 import os
 
+
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -20,6 +21,8 @@ from dags import challenge as c
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 import pytest
+
+import requests
 
 
 @pytest.mark.storagetests
@@ -591,10 +594,25 @@ class TestNetworkOperations:
         """returned response object has a valid 200 OK response-status code."""
 
         # Arrange
-        response_obj.status_code = 200
+        # response object returns an OK status code
+        response_obj.status_code = requests.codes.ok
+        # configure call to the Response object's json() to return dummy data
+        response_obj.json.side_effect = lambda: '{"key": "value"}'
+        # retrieve the path to the folder the json file is saved to
+        path = c.FileStorage.get_news_directory("tempus_challenge_dag")
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(path)
 
         # Act
-        result = c.NetworkOperations.get_news(response_obj)
+            result = c.NetworkOperations.get_news(response_obj, news_dir=path)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
 
         # Assert
         assert result[0] is True

@@ -250,7 +250,7 @@ class NetworkOperations:
     """Handles functionality making remote calls to the News API."""
 
     @classmethod
-    def get_news(cls, response: requests.Response):
+    def get_news(cls, response: requests.Response, news_dir=None):
         """Processes the response from the API call to get all english news sources.
 
 
@@ -264,7 +264,8 @@ class NetworkOperations:
         (need to determine this).
 
         # Arguments
-            response: HTTP Response object returned from the SimpleHTTPOperator
+            news_dir: directory to store the news data to.
+            response: http response object returned from the SimpleHTTPOperator
                 http call.
 
         """
@@ -276,15 +277,16 @@ class NetworkOperations:
 
         # retrieve the context-specific news directory path from upstream task
         pipeline_name = os.environ.get("current_dag_id")
-        news_dir_path = FileStorage.get_news_directory(pipeline_name)
+        if not news_dir:
+            news_dir = FileStorage.get_news_directory(pipeline_name)
 
         # copy of the json string data
         json_data = response.json()
 
         # write the data to file
         if status_code == requests.codes.ok:
-            FileStorage.write_json_to_file(json_data,
-                                           news_dir_path,
+            FileStorage.write_json_to_file(data=json_data,
+                                           path_to_dir=news_dir,
                                            filename="english_news_sources")
             return [True, status_code]
         elif status_code >= 400:
