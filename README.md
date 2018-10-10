@@ -137,7 +137,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 - The Apache Airflow version in the `requirements.txt` file was changed to `1.10.0` (from the original `1.9.0`) this was because the support for the FileSensor operator, used in one of the pipeline tasks, was only added in `1.10.0`
 	* When installing `1.10.0` it throws a RuntimeError:
 	>RuntimeError: By default one of Airflow's dependencies installs a GPL dependency (unidecode). To avoid this dependency set SLUGIFY_USES_TEXT_UNIDECODE=yes in your environment when you install or upgrade Airflow. To force installing the GPL version set AIRFLOW_GPL_UNIDECODE.
-	* More details [here](https://github.com/pypa/pipenv/issues/2791) , [here](https://stackoverflow.com/questions/52203441/error-while-install-airflow-by-default-one-of-airflows-dependencies-installs-a) and [here](https://bcb.github.io/airflow/gpl-dependency-error-with-pip)
+	* More details [here](https://github.com/pypa/pipenv/issues/2791), [here](https://stackoverflow.com/questions/52203441/error-while-install-airflow-by-default-one-of-airflows-dependencies-installs-a) and [here](https://bcb.github.io/airflow/gpl-dependency-error-with-pip)
 	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` in environment variable at the command line *before* running `make init`
 
 
