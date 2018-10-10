@@ -37,6 +37,11 @@ default_args = {
 NEWS_DIRECTORY = "tempdata/tempus_challenge_dag/news/"
 AIRFLOW_HOME = os.environ['HOME']
 
+# NEED TO MAINTAIN SECRECY OF API KEYS
+# https://12factor.net/config
+# this should NOT be hardcoded (put it in an environment variable)
+API_KEY = '68ce2435405b42e5b4a90080249c6962'
+
 # Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
                            conn_type="HTTP",
@@ -75,16 +80,13 @@ datastore_creation_task = PythonOperator(
     dag=dag
 )
 
-# NEED TO MAINTAIN SECRECY OF API KEYS
-# https://12factor.net/config
 # retrieve all english news sources
 # Using the News API, a http request is made to the News API's 'sources'
 # endpoint, with its 'language' parameter set to 'en'.
 get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',
-                                         'apiKey':
-                                         '68ce2435405b42e5b4a90080249c6962'},
+                                         'apiKey': API_KEY},
                                    response_check=c.NetworkOperations.get_news,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',

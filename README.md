@@ -15,10 +15,12 @@
 
 1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 	* author's Python and virtualenv versions are `3.6` and `16.0.0` respectively.
-2. [Docker](https://www.docker.com)
+2. [PyPI](https://pypi.org/project/pip/)
+	* author's PIP version is `18.1`
+3. [Docker](https://www.docker.com)
 	* docker versions are `docker 18.06.1-ce` and `docker-compose 1.22.0`
-3. Register for a [News API key](https://newsapi.org/register)	
-4. Register for an [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
+4. Register for a [News API key](https://newsapi.org/register)	
+5. Register for an [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
 
 
 ---

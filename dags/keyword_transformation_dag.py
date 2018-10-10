@@ -38,6 +38,11 @@ default_args = {
 NEWS_DIRECTORY = "tempdata/tempus_bonus_challenge_dag/news/"
 AIRFLOW_HOME = os.environ['HOME']
 
+# NEED TO MAINTAIN SECRECY OF API KEYS
+# https://12factor.net/config
+# this should NOT be hardcoded (put it in an environment variable)
+API_KEY = '68ce2435405b42e5b4a90080249c6962'
+
 # Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
                            conn_type="HTTP",
@@ -77,49 +82,45 @@ datastore_creation_task = PythonOperator(
 
 # retrieve all news based on keywords
 # Need to make four SimpleHTTPOperator calls run in parallel
-get_news_k1_task = SimpleHttpOperator(endpoint='v2/everything?',
-                                      method='GET',
-                                      data={'q': 'Tempus Labs',
-                                            'apiKey':
-                                            '68ce2435405b42e5b4a90080249c6962'},
-                                      response_check=c.NetworkOperations.get_news,
-                                      http_conn_id='newsapi',
-                                      task_id='get_news_first_kw_task',
-                                      retries=3,
-                                      dag=dag)
+news_kw1_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Tempus Labs',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_first_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-get_news_k2_task = SimpleHttpOperator(endpoint='v2/everything?',
-                                      method='GET',
-                                      data={'q': 'Eric Lefkofsky',
-                                            'apiKey':
-                                            '68ce2435405b42e5b4a90080249c6962'},
-                                      response_check=c.NetworkOperations.get_news,
-                                      http_conn_id='newsapi',
-                                      task_id='get_news_second_kw_task',
-                                      retries=3,
-                                      dag=dag)
+news_kw2_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Eric Lefkofsky',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_second_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-get_news_k3_task = SimpleHttpOperator(endpoint='v2/everything?',
-                                      method='GET',
-                                      data={'q': 'Cancer',
-                                            'apiKey':
-                                            '68ce2435405b42e5b4a90080249c6962'},
-                                      response_check=c.NetworkOperations.get_news,
-                                      http_conn_id='newsapi',
-                                      task_id='get_news_third_kw_task',
-                                      retries=3,
-                                      dag=dag)
+news_kw3_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Cancer',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_third_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-get_news_k4_task = SimpleHttpOperator(endpoint='v2/everything?',
-                                      method='GET',
-                                      data={'q': 'Immunotherapy',
-                                            'apiKey':
-                                            '68ce2435405b42e5b4a90080249c6962'},
-                                      response_check=c.NetworkOperations.get_news,
-                                      http_conn_id='newsapi',
-                                      task_id='get_news_fourth_kw_task',
-                                      retries=3,
-                                      dag=dag)
+news_kw4_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Immunotherapy',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_fourth_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
 # detect existence of retrieved data
 file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
@@ -141,10 +142,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> get_news_k1_task
+start_task >> datastore_creation_task >> news_kw1_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-get_news_k1_task >> file_exists_sensor
+news_kw1_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
