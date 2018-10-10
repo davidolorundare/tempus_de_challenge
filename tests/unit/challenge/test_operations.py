@@ -36,18 +36,17 @@ class TestFileStorage:
 
     @pytest.fixture(scope='class')
     def home_directory_res(self) -> str:
-        """Returns a pytest resource - path to the Airflow Home directory."""
+        """returns a pytest resource - path to the Airflow Home directory."""
         return str(os.environ['HOME'])
 
     @pytest.fixture(scope='class')
     def data_directories_res(self) -> list:
-        """Returns a pytest resouce - list of the names of the data directories.
-        """
+        """returns a pytest resouce: list of data directories names."""
         return ['news', 'headlines', 'csv']
 
     @pytest.fixture(scope='class')
     def airflow_context(self) -> dict:
-        """Returns an airflow context object for tempus_challenge_dag.
+        """returns an airflow context object for tempus_challenge_dag.
 
         Mimics parts of the airflow context returned during execution
         of the tempus_challenge_dag.
@@ -65,7 +64,7 @@ class TestFileStorage:
 
     @pytest.fixture(scope='class')
     def airflow_context_bonus(self) -> dict:
-        """Returns an airflow context object for tempus_bonus_challange_dag.
+        """return an airflow context object for tempus_bonus_challange_dag.
 
         Mimics parts of the airflow context returned during execution
         of the tempus_bonus_challenge_dag.
@@ -288,7 +287,8 @@ class TestFileStorage:
         # Assert
 
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
-        """return correct news path when called correctly with pipeline name"""
+        """returns correct news path when called correctly with pipeline name.
+        """
 
         # Arrange
         news_path = os.path.join(home_directory_res,
@@ -303,7 +303,8 @@ class TestFileStorage:
         assert path == news_path
 
     def test_get_headlines_dir_returns_correct_path(self, home_directory_res):
-        """return correct headlines path when called correctly with DAG name"""
+        """returns correct headlines path when called correctly with DAG name.
+        """
 
         # Arrange
         news_path = os.path.join(home_directory_res,
@@ -320,7 +321,8 @@ class TestFileStorage:
         assert path == news_path
 
     def test_get_csv_dir_returns_correct_path(self, home_directory_res):
-        """return correct csv path when called correctly with pipeline name"""
+        """returns correct csv path when called correctly with pipeline name.
+        """
 
         # Arrange
         news_path = os.path.join(home_directory_res,
@@ -399,8 +401,8 @@ class TestFileStorage:
         assert expected in str(err.value)
 
     def test_write_json_to_file_fails_with_bad_data(self):
-        """write of a invalid json data to a file (already existent
-        directory fails correctly.
+        """write of a invalid json data to a file (already existent directory
+        fails correctly.
         """
 
         # Arrange
@@ -516,18 +518,16 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip(reason="not decided best way to get at the OSError yet")
+    @pytest.mark.skip(reason="not decided best way to get at the OSError yet.")
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
-    def test_create_data_store_pipe2_failure(self,
-                                             mock_path_func,
+    def test_create_data_store_pipe2_failure(self, mock_path_func,
                                              mock_dir_func,
                                              home_directory_res,
                                              data_directories_res,
                                              airflow_context_bonus):
         """call to create the tempoary datastore folders used by the
-        tempus_bonus_challenge_dag operators fails.
-        """
+        tempus_bonus_challenge_dag operators fails."""
 
         # Arrange
         # NEED TO REFACTOR THIS
@@ -550,7 +550,7 @@ class TestFileStorage:
                                          exist_ok=True)
 
     def test_get_news_directory_fails_with_wrong_name(self):
-        """return error when function is called with wrong pipeline name"""
+        """returns error when function is called with wrong pipeline name."""
 
         # Arrange
         # Act
@@ -560,7 +560,7 @@ class TestFileStorage:
         assert "No directory path for given pipeline name" in str(err.value)
 
     def test_get_headlines_directory_fails_with_wrong_name(self):
-        """return error when function is called with wrong pipeline name"""
+        """returns error when function is called with wrong pipeline name."""
 
         # Arrange
         # Act
@@ -570,7 +570,7 @@ class TestFileStorage:
         assert "No directory path for given pipeline name" in str(err.value)
 
     def test_get_csv_directory_fails_with_wrong_name(self):
-        """return error when function is called with wrong pipeline name"""
+        """returns error when function is called with wrong pipeline name."""
 
         # Arrange
         # Act
@@ -582,16 +582,16 @@ class TestFileStorage:
 
 @pytest.mark.networktests
 class TestNetworkOperations:
-    """Tests the functions for task to get news by remote call to News APIs.
+    """tests the functions for task to get news by remote call to News APIs.
+
     test call is made, test call returns with valid code, test call failure,
     test error handling e.g. url is number not string, test return json goes
-    into directory
-    integration test for actually return json.
+    into directory. integration test for actually return json.
     """
 
     @patch('requests.Response', autospec=True)
     def test_get_news_http_call_success(self, response_obj):
-        """returned response object has a valid 200 OK response-status code."""
+        """returns response object has a valid 200 OK response-status code."""
 
         # Arrange
         # response object returns an OK status code
@@ -619,7 +619,7 @@ class TestNetworkOperations:
 
     @patch('requests.Response', autospec=True)
     def test_get_news_http_call_failure(self, response_obj):
-        """returned response object fails with failure response-status code."""
+        """returns response object fails with failure response-status code."""
 
         # Arrange
         response_obj.status_code = 404
@@ -633,72 +633,72 @@ class TestNetworkOperations:
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_keyword_news(self, response_obj):
-        """Tests the http call to retrieve news based on keywords."""
+        """tests the http call to retrieve news based on keywords."""
         pass
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_news_failure(self, response_obj):
-        """Tests the failure mechanism on the news retrieval function."""
+        """tests the failure mechanism on the news retrieval function."""
         # should raise an exception
         pass
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_first_keyword_news(self, response_obj):
-        """Tests the retrieval of news using the 'Tempus Labs' keyword"""
+        """test the retrieval of news using the 'Tempus Labs' keyword."""
         pass
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_second_keyword_news(self, response_obj):
-        """Tests the retrieval of news using the 'Eric Lefkofsky' keyword"""
+        """test the retrieval of news using the 'Eric Lefkofsky' keyword."""
         pass
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_third_keyword_news(self, response_obj):
-        """Tests the retrieval of news using the 'Cancer' keyword"""
+        """test the retrieval of news using the 'Cancer' keyword."""
         pass
 
     @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_fourth_keyword_news(self, response_obj):
-        """Tests the retrieval of news using the 'Immunotheraphy' keyword"""
+        """test the retrieval of news using the 'Immunotheraphy' keyword."""
         pass
 
 
 @pytest.mark.extractiontests
 class TestExtractOperations:
-    """Tests the functions for the task to extract headlines from data."""
+    """tests the functions for the task to extract headlines from data."""
 
     @pytest.mark.skip
     def test_retrieve_headlines(self):
-        """Tests the retrieval of the top headlines"""
+        """test the retrieval of the top headlines."""
         pass
 
 
 @pytest.mark.transformtests
 class TestTransformOperations:
-    """Tests the functions for task to transform json headlines to csv."""
+    """test the functions for task to transform json headlines to csv."""
 
     @pytest.mark.skip
     def test_flatten_to_csv(self):
-        """Tests the function to flatten a json to csv"""
+        """test the function to flatten a json to csv."""
         pass
 
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
-    """Tests the functions for task to upload csvs to Amazon S3."""
+    """test the functions for task to upload csvs to Amazon S3."""
 
     @pytest.mark.skip
     def test_upload_csv_to_s3(self):
-        """Tests the uploading of csvs to an s3 location"""
+        """test the uploading of csvs to an s3 location."""
         pass
 
     # Loop of extract-transform-load. test_process_data
     @pytest.mark.skip
     def test_source_headlines(self):
-        """Tests the flattening of csvs and their s3 upload for each source"""
+        """test the flattening of csvs and their s3 upload for each source."""
         pass

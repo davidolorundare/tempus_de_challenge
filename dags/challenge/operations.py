@@ -26,18 +26,18 @@ HOME_DIRECTORY = str(os.environ['HOME'])
 
 
 class FileStorage:
-    """Handles functionality for data storage"""
+    """Handles functionality for data storage."""
 
     @classmethod
     def create_storage(cls, **context):
         """Create tempoary data storage for the current DAG pipeline.
-
 
         # Arguments
             :param context: current Airflow context in which the function or
                 operator is being run in.
             :type context: dict
         """
+
         log.info("Running create_storage method")
 
         # list of the directories that will be created to store data
@@ -53,7 +53,6 @@ class FileStorage:
                            dir_func=os.makedirs,
                            **context):
         """Create a set of datastore folders in the local filesystem.
-
 
         Creates a 'data' folder in the AIRFLOW_HOME directory, if it doesn't
         already exist (otherwise it replaces the existing one), in which to
@@ -81,10 +80,12 @@ class FileStorage:
                 or operator is being run in.
             :type context: dict
         """
+
         log.info("Running create_data_stores method")
 
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
+
         # Push the dag_id to the downstream SimpleHTTPOperator task
         # Using:
         # Variable.set("current_dag_id", dag_id)
@@ -110,6 +111,7 @@ class FileStorage:
 
         # return True if the directory was created, otherwise False.
         if os.path.isdir(dir_path):
+            log.info("Created folder")
             return True
         else:
             return False
@@ -120,8 +122,7 @@ class FileStorage:
                            path_to_dir,
                            create_date=None,
                            filename=None):
-        """write given json news data to an existing directory.
-
+        """writes given json news data to an existing directory.
 
         # Arguments
             :param create_date: date the file was created.
@@ -137,6 +138,7 @@ class FileStorage:
         Checks if the json data and directory are valid, otherwise raises
         error exceptions. the files are prefixed with the current datetime.
         """
+
         log.info("Running write_json_to_file method")
 
         if not os.path.isdir(path_to_dir):
@@ -155,6 +157,7 @@ class FileStorage:
         # create the filename and its extension, append date
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
+
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
@@ -165,7 +168,7 @@ class FileStorage:
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
-        """Return the news directory path for a given DAG pipeline.
+        """returns the news directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -199,7 +202,7 @@ class FileStorage:
 
     @classmethod
     def get_headlines_directory(cls, pipeline_name: str):
-        """Return the headlines directory path for a given DAG pipeline.
+        """returns the headlines directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -233,7 +236,7 @@ class FileStorage:
 
     @classmethod
     def get_csv_directory(cls, pipeline_name: str):
-        """Return the csv directory path for a given DAG pipeline.
+        """returns the csv directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -265,12 +268,11 @@ class FileStorage:
 
 
 class NetworkOperations:
-    """Handles functionality making remote calls to the News API."""
+    """handles functionality making remote calls to the News API."""
 
     @classmethod
     def get_news(cls, response: requests.Response, news_dir=None):
-        """Processes the response from the API call to get all english news sources.
-
+        """processes the response from the API call to get all english news sources.
 
         Returns True is the response is valid and stores the content in the
         folder appropriately. Returns False if the response is invalid.
@@ -289,7 +291,9 @@ class NetworkOperations:
             :type news_dir: string
 
         """
+
         log.info("Running get_news_data method")
+
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
@@ -316,11 +320,11 @@ class NetworkOperations:
 
     @classmethod
     def get_headlines(cls):
-        """Process the response from the API call to get headlines"""
+        """processes the response from the API call to get headlines."""
 
 
 class ExtractOperations:
-    """Handles functionality for extracting headlines.
+    """handles functionality for extracting headlines.
 
     - error handling
     - parsing json
@@ -328,12 +332,12 @@ class ExtractOperations:
 
 
 class TransformOperations:
-    """Handles functionality for flattening CSVs"""
+    """handles functionality for flattening CSVs."""
 
 
 class UploadOperations:
-    """Handles functionality for uploading flattened CSVs"""
+    """handles functionality for uploading flattened CSVs."""
 
 
 def process_retrieved_data(self):
-    """For each news performs a series of ETL operations"""
+    """for each news performs a series of ETL operations."""
