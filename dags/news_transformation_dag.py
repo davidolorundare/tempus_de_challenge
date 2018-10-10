@@ -68,11 +68,12 @@ dag = DAG('tempus_challenge_dag',
 # begin workflow
 start_task = DummyOperator(task_id='start', dag=dag)
 
-# creates a folder for storing retrieved data on the local filesystem
+
 # use an alias since the length of the real function call is more than
 # PEP8's 79 line-character limit
 function_alias = c.FileStorage.create_storage
 
+# creates a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
                                          python_callable=function_alias,
