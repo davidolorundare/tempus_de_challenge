@@ -78,7 +78,6 @@ class TestFileStorage:
             'dag': dag
         }
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe1_success(self,
@@ -112,7 +111,6 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe1_success(self,
@@ -146,7 +144,6 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe1_success(self,
@@ -180,7 +177,6 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_news_data_store_pipe2_success(self,
@@ -213,7 +209,6 @@ class TestFileStorage:
                                          data_directories_res[0]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_headlines_data_store_pipe2_success(self,
@@ -246,7 +241,6 @@ class TestFileStorage:
                                          data_directories_res[1]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_csv_data_store_pipe2_success(self,
@@ -290,7 +284,6 @@ class TestFileStorage:
 
         # Assert
 
-    @pytest.mark.skip
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """return correct news path when called correctly with pipeline name"""
 
@@ -306,7 +299,6 @@ class TestFileStorage:
         # Assert
         assert path == news_path
 
-    @pytest.mark.skip
     def test_get_headlines_dir_returns_correct_path(self, home_directory_res):
         """return correct headlines path when called correctly with DAG name"""
 
@@ -324,7 +316,6 @@ class TestFileStorage:
         # Assert
         assert path == news_path
 
-    @pytest.mark.skip
     def test_get_csv_dir_returns_correct_path(self, home_directory_res):
         """return correct csv path when called correctly with pipeline name"""
 
@@ -340,7 +331,6 @@ class TestFileStorage:
         # Assert
         assert path == news_path
 
-    @pytest.mark.skip
     def test_write_json_to_file_succeeds(self):
         """successful write of json string data to a file directory."""
 
@@ -382,7 +372,6 @@ class TestFileStorage:
         assert result is True
         assert file_is_present is True
 
-    @pytest.mark.skip
     def test_write_json_to_file_fails_with_wrong_directory_path(self):
         """write of json data to a file to a non-existent directory
         fails correctly.
@@ -406,7 +395,6 @@ class TestFileStorage:
         expected = "Directory {} does not exist".format(datastore_folder_path)
         assert expected in str(err.value)
 
-    @pytest.mark.skip
     def test_write_json_to_file_fails_with_bad_data(self):
         """write of a invalid json data to a file (already existent
         directory fails correctly.
@@ -468,8 +456,8 @@ class TestFileStorage:
         the IOError-checking code that runs later in the method actually works.
         For that reason it is intentionally deactivated (marked as 'skip').
 
-        The method *could* be however refactored to have just one check,
-        rather than two. i.e. IOError or OSError, but not both.
+        The method *could* be however refactored to have just both checks,
+        closer to each other. i.e. IOError and OSError.
         """
 
         # Arrange
@@ -492,7 +480,7 @@ class TestFileStorage:
         # Assert
         assert "Error in Reading Data - IOError" in actual_error
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="not decided best way to get at the OSError yet")
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_data_store_pipe1_failure(self,
@@ -525,7 +513,7 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="not decided best way to get at the OSError yet")
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_data_store_pipe2_failure(self,
@@ -558,7 +546,6 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
     def test_get_news_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 
@@ -569,7 +556,6 @@ class TestFileStorage:
             c.FileStorage.get_news_directory("wrong_name_dag")
         assert "No directory path for given pipeline name" in str(err.value)
 
-    @pytest.mark.skip
     def test_get_headlines_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 
@@ -580,7 +566,6 @@ class TestFileStorage:
             c.FileStorage.get_headlines_directory("wrong_name_dag")
         assert "No directory path for given pipeline name" in str(err.value)
 
-    @pytest.mark.skip
     def test_get_csv_directory_fails_with_wrong_name(self):
         """return error when function is called with wrong pipeline name"""
 

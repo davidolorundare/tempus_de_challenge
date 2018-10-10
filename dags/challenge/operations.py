@@ -7,6 +7,7 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
+import errno
 import json
 import logging
 import os
@@ -81,8 +82,8 @@ class FileStorage:
         # Push the dag_id to the downstream SimpleHTTPOperator task
         # Using:
         # Variable.set("current_dag_id", dag_id)
-        # gives error when testing locally.
-        # Switch to using Python Environ variables
+        # gives error when testing locally. As it required Airflow running.
+        # Switched to using Python Environ variables
         os.environ["current_dag_id"] = dag_id
 
         # create a data folder and subdirectories for the dag
@@ -94,9 +95,14 @@ class FileStorage:
                                       dag_id,
                                       dir_name)
             dir_func(dir_path, exist_ok=True)
-        except IOError as err:
-            print("I/O error({0}): {1}".format(err.errno, err.strerror))
+        # using exist_ok=True in makedirs would still raise FileExistsError
+        # if target path exists and it is not a directory (e.g. file,
+        # block device)
+        except OSError as err:
+            if err.errno != errno.EEXIST:
+                raise
 
+        # return True if the directory was created, otherwise False.
         if os.path.isdir(dir_path):
             return True
         else:
@@ -140,7 +146,7 @@ class FileStorage:
         fpath = os.path.join(path_to_dir, fname)
         # write the json string data to file.
         try:
-            with open(fpath, 'w') as outputfile:
+            with open(fpath, 'w+') as outputfile:
                 json.dump(data, outputfile)
             return True
         except IOError:
