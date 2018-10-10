@@ -587,7 +587,7 @@ class TestNetworkOperations:
     """
 
     @patch('requests.Response', autospec=True)
-    def test_get_news_data_http_call_success(self, response_obj):
+    def test_get_news_http_call_success(self, response_obj):
         """returned response object has a valid 200 OK response-status code."""
 
         # Arrange
@@ -600,7 +600,7 @@ class TestNetworkOperations:
         assert result[0] is True
 
     @patch('requests.Response', autospec=True)
-    def test_get_news_data_http_call_failure(self, response_obj):
+    def test_get_news_http_call_failure(self, response_obj):
         """returned response object fails with failure response-status code."""
 
         # Arrange

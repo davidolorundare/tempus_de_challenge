@@ -5,13 +5,14 @@ into a tabular structure, and finally stored the transformation in an Amazon S3
 Bucket.
 """
 
-from datetime import datetime, timedelta
+import os
 
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow import settings
+from airflow.contrib.sensors.file_sensor import FileSensor
 from airflow.models import Connection
-# from airflow.models import Variable
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
@@ -31,14 +32,25 @@ default_args = {
     'provide_context': True
 }
 
-# Connection objects for the News API endpoints
+# path, relative to AIRFLOW_HOME, to the news folder which
+# stores data from the News API
+NEWS_DIRECTORY = "tempdata/tempus_challenge_dag/news/"
+AIRFLOW_HOME = os.environ['HOME']
+
+# Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
                            conn_type="HTTP",
                            host="https://newsapi.org")
 
+# Connection object for local filesystem access
+conn_filesystem = Connection(conn_id="filesys",
+                             conn_type="File (path)",
+                             extra={"path": AIRFLOW_HOME})
+
 # # Create connection object
 session = settings.Session()
 session.add(conn_news_api)
+session.add(conn_filesystem)
 session.commit()
 
 
@@ -56,12 +68,12 @@ dag = DAG(
 start_task = DummyOperator(task_id='start', dag=dag)
 
 # creates a folder for storing retrieved data on the local filesystem
-# datastore_creation_task = PythonOperator(
-#     task_id='create_storage_task',
-#     provide_context=True,
-#     python_callable=c.FileStorage.create_storage,
-#     dag=dag
-# )
+datastore_creation_task = PythonOperator(
+    task_id='create_storage_task',
+    provide_context=True,
+    python_callable=c.FileStorage.create_storage,
+    dag=dag
+)
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -78,8 +90,13 @@ get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    task_id='get_news_sources_task',
                                    dag=dag)
 
-# detect existence of retrieved data
-# file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
+# detect existence of retrieved news data
+file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+                                fs_conn_id='filesys',
+                                poke_interval=10,
+                                timeout=60,
+                                task_id='file_sensor_task',
+                                dag=dag)
 
 # retrieve all of the top headlines
 # retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
@@ -100,10 +117,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-# start_task >> datastore_creation_task >> get_news_task
+start_task >> datastore_creation_task >> get_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-# get_news_task >> file_exists_sensor
+get_news_task >> file_exists_sensor >> end_task
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
@@ -114,4 +131,4 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # flatten_csv_task >> upload_csv_task >> end_task
 
 
-start_task >> get_news_task >> end_task
+# start_task >> file_exists_sensor >> end_task

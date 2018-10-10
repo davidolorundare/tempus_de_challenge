@@ -6,8 +6,9 @@ The data is transformed into a tabular structure, and finally stored the an AWS
 S3 Bucket.
 """
 
-from datetime import datetime, timedelta
+import os
 
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow import settings
@@ -32,14 +33,25 @@ default_args = {
 }
 
 
-# Connection objects for the News API endpoints
+# path, relative to AIRFLOW_HOME, to the news folder which
+# stores data from the News API
+NEWS_DIRECTORY = "tempdata/tempus_bonus_challenge_dag/news/"
+AIRFLOW_HOME = os.environ['HOME']
+
+# Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
                            conn_type="HTTP",
                            host="https://newsapi.org")
 
+# Connection object for local filesystem access
+conn_filesystem = Connection(conn_id="filesys",
+                             conn_type="File (path)",
+                             extra={"path": AIRFLOW_HOME})
+
 # # Create connection object
 session = settings.Session()
 session.add(conn_news_api)
+session.add(conn_filesystem)
 session.commit()
 
 

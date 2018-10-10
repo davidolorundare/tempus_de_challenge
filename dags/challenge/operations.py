@@ -250,7 +250,7 @@ class NetworkOperations:
     """Handles functionality making remote calls to the News API."""
 
     @classmethod
-    def get_news_data(cls, response: requests.Response):
+    def get_news(cls, response: requests.Response):
         """Processes the response from the API call to get all english news sources.
 
 
