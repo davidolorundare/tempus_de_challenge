@@ -11,13 +11,15 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow import settings
-from airflow.contrib.sensors.file_sensor import FileSensor
+# from airflow.contrib.sensors.file_sensor import FileSensor
 from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
+
+from contrib.file_sensor import FileSensor
 
 
 default_args = {
