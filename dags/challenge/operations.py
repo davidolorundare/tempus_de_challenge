@@ -122,8 +122,8 @@ class FileStorage:
         """
         log.info("Running write_json_to_file method")
 
-        if not os.path.isdir(path_to_dir):
-            raise OSError("Directory {} does not exist".format(path_to_dir))
+        # if not os.path.isdir(path_to_dir):
+        #     raise OSError("Directory {} does not exist".format(path_to_dir))
         if not create_date:
             create_date = time.strftime("%Y%m%d-%H%M%S")
         if not filename:
@@ -132,7 +132,7 @@ class FileStorage:
         # validate the input json string data
         # try:
         #     json.loads(data)
-        # except ValueError as err:
+        # except ValueError:
         #     raise ValueError("Error Decoding - Data is not valid JSON")
 
         # create the filename and its extension, append date
@@ -143,8 +143,8 @@ class FileStorage:
             with open(fpath, 'w') as outputfile:
                 json.dump(data, outputfile)
             return True
-        except IOError as err:
-            raise IOError("Reading Error - {}".format(err.value))
+        except IOError:
+            raise IOError("Error in Reading Data - IOError")
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):

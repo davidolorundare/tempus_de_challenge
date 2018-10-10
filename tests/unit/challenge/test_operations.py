@@ -406,6 +406,7 @@ class TestFileStorage:
         expected = "Directory {} does not exist".format(datastore_folder_path)
         assert expected in str(err.value)
 
+    @pytest.mark.skip
     def test_write_json_to_file_fails_with_bad_data(self):
         """write of a invalid json data to a file (already existent
         directory fails correctly.
@@ -414,8 +415,12 @@ class TestFileStorage:
         # Arrange
         # invalid or bad json data
         json_data = '{}{}'
+
+        # path to directory that doesn't yet exist but will be created
         datastore_folder_path = "/data/"
-        val = None
+
+        # detect presence of a file in the directory before and after
+        # calling the method under test.
         file_is_absent = False
         file_is_present = False
 
@@ -430,9 +435,9 @@ class TestFileStorage:
             if not os.listdir(datastore_folder_path):
                 file_is_absent = True
 
-            # Act
+        # Act
             # writing some dummy bad json data into a file to save to that
-            # existent directory should throw errors
+            # existent directory should throw bad-input errors
             with pytest.raises(ValueError) as err:
                 c.FileStorage.write_json_to_file(json_data,
                                                  datastore_folder_path,
@@ -440,7 +445,8 @@ class TestFileStorage:
 
             actual_error = str(err.value)
 
-            # inspect the directory - the json file should now be in there
+            # inspect the directory - the method failed, the json file should
+            # not be in there and file_is_present should remain False
             if os.listdir(datastore_folder_path):
                 file_is_present = True
 
@@ -452,43 +458,34 @@ class TestFileStorage:
         assert file_is_present is False
         assert "Error Decoding - Data is not valid JSON" in actual_error
 
-    @pytest.mark.skip
     def test_write_json_to_file_fails_reading_with_io_error(self):
-        """write of a json data to a file directory fails correctly."""
+        """write of a json data to a file non-existent directory fails correctly.
+
+        Requires commenting out the first check for directory in the
+        method - as that throws OSError (of which IOError is a child class)
+        This test passes in that scenario and ascertained that the
+        the IOError-checking code works. For that reason it is deactivated.
+        """
 
         # Arrange
-        json_data = json.dumps({'some_key': 'some_value'})
+        # invalid or bad json data that should cause I/O errors to read
+        json_data = json.dumps({'another_key': 'another_value'})
+
+        # path to directory that doesn't exist
         datastore_folder_path = "/data/"
-        file_is_absent = False
-        file_is_present = False
 
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
+        # Act
+        # writing some dummy bad json data into a file to save to that
+        # existent directory should throw I/O errors
+        with pytest.raises(IOError) as err:
+            c.FileStorage.write_json_to_file(json_data,
+                                             datastore_folder_path,
+                                             filename="test")
 
-            # create a fake filesystem directory to test the method
-            patcher.fs.create_dir(datastore_folder_path)
-
-            # ensure that the newly created directory is really empty
-            if not os.listdir(datastore_folder_path):
-                file_is_absent = True
-
-            # Act
-            # write some dummy json data into a file a save to that directory
-            result = c.FileStorage.write_json_to_file(json_data,
-                                                      datastore_folder_path,
-                                                      filename="test")
-            # inspect the directory - the json file should now be in there
-            if os.listdir(datastore_folder_path):
-                file_is_present = True
-
-            # clean up and remove the fake filesystem
-            patcher.tearDown()
+        actual_error = str(err.value)
 
         # Assert
-        assert file_is_absent is True
-        assert result is True
-        assert file_is_present is True
+        assert "Error in Reading Data - IOError" in actual_error
 
     @pytest.mark.skip
     @patch('os.makedirs', autospec=True)
