@@ -15,6 +15,7 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 
 from airflow.models import DAG
+# from airflow.models import Variable
 
 from dags import challenge as c
 
@@ -597,7 +598,9 @@ class TestNetworkOperations:
         # response object returns an OK status code
         response_obj.status_code = requests.codes.ok
         # configure call to the Response object's json() to return dummy data
-        response_obj.json.side_effect = lambda: '{"key": "value"}'
+        response_obj.json.side_effect = lambda: {"key": "value"}
+        # configure Response object 'encoding' attribute
+        response_obj.encoding = "utf-8"
         # retrieve the path to the folder the json file is saved to
         path = c.FileStorage.get_news_directory("tempus_challenge_dag")
 
@@ -622,6 +625,7 @@ class TestNetworkOperations:
         """returns response object fails with failure response-status code."""
 
         # Arrange
+        # response object returns an failure status code
         response_obj.status_code = 404
 
         # Act

@@ -13,7 +13,7 @@ import logging
 import os
 import time
 
-# from airflow.models import Variable
+from airflow.models import Variable
 
 import requests
 
@@ -40,9 +40,22 @@ class FileStorage:
 
         log.info("Running create_storage method")
 
+        # stores the dag_id which will be the name of the created folder
+        dag_id = str(context['dag'].dag_id)
+
+        # Push the dag_id to the downstream SimpleHTTPOperator task
+        # Using:
+        Variable.set("current_dag_id", dag_id)
+        # gives error when testing locally. As it required Airflow running.
+        # Switched to using Python Environ variables instead.
+        # os.environ["current_dag_id"] = dag_id
+        log.info("Env Variable")
+        # log.info(str(os.environ["current_dag_id"]))
+        log.info(Variable.get("current_dag_id"))
+
         # list of the directories that will be created to store data
         data_directories = ['news', 'headlines', 'csv']
-        log.info("Running create_storage method")
+
         for name in data_directories:
             cls.create_data_stores(dir_name=name, **context)
 
@@ -86,13 +99,6 @@ class FileStorage:
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
 
-        # Push the dag_id to the downstream SimpleHTTPOperator task
-        # Using:
-        # Variable.set("current_dag_id", dag_id)
-        # gives error when testing locally. As it required Airflow running.
-        # Switched to using Python Environ variables instead.
-        os.environ["current_dag_id"] = dag_id
-
         # create a data folder and subdirectories for the dag
         # if the data folder doesnt exist, create it and the subdirs
         # if it exists, create the subdirs
@@ -128,12 +134,12 @@ class FileStorage:
         # Arguments
             :param create_date: date the file was created.
             :type create_date: string
-            :param data: the json string data to be written to file.
-            :type data: string
+            :param data: the json data to be written to file.
+            :type data: dict
             :param path_to_dir: folder path where the json file will be
                 stored in.
             :type path_to_dir: string
-            :param filename: the name of the created json file.
+            :param filename: the name of the crejsoated json file.
             :type filename: string
 
         Checks if the json data and directory are valid, otherwise raises
@@ -149,9 +155,13 @@ class FileStorage:
         if not filename:
             filename = "sample"
 
-        # validate the input json string data
+        # json validation
         try:
-            json.loads(data)
+            # json string
+            json_string = json.dumps(data)
+            # validate the input json string data
+            validated_data = json.loads(json_string)
+            print(type(validated_data))
         except ValueError:
             raise ValueError("Error Decoding - Data is not valid JSON")
 
@@ -163,6 +173,7 @@ class FileStorage:
         try:
             with open(fpath, 'w+') as outputfile:
                 json.dump(data, outputfile)
+            log.info("Folder has data: {}".format(os.listdir(path_to_dir)))
             return True
         except IOError:
             raise IOError("Error in Reading Data - IOError")
@@ -293,7 +304,7 @@ class NetworkOperations:
 
         """
 
-        log.info("Running get_news_data method")
+        log.info("Running get_news method")
 
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
@@ -301,11 +312,13 @@ class NetworkOperations:
         log.info(status_code)
 
         # retrieve the context-specific news directory path from upstream task
-        pipeline_name = os.environ.get("current_dag_id")
+        # pipeline_name = os.environ.get("current_dag_id")
+        pipeline_name = Variable.get("current_dag_id")
+        log.info("get_news pipeline {}".format(pipeline_name))
         if not news_dir:
             news_dir = FileStorage.get_news_directory(pipeline_name)
 
-        # copy of the json string data
+        # copy of the json data
         json_data = response.json()
 
         # write the data to file

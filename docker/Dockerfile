@@ -85,9 +85,6 @@ COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
-# just for testing if a crypto fernet key is actually created
-RUN echo $FERNET_KEY
-
 EXPOSE 9090 8080 5555 8793
 
 USER airflow
