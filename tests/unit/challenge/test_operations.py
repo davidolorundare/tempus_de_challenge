@@ -408,7 +408,7 @@ class TestFileStorage:
 
         # Arrange
         # invalid or bad json data
-        json_data = '{}{}'
+        # json_data = {u"my_key": u'\uda00'}  # int('-inf')
 
         # path to directory that doesn't yet exist but will be created
         datastore_folder_path = "/data/"
@@ -433,9 +433,9 @@ class TestFileStorage:
             # writing some dummy bad json data into a file to save to that
             # existent directory should throw bad-input errors
             with pytest.raises(ValueError) as err:
-                c.FileStorage.write_json_to_file(json_data,
-                                                 datastore_folder_path,
-                                                 filename="test")
+                c.FileStorage.write_json_to_file(datastore_folder_path,
+                                                 filename="test",
+                                                 data=int('w'))
 
             actual_error = str(err.value)
 
@@ -450,7 +450,7 @@ class TestFileStorage:
         # Assert
         assert file_is_absent is True
         assert file_is_present is False
-        assert "Error Decoding - Data is not valid JSON" in actual_error
+        assert "invalid literal" in actual_error
 
     @pytest.mark.skip(reason="wrong_directory_path test checks some of this")
     def test_write_json_to_file_fails_reading_with_io_error(self):
@@ -604,6 +604,11 @@ class TestNetworkOperations:
         # retrieve the path to the folder the json file is saved to
         path = c.FileStorage.get_news_directory("tempus_challenge_dag")
 
+        # setup a fake environment variable. real code gets it via Python's
+        # os.environ() or Airflow's Variable.get() to get the name of the
+        # current pipeline.
+        os_environ_variable = "tempus_challenge_dag"
+
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
@@ -612,7 +617,9 @@ class TestNetworkOperations:
             patcher.fs.create_dir(path)
 
         # Act
-            result = c.NetworkOperations.get_news(response_obj, news_dir=path)
+            result = c.NetworkOperations.get_news(response_obj,
+                                                  news_dir=path,
+                                                  gb_var=os_environ_variable)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -627,9 +634,14 @@ class TestNetworkOperations:
         # Arrange
         # response object returns an failure status code
         response_obj.status_code = 404
+        # setup a fake environment variable. real code gets it via Python's
+        # os.environ() or Airflow's Variable.get() to get the name of the
+        # current pipeline.
+        os_environ_variable = "tempus_challenge_dag"
 
         # Act
-        result = c.NetworkOperations.get_news(response_obj)
+        result = c.NetworkOperations.get_news(response_obj,
+                                              gb_var=os_environ_variable)
 
         # Assert
         assert result[0] is False

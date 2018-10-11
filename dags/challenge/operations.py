@@ -43,15 +43,15 @@ class FileStorage:
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
 
+        # Python's os.environ property is used, in its place, during unit
+        # tests for setting environment variables. However, the variables
+        # don't seem to carry over between Airflow tasks. (Using either
+        # Airflow's Variable or XCom classes might be more ideal here.)
+        os.environ["current_dag_id"] = dag_id
+
         # Push the dag_id to the downstream SimpleHTTPOperator task
-        # Using:
+        # Using Airflow's global Variables:
         Variable.set("current_dag_id", dag_id)
-        # gives error when testing locally. As it required Airflow running.
-        # Switched to using Python Environ variables instead.
-        # os.environ["current_dag_id"] = dag_id
-        log.info("Env Variable")
-        # log.info(str(os.environ["current_dag_id"]))
-        log.info(Variable.get("current_dag_id"))
 
         # list of the directories that will be created to store data
         data_directories = ['news', 'headlines', 'csv']
@@ -157,13 +157,11 @@ class FileStorage:
 
         # json validation
         try:
-            # json string
-            json_string = json.dumps(data)
             # validate the input json string data
-            validated_data = json.loads(json_string)
+            validated_data = json.loads(json.dumps(data))
             print(type(validated_data))
         except ValueError:
-            raise ValueError("Error Decoding - Data is not valid JSON")
+            raise ValueError("Error Decoding - Data is not Valid JSON")
 
         # create the filename and its extension, append date
         fname = str(create_date) + "_" + str(filename) + ".json"
@@ -283,7 +281,7 @@ class NetworkOperations:
     """handles functionality making remote calls to the News API."""
 
     @classmethod
-    def get_news(cls, response: requests.Response, news_dir=None):
+    def get_news(cls, response: requests.Response, news_dir=None, gb_var=None):
         """processes the response from the API call to get all english news sources.
 
         Returns True is the response is valid and stores the content in the
@@ -301,6 +299,16 @@ class NetworkOperations:
             :type response: Response object
             :param news_dir: directory to store the news data to.
             :type news_dir: string
+            :param gb_var: global variable used referencing the current
+                DAG pipeline name. This parameter exists because Airflow
+                gives errors when using the `Variable` class to test locally;
+                for setting/getting, as it requires Airflow be already running.
+                Python's os.environ property is used, in its place, during unit
+                tests for set/getting environ variables. However, os.environ
+                variables don't seem to carry over between Airflow tasks.
+                (Using either Airflow's Variable or XCom classes might be more
+                ideal here.)
+            :type gb_var: string
 
         """
 
@@ -311,10 +319,14 @@ class NetworkOperations:
         status_code = response.status_code
         log.info(status_code)
 
-        # retrieve the context-specific news directory path from upstream task
-        # pipeline_name = os.environ.get("current_dag_id")
-        pipeline_name = Variable.get("current_dag_id")
-        log.info("get_news pipeline {}".format(pipeline_name))
+        # retrieve the context-specific pipeline name from the upstream tasks
+        if not gb_var:
+            pipeline_name = Variable.get("current_dag_id")
+        else:
+            pipeline_name = gb_var
+
+        log.info("get_news pipeline from Variable {}".format(pipeline_name))
+
         if not news_dir:
             news_dir = FileStorage.get_news_directory(pipeline_name)
 
