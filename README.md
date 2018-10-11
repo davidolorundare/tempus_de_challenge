@@ -49,8 +49,7 @@ Discusses the breakdown of the project goals into the two pipelines.
 
 The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks (five of which are the core). Its structure is shown below:
 
-IMAGE1
-
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-1_image.jpeg "Image of Pipeline-1 structure")
 
 The pipeline tasks are as follows:
 - The first task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to visually indicate the beginning of the pipeline. 
@@ -74,8 +73,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 #### DAG Pipeline 2
 The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first; also consisting of eight tasks. It is scheduled to run once a day at 1AM. Its structure is shown below:
 
-IMAGE2
-
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-2_image.jpeg "Image of Pipeline-1 structure")
 
 The pipeline tasks are identical to that of the first. The only difference is in the third task of calling the News API:
 
