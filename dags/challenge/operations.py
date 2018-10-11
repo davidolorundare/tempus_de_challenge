@@ -117,8 +117,6 @@ class FileStorage:
 
         # return True if the directory was created, otherwise False.
         if os.path.isdir(dir_path):
-            log.info("Created folder")
-            log.info(str(dir_path))
             return True
         else:
             return False
@@ -171,7 +169,6 @@ class FileStorage:
         try:
             with open(fpath, 'w+') as outputfile:
                 json.dump(data, outputfile)
-            log.info("Folder has data: {}".format(os.listdir(path_to_dir)))
             return True
         except IOError:
             raise IOError("Error in Reading Data - IOError")
@@ -317,15 +314,12 @@ class NetworkOperations:
         # check the status code, if is is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
-        log.info(status_code)
 
         # retrieve the context-specific pipeline name from the upstream tasks
         if not gb_var:
             pipeline_name = Variable.get("current_dag_id")
         else:
             pipeline_name = gb_var
-
-        log.info("get_news pipeline from Variable {}".format(pipeline_name))
 
         if not news_dir:
             news_dir = FileStorage.get_news_directory(pipeline_name)
