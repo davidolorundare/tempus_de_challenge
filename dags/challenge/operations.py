@@ -353,6 +353,10 @@ class ExtractOperations:
     - parsing json
     """
 
+    @classmethod
+    def extract_news_sources_id(cls):
+        """returns a list of (string) news source ids from a json"""
+
 
 class TransformOperations:
     """handles functionality for flattening CSVs."""

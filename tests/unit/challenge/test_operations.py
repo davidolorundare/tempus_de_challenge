@@ -655,24 +655,42 @@ class TestExtractOperations:
     def test_get_headlines(self):
         """test the retrieval of the top headlines."""
 
-        # get context-specific news directory
+        # get context-specific news directory (get_news_directory)
         # for each file in that directory
-        #   read the file
-        #   extract the headlines and put them into a json
+        #   read the file (json load) in (get_headlines)
+        #   get the news sources id and put them in a list (extract source-id)
+        #   
+        #   for each id
+        #       make an http call to get their headlines as json (get_headlines_api)
+        #       extract the headlines and put them into a json (extract_headlines)
+        #       write the json to the 'headlines' directory (write_to_json)
         pass
-
-    @pytest.mark.skip
-    def test_extract_headlines(self):
-        """test extraction of headlines"""
 
     @pytest.mark.skip
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter in a json file succeeds"""
 
+        # parse the news json 'sources' tag for all 'id' tags
+
      @pytest.mark.skip
-    def test_extract_news_source_id_failure(self):
+    def test_extract_news_source_id_fails(self):
         """extracting the 'id' parameter in a json file fails"""
 
+    @pytest.mark.skip
+    def test_get_headlines_api_succeeds(self):
+        """news api call to retrieve top-headlines succeeds"""
+
+    @pytest.mark.skip
+    def test_get_headlines_api_fails(self):
+        """news api call to retrieve top-headlines fails"""
+
+    @pytest.mark.skip
+    def test_extract_headlines_succeeds(self):
+        """return successful extraction of headlines from json"""
+
+    @pytest.mark.skip
+    def test_extract_headlines_fails(self):
+        """return successful extraction of headlines from json"""
 
 @pytest.mark.transformtests
 class TestTransformOperations:
