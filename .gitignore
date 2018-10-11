@@ -7,7 +7,7 @@ tempus_env/
 faker.py
 
 # pytest coverage info
-./coverage
+.coverage
 
 # python egg_info dir
 .eggs/
