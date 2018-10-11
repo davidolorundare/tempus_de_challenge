@@ -155,4 +155,4 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 - A week of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto library, Python Integration Testing, Using Python Test Doubles, and applying Python Test-Driven Development in practice.
 
-- one full day of coding, testing, and developing the solution.
+- two full days of coding, testing, and developing the solution.
