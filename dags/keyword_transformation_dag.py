@@ -69,11 +69,14 @@ dag = DAG('tempus_bonus_challenge_dag',
 # begin workflow
 start_task = DummyOperator(task_id='start', retries=3, dag=dag)
 
+# use an alias since the length of the real function call is more than
+# PEP8's 79 line-character limit
+function_alias = c.FileStorage.create_storage
+
 # create a folder for storing retrieved data on the local filesystem
-function_call = c.FileStorage.create_storage
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
-                                         python_callable=function_call,
+                                         python_callable=function_alias,
                                          dag=dag)
 
 # # retrieve all news based on keywords
@@ -145,8 +148,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+# file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-flatten_csv_task >> upload_csv_task >> end_task
+# flatten_csv_task >> upload_csv_task >> end_task
+
+start_task >> datastore_creation_task >> end_task

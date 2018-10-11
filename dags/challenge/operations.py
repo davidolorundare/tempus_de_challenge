@@ -112,6 +112,7 @@ class FileStorage:
         # return True if the directory was created, otherwise False.
         if os.path.isdir(dir_path):
             log.info("Created folder")
+            log.info(str(dir_path))
             return True
         else:
             return False

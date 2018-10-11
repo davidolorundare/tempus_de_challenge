@@ -141,7 +141,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	>RuntimeError: By default one of Airflow's dependencies installs a GPL dependency (unidecode). To avoid this dependency set SLUGIFY_USES_TEXT_UNIDECODE=yes in your environment when you install or upgrade Airflow. To force installing the GPL version set AIRFLOW_GPL_UNIDECODE.
 	* More details are discussed [here](https://medium.com/datareply/apache-airflow-1-10-0-released-highlights-6bbe7a37a8e1), [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110) [here](https://github.com/pypa/pipenv/issues/2791), and [here](https://stackoverflow.com/questions/52203441/error-while-install-airflow-by-default-one-of-airflows-dependencies-installs-a) 
 	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` as one of the environment variables in the Docker config file, so that it is available to Airflow during installation.
-	* Running version `1.10.0` gives empty logs (when you click on a task node log in its Task Instance Context Menu) in the UI. The solution to this (found [here](https://stackoverflow.com/questions/52249349/airflow-1-9-to-1-10-upgrade-and-now-im-getting-empty-logs-in-the-ui)) is to change this line in the airflow.cfg file:
+	* Running version `1.10.0` gives empty logs (when you click on a task node log in its Task Instance Context Menu) in the UI. The solution to this (found [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110)) is to change this line in the airflow.cfg file:
 	`task_log_reader = file.task` to `task_log_reader = task`
 
 

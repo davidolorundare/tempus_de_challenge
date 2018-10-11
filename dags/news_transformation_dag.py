@@ -33,7 +33,7 @@ default_args = {
 
 # path, relative to AIRFLOW_HOME, to the news folder which
 # stores data from the News API
-NEWS_DIRECTORY = "tempdata/tempus_challenge_dag/news/"
+NEWS_DIRECTORY = 'tempdata/tempus_challenge_dag/news/'
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -48,7 +48,8 @@ conn_news_api = Connection(conn_id="newsapi",
 # Connection object for local filesystem access
 conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
-                             extra="{'path': '/usr/local/airflow'}")
+                             extra='{"path": "/usr/local/airflow"}')
+conn_filesystem.set_password('myPassword')
 
 # # Create connection object
 session = settings.Session()
@@ -74,29 +75,31 @@ start_task = DummyOperator(task_id='start', dag=dag)
 function_alias = c.FileStorage.create_storage
 
 # creates a folder for storing retrieved data on the local filesystem
-datastore_creation_task = PythonOperator(task_id='create_storage_task',
-                                         provide_context=True,
-                                         python_callable=function_alias,
-                                         dag=dag)
+# datastore_creation_task = PythonOperator(task_id='create_storage_task',
+#                                          provide_context=True,
+#                                          python_callable=function_alias,
+#                                          dag=dag)
 
 # retrieve all english news sources
 # Using the News API, a http request is made to the News API's 'sources'
 # endpoint, with its 'language' parameter set to 'en'.
-get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
-                                   method='GET',
-                                   data={'language': 'en',
-                                         'apiKey':
-                                         '68ce2435405b42e5b4a90080249c6962'},
-                                   response_check=c.NetworkOperations.get_news,
-                                   http_conn_id='newsapi',
-                                   task_id='get_news_sources_task',
-                                   dag=dag)
+# get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
+#                                    method='GET',
+#                                    data={'language': 'en',
+#                                          'apiKey':
+#                                          '68ce2435405b42e5b4a90080249c6962'},
+#                                    response_check=c.NetworkOperations.get_news,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_news_sources_task',
+#                                    dag=dag)
 
 # detect existence of retrieved news data
 file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 fs_conn_id='filesys',
-                                poke_interval=10,
-                                timeout=60,
+                                poke_interval=5,
+                                soft_fail=True,
+                                timeout=10,
+                                retries=3,
                                 task_id='file_sensor_task',
                                 dag=dag)
 
@@ -119,10 +122,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> get_news_task
+# start_task >> datastore_creation_task >> get_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-get_news_task >> file_exists_sensor >> end_task
+# get_news_task >> file_exists_sensor >> end_task
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
@@ -133,4 +136,4 @@ get_news_task >> file_exists_sensor >> end_task
 # flatten_csv_task >> upload_csv_task >> end_task
 
 
-# start_task >> file_exists_sensor >> end_task
+start_task >> file_exists_sensor >> end_task

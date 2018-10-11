@@ -10,6 +10,8 @@ MAINTAINER Puckel_
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
+
+# Resolves the GPL dependency issue in Airflow 1.10.0
 ENV AIRFLOW_GPL_UNIDECODE yes
 
 # Airflow
@@ -82,6 +84,9 @@ COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
+
+# just for testing if a crypto fernet key is actually created
+RUN echo $FERNET_KEY
 
 EXPOSE 9090 8080 5555 8793
 
