@@ -652,9 +652,26 @@ class TestExtractOperations:
     """tests the functions for the task to extract headlines from data."""
 
     @pytest.mark.skip
-    def test_retrieve_headlines(self):
+    def test_get_headlines(self):
         """test the retrieval of the top headlines."""
+
+        # get context-specific news directory
+        # for each file in that directory
+        #   read the file
+        #   extract the headlines and put them into a json
         pass
+
+    @pytest.mark.skip
+    def test_extract_headlines(self):
+        """test extraction of headlines"""
+
+    @pytest.mark.skip
+    def test_extract_news_source_id_succeeds(self):
+        """extracting the 'id' parameter in a json file succeeds"""
+
+     @pytest.mark.skip
+    def test_extract_news_source_id_failure(self):
+        """extracting the 'id' parameter in a json file fails"""
 
 
 @pytest.mark.transformtests
