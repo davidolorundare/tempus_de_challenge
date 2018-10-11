@@ -655,15 +655,19 @@ class TestExtractOperations:
     def test_get_headlines(self):
         """test the retrieval of the top headlines."""
 
+        # Test Cases Needed:
+        #       What does 'get_headlines' do really ?:
+        #
         # get context-specific news directory (get_news_directory)
+        # 
         # for each file in that directory
         #   read the file (json load) in (get_headlines)
         #   get the news sources id and put them in a list (extract source-id)
         #   
-        #   for each id
-        #       make an http call to get their headlines as json (get_headlines_api)
-        #       extract the headlines and put them into a json (extract_headlines)
-        #       write the json to the 'headlines' directory (write_to_json)
+        # for each id
+        #   make an http call to get their headlines as json (get_headlines_api)
+        #   extract the headlines and put them into a json (extract_headlines)
+        #   write the json to the 'headlines' directory (write_to_json)
         pass
 
     @pytest.mark.skip
