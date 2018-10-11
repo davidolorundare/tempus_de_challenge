@@ -2,7 +2,7 @@ SHELL = /bin/bash
 MODULE = dags
 
 init:
-	
+
 	pip install --upgrade pip
 	pip install --upgrade setuptools
 	pip install -r requirements-setup.txt
