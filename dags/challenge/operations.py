@@ -157,7 +157,9 @@ class FileStorage:
         try:
             # validate the input json string data
             validated_data = json.loads(json.dumps(data))
-            print(type(validated_data))
+            # to satisfy PEP-8 requirement that declared variables
+            # should not be unused. let's use it to print something useful.
+            print("data valid json {}".format(type(validated_data)))
         except ValueError:
             raise ValueError("Error Decoding - Data is not Valid JSON")
 
