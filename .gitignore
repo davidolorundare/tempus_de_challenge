@@ -8,3 +8,6 @@ faker.py
 
 # pytest coverage info
 ./coverage
+
+# python egg_info dir
+.eggs/
