@@ -50,7 +50,7 @@ conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
                              extra=None)
 
-# # Create connection object
+# Create connection object
 session = settings.Session()
 session.add(conn_news_api)
 session.add(conn_filesystem)
@@ -70,13 +70,14 @@ start_task = DummyOperator(task_id='start', dag=dag)
 
 
 # use an alias since the length of the real function call is more than
-# PEP8's 79 line-character limit
-function_alias = c.FileStorage.create_storage
+# PEP-8's 79 line-character limit.
+storage_func_alias = c.FileStorage.create_storage
+headlines_func_alias = c.NetworkOperations.get_headlines
 
 # creates a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
-                                         python_callable=function_alias,
+                                         python_callable=storage_func_alias,
                                          dag=dag)
 
 # retrieve all english news sources
@@ -102,15 +103,16 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 dag=dag)
 
 # retrieve all of the top headlines
-# retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
-#                                         retries=3,
-#                                         dag=dag)
+retrieve_headlines_task = PythonOperator(task_id='get_headlines_task',
+                                         provide_context=True,
+                                         python_callable=headlines_func_alias,
+                                         dag=dag)
 
 # transform the data, resulting in a flattened csv
-# flatten_csv_task = DummyOperator(task_id='transform_task', retries=3,dag=dag)
+flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
 
 # upload the flattened csv into my S3 bucket
-# upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
+upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
@@ -123,15 +125,12 @@ end_task = DummyOperator(task_id='end', dag=dag)
 start_task >> datastore_creation_task >> get_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-get_news_task >> file_exists_sensor >> end_task
+get_news_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-# file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-# flatten_csv_task >> upload_csv_task >> end_task
-
-
-# start_task >> datastore_creation_task >> file_exists_sensor >> end_task
+flatten_csv_task >> upload_csv_task >> end_task

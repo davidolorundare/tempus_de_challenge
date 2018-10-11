@@ -646,43 +646,6 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is False
 
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_keyword_news(self, response_obj):
-        """tests the http call to retrieve news based on keywords."""
-        pass
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_news_failure(self, response_obj):
-        """tests the failure mechanism on the news retrieval function."""
-        # should raise an exception
-        pass
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_first_keyword_news(self, response_obj):
-        """test the retrieval of news using the 'Tempus Labs' keyword."""
-        pass
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_second_keyword_news(self, response_obj):
-        """test the retrieval of news using the 'Eric Lefkofsky' keyword."""
-        pass
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_third_keyword_news(self, response_obj):
-        """test the retrieval of news using the 'Cancer' keyword."""
-        pass
-
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_get_fourth_keyword_news(self, response_obj):
-        """test the retrieval of news using the 'Immunotheraphy' keyword."""
-        pass
-
 
 @pytest.mark.extractiontests
 class TestExtractOperations:

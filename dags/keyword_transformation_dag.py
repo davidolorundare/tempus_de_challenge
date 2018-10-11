@@ -14,7 +14,7 @@ from airflow import settings
 from airflow.contrib.sensors.file_sensor import FileSensor
 from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
-# from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
@@ -52,7 +52,7 @@ conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
                              extra=None)
 
-# # Create connection object
+# Create connection object
 session = settings.Session()
 session.add(conn_news_api)
 session.add(conn_filesystem)
@@ -81,45 +81,45 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
 
 # # retrieve all news based on keywords
 # # Need to make four SimpleHTTPOperator calls run in parallel
-# news_kw1_task = SimpleHttpOperator(endpoint='v2/everything?',
-#                                    method='GET',
-#                                    data={'q': 'Tempus Labs',
-#                                          'apiKey': API_KEY},
-#                                    response_check=c.NetworkOperations.get_news,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_news_first_kw_task',
-#                                    retries=3,
-#                                    dag=dag)
+news_kw1_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Tempus Labs',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_first_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-# news_kw2_task = SimpleHttpOperator(endpoint='v2/everything?',
-#                                    method='GET',
-#                                    data={'q': 'Eric Lefkofsky',
-#                                          'apiKey': API_KEY},
-#                                    response_check=c.NetworkOperations.get_news,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_news_second_kw_task',
-#                                    retries=3,
-#                                    dag=dag)
+news_kw2_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Eric Lefkofsky',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_second_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-# news_kw3_task = SimpleHttpOperator(endpoint='v2/everything?',
-#                                    method='GET',
-#                                    data={'q': 'Cancer',
-#                                          'apiKey': API_KEY},
-#                                    response_check=c.NetworkOperations.get_news,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_news_third_kw_task',
-#                                    retries=3,
-#                                    dag=dag)
+news_kw3_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Cancer',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_third_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
-# news_kw4_task = SimpleHttpOperator(endpoint='v2/everything?',
-#                                    method='GET',
-#                                    data={'q': 'Immunotherapy',
-#                                          'apiKey': API_KEY},
-#                                    response_check=c.NetworkOperations.get_news,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_news_fourth_kw_task',
-#                                    retries=3,
-#                                    dag=dag)
+news_kw4_task = SimpleHttpOperator(endpoint='v2/everything?',
+                                   method='GET',
+                                   data={'q': 'Immunotherapy',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_fourth_kw_task',
+                                   retries=3,
+                                   dag=dag)
 
 # detect existence of retrieved news data
 file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
@@ -147,17 +147,19 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-# start_task >> datastore_creation_task >> news_kw1_task
+start_task >> datastore_creation_task
 
-# ensure the data has been retrieved before beginning the ETL process.
-# news_kw1_task >> file_exists_sensor
+# make news api calls with the four keywords and ensure the
+# data has been retrieved before beginning the ETL process.
+datastore_creation_task >> news_kw1_task >> file_exists_sensor
+datastore_creation_task >> news_kw2_task >> file_exists_sensor
+datastore_creation_task >> news_kw3_task >> file_exists_sensor
+datastore_creation_task >> news_kw4_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-# file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-# flatten_csv_task >> upload_csv_task >> end_task
-
-start_task >> datastore_creation_task >> end_task
+flatten_csv_task >> upload_csv_task >> end_task
