@@ -143,6 +143,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` as one of the environment variables in the Docker config file, so that it is available to Airflow during installation.
 	* Running version `1.10.0` gives empty logs (when you click on a task node log in its Task Instance Context Menu) in the UI. The solution to this (found [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110)) is to change this line in the airflow.cfg file:
 	`task_log_reader = file.task` to `task_log_reader = task`
+- The Airflow Community contributed `airflow.contrib.sensor.file_sensor` and `airflow.contrib.hooks.fs_hook` classes were found to be *very* buggy, especially when trying to configure and test them in a DAG task pipeline
 
 
 

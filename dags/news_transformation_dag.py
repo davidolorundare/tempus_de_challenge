@@ -33,7 +33,7 @@ default_args = {
 
 # path, relative to AIRFLOW_HOME, to the news folder which
 # stores data from the News API
-NEWS_DIRECTORY = 'tempdata/tempus_challenge_dag/news/'
+NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_challenge_dag/news/"
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -48,8 +48,7 @@ conn_news_api = Connection(conn_id="newsapi",
 # Connection object for local filesystem access
 conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
-                             extra='{"path": "/usr/local/airflow"}')
-conn_filesystem.set_password('myPassword')
+                             extra=None)
 
 # # Create connection object
 session = settings.Session()
@@ -94,14 +93,13 @@ get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    dag=dag)
 
 # detect existence of retrieved news data
-# file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
-#                                 fs_conn_id='filesys',
-#                                 poke_interval=5,
-#                                 soft_fail=True,
-#                                 timeout=10,
-#                                 retries=3,
-#                                 task_id='file_sensor_task',
-#                                 dag=dag)
+file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+                                fs_conn_id="filesys",
+                                poke_interval=5,
+                                soft_fail=True,
+                                timeout=3600,
+                                task_id='file_sensor_task',
+                                dag=dag)
 
 # retrieve all of the top headlines
 # retrieve_headlines_task = DummyOperator(task_id='get_headlines_task',
@@ -122,10 +120,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> get_news_task >> end_task
+start_task >> datastore_creation_task >> get_news_task
 
 # ensure the data has been retrieved before beginning the ETL process.
-# get_news_task >> file_exists_sensor >> end_task
+get_news_task >> file_exists_sensor >> end_task
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
@@ -136,4 +134,4 @@ start_task >> datastore_creation_task >> get_news_task >> end_task
 # flatten_csv_task >> upload_csv_task >> end_task
 
 
-# start_task >> file_exists_sensor >> end_task
+# start_task >> datastore_creation_task >> file_exists_sensor >> end_task
