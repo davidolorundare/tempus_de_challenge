@@ -2,3 +2,9 @@
 tempus_env/
 # Pytest Cache folder
 .pytest_cache/
+
+# dummy file
+faker.py
+
+# pytest coverage info
+.coverage
