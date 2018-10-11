@@ -3,7 +3,7 @@ tempus_env/
 # Pytest Cache folder
 .pytest_cache/
 
-# dummy file
+# dummy file - used to test things in the repo
 faker.py
 
 # pytest coverage info
@@ -11,3 +11,6 @@ faker.py
 
 # python egg_info dir
 .eggs/
+
+# unsafe to store the news api key openly in your repo
+.env

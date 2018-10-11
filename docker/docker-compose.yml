@@ -17,6 +17,7 @@ services:
         environment:
             - LOAD_EX=n
             - EXECUTOR=Local
+            # Resolves the GPL dependency issue in Airflow 1.10.0
             - AIRFLOW_GPL_UNIDECODE=yes
         volumes:
             - ../dags:/usr/local/airflow/dags
