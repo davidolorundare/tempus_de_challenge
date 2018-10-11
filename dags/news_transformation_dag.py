@@ -16,6 +16,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
+import os
 import challenge as c
 
 
@@ -38,7 +39,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_challenge_dag/news/"
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
 # this should NOT be hardcoded (put it in an environment variable)
-API_KEY = '68ce2435405b42e5b4a90080249c6962'
+API_KEY = str(os.environ["NEWS_API_KEY"])
 
 # Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
@@ -86,8 +87,7 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
 get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',
-                                         'apiKey':
-                                         '68ce2435405b42e5b4a90080249c6962'},
+                                         'apiKey': API_KEY},
                                    response_check=c.NetworkOperations.get_news,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',
@@ -103,10 +103,11 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 dag=dag)
 
 # retrieve all of the top headlines
-retrieve_headlines_task = PythonOperator(task_id='get_headlines_task',
-                                         provide_context=True,
-                                         python_callable=headlines_func_alias,
-                                         dag=dag)
+retrieve_headlines_task = DummyOperator(task_id='get_headlines_task', dag=dag)
+# PythonOperator(task_id='get_headlines_task',
+#                                          provide_context=True,
+#                                          python_callable=headlines_func_alias,
+#                                          dag=dag)
 
 # transform the data, resulting in a flattened csv
 flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
