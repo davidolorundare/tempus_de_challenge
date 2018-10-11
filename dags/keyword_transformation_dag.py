@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow import settings
-# from airflow.contrib.sensors.file_sensor import FileSensor
+from airflow.contrib.sensors.file_sensor import FileSensor
 from airflow.models import Connection
 from airflow.operators.dummy_operator import DummyOperator
 # from airflow.operators.http_operator import SimpleHttpOperator
@@ -35,7 +35,7 @@ default_args = {
 
 # path, relative to AIRFLOW_HOME, to the news folder which
 # stores data from the News API
-NEWS_DIRECTORY = "tempdata/tempus_bonus_challenge_dag/news/"
+NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -50,7 +50,7 @@ conn_news_api = Connection(conn_id="newsapi",
 # Connection object for local filesystem access
 conn_filesystem = Connection(conn_id="filesys",
                              conn_type="File (path)",
-                             extra="{'path': '/usr/local/airflow'}")
+                             extra=None)
 
 # # Create connection object
 session = settings.Session()
@@ -67,7 +67,7 @@ dag = DAG('tempus_bonus_challenge_dag',
 
 # define workflow tasks
 # begin workflow
-start_task = DummyOperator(task_id='start', retries=3, dag=dag)
+start_task = DummyOperator(task_id='start', dag=dag)
 
 # use an alias since the length of the real function call is more than
 # PEP8's 79 line-character limit
@@ -121,8 +121,14 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
 #                                    retries=3,
 #                                    dag=dag)
 
-# detect existence of retrieved data
-file_exists_sensor = DummyOperator(task_id='file_sensor', retries=3, dag=dag)
+# detect existence of retrieved news data
+file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+                                fs_conn_id="filesys",
+                                poke_interval=5,
+                                soft_fail=True,
+                                timeout=3600,
+                                task_id='file_sensor_task',
+                                dag=dag)
 
 # retrieve all of the top headlines
 retrieve_headlines_task = DummyOperator(task_id='get_headl_kw_task', dag=dag)
