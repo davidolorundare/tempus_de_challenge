@@ -757,6 +757,7 @@ class TestNetworkOperations:
 class TestExtractOperations:
     """tests the functions for the task to extract headlines from data."""
 
+    @pytest.mark.skip
     def test_get_news_headlines(self):
         """test the retrieval of the top headlines."""
 
