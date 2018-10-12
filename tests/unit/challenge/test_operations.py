@@ -646,6 +646,37 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is False
 
+    @patch('requests.get', autospect=True)
+    def test_get_source_headlines_succeeds(self, request_obj):
+        """news api call to retrieve top-headlines succeeds"""
+
+        # make an http call to get each headlines as json (get_headlines_api)
+
+        # Arrange
+        # setup a dummy URL resembling the http call to get top-headlines
+        base_url = "https://newsapi.org/v2"
+        endpoint = "top-headlines?"
+        params = "sources=abc-news"
+
+        header = "/".join([base_url, endpoint])
+        # http_call = "".join([header, params])
+
+        id_source = params.split("=")[1]
+
+        # Act
+
+        result = c.ExtractOperations.get_source_headlines(id_source,
+                                                          header,
+                                                          request_obj)
+        # get_headlines_api(source_id, url_endpoint=None, api_method=None)
+
+        # Assert
+        assert requests.codes.ok == result
+
+    @pytest.mark.skip
+    def test_get_headlines_api_fails(self):
+        """news api call to retrieve top-headlines fails"""
+
 
 @pytest.mark.extractiontests
 class TestExtractOperations:
@@ -740,14 +771,6 @@ class TestExtractOperations:
         expected_message = str(err.value)
 
         assert "'sources' tag in json is empty" in expected_message
-
-    @pytest.mark.skip
-    def test_get_headlines_api_succeeds(self):
-        """news api call to retrieve top-headlines succeeds"""
-
-    @pytest.mark.skip
-    def test_get_headlines_api_fails(self):
-        """news api call to retrieve top-headlines fails"""
 
     @pytest.mark.skip
     def test_extract_headlines_succeeds(self):

@@ -374,8 +374,20 @@ class NetworkOperations:
 class ExtractOperations:
     """handles functionality for extracting headlines.
 
-    - error handling
-    - parsing json
+
+    Operations Performed:
+
+    extract the top-headlines and save them to a folder:
+        get context-specific news directory (get_news_directory)
+
+        for each file in that directory
+          read the file (json load) in (get_headlines)
+          get the news sources id and put them in a list (extract source-id)
+
+        for each id
+          make an http call to get each headlines as json (get_headlines_api)
+          extract the headlines and put them into a json (extract_headlines)
+          write the json to the 'headlines' directory (write_to_json)
     """
 
     @classmethod
@@ -404,6 +416,7 @@ class ExtractOperations:
             sources_ids.append(source["id"])
 
         return sources_ids
+
 
 
 class TransformOperations:
