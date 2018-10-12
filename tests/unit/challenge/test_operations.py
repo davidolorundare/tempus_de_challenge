@@ -813,7 +813,8 @@ class TestExtractOperations:
         assert result is True
 
     @patch('requests.Response', autospec=True)
-    def test_extract_headline_keyword(self, response_obj):
+    @patch('requests.PreparedRequest', autospec=True)
+    def test_extract_headline_keyword(self, response_obj, request_obj):
         """success parse of request url returns keyword parameter."""
 
         # Arrange
@@ -823,8 +824,9 @@ class TestExtractOperations:
         # configure Response object's request parameters be a dummy url
         cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=68ce243\
         5405b42e5b4a90080249c6962"
+        request_obj.path_url = cancer_url
 
-        response_obj.request.path_url = cancer_url
+        response_obj.request = request_obj
 
         # Act
         result = c.ExtractOperations.extract_headline_keyword(response_obj)
