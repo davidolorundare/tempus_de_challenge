@@ -670,7 +670,6 @@ class TestExtractOperations:
         #   write the json to the 'headlines' directory (write_to_json)
         pass
 
-    @pytest.mark.skip
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter in a json file succeeds"""
 
@@ -728,6 +727,7 @@ class TestExtractOperations:
     @pytest.mark.skip
     def test_extract_headlines_fails(self):
         """return successful extraction of headlines from json"""
+
 
 @pytest.mark.transformtests
 class TestTransformOperations:

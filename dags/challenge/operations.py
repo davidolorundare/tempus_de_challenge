@@ -92,6 +92,9 @@ class FileStorage:
             :param context: the current Airflow context in which the function
                 or operator is being run in.
             :type context: dict
+
+        # Raises:
+            OSError: if the directory path given does not exist.
         """
 
         log.info("Running create_data_stores method")
@@ -354,8 +357,16 @@ class ExtractOperations:
     """
 
     @classmethod
-    def extract_news_sources_id(cls):
-        """returns a list of (string) news source ids from a json"""
+    def extract_news_source_id(cls, json_data):
+        """returns a list of (string) news source ids from a json.
+
+        # Arguments:
+            :param json_data: the json news data from which the news-source
+                ids will be extracted from.
+            :type json_data: dict
+        """
+
+        return ["abc-news", "abc-news-au"]
 
 
 class TransformOperations:
