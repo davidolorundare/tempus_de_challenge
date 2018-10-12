@@ -41,7 +41,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
 # this should NOT be hardcoded (put it in an environment variable)
-# can be replaced with the user's own generate News API Key
+# should be replaced with the user's own generate News API Key
 API_KEY = config.NEWS_API_KEY
 
 # Connection object for the News API endpoints
@@ -73,12 +73,13 @@ start_task = DummyOperator(task_id='start', dag=dag)
 
 # use an alias since the length of the real function call is more than
 # PEP8's 79 line-character limit
-function_alias = c.FileStorage.create_storage
+storage_func_alias = c.FileStorage.create_storage
+headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
 
 # create a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
-                                         python_callable=function_alias,
+                                         python_callable=storage_func_alias,
                                          dag=dag)
 
 # # retrieve all news based on keywords
@@ -133,7 +134,10 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 dag=dag)
 
 # retrieve all of the top headlines
-retrieve_headlines_task = DummyOperator(task_id='get_headl_kw_task', dag=dag)
+retrieve_headlines_task = PythonOperator(task_id='get_headl_kw_task',
+                                         provide_context=True,
+                                         python_callable=headlines_func_alias,
+                                         dag=dag)
 
 # transform the data, resulting in a flattened csv
 flatten_csv_task = DummyOperator(task_id='transform_kw_task', dag=dag)
@@ -149,11 +153,10 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task
+start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 
 # make news api calls with the four keywords and ensure the
 # data has been retrieved before beginning the ETL process.
-datastore_creation_task >> news_kw1_task >> file_exists_sensor
 datastore_creation_task >> news_kw2_task >> file_exists_sensor
 datastore_creation_task >> news_kw3_task >> file_exists_sensor
 datastore_creation_task >> news_kw4_task >> file_exists_sensor

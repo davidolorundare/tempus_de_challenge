@@ -39,7 +39,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_challenge_dag/news/"
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
 # this should NOT be hardcoded (put it in an environment variable)
-# can be replaced with the user's own generate News API Key
+# should be replaced with the user's own generate News API Key
 API_KEY = config.NEWS_API_KEY
 
 # Connection object for the News API endpoints
