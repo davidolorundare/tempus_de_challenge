@@ -698,6 +698,12 @@ class ExtractOperations:
 
         return headlines
 
+    @classmethod
+    def extract_headline_keyword(cls, response: requests.Response):
+        """extract string query keyword used to request given http Response"""
+
+        return True
+
 
 class TransformOperations:
     """handles functionality for flattening CSVs."""
