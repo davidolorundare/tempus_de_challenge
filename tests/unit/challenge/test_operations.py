@@ -757,8 +757,7 @@ class TestNetworkOperations:
 class TestExtractOperations:
     """tests the functions for the task to extract headlines from data."""
 
-    @pytest.mark.skip
-    def test_get_headlines(self):
+    def test_get_news_headlines(self):
         """test the retrieval of the top headlines."""
 
         # Test Cases Needed:
@@ -774,7 +773,14 @@ class TestExtractOperations:
         #   make an http call get each headlines as json (get_source_headlines)
         #   extract the headlines and put them into a json (extract_headlines)
         #   write the json to the 'headlines' directory (write_to_json)
-        pass
+
+        # Arrange
+
+        # Act
+        result = c.NetworkOperations.get_news_headlines()
+
+        # Assert
+        assert result == 2
 
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter of sources in a json file succeeds."""

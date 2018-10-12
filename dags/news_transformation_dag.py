@@ -74,7 +74,7 @@ start_task = DummyOperator(task_id='start', dag=dag)
 # use an alias since the length of the real function call is more than
 # PEP-8's 79 line-character limit.
 storage_func_alias = c.FileStorage.create_storage
-headlines_func_alias = c.NetworkOperations.get_headlines
+headlines_func_alias = c.NetworkOperations.get_news_headlines
 
 # creates a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',

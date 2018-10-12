@@ -373,11 +373,13 @@ class NetworkOperations:
             return [False, status_code]
 
     @classmethod
-    def get_headlines(cls):
+    def get_news_headlines(cls):
         """processes the response from the API call to get headlines."""
 
         # reference to the news api key
         # api_key = env.NEWS_API_KEY
+
+        return 2
 
     @classmethod
     def get_source_headlines(cls,
