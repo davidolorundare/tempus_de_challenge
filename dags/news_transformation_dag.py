@@ -104,10 +104,10 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 dag=dag)
 
 # retrieve all of the top headlines
-get_headlines_task = PythonOperator(task_id='get_headlines_task',
-                                    provide_context=True,
-                                    python_callable=headlines_func_alias,
-                                    dag=dag)
+headlines_task = PythonOperator(task_id='extract_headlines_task',
+                                provide_context=True,
+                                python_callable=headlines_func_alias,
+                                dag=dag)
 
 # transform the data, resulting in a flattened csv
 flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
@@ -128,7 +128,7 @@ start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
 # ensure the data has been retrieved before beginning the ETL process.
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> get_headlines_task >> flatten_csv_task >> upload_csv_task
+file_exists_sensor >> headlines_task >> flatten_csv_task >> upload_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
