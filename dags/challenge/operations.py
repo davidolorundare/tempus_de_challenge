@@ -399,7 +399,7 @@ class NetworkOperations:
         dag_id = str(context['dag'].dag_id)
 
         # reference to the news sources and headlines directories
-        headline_directory = FileStorage.get_headlines_directory(dag_id)
+        # headline_directory = FileStorage.get_headlines_directory(dag_id)
         news_directory = FileStorage.get_news_directory(dag_id)
 
         # tuple of the list of each news source id and name.
@@ -449,9 +449,9 @@ class NetworkOperations:
                                                       headlines)
             # descriptive name of the headline file
             # fname =
-
+            print(type(headline_json))
             # write this json object to the headlines directory
-            FileStorage.write_json_to_file(headline_json, headline_dir, fname)
+            # FileStorage.write_json_to_file(headline_json, headline_dir, fname
 
         return 2
 
