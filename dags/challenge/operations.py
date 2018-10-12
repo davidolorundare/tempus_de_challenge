@@ -511,6 +511,7 @@ class NetworkOperations:
             # like 'Reddit /r/all' get read by the open() like a directory
             # path rather than a filename, and hence requires another separate
             # parsing all together.
+            # Is of the form  'source_id' + '_headlines'
             fname = str(value) + "_headlines"
 
             # write this json object to the headlines directory
@@ -526,9 +527,7 @@ class NetworkOperations:
             return False
 
     @classmethod
-    def get_news_keyword_headlines(cls,
-                                   response: requests.Response,
-                                   **context):
+    def get_news_keyword_headlines(cls, response: requests.Response):
         """processes the response from the remote API call to get keyword headlines.
 
         The function acts as a wrapper around the get_news() function.
@@ -536,7 +535,7 @@ class NetworkOperations:
         response object in the 'headlines' directory
         """
 
-        return 2
+        return True
 
     @classmethod
     def get_source_headlines(cls,

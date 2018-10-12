@@ -628,9 +628,17 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is True
 
-    @pytest.mark.skip
-    def test_get_news_keyword_headlines_succeeds(self):
+    @patch('requests.Response', autospec=True)
+    def test_get_news_keyword_headlines_succeeds(self, response_obj):
         """call to the function returns successfully"""
+
+        # Arrange
+
+        # Act
+        result = c.NetworkOperations.get_news_keyword_headlines(response_obj)
+
+        # Assert
+        assert result is True
 
     @patch('requests.get', autospect=True)
     def test_get_source_headlines_call_http_successfully(self, request_method):
