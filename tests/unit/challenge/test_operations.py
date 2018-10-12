@@ -18,6 +18,7 @@ from airflow.models import DAG
 # from airflow.models import Variable
 
 from dags import challenge as c
+import dags.env
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
@@ -627,28 +628,36 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is True
 
-    @patch('requests.Response', autospec=True)
-    def test_get_news_http_call_failure(self, response_obj):
-        """returns response object fails with failure response-status code."""
+    @patch('requests.get', autospect=True)
+    def test_get_source_headlines_calls_http_successfully(self, request_obj):
+        """a remote call to retrieve a source's top-headlines succeeds"""
 
         # Arrange
-        # response object returns an failure status code
-        response_obj.status_code = 404
-        # setup a fake environment variable. real code gets it via Python's
-        # os.environ() or Airflow's Variable.get() to get the name of the
-        # current pipeline.
-        os_environ_variable = "tempus_challenge_dag"
+        # setup a dummy URL resembling the http call to get top-headlines
+        base_url = "https://newsapi.org/v2"
+        endpoint = "top-headlines?"
+        params = "sources=abc-news"
+
+        header = "/".join([base_url, endpoint])
+        # http_call = "".join([header, params])
+        api_key = env.NEWS_API_KEY
+
+        id_source = params.split("=")[1]
 
         # Act
-        result = c.NetworkOperations.get_news(response_obj,
-                                              gb_var=os_environ_variable)
+
+        result = c.NetworkOperations.get_source_headlines(id_source,
+                                                          header,
+                                                          request_obj,
+                                                          api_key)
 
         # Assert
-        assert result[0] is False
+        assert requests.codes.ok == result
 
+    @pytest.mark.skip
     @patch('requests.get', autospect=True)
-    def test_get_source_headlines_succeeds(self, request_obj):
-        """news api call to retrieve top-headlines succeeds"""
+    def test_get_source_headlines_returns_successfully(self, request_obj):
+        """call to retrieve a source top-headlines makes http call correctly"""
 
         # make an http call to get each headlines as json (get_headlines_api)
 
@@ -664,19 +673,22 @@ class TestNetworkOperations:
         id_source = params.split("=")[1]
 
         # Act
-
+        req = request_obj
         result = c.NetworkOperations.get_source_headlines(id_source,
-                                                          header,
-                                                          request_obj)
+                                                          url_endpoint=header,
+                                                          http_method=req)
         # get_headlines_api(source_id, url_endpoint=None, api_method=None)
 
         # Assert
         assert requests.codes.ok == result
 
     @pytest.mark.skip
-    def test_get_headlines_api_fails(self):
+    def test_get_source_headlines_call_fails(self):
         """news api call to retrieve top-headlines fails"""
 
+   @pytest.mark.skip
+    def test_get_source_headlines_no_api_key_fails(self):
+        """news api call to retrieve top-headlines fails"""
 
 @pytest.mark.extractiontests
 class TestExtractOperations:
@@ -738,6 +750,10 @@ class TestExtractOperations:
         expected_ids = ["abc-news", "abc-news-au"]
         assert expected_ids == result
 
+    @pytest.mark.skip
+    def test_extract_headlines_succeeds(self):
+        """return successful extraction of headlines from json"""
+
     def test_extract_news_source_id_no_sources_fails(self):
         """no source tag in the json data fails the extraction process"""
 
@@ -771,10 +787,6 @@ class TestExtractOperations:
         expected_message = str(err.value)
 
         assert "'sources' tag in json is empty" in expected_message
-
-    @pytest.mark.skip
-    def test_extract_headlines_succeeds(self):
-        """return successful extraction of headlines from json"""
 
     @pytest.mark.skip
     def test_extract_headlines_fails(self):

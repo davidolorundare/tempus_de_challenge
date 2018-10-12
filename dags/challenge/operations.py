@@ -7,6 +7,7 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
+# import env
 import errno
 import json
 import logging
@@ -23,6 +24,10 @@ log = logging.getLogger(__name__)
 # store the current directory of the airflow home folder
 # airflow creates a home environment variable pointing to the location
 HOME_DIRECTORY = str(os.environ['HOME'])
+
+
+class MissingApiKey(ValueError):
+    pass
 
 
 class FileStorage:
@@ -369,6 +374,39 @@ class NetworkOperations:
     @classmethod
     def get_headlines(cls):
         """processes the response from the API call to get headlines."""
+
+        # reference to the news api key
+        # api_key = env.NEWS_API_KEY
+
+    @classmethod
+    def get_source_headlines(cls,
+                             source_id,
+                             url_endpoint=None,
+                             http_method=None,
+                             api_key=None):
+        """retrieve a news source's top-headlines via a remote API call"""
+
+        if not source_id:
+            raise ValueError("'source_id cannot be left blank")
+
+        if not api_key:
+            raise MissingApiKey("No News API Key found")
+
+        if not http_method:
+            http_method = requests.get
+
+        if not url_endpoint:
+            url_endpoint = "https://newsapi.org/v2/top-headlines?"
+
+        # craft the http request
+        params = "sources=".join([source_id])
+        key = "apiKey=".join([api_key])
+        header = "".join([url_endpoint, params])
+        full_request = "&".join([header, key])
+
+        response = http_method(full_request)
+
+        return response.status_code
 
 
 class ExtractOperations:
