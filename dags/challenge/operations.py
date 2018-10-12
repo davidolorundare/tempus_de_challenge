@@ -143,8 +143,7 @@ class FileStorage:
         datetime.
 
         # Arguments
-            :param create_date: date the file was created.
-            :type create_date: string
+
             :param data: the json data to be written to file.
             :type data: dict
             :param path_to_dir: folder path where the json file will be
@@ -152,6 +151,8 @@ class FileStorage:
             :type path_to_dir: string
             :param filename: the name of the crejsoated json file.
             :type filename: string
+            :param create_date: date the file was created.
+            :type create_date: string
 
         # Raises:
             OSError: if the directory path given does not exist.
@@ -374,22 +375,29 @@ class NetworkOperations:
 
     @classmethod
     def get_news_headlines(cls, **context):
-        """processes the response from the API call to get headlines.
+        """macro function for the Airflow PythonOperator that processes
+        the retrieved upstream news json data into top-headlines.
 
         Operations Performed:
 
-        extract the top-headlines and save them to a folder by:
+        extract the top-headlines and save them to a 'headlines' folder by:
 
-        getting context-specific news directory (get_news_directory)
+        - getting the context-specific news directory (get_news_directory)
 
-        for each file in that directory
-          read the file (json load) in (get_news_headlines)
-          get the news sources id and put them in a list (extract source-id)
+        - for each json file in that directory
+           - read the file (json.load)
+           - get the news sources id and put them in a list (extract source-id)
 
-        for each id
-          make an httpcall to get each headlines as json (get_source_headlines)
-          extract the headlines and put them into a json (extract_headlines)
-          write the json to the 'headlines' directory (write_to_json)
+        - for each source id in the list
+           - make httpcall to get its headlines as json (get_source_headlines)
+           - extract the headlines (extract_news_headlines)
+           - put them into a json (create_headline_json_func)
+           - write the json to the 'headlines' directory (write_json_to_file)
+
+        # Arguments:
+            :param context: airflow context object of the currently running
+                pipeline.
+            :type context: dict
         """
 
         # reference to the news api key
@@ -399,10 +407,10 @@ class NetworkOperations:
         dag_id = str(context['dag'].dag_id)
 
         # reference to the news sources and headlines directories
-        # headline_directory = FileStorage.get_headlines_directory(dag_id)
-        news_directory = FileStorage.get_news_directory(dag_id)
+        headline_dir = FileStorage.get_headlines_directory(dag_id)
+        news_dir = FileStorage.get_news_directory(dag_id)
 
-        # tuple of the list of each news source id and name.
+        # reference to tuple of the list of each news source id and name.
         extracted_sources = None
         extracted_names = None
         extracted_ids = None
@@ -413,17 +421,18 @@ class NetworkOperations:
         source_extract_func = ExtractOperations.extract_news_source_id
         create_headline_json_func = ExtractOperations.create_top_headlines_json
 
+        # News Headline extraction per source
         # inspect the news directory and collate the json file in there;
         # list of all the json news files in that directory from upstream tasks
         news_files = []
 
-        for data_file in os.listdir(news_directory):
+        for data_file in os.listdir(news_dir):
             if data_file.endswith('.json'):
                 news_files.append(data_file)
 
         # process the collated json files
         for js in news_files:
-            json_path = os.path.join(news_directory, js)
+            json_path = os.path.join(news_dir, js)
 
             # read each news json and extract the news sources
             with open(json_path, "r") as js_file:
@@ -434,9 +443,12 @@ class NetworkOperations:
                     raise ValueError("Parsing Error: {}".format(json_path))
 
         # ensure the last extraction step really worked before proceeding
-        if extracted_sources:
-            extracted_ids = extracted_sources[0]
-            extracted_names = extracted_sources[1]
+        if not extracted_sources:
+            raise ValueError("No results from news source extraction")
+
+        # split up the source id and name lists
+        extracted_ids = extracted_sources[0]
+        extracted_names = extracted_sources[1]
 
         # get the headlines of each source
         for index, value in enumerate(extracted_ids):
@@ -448,12 +460,16 @@ class NetworkOperations:
                                                       extracted_names[index],
                                                       headlines)
             # descriptive name of the headline file
-            # fname =
-            print(type(headline_json))
-            # write this json object to the headlines directory
-            # FileStorage.write_json_to_file(headline_json, headline_dir, fname
+            fname = extracted_names[index] + "_headlines"
 
-        return 2
+            # write this json object to the headlines directory
+            FileStorage.write_json_to_file(headline_json, headline_dir, fname)
+
+        # return with a verification that these operations succeeded
+        if os.listdir(news_dir):
+            return True
+        else:
+            return False
 
     @classmethod
     def get_news_keyword_headlines(cls, **context):

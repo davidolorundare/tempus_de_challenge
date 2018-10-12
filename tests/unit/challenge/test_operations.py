@@ -283,7 +283,7 @@ class TestFileStorage:
                                          exist_ok=True)
 
     @pytest.mark.skip
-    # @patch('requests.Response', autospec=True)
+    @patch('requests.Response', autospec=True)
     def test_file_sensors_detects_file_correctly(self, response_obj):
         """successful detection of a new file in a given directory."""
 
@@ -781,7 +781,7 @@ class TestExtractOperations:
         result = c.NetworkOperations.get_news_headlines()
 
         # Assert
-        assert result == 2
+        assert result is True
 
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter of sources in a json file succeeds."""
