@@ -7,7 +7,7 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
-import env
+import config
 import errno
 import json
 import logging
@@ -393,7 +393,7 @@ class NetworkOperations:
         """
 
         # reference to the news api key
-        apikey = env.NEWS_API_KEY
+        apikey = config.NEWS_API_KEY
 
         # grab details about the current dag pipeline runnning
         dag_id = str(context['dag'].dag_id)

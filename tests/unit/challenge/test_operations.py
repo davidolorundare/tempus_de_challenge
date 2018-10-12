@@ -18,7 +18,7 @@ from airflow.models import DAG
 # from airflow.models import Variable
 
 from dags import challenge as c
-from dags import env
+from dags import config
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
@@ -638,12 +638,12 @@ class TestNetworkOperations:
         endpoint = "top-headlines?"
         params = "sources=abc-news"
         id_source = params.split("=")[1]
-        key = env.NEWS_API_KEY
+        key = config.NEWS_API_KEY
 
         # craft http request
         header = "/".join([base_url, endpoint])
         http_call = "".join([header, params])
-        api_key = "apiKey=" + env.NEWS_API_KEY
+        api_key = "apiKey=" + config.NEWS_API_KEY
         http_call_with_key = "&".join([http_call, api_key])
 
         # Act
@@ -671,7 +671,7 @@ class TestNetworkOperations:
         params = "sources=abc-news"
         id_source = params.split("=")[1]
         header = "/".join([base_url, endpoint])
-        key = env.NEWS_API_KEY
+        key = config.NEWS_API_KEY
 
         # Act
         result = c.NetworkOperations.get_source_headlines(id_source,
@@ -697,7 +697,7 @@ class TestNetworkOperations:
         params = "sources=abc-news"
         id_source = params.split("=")[1]
         header = "/".join([base_url, endpoint])
-        key = env.NEWS_API_KEY
+        key = config.NEWS_API_KEY
 
         # Act
         result = c.NetworkOperations.get_source_headlines(id_source,
@@ -717,7 +717,7 @@ class TestNetworkOperations:
         endpoint = "top-headlines?"
         id_source = None
         header = "/".join([base_url, endpoint])
-        key = env.NEWS_API_KEY
+        key = config.NEWS_API_KEY
 
         # Act
         with pytest.raises(ValueError) as err:

@@ -34,7 +34,7 @@
 
 4. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
 
-5. Open the DAG definition files of the two pipelines (i.e. `news_transformation_dag.py` and `keyword_transformation_dag.py`) and replace `env.NEWS_API_KEY` in the line `API_KEY = env.NEWS_API_KEY` in those files with the your own generated News API Key as a string.
+5. Open the DAG definition files of the two pipelines (i.e. `news_transformation_dag.py` and `keyword_transformation_dag.py`) and replace `config.NEWS_API_KEY` in the line `API_KEY = config.NEWS_API_KEY` in those files with the your own generated News API Key as a string.
 
 6. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
 	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
