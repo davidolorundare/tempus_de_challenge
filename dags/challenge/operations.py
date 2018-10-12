@@ -362,7 +362,7 @@ class NetworkOperations:
             :type news_dir: string
             :param gb_var: global variable used referencing the current
                 DAG pipeline name. This parameter exists because Airflow
-                gives errors when using the `Variable` class to test locally;
+                gives errors when using the `Variable` class to test locally
                 for setting/getting, as it requires Airflow be already running.
                 Python's os.environ property is used, in its place, during unit
                 tests for set/getting environ variables. However, os.environ
