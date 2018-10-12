@@ -638,10 +638,13 @@ class TestNetworkOperations:
         # create function aliases
         keyword_headline_func = c.NetworkOperations.get_news_keyword_headlines
         storage_headline_dir_func = c.FileStorage.get_headlines_directory
+
         # response object returns an OK status code
         response.status_code = requests.codes.ok
+
         # configure call to the Response object's json() to return dummy data
         response.json.side_effect = lambda: {"key": "value"}
+
         # configure Response object 'encoding' attribute
         response.encoding = "utf-8"
 

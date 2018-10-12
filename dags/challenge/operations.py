@@ -752,9 +752,10 @@ class ExtractOperations:
             raise KeyError("Query param not found in URL {}".format(full_url))
 
         # there should only be one keyword variable in the url
-        query_keyword = query[0].split("=")[1]
+        keyword = query[0].split("=")[1]
+        query_keyword = str(keyword)
 
-        return query_keyword
+        return query_keyword.lower()
 
 
 class TransformOperations:
