@@ -643,7 +643,8 @@ class TestNetworkOperations:
         response.status_code = requests.codes.ok
 
         # configure call to the Response object's json() to return dummy data
-        response.json.side_effect = lambda: {"key": "value"}
+        response.json.side_effect = lambda: {"headline":
+                                             "Tempus solves Cancer"}
 
         # configure Response object 'encoding' attribute
         response.encoding = "utf-8"
@@ -657,7 +658,7 @@ class TestNetworkOperations:
         # retrieve the path to the folder the json file is saved to
         path = storage_headline_dir_func("tempus_bonus_challenge_dag")
 
-        # filename of the headline json
+        # filename of the keyword headline json file that will be created
         fname = "cancer_headlines"
 
         with Patcher() as patcher:
@@ -668,9 +669,12 @@ class TestNetworkOperations:
             patcher.fs.create_dir(path)
 
         # Act
-        result = keyword_headline_func(response,
-                                       headlines_dir=path,
-                                       filename=fname)
+            result = keyword_headline_func(response,
+                                           headlines_dir=path,
+                                           filename=fname)
+
+            # return to the real filesystem and clear pyfakefs resources
+            patcher.tearDown()
 
         # Assert
         assert result is True

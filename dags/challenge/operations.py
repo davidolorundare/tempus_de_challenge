@@ -554,7 +554,7 @@ class NetworkOperations:
         if not filename:
             filename = str(query) + "_headlines"
 
-        # retrieve the path to the headlines directory of the
+        # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
         pipeline_name = "tempus_bonus_challenge_dag"
         if not headlines_dir:
