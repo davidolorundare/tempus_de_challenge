@@ -75,7 +75,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 #### DAG Pipeline 2
 The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first; also consisting of eight tasks. It is scheduled to run once a day at 1AM. Its structure is shown below:
 
-![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-2_image.jpeg "Image of Pipeline-1 structure")
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-2_image.jpeg "Image of Pipeline-2 structure")
 
 The pipeline tasks are identical to that of the first. The only difference is in the third task of calling the News API:
 
