@@ -665,7 +665,7 @@ class TestNetworkOperations:
 
         # Act
 
-        result = c.ExtractOperations.get_source_headlines(id_source,
+        result = c.NetworkOperations.get_source_headlines(id_source,
                                                           header,
                                                           request_obj)
         # get_headlines_api(source_id, url_endpoint=None, api_method=None)

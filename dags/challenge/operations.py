@@ -418,7 +418,6 @@ class ExtractOperations:
         return sources_ids
 
 
-
 class TransformOperations:
     """handles functionality for flattening CSVs."""
 
