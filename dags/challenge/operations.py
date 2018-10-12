@@ -530,6 +530,8 @@ class NetworkOperations:
     def get_news_keyword_headlines(cls, response: requests.Response):
         """processes the response from the remote API call to get keyword headlines.
 
+        Used by the SimpleHTTPOperator exclusively in the
+        'tempus_bonus_challenge_dag' DAG pipeline.
         The function acts as a wrapper around the get_news() function.
         It specficially stores the keyword headlines retrieved from the
         response object in the 'headlines' directory.
@@ -541,15 +543,26 @@ class NetworkOperations:
         """
 
         # extract the string query keyword used to request this headline
-        # query = extract_headline_keyword(response)
-        # filename = query + "_headlines"
+        query = ExtractOperations.extract_headline_keyword(response)
+        # use the extracted query-keyword to construct the filename of the
+        # final json file
+        fname = query + "_headlines"
 
-        # get_news(cls,
-        #          response: requests.Response,
-        #          news_dir=None,
-        #          filename=None,
-        #          gb_var=None):
-        return True
+        # retrieve the path to the headlines directory of the
+        # 'tempus_bonus_challenge'
+        pipeline_name = "tempus_bonus_challenge_dag"
+        headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
+
+        # process the Response object json data
+        processing_status = cls.get_news(response,
+                                         news_dir=headlines_dir,
+                                         filename=fname)
+
+        # file-write was successfully and 'headlines' folder contains the json
+        if processing_status[0] and os.listdir(headlines_dir):
+            return True
+        else:
+            return False
 
     @classmethod
     def get_source_headlines(cls,

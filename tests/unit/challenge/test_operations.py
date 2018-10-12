@@ -831,7 +831,8 @@ class TestExtractOperations:
         result = c.ExtractOperations.extract_headline_keyword(response_obj)
 
         # Assert
-        assert result == cancer_url
+        # extracted keyword parameter from the url should be 'cancer'
+        assert result == "cancer"
 
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter of sources in a json file succeeds."""
