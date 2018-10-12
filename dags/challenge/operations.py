@@ -532,9 +532,23 @@ class NetworkOperations:
 
         The function acts as a wrapper around the get_news() function.
         It specficially stores the keyword headlines retrieved from the
-        response object in the 'headlines' directory
+        response object in the 'headlines' directory.
+
+        # Arguments:
+            :param response: http response object returned from the
+                SimpleHTTPOperator http call.
+            :type response: Response object
         """
 
+        # extract the string query keyword used to request this headline
+        # query = extract_headline_keyword(response)
+        # filename = query + "_headlines"
+
+        # get_news(cls,
+        #          response: requests.Response,
+        #          news_dir=None,
+        #          filename=None,
+        #          gb_var=None):
         return True
 
     @classmethod

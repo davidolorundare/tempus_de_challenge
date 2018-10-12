@@ -628,11 +628,27 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is True
 
+    @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     def test_get_news_keyword_headlines_succeeds(self, response_obj):
         """call to the function returns successfully"""
 
         # Arrange
+        # response object returns an OK status code
+        response_obj.status_code = requests.codes.ok
+
+        # configure call to the Response object's json() to return dummy data
+        response_obj.request.path_url
+
+        # retrieve the path to the folder the json file is saved to
+        path = c.FileStorage.get_news_directory("tempus_challenge_dag")
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(path)
 
         # Act
         result = c.NetworkOperations.get_news_keyword_headlines(response_obj)
@@ -792,6 +808,26 @@ class TestExtractOperations:
 
         # Act
         result = c.NetworkOperations.get_news_headlines()
+
+        # Assert
+        assert result is True
+
+    @patch('requests.Response', autospec=True)
+    def test_extract_headline_keyword(self, response_obj):
+        """success parse of request url returns keyword parameter."""
+
+        # Arrange
+        # response object returns an OK status code
+        response_obj.status_code = requests.codes.ok
+
+        # configure Response object's request parameters be a dummy url
+        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=68ce243\
+        5405b42e5b4a90080249c6962"
+
+        response_obj.request.path_url = cancer_url
+
+        # Act
+        result = c.ExtractOperations.extract_headline_keyword(response_obj)
 
         # Assert
         assert result is True
