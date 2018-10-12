@@ -804,8 +804,8 @@ class TestExtractOperations:
 
     @patch('requests.Response', autospec=True)
     @patch('requests.PreparedRequest', autospec=True)
-    def test_extract_headline_keyword(self, response_obj, request_obj):
-        """success parse of request url returns keyword parameter."""
+    def test_extract_headline_keyword_success(self, response_obj, request_obj):
+        """successfully parse of request url returns keyword parameter."""
 
         # Arrange
         # response object returns an OK status code
@@ -1032,6 +1032,7 @@ class TestExtractOperations:
         expected_message = str(err.value)
         assert "'headlines' cannot be blank" in expected_message
 
+    @pytest.mark.skip
     @patch('requests.Response', autospec=True)
     @patch('requests.PreparedRequest', autospec=True)
     def test_extract_headline_keyword_no_query_in_url_fails(self,
