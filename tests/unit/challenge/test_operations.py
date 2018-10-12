@@ -813,6 +813,28 @@ class TestExtractOperations:
         expected_ids = ["abc-news", "abc-news-au"]
         assert expected_ids == result[0]
 
+    def test_create_news_headlines_json_returns_correctly(self):
+        """return valid json news data with sources and headlines ."""
+
+        # Arrange
+        # create some dummy json resembling the valid news headlines json data
+        dummy_data_expected = {"source": {
+                               "id": "abc-news",
+                               "name": "ABC NEWS"},
+                               "headlines": ['top-headline1', 'top-headline2']}
+
+        source_id = "abc-news"
+        source_name = "ABC NEWS"
+        top_headlines = ['top-headline1', 'top-headline2']
+
+        # Act
+        result = c.ExtractOperations.create_top_headlines_json(source_id,
+                                                               source_name,
+                                                               top_headlines)
+
+        # Assert
+        assert result == dummy_data_expected
+
     def test_extract_headlines_succeeds(self):
         """return successful extraction of headlines from json data."""
 

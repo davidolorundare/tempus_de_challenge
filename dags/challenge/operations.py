@@ -508,6 +508,24 @@ class ExtractOperations:
 
         return headlines
 
+    @classmethod
+    def create_top_headlines_json(cls, source_id, source_name, headlines):
+        """creates a json object out given a news source and its headlines"""
+
+        if not source_id:
+            raise ValueError("'source_id cannot be blank")
+        if not source_name:
+            raise ValueError("'source_name' cannot be blank")
+        if not headlines:
+            raise ValueError("'headlines' cannot be blank")
+
+        source_top_headlines = {"source": {
+                                "id": source_id,
+                                "name": source_name},
+                                "headlines": headlines}
+
+        return source_top_headlines
+
 
 class TransformOperations:
     """handles functionality for flattening CSVs."""
