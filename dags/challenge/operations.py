@@ -550,7 +550,7 @@ class ExtractOperations:
 
     @classmethod
     def create_top_headlines_json(cls, source_id, source_name, headlines):
-        """creates a json object out given a news source and its headlines
+        """creates a json object out of given news source and its headlines.
 
         # Arguments:
             :param source_id: the id of the news source
