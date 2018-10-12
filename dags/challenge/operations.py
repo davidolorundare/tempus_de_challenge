@@ -418,8 +418,9 @@ class NetworkOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit .
-        source_extract_func = ExtractOperations.extract_news_source_id
         create_headline_json_func = ExtractOperations.create_top_headlines_json
+        extract_headline_func = ExtractOperations.extract_news_headlines
+        source_extract_func = ExtractOperations.extract_news_source_id
 
         # News Headline extraction per source
         # inspect the news directory and collate the json file in there;
@@ -452,13 +453,14 @@ class NetworkOperations:
 
         # get the headlines of each source
         for index, value in enumerate(extracted_ids):
-            headlines_obj = cls.get_source_headlines(value, api_key=apikey)[0]
-            headlines = ExtractOperations.extract_news_headlines(headlines_obj)
+            headlines_obj = cls.get_source_headlines(value, api_key=apikey)
+            if headlines_obj.status_code == requests.codes.ok:
+                headlines_list = extract_headline_func(headlines_obj.json())
 
             # assembly a json object from source and headline
             headline_json = create_headline_json_func(value,
                                                       extracted_names[index],
-                                                      headlines)
+                                                      headlines_list)
             # descriptive name of the headline file
             fname = extracted_names[index] + "_headlines"
 
@@ -548,7 +550,22 @@ class ExtractOperations:
 
     @classmethod
     def create_top_headlines_json(cls, source_id, source_name, headlines):
-        """creates a json object out given a news source and its headlines"""
+        """creates a json object out given a news source and its headlines
+
+        # Arguments:
+            :param source_id: the id of the news source
+            :type source_id: string
+            :param source_name: the name of the news source
+            :type source_name: string
+            :param headlines: list containing all the headlines of the news
+                source, each as a string.
+            :type headlines: list
+
+        # Raises:
+            ValueError: if the no source_id is given
+            ValueError: if the no source_name is given
+            ValueError: if the no headlines is given
+        """
 
         if not source_id:
             raise ValueError("'source_id' cannot be blank")
