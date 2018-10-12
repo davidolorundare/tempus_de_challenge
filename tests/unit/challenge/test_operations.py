@@ -875,11 +875,12 @@ class TestExtractOperations:
 
         assert "'sources' tag in json is empty" in expected_message
 
-    def test_extract_headlines_no_article_fails(self):
+    def test_extract_headlines_no_news_article_fails(self):
         """extraction of headlines with no article tag fails."""
 
         # Arrange
-        # create some dummy json resembling the valid news headlines json data
+        # create some dummy json resembling the news json headline data with no
+        # article tag.
         dummy_data = {"status": "ok", "totalResults": 20}
 
         # Act
@@ -891,32 +892,23 @@ class TestExtractOperations:
 
         assert "news json has no 'articles' data" in expected_message
 
-    @pytest.mark.skip
-    def test_extract_headlines_empty_article_fails(self):
+    def test_extract_headlines_empty_news_article_fails(self):
         """return successful extraction of headlines from json."""
 
         # Arrange
         # create some dummy json resembling the valid news headlines json data
         dummy_data = {"status": "ok",
                       "totalResults": 20,
-                      "articles":
-                      [{"source": {
-                        "id": "null",
-                        "name": "Espn.com"},
-                        "author": "null",
-                        "title": "Odell Beckham Jr. walks into locker room",
-                        "description": "Odell Beckham Jr. walked off field.",
-                        "url": "null",
-                        "urlToImage": "null",
-                        "publishedAt": "2018-10-12T04:18:45Z",
-                        "content": "EAST RUTHERFORD, N.J."}]}
+                      "articles": []}
 
         # Act
-        result = c.ExtractOperations.extract_news_headlines(dummy_data)
+        with pytest.raises(ValueError) as err:
+            c.ExtractOperations.extract_news_headlines(dummy_data)
 
         # Assert
-        expected_headlines = ["Odell Beckham Jr. walks into locker room"]
-        assert result == expected_headlines
+        expected_message = str(err.value)
+
+        assert "'articles' tag in json is empty" in expected_message
 
 
 @pytest.mark.transformtests
