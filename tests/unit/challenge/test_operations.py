@@ -751,7 +751,7 @@ class TestNetworkOperations:
 
         # configure call to the Response object's json() to return dummy data
         response.json.side_effect = lambda: {"headline":
-                                             "Tempus solves Cancer"}
+                                             "Tempus can solve Cancer"}
 
         # configure Response object 'encoding' attribute
         response.encoding = "utf-8"
