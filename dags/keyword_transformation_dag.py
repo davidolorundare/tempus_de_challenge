@@ -143,7 +143,7 @@ extract_headlines_task = PythonOperator(task_id='extract_headl_kw_task',
 flatten_csv_task = DummyOperator(task_id='transform_to_csv_kw_task', dag=dag)
 
 # upload the flattened csv into my S3 bucket
-upload_csv_task = DummyOperator(task_id='upload_kw_task', dag=dag)
+upload_csv_task = DummyOperator(task_id='upload_csv_to_s3_kw_task', dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)

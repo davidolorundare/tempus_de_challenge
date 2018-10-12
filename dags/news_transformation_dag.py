@@ -116,7 +116,9 @@ flatten_csv_task = DummyOperator(task_id='transform_to_csv_task',
                                  dag=dag)
 
 # upload the flattened csv into my S3 bucket
-upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
+upload_csv_task = DummyOperator(task_id='upload_csv_to_s3_task',
+                                retries=3,
+                                dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
