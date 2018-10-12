@@ -385,7 +385,26 @@ class NetworkOperations:
                              url_endpoint=None,
                              http_method=None,
                              api_key=None):
-        """retrieve a news source's top-headlines via a remote API call"""
+        """retrieve a news source's top-headlines via a remote API call.
+
+        # Arguments:
+            :param source_id: the id of the news source.
+            :type source_id: string
+            :param url_endpoint: the news api source url address. If not filled
+                in the default News API sources endpoint is used.
+            :type url_endpoint: string
+            :param http_method: the Python function to use for making the
+                remote call. If not filled in the default Python Request
+                Library's get() method is used.
+            :type http_method: function
+            :param api_key: the News API Key for using the News API service.
+            :type api_key: string
+
+        # Raises:
+            ValueError: if no news source id is passed in.
+            ValueError: if no News API Key is passed in
+
+        """
 
         if not source_id:
             raise ValueError("'source_id' cannot be left blank")
@@ -441,6 +460,8 @@ class ExtractOperations:
         # Raises:
             KeyError: if the given json news data does not have the 'sources'
                 tag.
+            ValueError: if the given json news data has a 'sources' tag with
+                empty data
         """
 
         if "sources" not in json_data.keys():
@@ -455,6 +476,33 @@ class ExtractOperations:
             sources_ids.append(source["id"])
 
         return sources_ids
+
+    @classmethod
+    def extract_news_headlines(cls, json_data):
+        """returns a list of (string) news headlines from a valid json.
+
+        # Arguments:
+            :param json_data: the json news data from which the news-source
+                ids will be extracted from.
+            :type json_data: dict
+
+        # Raises:
+            KeyError: if the given json news data does not have the 'title'
+                tag.
+        """
+
+        # if "sources" not in json_data.keys():
+        #     raise KeyError("news json has no 'sources' data")
+
+        # if not json_data["sources"]:
+        #     raise ValueError("'sources' tag in json is empty")
+
+        # sources_ids = []
+
+        # for source in json_data["sources"]:
+        #     sources_ids.append(source["id"])
+
+        return 2
 
 
 class TransformOperations:
