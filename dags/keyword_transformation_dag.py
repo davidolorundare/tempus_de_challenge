@@ -82,8 +82,8 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          python_callable=storage_func_alias,
                                          dag=dag)
 
-# # retrieve all top news headlines for specific keywords
-# # Need to make four SimpleHTTPOperator calls run in parallel
+# retrieve all top news headlines for specific keywords
+# Need to make four SimpleHTTPOperator calls run in parallel
 news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Tempus Labs',
