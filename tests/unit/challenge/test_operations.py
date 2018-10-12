@@ -732,6 +732,62 @@ class TestNetworkOperations:
         # Assert
         assert result.status_code == requests.codes.ok
 
+    @patch('requests.PreparedRequest', autospec=True)
+    @patch('requests.Response', autospec=True)
+    def test_get_news_keyword_headlines_fails_with_bad_request(self,
+                                                               response,
+                                                               request):
+        """call to the function fails whenw a Response in which there
+        was no query in the http request is passed"""
+
+        # Arrange
+
+        # create function aliases
+        keyword_headline_func = c.NetworkOperations.get_news_keyword_headlines
+        storage_headline_dir_func = c.FileStorage.get_headlines_directory
+
+        # response object returns an OK status code
+        response.status_code = requests.codes.ok
+
+        # configure call to the Response object's json() to return dummy data
+        response.json.side_effect = lambda: {"headline":
+                                             "Tempus solves Cancer"}
+
+        # configure Response object 'encoding' attribute
+        response.encoding = "utf-8"
+
+        # configure Response object's request parameters be a dummy url
+        cancer_url = "https://newsapi.org/v2/top-headlines?apiKey=543"
+        request.path_url = "/v2/top-headlines?apiKey=543"
+        request.url = cancer_url
+        response.request = request
+
+        # retrieve the path to the folder the json file is saved to
+        path = storage_headline_dir_func("tempus_bonus_challenge_dag")
+
+        # filename of the keyword headline json file that will be created
+        fname = "cancer_headlines"
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(path)
+
+        # Act
+            with pytest.raises(KeyError) as err:
+                keyword_headline_func(response,
+                                      headlines_dir=path,
+                                      filename=fname)
+
+            # return to the real filesystem and clear pyfakefs resources
+            patcher.tearDown()
+
+        # Assert
+        expected_message = str(err.value)
+        assert "Query param not found" in expected_message
+
     @patch('requests.get', autospec=True)
     def test_get_source_headlines_http_call_fails(self, request_method):
         """news api call to retrieve top-headlines fails"""
