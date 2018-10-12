@@ -35,6 +35,18 @@ class FileStorage:
     """Handles functionality for data storage."""
 
     @classmethod
+    def dummy_function(cls, dummy_arg=None):
+        """function that does absolutely nothing.
+
+        But, was found useful in some of the code below.
+
+        # Arguments:
+            :param dummy_arg: some dummy argument.
+            :type dummy_arg: can be anything. Default is None.
+        """
+        pass
+
+    @classmethod
     def create_storage(cls, **context):
         """Create tempoary data storage for the current DAG pipeline.
 
@@ -175,9 +187,20 @@ class FileStorage:
             # validate the input json string data
             validated_data = json.loads(json.dumps(data))
 
+            # we do not really need the variable 'validated_data'
+            # but leaving it as just json.loads() will inadvertently
+            # end up dumpping the large parsed json data to the logs,
+            # which is NOT what we want.
+
             # to satisfy PEP-8 requirement that declared variables
             # should not be unused. let's use it to print something useful.
-            print("data is valid json of type {}".format(type(validated_data)))
+            # print("data is valid json of \
+            #    type {}".format(type(validated_data)))
+
+            # reset validated_data to None, since we don't really use it
+            # outside of logging, and having many print  statements of this
+            # same function running will just fill up the logs quickly.
+            cls.dummy_function(validated_data)
         except ValueError:
             raise ValueError("Error Decoding - Data is not Valid JSON")
 
