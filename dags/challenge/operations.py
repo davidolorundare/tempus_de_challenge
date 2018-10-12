@@ -525,10 +525,10 @@ class NetworkOperations:
             FileStorage.write_json_to_file(headline_json, headline_dir, fname)
 
         # return with a verification that these operations succeeded
-        if os.listdir(news_dir):
+        if os.listdir(headline_dir):
             # airflow logging
             log.info("Files in Headlines Directory: ")
-            log.info(os.listdir(news_dir))
+            log.info(os.listdir(headline_dir))
             # PythonOperator callable needs to return True or False.
             return True
         else:
