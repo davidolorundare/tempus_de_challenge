@@ -28,7 +28,7 @@ HOME_DIRECTORY = str(os.environ['HOME'])
 
 
 class MissingApiKeyError(ValueError):
-    """raised when no api key is found or set"""
+    """raised when no api key is found or set."""
     pass
 
 
