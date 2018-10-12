@@ -19,8 +19,8 @@
 	* author's PIP version is `18.1`
 3. [Docker](https://www.docker.com)
 	* docker versions are `docker 18.06.1-ce` and `docker-compose 1.22.0`
-4. Register for a [News API key](https://newsapi.org/register)	
-5. Register for an [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
+4. Register for a free [News API key](https://newsapi.org/register)	
+5. Register for a free [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
 
 
 ---
@@ -40,7 +40,8 @@
 	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
 	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
-
+	- In the Console UI click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each.
+	![alt text]("UI_Image_Toggle_Activate_Dags")
 
 ---
 ### Getting Started: Pipeline Overview 
