@@ -813,9 +813,58 @@ class TestExtractOperations:
         expected_ids = ["abc-news", "abc-news-au"]
         assert expected_ids == result
 
-    @pytest.mark.skip
     def test_extract_headlines_succeeds(self):
-        """return successful extraction of headlines from json"""
+        """return successful extraction of headlines from json data"""
+
+        # parse the json headlines data for all 'title' tags
+
+        # Arrange
+        # create some dummy json resembling the valid news headlines json data
+        dummy_data = {"status": "ok",
+                      "totalResults": 9,
+                      "articles":
+                      [{"source":
+                       {"id": "abc-news", "name": "ABC News"},
+                       "author": "Karma Allen", "title": "Global \
+                       markets tumble in tandem with US stocks as Dow \
+                       futures signal lower open", "description": "Global \
+                       markets tumble in tandem with U.S. stocks after massive\
+                       Dow drop.", "url": "https://abcnews.go.com/Business/global-\
+                       markets-tumble-tandem-us-stocks-dow-futures/story?id=\
+                       58428372", "urlToImage": "https://s.abcnews.com/images/US/stoc\
+                       k-market-plunge-1-ap-thg-180529_hpMain_16x9_992.jpg", "publishe\
+                       dAt": "2018-10-11T00:00:00Z", "content": "Stock futures pointed to \
+                       an early decline on Wall Street Thursday as global\
+                        indexes tumbled, with popular tech companies getting \
+                        hit the hardest. Interested in Stock Market? Add Stock\
+                        Market as an interest to stay up to date on the latest\
+                        Stock Market news, v… [+2404 chars]"},
+                       {"source": {"id": "abc-news", "name": "ABC News"},
+                        "author": "Anthony Rivas and Aaron Katersky", "title": "Limo\
+                         in deadly crash had been cited for out-of-service \
+                         brakes", "description": "The New York State Department\
+                          of Transportation cited the limousine for brake \
+                          failures.", "url": "https://abcnews.go.com/US/limo-cra\
+                          sh-killed-20-people-cited-service-brakes/story?i\
+                          d=58433111", "urlToImage": "https://s.abcnews.com/ima\
+                          ges/US/breaking-news-graphic1-abc-ml-171211_1\
+                          6x9_992.jpg", "publishedAt": "2018-10-11T00:00:0\
+                          0Z", "content": "The limousine that crashed Saturday\
+                           in upstate New York, killing 20 people, had been\
+                            cited by the State Department of Transportation\
+                             in March for brake failures, according to\
+                              inspection results obtained by ABC News.\
+                               The citations included brakes out of\
+                                servic… [+830 chars]"}]}
+
+        # Act
+        result = c.ExtractOperations.extract_news_headlines(dummy_data)
+
+        # Assert
+        expected_headlines = ['Global markets tumble in tandem with US stocks\
+         as Dow futures signal lower open', 'Limo in deadly crash had been cited\
+          for out-of-service brakes']
+        assert result == 2
 
     def test_extract_news_source_id_no_sources_fails(self):
         """no source tag in the json data fails the extraction process"""

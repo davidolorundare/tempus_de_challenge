@@ -1,0 +1,32 @@
+{
+    "status": "ok",
+    "totalResults": 9,
+    "articles": [
+        {
+            "source": {
+                "id": "abc-news",
+                "name": "ABC News"
+            },
+            "author": "Karma Allen",
+            "title": "Global markets tumble in tandem with US stocks as Dow futures signal lower open",
+            "description": "Global markets tumble in tandem with U.S. stocks after massive Dow drop.",
+            "url": "https://abcnews.go.com/Business/global-markets-tumble-tandem-us-stocks-dow-futures/story?id=58428372",
+            "urlToImage": "https://s.abcnews.com/images/US/stock-market-plunge-1-ap-thg-180529_hpMain_16x9_992.jpg",
+            "publishedAt": "2018-10-11T00:00:00Z",
+            "content": "Stock futures pointed to an early decline on Wall Street Thursday as global indexes tumbled, with popular tech companies getting hit the hardest. Interested in Stock Market? Add Stock Market as an interest to stay up to date on the latest Stock Market news, v\u2026 [+2404 chars]"
+        },
+        {
+            "source": {
+                "id": "abc-news",
+                "name": "ABC News"
+            },
+            "author": "Anthony Rivas and Aaron Katersky",
+            "title": "Limo in deadly crash had been cited for out-of-service brakes",
+            "description": "The New York State Department of Transportation cited the limousine for brake failures.",
+            "url": "https://abcnews.go.com/US/limo-crash-killed-20-people-cited-service-brakes/story?id=58433111",
+            "urlToImage": "https://s.abcnews.com/images/US/breaking-news-graphic1-abc-ml-171211_16x9_992.jpg",
+            "publishedAt": "2018-10-11T00:00:00Z",
+            "content": "The limousine that crashed Saturday in upstate New York, killing 20 people, had been cited by the State Department of Transportation in March for brake failures, according to inspection results obtained by ABC News. The citations included brakes out of servic\u2026 [+830 chars]"
+        }
+    ]
+}

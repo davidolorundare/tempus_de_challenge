@@ -424,7 +424,7 @@ class ExtractOperations:
           get the news sources id and put them in a list (extract source-id)
 
         for each id
-          make an http call to get each headlines as json (get_headlines_api)
+          make an httpcall to get each headlines as json (get_source_headlines)
           extract the headlines and put them into a json (extract_headlines)
           write the json to the 'headlines' directory (write_to_json)
     """

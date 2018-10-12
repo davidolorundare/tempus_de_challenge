@@ -23,7 +23,7 @@ lint:
 test:
 	@echo
 	@echo --- Test ---
-	python -m pytest -v -m networktests --cov=${MODULE} --cov-branch tests/
+	python -m pytest -v -m extracttests --cov=${MODULE} --cov-branch tests/
 
 clean:
 	@echo
