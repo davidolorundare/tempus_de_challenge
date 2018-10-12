@@ -584,12 +584,7 @@ class TestFileStorage:
 
 @pytest.mark.networktests
 class TestNetworkOperations:
-    """tests the functions for task to get news by remote call to News APIs.
-
-    test call is made, test call returns with valid code, test call failure,
-    test error handling e.g. url is number not string, test return json goes
-    into directory. integration test for actually return json.
-    """
+    """tests news retrieval functions doing remote calls to the News APIs."""
 
     @patch('requests.Response', autospec=True)
     def test_get_news_http_call_success(self, response_obj):
@@ -658,8 +653,6 @@ class TestNetworkOperations:
     @patch('requests.get', autospect=True)
     def test_get_source_headlines_returns_successfully(self, request_method):
         """call to retrieve a source top-headlines makes http call correctly"""
-
-        # make an http call to get each headlines as json (get_headlines_api)
 
         # Arrange
         # craft the kind of expected http response when the method is called
