@@ -375,7 +375,7 @@ class NetworkOperations:
 
         log.info("Running get_news method")
 
-        # check the status code, if is is valid OK then save the result into
+        # check the status code, if is valid OK then save the result into
         # the appropriate news directory.
         status_code = response.status_code
 
