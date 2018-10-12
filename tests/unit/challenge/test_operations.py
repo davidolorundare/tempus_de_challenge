@@ -932,13 +932,11 @@ class TestExtractOperations:
                       "articles": []}
 
         # Act
-        with pytest.raises(ValueError) as err:
-            c.ExtractOperations.extract_news_headlines(dummy_data)
+        result = c.ExtractOperations.extract_news_headlines(dummy_data)
 
         # Assert
-        expected_message = str(err.value)
-
-        assert "'articles' tag in json is empty" in expected_message
+        expected = "There are no headlines - 'articles' tag in json is empty"
+        assert expected in result
 
     def test_create_news_headlines_json_no_source_id_fails(self):
         """passing no source_id to the function raises errors."""
