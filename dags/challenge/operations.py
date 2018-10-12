@@ -377,8 +377,6 @@ class NetworkOperations:
                 (Using either Airflow's Variable or XCom classes might be more
                 ideal here.)
             :type gb_var: string
-
-
         """
 
         log.info("Running get_news method")
@@ -527,17 +525,25 @@ class NetworkOperations:
             return False
 
     @classmethod
-    def get_news_keyword_headlines(cls, response: requests.Response):
+    def get_news_keyword_headlines(cls,
+                                   response: requests.Response,
+                                   headlines_dir=None,
+                                   filename=None):
         """processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
-        'tempus_bonus_challenge_dag'.
-        The function acts as a wrapper around the get_news() function.
+        'tempus_bonus_challenge_dag'. The function acts as a wrapper
+        around the get_news() function.
 
         # Arguments:
             :param response: http response object returned from the
                 SimpleHTTPOperator http call.
             :type response: Response object
+            :param headlines_dir: directory to store the news data to.
+            :type headlines_dir: string
+            :param filename: name of the json file created from the Response
+                object data.
+            :type filename: string
         """
 
         # extract the string query keyword used to request this headline
@@ -545,17 +551,19 @@ class NetworkOperations:
 
         # use the extracted query-keyword to construct the filename of the
         # final json file
-        fname = str(query) + "_headlines"
+        if not filename:
+            filename = str(query) + "_headlines"
 
         # retrieve the path to the headlines directory of the
         # 'tempus_bonus_challenge' pipeline
         pipeline_name = "tempus_bonus_challenge_dag"
-        headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
+        if not headlines_dir:
+            headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
 
         # process the Response object json data
         processing_status = cls.get_news(response,
                                          news_dir=headlines_dir,
-                                         filename=fname,
+                                         filename=filename,
                                          gb_var=pipeline_name)
 
         # file-write was successful and 'headlines' folder contains the json

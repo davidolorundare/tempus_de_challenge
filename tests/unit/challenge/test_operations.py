@@ -628,20 +628,46 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is True
 
-    @pytest.mark.skip
+    @patch('requests.PreparedRequest', autospec=True)
     @patch('requests.Response', autospec=True)
-    def test_get_news_keyword_headlines_succeeds(self, response_obj):
+    def test_get_news_keyword_headlines_succeeds(self, response, request):
         """call to the function returns successfully"""
 
         # Arrange
-        # response object returns an OK status code
-        response_obj.status_code = requests.codes.ok
 
+        # create function aliases
+        keyword_headline_func = c.NetworkOperations.get_news_keyword_headlines
+        storage_headline_dir_func = c.FileStorage.get_headlines_directory
+        # response object returns an OK status code
+        response.status_code = requests.codes.ok
         # configure call to the Response object's json() to return dummy data
-        # response_obj.request.path_url
+        response.json.side_effect = lambda: {"key": "value"}
+        # configure Response object 'encoding' attribute
+        response.encoding = "utf-8"
+
+        # configure Response object's request parameters be a dummy url
+        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=543"
+        request.path_url = "/v2/top-headlines?q=cancer&apiKey=543"
+        request.url = cancer_url
+        response.request = request
+
+        # retrieve the path to the folder the json file is saved to
+        path = storage_headline_dir_func("tempus_bonus_challenge_dag")
+
+        # filename of the headline json
+        fname = "cancer_headlines"
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(path)
 
         # Act
-        result = c.NetworkOperations.get_news_keyword_headlines(response_obj)
+        result = keyword_headline_func(response,
+                                       headlines_dir=path,
+                                       filename=fname)
 
         # Assert
         assert result is True
@@ -802,8 +828,8 @@ class TestExtractOperations:
         # Assert
         assert result is True
 
-    @patch('requests.Response', autospec=True)
     @patch('requests.PreparedRequest', autospec=True)
+    @patch('requests.Response', autospec=True)
     def test_extract_headline_keyword_success(self, response_obj, request_obj):
         """successfully parse of request url returns keyword parameter."""
 
@@ -1032,9 +1058,8 @@ class TestExtractOperations:
         expected_message = str(err.value)
         assert "'headlines' cannot be blank" in expected_message
 
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
     @patch('requests.PreparedRequest', autospec=True)
+    @patch('requests.Response', autospec=True)
     def test_extract_headline_keyword_no_query_in_url_fails(self,
                                                             response_obj,
                                                             request_obj):
