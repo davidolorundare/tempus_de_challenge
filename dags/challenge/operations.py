@@ -132,6 +132,10 @@ class FileStorage:
                            filename=None):
         """writes given json news data to an existing directory.
 
+        Perfoms checks if the json data and directory are valid, otherwise
+        raises error exceptions. the files are prefixed with the current
+        datetime.
+
         # Arguments
             :param create_date: date the file was created.
             :type create_date: string
@@ -143,8 +147,11 @@ class FileStorage:
             :param filename: the name of the crejsoated json file.
             :type filename: string
 
-        Checks if the json data and directory are valid, otherwise raises
-        error exceptions. the files are prefixed with the current datetime.
+        # Raises:
+            OSError: if the directory path given does not exist.
+            ValueError: if it fails to validate the input json data.
+            IOError: if it fails to write the validated json data as a file
+                to the given directory.
         """
 
         log.info("Running write_json_to_file method")
@@ -190,6 +197,11 @@ class FileStorage:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
             :type pipeline_name: string
+
+        # Raises:
+            ValueError: if the given pipeline name does not exist in a
+            predefined list mapping of pipline names to their respective
+            directories.
         """
 
         # mapping of the dag_id to the appropriate 'news' folder
@@ -224,6 +236,11 @@ class FileStorage:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
             :type pipeline_name: string
+
+        # Raises:
+            ValueError: if the given pipeline name does not exist in a
+                predefined list mapping of pipline names to their respective
+                directories.
         """
 
         # mapping of the dag_id to the appropriate 'headlines' folder
@@ -258,6 +275,11 @@ class FileStorage:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
             :type pipeline_name: string
+
+        # Raises:
+            ValueError: if the given pipeline name does not exist in a
+            predefined list mapping of pipline names to their respective
+            directories.
         """
 
         # mapping of the dag_id to the appropriate 'csv' folder
@@ -358,15 +380,30 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_source_id(cls, json_data):
-        """returns a list of (string) news source ids from a json.
+        """returns a list of (string) news source ids from a valid json.
 
         # Arguments:
             :param json_data: the json news data from which the news-source
                 ids will be extracted from.
             :type json_data: dict
+
+        # Raises:
+            KeyError: if the given json news data does not have the 'sources'
+                tag.
         """
 
-        return ["abc-news", "abc-news-au"]
+        if "sources" not in json_data.keys():
+            raise KeyError("news json has no 'sources' data")
+
+        if not json_data["sources"]:
+            raise ValueError("'sources' tag in json is empty")
+
+        sources_ids = []
+
+        for source in json_data["sources"]:
+            sources_ids.append(source["id"])
+
+        return sources_ids
 
 
 class TransformOperations:
