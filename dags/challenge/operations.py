@@ -702,7 +702,7 @@ class ExtractOperations:
     def extract_headline_keyword(cls, response: requests.Response):
         """extract string query keyword used to request given http Response"""
 
-        return True
+        return response.request.path_url
 
 
 class TransformOperations:

@@ -822,8 +822,7 @@ class TestExtractOperations:
         response_obj.status_code = requests.codes.ok
 
         # configure Response object's request parameters be a dummy url
-        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=68ce243\
-        5405b42e5b4a90080249c6962"
+        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=543"
         request_obj.path_url = cancer_url
 
         response_obj.request = request_obj
@@ -832,7 +831,7 @@ class TestExtractOperations:
         result = c.ExtractOperations.extract_headline_keyword(response_obj)
 
         # Assert
-        assert result is True
+        assert result == cancer_url
 
     def test_extract_news_source_id_succeeds(self):
         """extracting the 'id' parameter of sources in a json file succeeds."""
