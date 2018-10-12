@@ -548,16 +548,17 @@ class NetworkOperations:
         fname = str(query) + "_headlines"
 
         # retrieve the path to the headlines directory of the
-        # 'tempus_bonus_challenge'
+        # 'tempus_bonus_challenge' pipeline
         pipeline_name = "tempus_bonus_challenge_dag"
         headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
 
         # process the Response object json data
         processing_status = cls.get_news(response,
                                          news_dir=headlines_dir,
-                                         filename=fname)
+                                         filename=fname,
+                                         gb_var=pipeline_name)
 
-        # file-write was successfully and 'headlines' folder contains the json
+        # file-write was successful and 'headlines' folder contains the json
         if processing_status[0] and os.listdir(headlines_dir):
             return True
         else:
