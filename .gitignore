@@ -18,3 +18,5 @@ dumpery.json
 # unsafe to store the news api key openly in your repo
 .env
 dags/config.py
+
+readme_images/
