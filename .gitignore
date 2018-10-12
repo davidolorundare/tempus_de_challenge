@@ -5,6 +5,8 @@ tempus_env/
 
 # dummy file - used to test things in the repo
 faker.py
+dumper.json
+dumpery.json
 
 # pytest coverage info
 .coverage
