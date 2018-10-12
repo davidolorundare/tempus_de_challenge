@@ -111,7 +111,9 @@ headlines_task = PythonOperator(task_id='extract_headlines_task',
                                 dag=dag)
 
 # transform the data, resulting in a flattened csv
-flatten_csv_task = DummyOperator(task_id='transform_task', retries=3, dag=dag)
+flatten_csv_task = DummyOperator(task_id='transform_to_csv_task',
+                                 retries=3,
+                                 dag=dag)
 
 # upload the flattened csv into my S3 bucket
 upload_csv_task = DummyOperator(task_id='upload_task', retries=3, dag=dag)
