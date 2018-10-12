@@ -1044,18 +1044,19 @@ class TestExtractOperations:
         response_obj.status_code = requests.codes.ok
 
         # configure Response object's request parameters be a dummy url
-        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=543"
-        request_obj.path_url = "/v2/top-headlines?q=cancer&apiKey=543"
+        cancer_url = "https://newsapi.org/v2/top-headlines?apiKey=543"
+        request_obj.path_url = "/v2/top-headlines?apiKey=543"
         request_obj.url = cancer_url
 
         response_obj.request = request_obj
 
         # Act
-        result = c.ExtractOperations.extract_headline_keyword(response_obj)
+        with pytest.raises(KeyError) as err:
+            c.ExtractOperations.extract_headline_keyword(response_obj)
 
         # Assert
-        # extracted keyword parameter from the url should be 'cancer'
-        assert result == "cancer"
+        expected_message = str(err.value)
+        assert "Query param not found in URL" in expected_message
 
 
 @pytest.mark.transformtests
