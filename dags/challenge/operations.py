@@ -399,8 +399,8 @@ class NetworkOperations:
             url_endpoint = "https://newsapi.org/v2/top-headlines?"
 
         # craft the http request
-        params = "sources=".join([source_id])
-        key = "apiKey=".join([api_key])
+        params = "sources=" + source_id
+        key = "apiKey=" + api_key
         header = "".join([url_endpoint, params])
         full_request = "&".join([header, key])
 

@@ -18,7 +18,7 @@ from airflow.models import DAG
 # from airflow.models import Variable
 
 from dags import challenge as c
-import dags.env
+from dags import env
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 
@@ -629,7 +629,7 @@ class TestNetworkOperations:
         assert result[0] is True
 
     @patch('requests.get', autospect=True)
-    def test_get_source_headlines_calls_http_successfully(self, request_obj):
+    def test_get_source_headlines_call_http_successfully(self, request_method):
         """a remote call to retrieve a source's top-headlines succeeds"""
 
         # Arrange
@@ -637,58 +637,60 @@ class TestNetworkOperations:
         base_url = "https://newsapi.org/v2"
         endpoint = "top-headlines?"
         params = "sources=abc-news"
-
-        header = "/".join([base_url, endpoint])
-        # http_call = "".join([header, params])
-        api_key = env.NEWS_API_KEY
-
         id_source = params.split("=")[1]
+        key = env.NEWS_API_KEY
+
+        # craft http request
+        header = "/".join([base_url, endpoint])
+        http_call = "".join([header, params])
+        api_key = "apiKey=" + env.NEWS_API_KEY
+        http_call_with_key = "&".join([http_call, api_key])
 
         # Act
-
-        result = c.NetworkOperations.get_source_headlines(id_source,
-                                                          header,
-                                                          request_obj,
-                                                          api_key)
+        c.NetworkOperations.get_source_headlines(id_source,
+                                                 header,
+                                                 request_method,
+                                                 key)
 
         # Assert
-        assert requests.codes.ok == result
+        request_method.assert_called_with(http_call_with_key)
 
-    @pytest.mark.skip
     @patch('requests.get', autospect=True)
-    def test_get_source_headlines_returns_successfully(self, request_obj):
+    def test_get_source_headlines_returns_successfully(self, request_method):
         """call to retrieve a source top-headlines makes http call correctly"""
 
         # make an http call to get each headlines as json (get_headlines_api)
 
         # Arrange
+        # craft the kind of expected http response when the method is called
+        response_obj = MagicMock(spec=requests.Response)
+        response_obj.status_code = requests.codes.ok
+        request_method.side_effect = lambda url: response_obj
+
         # setup a dummy URL resembling the http call to get top-headlines
         base_url = "https://newsapi.org/v2"
         endpoint = "top-headlines?"
         params = "sources=abc-news"
-
-        header = "/".join([base_url, endpoint])
-        # http_call = "".join([header, params])
-
         id_source = params.split("=")[1]
+        header = "/".join([base_url, endpoint])
+        key = env.NEWS_API_KEY
 
         # Act
-        req = request_obj
         result = c.NetworkOperations.get_source_headlines(id_source,
-                                                          url_endpoint=header,
-                                                          http_method=req)
-        # get_headlines_api(source_id, url_endpoint=None, api_method=None)
-
+                                                          header,
+                                                          request_method,
+                                                          key)
         # Assert
-        assert requests.codes.ok == result
+        assert result == requests.codes.ok
 
     @pytest.mark.skip
     def test_get_source_headlines_call_fails(self):
         """news api call to retrieve top-headlines fails"""
 
-   @pytest.mark.skip
+    @pytest.mark.skip
     def test_get_source_headlines_no_api_key_fails(self):
         """news api call to retrieve top-headlines fails"""
+
 
 @pytest.mark.extractiontests
 class TestExtractOperations:
