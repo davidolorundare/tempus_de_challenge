@@ -163,7 +163,7 @@ datastore_creation_task >> news_kw4_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> retrieve_headlines_task >> flatten_csv_task
+file_exists_sensor >> extract_headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
