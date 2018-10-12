@@ -27,6 +27,11 @@ import pytest
 import requests
 
 
+class MissingApiKeyError(ValueError):
+    """raised when no api key is found or set"""
+    pass
+
+
 @pytest.mark.storagetests
 class TestFileStorage:
     """Tests the creation of the tempoary datastores used during ETL tasks.
@@ -702,13 +707,50 @@ class TestNetworkOperations:
         # Assert
         assert result[1] == requests.codes.bad_request
 
-    @pytest.mark.skip
-    def test_get_source_headlines_no_source_fails(self):
-        """news api call to retrieve top-headlines fails"""
+    @patch('requests.get', autospec=True)
+    def test_get_source_headlines_no_source_fails(self, request_method):
+        """call to retrieve source headlines with no-source fails"""
 
-    @pytest.mark.skip
-    def test_get_source_headlines_no_api_key_fails(self):
-        """news api call to retrieve top-headlines fails"""
+        # Arrange
+        # setup a dummy URL resembling the http call to get top-headlines
+        base_url = "https://newsapi.org/v2"
+        endpoint = "top-headlines?"
+        id_source = None
+        header = "/".join([base_url, endpoint])
+        key = env.NEWS_API_KEY
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.NetworkOperations.get_source_headlines(id_source,
+                                                     header,
+                                                     request_method,
+                                                     key)
+
+        # Assert
+        expected_message = str(err.value)
+        assert "'source_id' cannot be left blank" in expected_message
+
+    @patch('requests.get')
+    def test_get_source_headlines_no_api_key_fails(self, request_method):
+        """call to retrieve source headlines with no api key fails"""
+
+        # Arrange
+        # setup a dummy URL resembling the http call to get top-headlines
+        base_url = "https://newsapi.org/v2"
+        endpoint = "top-headlines?"
+        params = "sources=abc-news"
+        id_source = params.split("=")[1]
+        header = "/".join([base_url, endpoint])
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.NetworkOperations.get_source_headlines(id_source,
+                                                     header,
+                                                     request_method)
+
+        # Assert
+        expected_message = str(err.value)
+        assert "No News API Key found" in expected_message
 
 
 @pytest.mark.extractiontests

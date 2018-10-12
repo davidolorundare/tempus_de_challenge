@@ -26,7 +26,8 @@ log = logging.getLogger(__name__)
 HOME_DIRECTORY = str(os.environ['HOME'])
 
 
-class MissingApiKey(ValueError):
+class MissingApiKeyError(ValueError):
+    """raised when no api key is found or set"""
     pass
 
 
@@ -387,10 +388,10 @@ class NetworkOperations:
         """retrieve a news source's top-headlines via a remote API call"""
 
         if not source_id:
-            raise ValueError("'source_id cannot be left blank")
+            raise ValueError("'source_id' cannot be left blank")
 
         if not api_key:
-            raise MissingApiKey("No News API Key found")
+            raise ValueError("No News API Key found")
 
         if not http_method:
             http_method = requests.get
