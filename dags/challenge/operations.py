@@ -512,8 +512,10 @@ class NetworkOperations:
             return False
 
     @classmethod
-    def get_news_keyword_headlines(cls, **context):
-        """processes the response from the API call to get headlines.
+    def get_news_keyword_headlines(cls,
+                                   response: requests.Response,
+                                   **context):
+        """processes the response from the remote API call to get keyword headlines.
 
         Operations Performed:
 
