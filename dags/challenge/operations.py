@@ -720,7 +720,33 @@ class ExtractOperations:
         News API endpoint.
         """
 
-        return response.request.path_url
+        # inspect the request's Response object URL
+        relative_url = response.request.path_url
+        full_url = response.request.url
+
+        # parse the url
+        remove_relative_base_url = relative_url.split("?")
+        # base_url = remove_relative_base_url[0]
+        url_params = remove_relative_base_url[1]
+
+        # extract the parameters
+        parameter_list = []
+        if '&' in url_params:
+            parameter_list = url_params.split("&")
+        else:
+            parameter_list.append(url_params)
+
+        # extract the query parameter 'q'
+        query = [key for key in parameter_list if key.startswith('q')]
+
+        # error check
+        if not query:
+            raise KeyError("Query param not found in URL {}".format(full_url))
+
+        # there should only be one keyword variable in the url
+        query_keyword = query[0].split("=")[1]
+
+        return query_keyword
 
 
 class TransformOperations:

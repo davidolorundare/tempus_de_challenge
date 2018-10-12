@@ -638,17 +638,7 @@ class TestNetworkOperations:
         response_obj.status_code = requests.codes.ok
 
         # configure call to the Response object's json() to return dummy data
-        response_obj.request.path_url
-
-        # retrieve the path to the folder the json file is saved to
-        path = c.FileStorage.get_news_directory("tempus_challenge_dag")
-
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
-
-            # create a fake filesystem directory to test the method
-            patcher.fs.create_dir(path)
+        # response_obj.request.path_url
 
         # Act
         result = c.NetworkOperations.get_news_keyword_headlines(response_obj)
@@ -823,7 +813,8 @@ class TestExtractOperations:
 
         # configure Response object's request parameters be a dummy url
         cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=543"
-        request_obj.path_url = cancer_url
+        request_obj.path_url = "/v2/top-headlines?q=cancer&apiKey=543"
+        request_obj.url = cancer_url
 
         response_obj.request = request_obj
 
@@ -1040,6 +1031,31 @@ class TestExtractOperations:
         # Assert
         expected_message = str(err.value)
         assert "'headlines' cannot be blank" in expected_message
+
+    @patch('requests.Response', autospec=True)
+    @patch('requests.PreparedRequest', autospec=True)
+    def test_extract_headline_keyword_no_query_in_url_fails(self,
+                                                            response_obj,
+                                                            request_obj):
+        """request url with no query keyword parameter fails."""
+
+        # Arrange
+        # response object returns an OK status code
+        response_obj.status_code = requests.codes.ok
+
+        # configure Response object's request parameters be a dummy url
+        cancer_url = "https://newsapi.org/v2/top-headlines?q=cancer&apiKey=543"
+        request_obj.path_url = "/v2/top-headlines?q=cancer&apiKey=543"
+        request_obj.url = cancer_url
+
+        response_obj.request = request_obj
+
+        # Act
+        result = c.ExtractOperations.extract_headline_keyword(response_obj)
+
+        # Assert
+        # extracted keyword parameter from the url should be 'cancer'
+        assert result == "cancer"
 
 
 @pytest.mark.transformtests
