@@ -364,6 +364,9 @@ class NetworkOperations:
             :type response: Response object
             :param news_dir: directory to store the news data to.
             :type news_dir: string
+            :param filename: name of the json file created from the Response
+                object data.
+            :type filename: string
             :param gb_var: global variable used referencing the current
                 DAG pipeline name. This parameter exists because Airflow
                 gives errors when using the `Variable` class to test locally
@@ -390,8 +393,14 @@ class NetworkOperations:
         else:
             pipeline_name = gb_var
 
+        # assign a default directory to store the data
         if not news_dir:
             news_dir = FileStorage.get_news_directory(pipeline_name)
+
+        # assign a default filename for the data
+        fname = filename
+        if not filename:
+            fname = "english_news_sources"
 
         # copy of the json data
         json_data = response.json()
@@ -400,7 +409,7 @@ class NetworkOperations:
         if status_code == requests.codes.ok:
             FileStorage.write_json_to_file(data=json_data,
                                            path_to_dir=news_dir,
-                                           filename="english_news_sources")
+                                           filename=fname)
             return [True, status_code]
         elif status_code >= 400:
             return [False, status_code]
