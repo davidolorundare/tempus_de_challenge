@@ -676,6 +676,42 @@ class TestExtractOperations:
 
         # parse the news json 'sources' tag for all 'id' tags
 
+        # Arrange
+        # create some dummy json resembling valid news data
+        dummy_data = {"status": "ok", "sources": [
+                        {
+                        "id": "abc-news",
+                        "name": "ABC News",
+                        "description": 
+                        "Your trusted source for breaking news, analysis, \
+                        exclusive interviews, headlines, and videos at ABCNews.com.",
+                        "url": "https://abcnews.go.com",
+                        "category": "general",
+                        "language": "en",
+                        "country": "us"
+                        },
+                        {
+                        "id": "abc-news-au",
+                        "name": "ABC News (AU)",
+                        "description": "Australia's most trusted source of local, \
+                        national and world news. Comprehensive, independent, \
+                        in-depth analysis, the latest business, sport, weather \
+                        and more.",
+                        "url": "http://www.abc.net.au/news",
+                        "category": "general",
+                        "language": "en",
+                        "country": "au"
+                        }]
+                    }
+
+        # Act
+        result = extract_news_source_id(data)
+        
+        expected_ids = ["abc-news", "abc-news-au"]
+
+        # Assert
+        assert expected_ids == result
+
      @pytest.mark.skip
     def test_extract_news_source_id_fails(self):
         """extracting the 'id' parameter in a json file fails"""
