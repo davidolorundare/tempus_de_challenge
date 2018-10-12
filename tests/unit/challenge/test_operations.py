@@ -659,13 +659,13 @@ class TestExtractOperations:
         #       What does 'get_headlines' do really ?:
         #
         # get context-specific news directory (get_news_directory)
-        # 
+        #
         # for each file in that directory
         #   read the file (json load) in (get_headlines)
         #   get the news sources id and put them in a list (extract source-id)
-        #   
+        #
         # for each id
-        #   make an http call to get their headlines as json (get_headlines_api)
+        #   make an http call to get each headlines as json (get_headlines_api)
         #   extract the headlines and put them into a json (extract_headlines)
         #   write the json to the 'headlines' directory (write_to_json)
         pass
@@ -679,40 +679,37 @@ class TestExtractOperations:
         # Arrange
         # create some dummy json resembling valid news data
         dummy_data = {"status": "ok", "sources": [
-                        {
-                        "id": "abc-news",
-                        "name": "ABC News",
-                        "description": 
-                        "Your trusted source for breaking news, analysis, \
-                        exclusive interviews, headlines, and videos at ABCNews.com.",
-                        "url": "https://abcnews.go.com",
-                        "category": "general",
-                        "language": "en",
-                        "country": "us"
-                        },
-                        {
-                        "id": "abc-news-au",
-                        "name": "ABC News (AU)",
-                        "description": "Australia's most trusted source of local, \
-                        national and world news. Comprehensive, independent, \
-                        in-depth analysis, the latest business, sport, weather \
-                        and more.",
-                        "url": "http://www.abc.net.au/news",
-                        "category": "general",
-                        "language": "en",
-                        "country": "au"
-                        }]
-                    }
+                     {
+                      "id": "abc-news",
+                      "name": "ABC News",
+                      "description":
+                      "Your trusted source for breaking news, analysis, exclusive \
+                      interviews, headlines, and videos at ABCNews.com.",
+                      "url": "https://abcnews.go.com",
+                      "category": "general",
+                      "language": "en",
+                      "country": "us"},
+                     {"id": "abc-news-au",
+                      "name": "ABC News (AU)",
+                      "description": "Australia's most trusted source of local, \
+                      national and world news. Comprehensive, independent, \
+                      in-depth analysis, the latest business, sport, weather \
+                      and more.",
+                      "url": "http://www.abc.net.au/news",
+                      "category": "general",
+                      "language": "en",
+                      "country": "au"}]
+                      }
 
         # Act
-        result = extract_news_source_id(data)
-        
+        result = c.ExtractOperations.extract_news_source_id(dummy_data)
+
         expected_ids = ["abc-news", "abc-news-au"]
 
         # Assert
         assert expected_ids == result
 
-     @pytest.mark.skip
+    @pytest.mark.skip
     def test_extract_news_source_id_fails(self):
         """extracting the 'id' parameter in a json file fails"""
 
