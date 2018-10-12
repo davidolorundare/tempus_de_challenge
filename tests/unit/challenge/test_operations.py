@@ -922,8 +922,8 @@ class TestExtractOperations:
 
         assert "news json has no 'articles' data" in expected_message
 
-    def test_extract_headlines_empty_news_article_fails(self):
-        """return successful extraction of headlines from json."""
+    def test_extract_headlines_empty_news_article_returns_empty_list_(self):
+        """return empty list when there is no headlines."""
 
         # Arrange
         # create some dummy json resembling the valid news headlines json data
@@ -935,8 +935,7 @@ class TestExtractOperations:
         result = c.ExtractOperations.extract_news_headlines(dummy_data)
 
         # Assert
-        expected = "There are no headlines - 'articles' tag in json is empty"
-        assert expected in result
+        assert result == []
 
     def test_create_news_headlines_json_no_source_id_fails(self):
         """passing no source_id to the function raises errors."""
