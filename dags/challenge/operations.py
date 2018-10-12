@@ -177,7 +177,7 @@ class FileStorage:
 
             # to satisfy PEP-8 requirement that declared variables
             # should not be unused. let's use it to print something useful.
-            print("data valid json {}".format(type(validated_data)))
+            print("data is valid json of type {}".format(type(validated_data)))
         except ValueError:
             raise ValueError("Error Decoding - Data is not Valid JSON")
 
@@ -462,8 +462,13 @@ class NetworkOperations:
             headline_json = create_headline_json_func(value,
                                                       extracted_names[index],
                                                       headlines_list)
-            # descriptive name of the headline file
-            fname = str(extracted_names[index]) + "_headlines"
+            # descriptive name of the headline file.
+            # use the source id rather than source name, since
+            # (after testing) it was discovered that strange formattings
+            # like 'Reddit /r/all' get read by the open() like a directory
+            # path rather than a filename, and hence requires another separate
+            # parsing all together.
+            fname = str(value) + "_headlines"
 
             # write this json object to the headlines directory
             FileStorage.write_json_to_file(headline_json, headline_dir, fname)
@@ -611,8 +616,8 @@ class ExtractOperations:
         sources_names = []
 
         for source in json_data["sources"]:
-            sources_ids.append(source["id"])
-            sources_names.append(source["name"])
+            sources_ids.append(str(source["id"]))
+            sources_names.append(str(source["name"]))
 
         return sources_ids, sources_names
 
