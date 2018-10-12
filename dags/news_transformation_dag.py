@@ -103,7 +103,8 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 task_id='file_sensor_task',
                                 dag=dag)
 
-# retrieve all of the top headlines
+# retrieve each sources headlines and perform subsequent
+# headline-extraction step
 headlines_task = PythonOperator(task_id='extract_headlines_task',
                                 provide_context=True,
                                 python_callable=headlines_func_alias,
