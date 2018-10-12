@@ -948,7 +948,43 @@ class TestExtractOperations:
 
         # Assert
         expected_message = str(err.value)
-        assert "'source_id cannot be blank" in expected_message
+        assert "'source_id' cannot be blank" in expected_message
+
+    def test_create_news_headlines_json_no_source_name_fails(self):
+        """passing no source_name to the function raises errors."""
+
+        # Arrange
+        source_id = "abc-news"
+        source_name = None
+        top_headlines = ['top-headline1', 'top-headline2']
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.ExtractOperations.create_top_headlines_json(source_id,
+                                                          source_name,
+                                                          top_headlines)
+
+        # Assert
+        expected_message = str(err.value)
+        assert "'source_name' cannot be blank" in expected_message
+
+    def test_create_news_headlines_json_no_headlines_list_fails(self):
+        """passing no list of headlines to the function raises errors."""
+
+        # Arrange
+        source_id = "abc-news"
+        source_name = "ABC NEWS"
+        top_headlines = None
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.ExtractOperations.create_top_headlines_json(source_id,
+                                                          source_name,
+                                                          top_headlines)
+
+        # Assert
+        expected_message = str(err.value)
+        assert "'headlines' cannot be blank" in expected_message
 
 
 @pytest.mark.transformtests

@@ -513,7 +513,7 @@ class ExtractOperations:
         """creates a json object out given a news source and its headlines"""
 
         if not source_id:
-            raise ValueError("'source_id cannot be blank")
+            raise ValueError("'source_id' cannot be blank")
         if not source_name:
             raise ValueError("'source_name' cannot be blank")
         if not headlines:
