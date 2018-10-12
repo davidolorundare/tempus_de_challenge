@@ -471,38 +471,42 @@ class ExtractOperations:
             raise ValueError("'sources' tag in json is empty")
 
         sources_ids = []
+        sources_names = []
 
         for source in json_data["sources"]:
             sources_ids.append(source["id"])
+            sources_names.append(source["name"])
 
-        return sources_ids
+        return sources_ids, sources_names
 
     @classmethod
     def extract_news_headlines(cls, json_data):
         """returns a list of (string) news headlines from a valid json.
 
         # Arguments:
-            :param json_data: the json news data from which the news-source
-                ids will be extracted from.
+            :param json_data: the json news data from which the news-headlines
+                will be extracted from.
             :type json_data: dict
 
         # Raises:
-            KeyError: if the given json news data does not have the 'title'
-                tag.
+            KeyError: if the given json news data has no news 'articles'
+            ValueError: if the given json news headlines data has a
+                'articles' tag with empty data.
         """
 
-        # if "sources" not in json_data.keys():
-        #     raise KeyError("news json has no 'sources' data")
+        if "articles" not in json_data.keys():
+            raise KeyError("news json has no 'articles' data")
 
-        # if not json_data["sources"]:
-        #     raise ValueError("'sources' tag in json is empty")
+        if not json_data["articles"]:
+            raise ValueError("'articles' tag in json is empty")
 
-        # sources_ids = []
+        # Get all the articles for this news source
+        news_articles = [article for article in json_data["articles"]]
 
-        # for source in json_data["sources"]:
-        #     sources_ids.append(source["id"])
+        # Get the headline of each news article
+        headlines = [article["title"] for article in news_articles]
 
-        return 2
+        return headlines
 
 
 class TransformOperations:
