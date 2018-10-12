@@ -144,6 +144,9 @@ class FileStorage:
 
         # return True if the directory was created, otherwise False.
         if os.path.isdir(dir_path):
+            # airflow logging
+            log.info("Created Directory: {}".format(dir_path))
+
             return True
         else:
             return False
@@ -408,6 +411,10 @@ class NetworkOperations:
             FileStorage.write_json_to_file(data=json_data,
                                            path_to_dir=news_dir,
                                            filename=fname)
+            # airflow logging
+            log.info("Files in Directory {} :-".format(news_dir))
+            log.info(os.listdir(news_dir))
+
             return [True, status_code]
         elif status_code >= 400:
             return [False, status_code]
@@ -440,6 +447,8 @@ class NetworkOperations:
                 pipeline.
             :type context: dict
         """
+
+        log.info("Running get_news_headlines method")
 
         # reference to the news api key
         apikey = config.NEWS_API_KEY
@@ -518,6 +527,7 @@ class NetworkOperations:
         # return with a verification that these operations succeeded
         if os.listdir(news_dir):
             # airflow logging
+            log.info("Files in Headlines Directory: ")
             log.info(os.listdir(news_dir))
             # PythonOperator callable needs to return True or False.
             return True
@@ -545,6 +555,8 @@ class NetworkOperations:
                 object data.
             :type filename: string
         """
+
+        log.info("Running get_news_keyword_headlines method")
 
         # extract the string query keyword used to request this headline
         query = ExtractOperations.extract_headline_keyword(response)
@@ -599,6 +611,8 @@ class NetworkOperations:
 
         """
 
+        log.info("Running get_source_headlines method")
+
         if not source_id:
             raise ValueError("'source_id' cannot be left blank")
 
@@ -644,6 +658,8 @@ class ExtractOperations:
             ValueError: if the no headlines is given
         """
 
+        log.info("Running create_top_headlines_json method")
+
         if not source_id:
             raise ValueError("'source_id' cannot be blank")
         if not source_name:
@@ -673,6 +689,8 @@ class ExtractOperations:
             ValueError: if the given json news data has a 'sources' tag with
                 empty data
         """
+
+        log.info("Running extract_news_source_id method")
 
         if "sources" not in json_data.keys():
             raise KeyError("news json has no 'sources' data")
@@ -704,6 +722,8 @@ class ExtractOperations:
                 'articles' tag with empty data.
         """
 
+        log.info("Running extract_news_headlines method")
+
         if "articles" not in json_data.keys():
             raise KeyError("news json has no 'articles' data")
 
@@ -727,6 +747,8 @@ class ExtractOperations:
         object, that was applied during the http request to the 'top-headlines'
         News API endpoint.
         """
+
+        log.info("Running extract_headline_keyword method")
 
         # inspect the request's Response object URL
         relative_url = response.request.path_url
