@@ -531,20 +531,9 @@ class NetworkOperations:
                                    **context):
         """processes the response from the remote API call to get keyword headlines.
 
-        Operations Performed:
-
-        extract the top-headlines and save them to a folder by:
-
-        getting context-specific news directory (get_news_directory)
-
-        for each file in that directory
-          read the file (json load) in (get_news_headlines)
-          get the news sources id and put them in a list (extract source-id)
-
-        for each id
-          make an httpcall to get each headlines as json (get_source_headlines)
-          extract the headlines and put them into a json (extract_headlines)
-          write the json to the 'headlines' directory (write_to_json)
+        The function acts as a wrapper around the get_news() function.
+        It specficially stores the keyword headlines retrieved from the
+        response object in the 'headlines' directory
         """
 
         return 2

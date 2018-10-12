@@ -628,6 +628,10 @@ class TestNetworkOperations:
         # Assert
         assert result[0] is True
 
+    @pytest.mark.skip
+    def test_get_news_keyword_headlines_succeeds(self):
+        """call to the function returns successfully"""
+
     @patch('requests.get', autospect=True)
     def test_get_source_headlines_call_http_successfully(self, request_method):
         """a remote call to retrieve a source's top-headlines succeeds"""
