@@ -64,7 +64,7 @@ session.commit()
 # DAG Object
 dag = DAG('tempus_bonus_challenge_dag',
           default_args=default_args,
-          schedule_interval='0 0 * * *',
+          schedule_interval='0 01 * * *',
           catchup=False)
 
 # define workflow tasks
