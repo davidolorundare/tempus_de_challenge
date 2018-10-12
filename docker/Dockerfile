@@ -73,7 +73,6 @@ COPY ["Makefile", \
       "requirements.txt", \
       "requirements-test.txt", \
       "requirements-setup.txt", \
-      ".env", \
       "setup.py", \
       "setup.cfg", \
       "README.md", \

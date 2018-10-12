@@ -463,7 +463,7 @@ class NetworkOperations:
                                                       extracted_names[index],
                                                       headlines_list)
             # descriptive name of the headline file
-            fname = extracted_names[index] + "_headlines"
+            fname = str(extracted_names[index]) + "_headlines"
 
             # write this json object to the headlines directory
             FileStorage.write_json_to_file(headline_json, headline_dir, fname)

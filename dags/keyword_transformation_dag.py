@@ -18,7 +18,7 @@ from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
-import env
+import config
 
 
 default_args = {
@@ -42,7 +42,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 # https://12factor.net/config
 # this should NOT be hardcoded (put it in an environment variable)
 # can be replaced with the user's own generate News API Key
-API_KEY = env.NEWS_API_KEY
+API_KEY = config.NEWS_API_KEY
 
 # Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
