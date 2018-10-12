@@ -82,9 +82,9 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          python_callable=storage_func_alias,
                                          dag=dag)
 
-# # retrieve all news based on keywords
+# # retrieve all top news headlines for specific keywords
 # # Need to make four SimpleHTTPOperator calls run in parallel
-news_kw1_task = SimpleHttpOperator(endpoint='v2/everything?',
+news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Tempus Labs',
                                          'apiKey': API_KEY},
@@ -94,7 +94,7 @@ news_kw1_task = SimpleHttpOperator(endpoint='v2/everything?',
                                    retries=3,
                                    dag=dag)
 
-news_kw2_task = SimpleHttpOperator(endpoint='v2/everything?',
+news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Eric Lefkofsky',
                                          'apiKey': API_KEY},
@@ -104,7 +104,7 @@ news_kw2_task = SimpleHttpOperator(endpoint='v2/everything?',
                                    retries=3,
                                    dag=dag)
 
-news_kw3_task = SimpleHttpOperator(endpoint='v2/everything?',
+news_kw3_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Cancer',
                                          'apiKey': API_KEY},
@@ -114,7 +114,7 @@ news_kw3_task = SimpleHttpOperator(endpoint='v2/everything?',
                                    retries=3,
                                    dag=dag)
 
-news_kw4_task = SimpleHttpOperator(endpoint='v2/everything?',
+news_kw4_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Immunotherapy',
                                          'apiKey': API_KEY},
