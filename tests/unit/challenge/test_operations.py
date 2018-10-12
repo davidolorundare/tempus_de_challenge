@@ -671,12 +671,12 @@ class TestExtractOperations:
         pass
 
     def test_extract_news_source_id_succeeds(self):
-        """extracting the 'id' parameter in a json file succeeds"""
+        """extracting the 'id' parameter of sources in a json file succeeds"""
 
         # parse the news json 'sources' tag for all 'id' tags
 
         # Arrange
-        # create some dummy json resembling valid news data
+        # create some dummy json resembling the valid news json data
         dummy_data = {"status": "ok", "sources": [
                      {
                       "id": "abc-news",
@@ -703,14 +703,43 @@ class TestExtractOperations:
         # Act
         result = c.ExtractOperations.extract_news_source_id(dummy_data)
 
-        expected_ids = ["abc-news", "abc-news-au"]
-
         # Assert
+        expected_ids = ["abc-news", "abc-news-au"]
         assert expected_ids == result
 
-    @pytest.mark.skip
-    def test_extract_news_source_id_fails(self):
-        """extracting the 'id' parameter in a json file fails"""
+    def test_extract_news_source_id_no_sources_fails(self):
+        """no source tag in the json data fails the extraction process"""
+
+        # Arrange
+        # create some dummy json resembling the news json data with no
+        # source tag.
+        dummy_data = {"status": "ok"}
+
+        # Act
+        with pytest.raises(KeyError) as err:
+            c.ExtractOperations.extract_news_source_id(dummy_data)
+
+        # Assert
+        expected_message = str(err.value)
+
+        assert "news json has no 'sources' data" in expected_message
+
+    def test_extract_news_source_id_empty_sources_fails(self):
+        """an empty source tag in the json data fails the extraction process"""
+
+        # Arrange
+        # create some dummy json resembling the news json data with an empty
+        # source tag.
+        dummy_data = {"status": "ok", "sources": []}
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.ExtractOperations.extract_news_source_id(dummy_data)
+
+        # Assert
+        expected_message = str(err.value)
+
+        assert "'sources' tag in json is empty" in expected_message
 
     @pytest.mark.skip
     def test_get_headlines_api_succeeds(self):
