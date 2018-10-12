@@ -674,10 +674,36 @@ class TestNetworkOperations:
                                                           request_method,
                                                           key)
         # Assert
-        assert result == requests.codes.ok
+        assert result[1] == requests.codes.ok
+
+    @patch('requests.get', autospec=True)
+    def test_get_source_headlines_http_call_fails(self, request_method):
+        """news api call to retrieve top-headlines fails"""
+
+        # Arrange
+        # craft the kind of expected http response when the method is called
+        response_obj = MagicMock(spec=requests.Response)
+        response_obj.status_code = requests.codes.bad
+        request_method.side_effect = lambda url: response_obj
+
+        # setup a dummy URL resembling the http call to get top-headlines
+        base_url = "https://newsapi.org/v2"
+        endpoint = "top-headlines?"
+        params = "sources=abc-news"
+        id_source = params.split("=")[1]
+        header = "/".join([base_url, endpoint])
+        key = env.NEWS_API_KEY
+
+        # Act
+        result = c.NetworkOperations.get_source_headlines(id_source,
+                                                          header,
+                                                          request_method,
+                                                          key)
+        # Assert
+        assert result[1] == requests.codes.bad_request
 
     @pytest.mark.skip
-    def test_get_source_headlines_call_fails(self):
+    def test_get_source_headlines_no_source_fails(self):
         """news api call to retrieve top-headlines fails"""
 
     @pytest.mark.skip

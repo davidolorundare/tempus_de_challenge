@@ -406,7 +406,7 @@ class NetworkOperations:
 
         response = http_method(full_request)
 
-        return response.status_code
+        return [response, response.status_code]
 
 
 class ExtractOperations:
