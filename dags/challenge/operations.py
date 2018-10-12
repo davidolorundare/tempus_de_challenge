@@ -12,6 +12,7 @@ import errno
 import json
 import logging
 import os
+import shutil
 import time
 
 from airflow.models import Variable
@@ -128,6 +129,11 @@ class FileStorage:
                                       'tempdata',
                                       dag_id,
                                       dir_name)
+            # idempotency - if those news,headlines,csv folders
+            # already exist then delete them before starting the
+            # a fresh pipeline run.
+            if os.path.exists(dir_path) and os.path.isdir(dir_path):
+                shutil.rmtree(dir_path)
             dir_func(dir_path, exist_ok=True)
         # using exist_ok=True in makedirs would still raise FileExistsError
         # if target path exists and it is not a directory (e.g. file,
