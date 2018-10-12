@@ -679,7 +679,7 @@ class TestNetworkOperations:
                                                           request_method,
                                                           key)
         # Assert
-        assert result[1] == requests.codes.ok
+        assert result.status_code == requests.codes.ok
 
     @patch('requests.get', autospec=True)
     def test_get_source_headlines_http_call_fails(self, request_method):
@@ -705,7 +705,7 @@ class TestNetworkOperations:
                                                           request_method,
                                                           key)
         # Assert
-        assert result[1] == requests.codes.bad_request
+        assert result.status_code == requests.codes.bad_request
 
     @patch('requests.get', autospec=True)
     def test_get_source_headlines_no_source_fails(self, request_method):
