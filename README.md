@@ -41,7 +41,7 @@
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
 	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 	- In the Console UI click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each.
-	![alt text]("UI_Image_Toggle_Activate_Dags")
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/airflow_ui_console.jpeg "Airflow Console UI - Activate and Trigger Dags")
 
 ---
 ### Getting Started: Pipeline Overview 
