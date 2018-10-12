@@ -7,7 +7,7 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
-# import env
+import env
 import errno
 import json
 import logging
@@ -134,8 +134,8 @@ class FileStorage:
     def write_json_to_file(cls,
                            data,
                            path_to_dir,
-                           create_date=None,
-                           filename=None):
+                           filename=None,
+                           create_date=None):
         """writes given json news data to an existing directory.
 
         Perfoms checks if the json data and directory are valid, otherwise
@@ -373,11 +373,107 @@ class NetworkOperations:
             return [False, status_code]
 
     @classmethod
-    def get_news_headlines(cls):
-        """processes the response from the API call to get headlines."""
+    def get_news_headlines(cls, **context):
+        """processes the response from the API call to get headlines.
+
+        Operations Performed:
+
+        extract the top-headlines and save them to a folder by:
+
+        getting context-specific news directory (get_news_directory)
+
+        for each file in that directory
+          read the file (json load) in (get_news_headlines)
+          get the news sources id and put them in a list (extract source-id)
+
+        for each id
+          make an httpcall to get each headlines as json (get_source_headlines)
+          extract the headlines and put them into a json (extract_headlines)
+          write the json to the 'headlines' directory (write_to_json)
+        """
 
         # reference to the news api key
-        # api_key = env.NEWS_API_KEY
+        apikey = env.NEWS_API_KEY
+
+        # grab details about the current dag pipeline runnning
+        dag_id = str(context['dag'].dag_id)
+
+        # reference to the news sources and headlines directories
+        headline_directory = FileStorage.get_headlines_directory(dag_id)
+        news_directory = FileStorage.get_news_directory(dag_id)
+
+        # tuple of the list of each news source id and name.
+        extracted_sources = None
+        extracted_names = None
+        extracted_ids = None
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit .
+        source_extract_func = ExtractOperations.extract_news_source_id
+        create_headline_json_func = ExtractOperations.create_top_headlines_json
+
+        # inspect the news directory and collate the json file in there;
+        # list of all the json news files in that directory from upstream tasks
+        news_files = []
+
+        for data_file in os.listdir(news_directory):
+            if data_file.endswith('.json'):
+                news_files.append(data_file)
+
+        # process the collated json files
+        for js in news_files:
+            json_path = os.path.join(news_directory, js)
+
+            # read each news json and extract the news sources
+            with open(json_path, "r") as js_file:
+                try:
+                    raw_data = json.load(js_file)
+                    extracted_sources = source_extract_func(raw_data)
+                except ValueError:
+                    raise ValueError("Parsing Error: {}".format(json_path))
+
+        # ensure the last extraction step really worked before proceeding
+        if extracted_sources:
+            extracted_ids = extracted_sources[0]
+            extracted_names = extracted_sources[1]
+
+        # get the headlines of each source
+        for index, value in enumerate(extracted_ids):
+            headlines_obj = cls.get_source_headlines(value, api_key=apikey)[0]
+            headlines = ExtractOperations.extract_news_headlines(headlines_obj)
+
+            # assembly a json object from source and headline
+            headline_json = create_headline_json_func(value,
+                                                      extracted_names[index],
+                                                      headlines)
+            # descriptive name of the headline file
+            # fname =
+
+            # write this json object to the headlines directory
+            FileStorage.write_json_to_file(headline_json, headline_dir, fname)
+
+        return 2
+
+    @classmethod
+    def get_news_keyword_headlines(cls, **context):
+        """processes the response from the API call to get headlines.
+
+        Operations Performed:
+
+        extract the top-headlines and save them to a folder by:
+
+        getting context-specific news directory (get_news_directory)
+
+        for each file in that directory
+          read the file (json load) in (get_news_headlines)
+          get the news sources id and put them in a list (extract source-id)
+
+        for each id
+          make an httpcall to get each headlines as json (get_source_headlines)
+          extract the headlines and put them into a json (extract_headlines)
+          write the json to the 'headlines' directory (write_to_json)
+        """
 
         return 2
 
@@ -432,23 +528,25 @@ class NetworkOperations:
 
 
 class ExtractOperations:
-    """handles functionality for extracting headlines.
+    """handles functionality for extracting headlines."""
 
+    @classmethod
+    def create_top_headlines_json(cls, source_id, source_name, headlines):
+        """creates a json object out given a news source and its headlines"""
 
-    Operations Performed:
+        if not source_id:
+            raise ValueError("'source_id' cannot be blank")
+        if not source_name:
+            raise ValueError("'source_name' cannot be blank")
+        if not headlines:
+            raise ValueError("'headlines' cannot be blank")
 
-    extract the top-headlines and save them to a folder:
-        get context-specific news directory (get_news_directory)
+        source_top_headlines = {"source": {
+                                "id": source_id,
+                                "name": source_name},
+                                "headlines": headlines}
 
-        for each file in that directory
-          read the file (json load) in (get_headlines)
-          get the news sources id and put them in a list (extract source-id)
-
-        for each id
-          make an httpcall to get each headlines as json (get_source_headlines)
-          extract the headlines and put them into a json (extract_headlines)
-          write the json to the 'headlines' directory (write_to_json)
-    """
+        return source_top_headlines
 
     @classmethod
     def extract_news_source_id(cls, json_data):
@@ -509,24 +607,6 @@ class ExtractOperations:
         headlines = [article["title"] for article in news_articles]
 
         return headlines
-
-    @classmethod
-    def create_top_headlines_json(cls, source_id, source_name, headlines):
-        """creates a json object out given a news source and its headlines"""
-
-        if not source_id:
-            raise ValueError("'source_id' cannot be blank")
-        if not source_name:
-            raise ValueError("'source_name' cannot be blank")
-        if not headlines:
-            raise ValueError("'headlines' cannot be blank")
-
-        source_top_headlines = {"source": {
-                                "id": source_id,
-                                "name": source_name},
-                                "headlines": headlines}
-
-        return source_top_headlines
 
 
 class TransformOperations:
