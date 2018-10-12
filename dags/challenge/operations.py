@@ -425,13 +425,14 @@ class NetworkOperations:
         # News Headline extraction per source
         # inspect the news directory and collate the json file in there;
         # list of all the json news files in that directory from upstream tasks
+        # - Can be extracted as a new method.
         news_files = []
 
         for data_file in os.listdir(news_dir):
             if data_file.endswith('.json'):
                 news_files.append(data_file)
 
-        # process the collated json files
+        # process the collated json files   - Can be extracted as a new method.
         for js in news_files:
             json_path = os.path.join(news_dir, js)
 
@@ -451,7 +452,7 @@ class NetworkOperations:
         extracted_ids = extracted_sources[0]
         extracted_names = extracted_sources[1]
 
-        # get the headlines of each source
+        # get the headlines of each source  - Can be extracted as a new method.
         for index, value in enumerate(extracted_ids):
             headlines_obj = cls.get_source_headlines(value, api_key=apikey)
             if headlines_obj.status_code == requests.codes.ok:
@@ -469,6 +470,9 @@ class NetworkOperations:
 
         # return with a verification that these operations succeeded
         if os.listdir(news_dir):
+            # airflow logging
+            log.info(os.listdir(news_dir))
+            # PythonOperator callable needs to return True or False.
             return True
         else:
             return False
