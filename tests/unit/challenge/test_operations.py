@@ -817,7 +817,7 @@ class TestExtractOperations:
         """return valid json news data with sources and headlines ."""
 
         # Arrange
-        # create some dummy json resembling the valid news headlines json data
+        # create some dummy json resembling the final source and headline data
         dummy_data_expected = {"source": {
                                "id": "abc-news",
                                "name": "ABC NEWS"},
@@ -931,6 +931,24 @@ class TestExtractOperations:
         expected_message = str(err.value)
 
         assert "'articles' tag in json is empty" in expected_message
+
+    def test_create_news_headlines_json_no_source_id_fails(self):
+        """passing no source_id to the function raises errors."""
+
+        # Arrange
+        source_id = None
+        source_name = "ABC NEWS"
+        top_headlines = ['top-headline1', 'top-headline2']
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.ExtractOperations.create_top_headlines_json(source_id,
+                                                          source_name,
+                                                          top_headlines)
+
+        # Assert
+        expected_message = str(err.value)
+        assert "'source_id cannot be blank" in expected_message
 
 
 @pytest.mark.transformtests
