@@ -342,7 +342,11 @@ class NetworkOperations:
     """handles functionality making remote calls to the News API."""
 
     @classmethod
-    def get_news(cls, response: requests.Response, news_dir=None, gb_var=None):
+    def get_news(cls,
+                 response: requests.Response,
+                 news_dir=None,
+                 filename=None,
+                 gb_var=None):
         """processes the response from the API call to get all english news sources.
 
         Returns True is the response is valid and stores the content in the
@@ -370,6 +374,7 @@ class NetworkOperations:
                 (Using either Airflow's Variable or XCom classes might be more
                 ideal here.)
             :type gb_var: string
+
 
         """
 
