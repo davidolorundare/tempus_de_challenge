@@ -875,6 +875,11 @@ class TestNetworkOperations:
 class TestExtractOperations:
     """tests the functions for the task to extract headlines from data."""
 
+    @pytest.fixture(scope='class')
+    def home_directory_res(self) -> str:
+        """returns a pytest resource - path to the Airflow Home directory."""
+        return str(os.environ['HOME'])
+
     @pytest.mark.skip(reason="will write a test for this macro-function,\
         though the functions it uses have all been tested")
     def test_get_news_headlines(self):
@@ -1012,9 +1017,48 @@ class TestExtractOperations:
         expected_headlines = ["Odell Beckham Jr. walks into locker room"]
         assert result == expected_headlines
 
-    @pytest.mark.skip
-    def test_extract_jsons_source_info_succeds(self):
+    def test_extract_jsons_source_info_succeds(self, home_directory_res):
         """list of news json successfully extracts source id and names."""
+
+        # Arrange
+        dummy_data_one = {"source": {
+                          "id": 'abc-new1',
+                          "name": 'ABC News1'},
+                          "headlines": ['headlines1', 'headlines2']}
+
+        dummy_data_two = {"source": {
+                          "id": 'abc-new2',
+                          "name": 'ABC News2'},
+                          "headlines": ['headlines1', 'headlines2']}
+
+        extract_func_alias = c.ExtractOperations.extract_jsons_source_info
+
+        news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
+        js_dir = news_path
+        js_list = ['stuff1.json', 'stuff2.json']
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create dummy files
+            full_file_path1 = os.path.join(js_dir, 'stuff1.json')
+            full_file_path2 = os.path.join(js_dir, 'stuff2.json')
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(js_dir)
+            patcher.fs.create_file(full_file_path1, contents=dummy_data_one)
+            patcher.fs.create_file(full_file_path2, contents=dummy_data_two)
+
+        # Act
+            actual_result = extract_func_alias(js_list, js_dir)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        expected = (['abc-new1', 'abc-new2'], ['ABC News1', 'ABC News2'])
+        assert expected == actual_result
 
     @pytest.mark.skip
     def test_extract_jsons_source_info_fails(self):
@@ -1238,34 +1282,6 @@ class TestNewsInfoDTO:
         # Assert
         assert isinstance(news_info_obj, c.NewsInfoDTO)
 
-    def test_newsinfodto_wrong_pipeline_name_fails(self):
-        """creation of a new instance with a wrong pipeline name fails."""
-
-        # Arrange
-        pipeline_name = 'wrong_pipeline_name_dag'
-
-        # Act
-        with pytest.raises(ValueError) as err:
-            c.NewsInfoDTO(pipeline_name)
-
-        # Assert
-        actual_message = str(err.value)
-        assert "not valid pipeline" in actual_message
-
-    def test_newsinfodto_blank_pipeline_name_fails(self):
-        """creation of a new instance with a wrong pipeline name fails."""
-
-        # Arrange
-        pipeline_name = None
-
-        # Act
-        with pytest.raises(ValueError) as err:
-            c.NewsInfoDTO(pipeline_name)
-
-        # Assert
-        actual_message = str(err.value)
-        assert "Argument pipeline_name cannot be left blank" in actual_message
-
     def test_load_news_files(self, home_directory_res):
         """function successfully loads news files and returns empty list
         if the news directory has no files.
@@ -1298,3 +1314,31 @@ class TestNewsInfoDTO:
 
         # Assert
         assert not files
+
+    def test_newsinfodto_wrong_pipeline_name_fails(self):
+        """creation of a new instance with a wrong pipeline name fails."""
+
+        # Arrange
+        pipeline_name = 'wrong_pipeline_name_dag'
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.NewsInfoDTO(pipeline_name)
+
+        # Assert
+        actual_message = str(err.value)
+        assert "not valid pipeline" in actual_message
+
+    def test_newsinfodto_blank_pipeline_name_fails(self):
+        """creation of a new instance with a wrong pipeline name fails."""
+
+        # Arrange
+        pipeline_name = None
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.NewsInfoDTO(pipeline_name)
+
+        # Assert
+        actual_message = str(err.value)
+        assert "Argument pipeline_name cannot be left blank" in actual_message
