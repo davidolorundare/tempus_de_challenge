@@ -574,9 +574,8 @@ class NetworkOperations:
 
         # parse the json data from the Response object to get
         # the headlines for this keyword
-        data = response.json()
-        ExtractOperations.parse_keyword_json(data, pipeline_name)
-
+        # data = response.json()
+        # ExtractOperations.parse_keyword_json(data, pipeline_name)
 
         # process the Response object json data
         processing_status = cls.get_news(response,
@@ -785,24 +784,49 @@ class ExtractOperations:
 
         return query_keyword.lower()
 
-    @classmethod
-    def parse_headline_json(cls, json_data, pipeline_name):
-        """parse the json from a keyword headline Response object.
+
+class ParsedHeadlineJSON:
+        """parsed headline json object from a keyword headline Response object.
+
+
+        This class functions as a Data Transfer Object(DTO).
+
+        The get_news_headlines() function was refactored after discovering
+        that alot of its functionalities were shared with that of the function
+        get_news_keyword_headlines(). In order to create a common interface to
+        write to at the end of the Extraction phase (the 'E' in ETL) the author
+        decided to create a separate class which abstracted much of the shared
+        functionality.
+        Refactoring the get_news_headlines() function also made it easier to
+        unit test as well.
 
         # Arguments:
             :param json_data: the json news data from which the news-headlines
                 will be extracted from.
             :type json_data: dict
+            :param pipeline_name: name of the current DAG pipeline.
+            :type pipeline_name: string
+
+        # Raises:
+            ValueError: if the required 'json_data' argument is left blank
+            ValueError: if the required 'pipeline_name' argument is left blank
         """
 
-        # reference to the news sources and headlines directories
-        headline_dir = FileStorage.get_headlines_directory(dag_id)
-        news_dir = FileStorage.get_news_directory(dag_id)
+        def __init__(self, json_data, pipeline_name):
+            if not json_data:
+                raise ValueError("Argument json_data cannot be left blank")
 
-        # reference to tuple of the list of each news source id and name.
-        extracted_sources = None
-        extracted_names = None
-        extracted_ids = None
+            if not pipeline_name:
+                raise ValueError("Argument pipeline_name cannot be left blank")
+
+            self.data = json_data
+            self.pipeline = str(pipeline_name)
+
+            # for the 'tempus_challenge_dag' pipeline we need to retrieve the
+            # collated news sources json files from the upstream task
+            self.news_files = []
+            if self.pipeline == "tempus_challenge_dag":
+                self.news_files = self.get_news_files()
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -810,6 +834,42 @@ class ExtractOperations:
         create_headline_json_func = ExtractOperations.create_top_headlines_json
         extract_headline_func = ExtractOperations.extract_news_headlines
         source_extract_func = ExtractOperations.extract_news_source_id
+
+        @property
+        def headline_directory(self) -> str:
+            """returns the path to this pipeline's headline directory."""
+            return FileStorage.get_headlines_directory(self.pipeline)
+
+        @property
+        def news_directory(self) -> str:
+            """returns the path to this pipeline's news directory."""
+            return FileStorage.get_news_directory(self.pipeline)
+
+        @property
+        def csv_directory(self) -> str:
+            """returns the path to this pipeline's csv directory."""
+            return FileStorage.get_csv_directory(self.pipeline)
+
+        @property
+        def news_files(self) -> str:
+            """returns json files in the news directory of this pipeline."""
+            return self.news_files
+
+        def load_news_files(self):
+            """get the contents of the pipeline's news directory."""
+
+            files = []
+
+            if self.news_directory:
+                for data_file in os.listdir(self.news_directory):
+                    if data_file.endswith('.json'):
+                        files.append(data_file)
+            return files
+
+        # reference to tuple of the list of each news source id and name.
+        extracted_sources = None
+        extracted_names = None
+        extracted_ids = None
 
 
 class TransformOperations:
