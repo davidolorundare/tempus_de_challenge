@@ -1387,11 +1387,14 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
-    @pytest.mark.skip
     def test_flatten_to_csv(self):
         """test the function to flatten a json to csv."""
-        pass
 
+        result = c.TransformOperations.flatten_json_to_csv()
+
+        assert result == 2
+
+    @pytest.mark.skip
     def test_transform_headlines_to_csv(self):
         """test macro function to flatten a set of json files to one csv.
 
