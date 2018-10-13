@@ -960,6 +960,12 @@ class ParseHeadlineJson:
 class TransformOperations:
     """handles functionality for flattening CSVs."""
 
+    @classmethod
+    def flatten_json_to_csv(cls, json_data):
+        """converts the contents in a json object into a csv."""
+
+        return 2
+
 
 class UploadOperations:
     """handles functionality for uploading flattened CSVs."""

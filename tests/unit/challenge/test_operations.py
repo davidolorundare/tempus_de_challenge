@@ -1390,7 +1390,9 @@ class TestTransformOperations:
     def test_flatten_to_csv(self):
         """test the function to flatten a json to csv."""
 
-        result = c.TransformOperations.flatten_json_to_csv()
+        data = None
+
+        result = c.TransformOperations.flatten_json_to_csv(data)
 
         assert result == 2
 
