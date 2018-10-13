@@ -1071,7 +1071,7 @@ class TestExtractOperations:
 
         assert "news json has no 'articles' data" in expected_message
 
-    def test_extract_headlines_empty_news_article_returns_empty_list_(self):
+    def test_extract_headlines_empty_news_article_returns_empty_list(self):
         """return empty list when there is no headlines."""
 
         # Arrange
