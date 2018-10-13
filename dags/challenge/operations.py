@@ -230,7 +230,8 @@ class FileStorage:
                                        source_ids,
                                        source_names,
                                        headline_dir,
-                                       api_key):
+                                       api_key,
+                                       headline_func=None):
         """writes extracted news source headline json data to an existing directory.
 
         # Arguments:
@@ -244,6 +245,8 @@ class FileStorage:
             :param api_key: string News API Key used for performing retrieval
                 of a source's top headlines remotely
             :type api_key: string
+            :param headline_func: function to use for extracting headlines.
+            :type headline_func: function
 
         # Raises:
             ValueError: if any of the arguments are left blank
@@ -254,7 +257,8 @@ class FileStorage:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        source_headlines_func = NetworkOperations.get_source_headlines
+        if not headline_func:
+            headline_func = NetworkOperations.get_source_headlines
 
         # error check for non-set arguments
         if not source_ids:
@@ -268,7 +272,7 @@ class FileStorage:
 
         # get the headlines of each source
         for index, value in enumerate(source_ids):
-            headlines_obj = source_headlines_func(value, api_key=api_key)
+            headlines_obj = headline_func(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
                 headline_json = headlines_obj.json()
                 # descriptive name of the headline file.

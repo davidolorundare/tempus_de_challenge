@@ -384,18 +384,81 @@ class TestFileStorage:
         assert result is True
         assert file_is_present is True
 
-    @pytest.mark.skip(reason="crafting good tests requires more time")
-    def test_write_source_headlines_to_file_success(self):
-        """writes of news source headlines to a directory succeed."""
+    @patch('requests.Response', autospec=True)
+    def test_write_source_headlines_to_file_success(self,
+                                                    request_obj,
+                                                    home_directory_res):
+        """writes of news source headlines to a directory succeeds."""
+
+        # Arrange
+        # setup the function parameters
+        key = config.NEWS_API_KEY
+        ids = ['abc-news-au', 'bbc-news']
+        names = ['ABCNews', 'BBCNews']
+
+        hd_dir = os.path.join(home_directory_res,
+                              'tempdata',
+                              'tempus_challenge_dag',
+                              'headlines')
+
+        # craft dummy json data
+        dummy_data = {"status": "ok", "sources": [
+                     {
+                      "id": "polygon",
+                      "name": "Polygon",
+                      "description":
+                      "Your trusted source for breaking news, analysis, exclusive \
+                      interviews, games and much more.",
+                      "url": "https://www.polygon.com",
+                      "category": "general",
+                      "language": "en",
+                      "country": "us"}]
+                      }
+
+        # configure the Mock objects
+        # function mimics a http GET request method call
+        headline_fnc = MagicMock()
+        data = json.dumps(dummy_data)
+
+        request_obj.status_code = requests.codes.ok
+        request_obj.side_effect = lambda: data
+
+        # function returns a valid json object when called
+        headline_fnc.side_effect = request_obj
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            # and inject the paramters
+            patcher.fs.create_dir(hd_dir)
+            # patcher.fs.create_file(news_path, contents="news.json")
+
+        # Act
+            stat = c.FileStorage.write_source_headlines_to_file(ids,
+                                                                names,
+                                                                hd_dir,
+                                                                key,
+                                                                headline_fnc)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert stat is True
 
     def test_write_source_headlines_to_file_no_argument_fails(self):
-        """writes of news source headlines to a directory fail."""
+        """writes of news source headlines to a directory fails with missing
+        parameter.
+        """
 
         # Arrange
         key = None
         ids = ['abc-news-au', 'bbc-news']
         names = ['ABCNews', 'BBCNews']
         hd_dir = '/tempdata/data'
+
         # Act
         with pytest.raises(ValueError) as err:
             c.FileStorage.write_source_headlines_to_file(ids,
