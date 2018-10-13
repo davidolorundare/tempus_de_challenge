@@ -875,18 +875,6 @@ class NewsInfoDTO:
             if self.pipeline == "tempus_challenge_dag":
                 self.news_json_files = self.load_news_files()
 
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit .
-        create_headline_json_func = ExtractOperations.create_top_headlines_json
-        extract_headline_func = ExtractOperations.extract_news_headlines
-        source_extract_func = ExtractOperations.extract_news_source_id
-
-        # reference to tuple of the list of each news source id and name.
-        extracted_sources = None
-        extracted_names = None
-        extracted_ids = None
-
         @property
         def headlines_directory(self) -> str:
             """returns the path to this pipeline's headline directory."""
