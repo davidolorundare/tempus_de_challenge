@@ -459,35 +459,22 @@ class NetworkOperations:
 
         # Function Aliases
         # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit .
+        # is more than PEP-8's 79 line-character limit.
         create_headline_json_func = ExtractOperations.create_top_headlines_json
         extract_headline_func = ExtractOperations.extract_news_headlines
-        source_extract_func = ExtractOperations.extract_news_source_id
+        source_extract_func = ExtractOperations.extract_jsons_source_info
 
-        # reference to tuple of the list of each news source id and name.
-        extracted_sources = None
-        extracted_names = None
-        extracted_ids = None
-
-        # process the collated json files   - Can be extracted as a new method.
-        for js in pipeline_info.news_files:
-            json_path = os.path.join(pipeline_info.news_directory, js)
-
-            # read each news json and extract the news sources
-            with open(json_path, "r") as js_file:
-                try:
-                    raw_data = json.load(js_file)
-                    extracted_sources = source_extract_func(raw_data)
-                except ValueError:
-                    raise ValueError("Parsing Error: {}".format(json_path))
+        # extract the news source tag information from jsons in the directory
+        source_info = source_extract_func(pipeline_info.news_files,
+                                          pipeline_info.news_directory)
 
         # ensure the last extraction step really worked before proceeding
-        if not extracted_sources:
+        if not source_info:
             raise ValueError("No results from news source extraction")
 
-        # split up the source id and name lists
-        extracted_ids = extracted_sources[0]
-        extracted_names = extracted_sources[1]
+        # reference to tuple of the list of each news source id and name.
+        extracted_ids = source_info[0]
+        extracted_names = source_info[1]
 
         # get the headlines of each source  - Can be extracted as a new method.
         for index, value in enumerate(extracted_ids):
@@ -776,6 +763,41 @@ class ExtractOperations:
         query_keyword = str(keyword)
 
         return query_keyword.lower()
+
+    @classmethod
+    def extract_jsons_source_info(cls, json_list, json_directory):
+        """parses a given list of news jsons for their source ids and names.
+
+        Returns a tuple of the source id and name.
+
+        # Arguments:
+            :param json_list: list of jsons whose source info is to be parsed
+            :type json_list: list
+            :param json_directory: directory where these json files are stored.
+            :type json_list: string
+
+        # Raises:
+            ValueError: if an error during parsing a json file is found
+        """
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        source_extract_func = ExtractOperations.extract_news_source_id
+
+        # process the collated json files
+        for js in json_list:
+            json_path = os.path.join(json_directory, js)
+
+            # read each news json and extract the news sources
+            with open(json_path, "r") as js_file:
+                try:
+                    raw_data = json.load(js_file)
+                    extracted_sources = source_extract_func(raw_data)
+                except ValueError:
+                    raise ValueError("Parsing Error: {}".format(json_path))
+
+        return extracted_sources
 
 
 class NewsInfoDTO:
