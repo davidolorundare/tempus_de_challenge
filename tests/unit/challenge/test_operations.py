@@ -1022,23 +1022,20 @@ class TestExtractOperations:
         """list of news json successfully extracts source id and names."""
 
         # Arrange
-        dummy_data_one = {"sources": [
-                          {"id": 3435},
-                          {"name": 'ABC News1'}],
-                          "name": [
-                          {"ido": 3435},
-                          {"name": 'ABC News1'}],
-                          "headlines": ['headlines1', 'headlines2']}
+        dummy_dta1 = {"status": "ok", "sources": [
+                     {
+                      "id": "polygon",
+                      "name": "Polygon",
+                      "description":
+                      "Your trusted source for breaking news, analysis, exclusive \
+                      interviews, games and much more.",
+                      "url": "https://www.polygon.com",
+                      "category": "general",
+                      "language": "en",
+                      "country": "us"}]
+                      }
 
-        dummy_data_two = {"sources": [
-                          {"id": 33435},
-                          {"name": 'ABC News2'}],
-                          "name": [
-                          {"ido": 3465635},
-                          {"name": 'ABC News2'}],
-                          "headlines": ['headlines1', 'headlines2']}
-
-        dummy_data = {"status": "ok", "sources": [
+        dummy_dta2 = {"status": "ok", "sources": [
                      {
                       "id": "abc-news",
                       "name": "ABC News",
@@ -1061,15 +1058,36 @@ class TestExtractOperations:
                       "country": "au"}]
                       }
 
-        js_one_data = json.dumps(dummy_data_one)
-        js_two_data = json.dumps(dummy_data_two)
-        js_data = json.dumps(dummy_data)
+        dummy_dta3 = {"status": "ok", "sources": [
+                     {
+                      "id": "bbc-news",
+                      "name": "BBC News",
+                      "description":
+                      "Tempus daily news, analysis, exclusive \
+                      interviews, headlines, and videos at BBCNews.com.",
+                      "url": "https://abcnews.go.com",
+                      "category": "local",
+                      "language": "en",
+                      "country": "ng"},
+                     {"id": "abc-news-au",
+                      "name": "BBC News (AU)",
+                      "description": "Finding things that are of local, \
+                      national and world news. Comprehensive, independent, \
+                      in-depth analysis, the latest business, sport, weather \
+                      and more.",
+                      "category": "general",
+                      "language": "en",
+                      "country": "au"}]
+                      }
+
+        js_one_data = json.dumps(dummy_dta1)
+        js_two_data = json.dumps(dummy_dta2)
+        js_three_data = json.dumps(dummy_dta3)
         extract_func_alias = c.ExtractOperations.extract_jsons_source_info
 
         news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
         js_dir = news_path
-        js_list = ['stuff1.json', 'stuff2.json']
-        jss_list = ['stuff3.json']
+        js_list = ['stuff1.json', 'stuff2.json', 'stuff3.json']
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1084,16 +1102,16 @@ class TestExtractOperations:
             patcher.fs.create_dir(js_dir)
             patcher.fs.create_file(full_file_path1, contents=js_one_data)
             patcher.fs.create_file(full_file_path2, contents=js_two_data)
-            patcher.fs.create_file(full_file_path3, contents=js_data)
+            patcher.fs.create_file(full_file_path3, contents=js_three_data)
 
         # Act
-            actual_result = extract_func_alias(jss_list, js_dir)
+            actual_result = extract_func_alias(js_list, js_dir)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        expected = (['abc-new1', 'abc-new2'], ['ABC News1', 'ABC News2'])
+        expected = (['bbc-news', 'abc-news-au'], ['bbc news', 'bbc news (au)'])
         assert expected == actual_result
 
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
