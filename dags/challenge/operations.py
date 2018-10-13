@@ -455,22 +455,11 @@ class NetworkOperations:
 
         # grab details about the current dag pipeline runnning
         dag_id = str(context['dag'].dag_id)
+        pipeline_info = NewsInfoDTO(dag_id)
 
         # reference to the news sources and headlines directories
         headline_dir = FileStorage.get_headlines_directory(dag_id)
         news_dir = FileStorage.get_news_directory(dag_id)
-
-        # reference to tuple of the list of each news source id and name.
-        extracted_sources = None
-        extracted_names = None
-        extracted_ids = None
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit .
-        create_headline_json_func = ExtractOperations.create_top_headlines_json
-        extract_headline_func = ExtractOperations.extract_news_headlines
-        source_extract_func = ExtractOperations.extract_news_source_id
 
         # News Headline extraction per source
         # inspect the news directory and collate the json file in there;
@@ -482,10 +471,20 @@ class NetworkOperations:
             if data_file.endswith('.json'):
                 news_files.append(data_file)
 
-        pipeline_info = NewsInfoDTO(dag_id)
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit .
+        create_headline_json_func = ExtractOperations.create_top_headlines_json
+        extract_headline_func = ExtractOperations.extract_news_headlines
+        source_extract_func = ExtractOperations.extract_news_source_id
+
+        # reference to tuple of the list of each news source id and name.
+        extracted_sources = None
+        extracted_names = None
+        extracted_ids = None
 
         # process the collated json files   - Can be extracted as a new method.
-        for js in news_files:
+        for js in pipeline_info.news_files:
             json_path = os.path.join(news_dir, js)
 
             # read each news json and extract the news sources
@@ -580,6 +579,8 @@ class NetworkOperations:
         # the headlines for this keyword
         # data = response.json()
         # ExtractOperations.parse_keyword_json(data, pipeline_name)
+
+
 
         # process the Response object json data
         processing_status = cls.get_news(response,
