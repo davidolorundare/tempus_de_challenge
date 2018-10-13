@@ -282,7 +282,7 @@ class FileStorage:
             # airflow logging
             log.info("Files in Headlines Directory: ")
             log.info(os.listdir(headline_dir))
-            # PythonOperator callable needs to return True or False.
+
             return True
         else:
             return False
@@ -523,8 +523,6 @@ class NetworkOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         source_headlines_writer = FileStorage.write_source_headlines_to_file
-        create_headline_json_func = ExtractOperations.create_top_headlines_json
-        extract_headline_func = ExtractOperations.extract_news_headlines
         source_extract_func = ExtractOperations.extract_jsons_source_info
 
         # extract the news source tag information from jsons in the directory
@@ -542,41 +540,11 @@ class NetworkOperations:
         # get the headlines of sources, write them to json files
         write_stat = source_headlines_writer(extracted_ids,
                                              extracted_names,
-                                             pipeline_info.headlines_directory)
+                                             pipeline_info.headlines_directory,
+                                             apikey)
 
-        # get the headlines of each source  - Can be extracted as a new method.
-        for index, value in enumerate(extracted_ids):
-            headlines_obj = cls.get_source_headlines(value, api_key=apikey)
-            if headlines_obj.status_code == requests.codes.ok:
-                headlines_list = extract_headline_func(headlines_obj.json())
-
-            # assembly a json object from source and headline
-            headline_json = create_headline_json_func(value,
-                                                      extracted_names[index],
-                                                      headlines_list)
-            # descriptive name of the headline file.
-            # use the source id rather than source name, since
-            # (after testing) it was discovered that strange formattings
-            # like 'Reddit /r/all' get read by the open() like a directory
-            # path rather than a filename, and hence requires another separate
-            # parsing all together.
-            # Is of the form  'source_id' + '_headlines'
-            fname = str(value) + "_headlines"
-
-            # write this json object to the headlines directory
-            FileStorage.write_json_to_file(headline_json,
-                                           pipeline_info.headlines_directory,
-                                           fname)
-
-        # return with a verification that these operations succeeded
-        if os.listdir(pipeline_info.headlines_directory):
-            # airflow logging
-            log.info("Files in Headlines Directory: ")
-            log.info(os.listdir(pipeline_info.headlines_directory))
-            # PythonOperator callable needs to return True or False.
-            return True
-        else:
-            return False
+        # PythonOperator callable needs to return True or False.
+        return write_stat
 
     @classmethod
     def get_news_keyword_headlines(cls,
