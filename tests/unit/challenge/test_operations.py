@@ -796,8 +796,8 @@ class TestNetworkOperations:
             patcher.tearDown()
 
         # Assert
-        expected_message = str(err.value)
-        assert "Query param not found" in expected_message
+        actual_message = str(err.value)
+        assert "Query param not found" in actual_message
 
     @patch('requests.get', autospec=True)
     def test_get_source_headlines_http_call_fails(self, request_method):
@@ -845,8 +845,8 @@ class TestNetworkOperations:
                                                      key)
 
         # Assert
-        expected_message = str(err.value)
-        assert "'source_id' cannot be left blank" in expected_message
+        actual_message = str(err.value)
+        assert "'source_id' cannot be left blank" in actual_message
 
     @patch('requests.get')
     def test_get_source_headlines_no_api_key_fails(self, request_method):
@@ -867,8 +867,8 @@ class TestNetworkOperations:
                                                      request_method)
 
         # Assert
-        expected_message = str(err.value)
-        assert "No News API Key found" in expected_message
+        actual_message = str(err.value)
+        assert "No News API Key found" in actual_message
 
 
 @pytest.mark.extractiontests
@@ -1033,9 +1033,9 @@ class TestExtractOperations:
             c.ExtractOperations.extract_news_source_id(dummy_data)
 
         # Assert
-        expected_message = str(err.value)
+        actual_message = str(err.value)
 
-        assert "news json has no 'sources' data" in expected_message
+        assert "news json has no 'sources' data" in actual_message
 
     def test_extract_news_source_id_empty_sources_fails(self):
         """empty source tag in the json data fails the extraction process."""
@@ -1050,9 +1050,9 @@ class TestExtractOperations:
             c.ExtractOperations.extract_news_source_id(dummy_data)
 
         # Assert
-        expected_message = str(err.value)
+        actual_message = str(err.value)
 
-        assert "'sources' tag in json is empty" in expected_message
+        assert "'sources' tag in json is empty" in actual_message
 
     def test_extract_headlines_no_news_article_fails(self):
         """extraction of headlines with no article tag fails."""
@@ -1067,9 +1067,9 @@ class TestExtractOperations:
             c.ExtractOperations.extract_news_headlines(dummy_data)
 
         # Assert
-        expected_message = str(err.value)
+        actual_message = str(err.value)
 
-        assert "news json has no 'articles' data" in expected_message
+        assert "news json has no 'articles' data" in actual_message
 
     def test_extract_headlines_empty_news_article_returns_empty_list(self):
         """return empty list when there is no headlines."""
@@ -1101,8 +1101,8 @@ class TestExtractOperations:
                                                           top_headlines)
 
         # Assert
-        expected_message = str(err.value)
-        assert "'source_id' cannot be blank" in expected_message
+        actual_message = str(err.value)
+        assert "'source_id' cannot be blank" in actual_message
 
     def test_create_news_headlines_json_no_source_name_fails(self):
         """passing no source_name to the function raises errors."""
@@ -1119,8 +1119,8 @@ class TestExtractOperations:
                                                           top_headlines)
 
         # Assert
-        expected_message = str(err.value)
-        assert "'source_name' cannot be blank" in expected_message
+        actual_message = str(err.value)
+        assert "'source_name' cannot be blank" in actual_message
 
     def test_create_news_headlines_json_no_headlines_list_fails(self):
         """passing no list of headlines to the function raises errors."""
@@ -1137,8 +1137,8 @@ class TestExtractOperations:
                                                           top_headlines)
 
         # Assert
-        expected_message = str(err.value)
-        assert "'headlines' cannot be blank" in expected_message
+        actual_message = str(err.value)
+        assert "'headlines' cannot be blank" in actual_message
 
     @patch('requests.PreparedRequest', autospec=True)
     @patch('requests.Response', autospec=True)
@@ -1163,8 +1163,8 @@ class TestExtractOperations:
             c.ExtractOperations.extract_headline_keyword(response_obj)
 
         # Assert
-        expected_message = str(err.value)
-        assert "Query param not found in URL" in expected_message
+        actual_message = str(err.value)
+        assert "Query param not found in URL" in actual_message
 
 
 @pytest.mark.transformtests
@@ -1217,7 +1217,6 @@ class TestParsedHeadlineJson:
     """test the functions in the ParsedHeadlineJSON class."""
 
 
-@pytest.mark.skip
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
     """test the functions in the NewsInfoDto class."""
@@ -1234,8 +1233,22 @@ class TestNewsInfoDTO:
         # Assert
         assert isinstance(news_info_obj, c.NewsInfoDTO)
 
-    @pytest.mark.skip
     def test_newsinfodto_wrong_pipeline_name_fails(self):
+        """creation of a new instance with a wrong pipeline name fails."""
+
+        # Arrange
+        pipeline_name = 'wrong_pipeline_name_dag'
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.NewsInfoDTO(pipeline_name)
+
+        # Assert
+        actual_message = str(err.value)
+        assert "not valid pipeline" in actual_message
+
+    @pytest.mark.skip
+    def test_newsinfodto_blank_pipeline_name_fails(self):
         """creation of a new instance with a wrong pipeline name fails."""
 
         # Arrange

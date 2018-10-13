@@ -852,8 +852,13 @@ class NewsInfoDTO:
         """
 
         def __init__(self, pipeline_name):
+            valid_dags = ['tempus_challenge_dag', 'tempus_bonus_challenge_dag']
+
             if not pipeline_name:
                 raise ValueError("Argument pipeline_name cannot be left blank")
+
+            if pipeline_name not in valid_dags:
+                raise ValueError("{} not valid pipeline".format(pipeline_name))
 
             self.pipeline = str(pipeline_name)
 
