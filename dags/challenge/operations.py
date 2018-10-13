@@ -231,8 +231,7 @@ class FileStorage:
                                        source_names,
                                        headline_dir,
                                        api_key):
-        """writes extracted news source headline data to an existing directory.
-
+        """writes extracted news source headline json data to an existing directory.
 
         # Arguments:
             :param source_ids: list of news source id tags
@@ -575,21 +574,16 @@ class NetworkOperations:
         if not headlines_dir:
             headlines_dir = pipeline_info.headline_directory
 
-        # parse the json data from the Response object to get
-        # the headlines for this keyword
-        # data = response.json()
-        # ExtractOperations.parse_keyword_json(data, pipeline_name)
+        # write to json data to a file with the query-keyword
+        # as its filename.
+        data = response.json()
 
-
-
-        # process the Response object json data
-        processing_status = cls.get_news(response,
-                                         news_dir=headlines_dir,
-                                         filename=filename,
-                                         gb_var=pipeline_name)
+        write_stat = FileStorage.write_json_to_file(data,
+                                                    headlines_dir,
+                                                    filename)
 
         # file-write was successful and 'headlines' folder contains the json
-        if processing_status[0] and os.listdir(headlines_dir):
+        if write_stat and os.listdir(headlines_dir):
             return True
         else:
             return False
