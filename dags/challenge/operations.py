@@ -802,6 +802,8 @@ class ExtractOperations:
             ValueError: if an error during parsing a json file is found
         """
 
+        log.info("Running extract_jsons_source_info method")
+
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
