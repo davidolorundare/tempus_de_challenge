@@ -1176,12 +1176,6 @@ class TestTransformOperations:
         pass
 
 
-@pytest.mark.skip
-@pytest.mark.headlinejsontests
-class TestParsedHeadlineJson:
-    """test the functions in the ParsedHeadlineJSON class"""
-
-
 @pytest.mark.uploadtests
 class TestUploadOperations:
     """test the functions for task to upload csvs to Amazon S3."""
@@ -1196,3 +1190,9 @@ class TestUploadOperations:
     def test_source_headlines(self):
         """test the flattening of csvs and their s3 upload for each source."""
         pass
+
+
+@pytest.mark.skip
+@pytest.mark.headlinejsontests
+class TestParsedHeadlineJson:
+    """test the functions in the ParsedHeadlineJSON class"""
