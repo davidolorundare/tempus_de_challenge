@@ -1214,19 +1214,33 @@ class TestUploadOperations:
 @pytest.mark.skip
 @pytest.mark.headlinejsontests
 class TestParsedHeadlineJson:
-    """test the functions in the ParsedHeadlineJSON class"""
+    """test the functions in the ParsedHeadlineJSON class."""
 
 
 @pytest.mark.skip
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
-    """test the functions in the NewsInfoDto class"""
+    """test the functions in the NewsInfoDto class."""
 
-    def test_newsinfodto_initialization_succeeds(self):
+    def test_newsinfodto_initialization_pipeline1_succeeds(self):
         """creation of a new instance of the class suceeds"""
 
         # Arrange
-        
+        pipeline_name = 'tempus_bonus_challenge_dag'
+
+        # Act
+        news_info_obj = c.NewsInfoDTO(pipeline_name)
+
+        # Assert
+        assert isinstance(news_info_obj, c.NewsInfoDTO)
+
+    @pytest.mark.skip
+    def test_newsinfodto_wrong_pipeline_name_fails(self):
+        """creation of a new instance with a wrong pipeline name fails."""
+
+        # Arrange
+        pipeline_name = 'wrong_pipeline_name_dag'
+        news_info_obj = c.NewsInfoDTO(pipeline_name)
         # Act
 
         # Assert
