@@ -226,8 +226,17 @@ class FileStorage:
             raise IOError("Error in Reading Data - IOError")
 
     @classmethod
-    def write_headlines_to_file(cls):
-        """"""
+    def write_source_headlines_to_file(cls,
+                                       source_ids,
+                                       source_names,
+                                       headline_info,
+                                       headline_dir):
+        """writes extracted news source and headline data to an existing directory.
+
+
+        # Arguments:
+            :param source_info
+        """
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
@@ -476,7 +485,7 @@ class NetworkOperations:
         if not source_info:
             raise ValueError("No results from news source extraction")
 
-        # reference to tuple of the list of each news source id and name.
+        # reference to tuple of the list of each news source ids and names.
         extracted_ids = source_info[0]
         extracted_names = source_info[1]
 
