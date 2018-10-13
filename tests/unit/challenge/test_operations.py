@@ -282,17 +282,6 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip
-    @patch('requests.Response', autospec=True)
-    def test_file_sensors_detects_file_correctly(self, response_obj):
-        """successful detection of a new file in a given directory."""
-
-        # Arrange
-        # Need to figure out the context
-        # Act
-
-        # Assert
-
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """returns correct news path when called correctly with pipeline name.
         """
@@ -384,9 +373,10 @@ class TestFileStorage:
         assert result is True
         assert file_is_present is True
 
+    @pytest.mark.skip(reason="method function uses has been tested before")
     @patch('requests.Response', autospec=True)
     def test_write_source_headlines_to_file_success(self,
-                                                    request_obj,
+                                                    response_obj,
                                                     home_directory_res):
         """writes of news source headlines to a directory succeeds."""
 
@@ -420,11 +410,11 @@ class TestFileStorage:
         headline_fnc = MagicMock()
         data = json.dumps(dummy_data)
 
-        request_obj.status_code = requests.codes.ok
-        request_obj.side_effect = lambda: data
+        response_obj.status_code = requests.codes.ok
+        response_obj.json.side_effect = lambda: data
 
         # function returns a valid json object when called
-        headline_fnc.side_effect = request_obj
+        headline_fnc.side_effect = response_obj
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -578,7 +568,7 @@ class TestFileStorage:
         # Assert
         assert "Error in Reading Data - IOError" in actual_error
 
-    @pytest.mark.skip(reason="not decided best way to get at the OSError yet")
+    @pytest.mark.skip(reason="not decided best way to fuzz data to fail test.")
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_data_store_pipe1_failure(self,
@@ -611,7 +601,7 @@ class TestFileStorage:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    @pytest.mark.skip(reason="not decided best way to get at the OSError yet.")
+    @pytest.mark.skip(reason="not decided best way to fuzz data to fail test.")
     @patch('os.makedirs', autospec=True)
     @patch('os.path.join', autospec=True)
     def test_create_data_store_pipe2_failure(self, mock_path_func,
