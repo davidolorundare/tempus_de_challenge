@@ -572,6 +572,12 @@ class NetworkOperations:
         if not headlines_dir:
             headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
 
+        # parse the json data from the Response object to get
+        # the headlines for this keyword
+        data = response.json()
+        ExtractOperations.parse_keyword_json(data, pipeline_name)
+
+
         # process the Response object json data
         processing_status = cls.get_news(response,
                                          news_dir=headlines_dir,
@@ -778,6 +784,32 @@ class ExtractOperations:
         query_keyword = str(keyword)
 
         return query_keyword.lower()
+
+    @classmethod
+    def parse_headline_json(cls, json_data, pipeline_name):
+        """parse the json from a keyword headline Response object.
+
+        # Arguments:
+            :param json_data: the json news data from which the news-headlines
+                will be extracted from.
+            :type json_data: dict
+        """
+
+        # reference to the news sources and headlines directories
+        headline_dir = FileStorage.get_headlines_directory(dag_id)
+        news_dir = FileStorage.get_news_directory(dag_id)
+
+        # reference to tuple of the list of each news source id and name.
+        extracted_sources = None
+        extracted_names = None
+        extracted_ids = None
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit .
+        create_headline_json_func = ExtractOperations.create_top_headlines_json
+        extract_headline_func = ExtractOperations.extract_news_headlines
+        source_extract_func = ExtractOperations.extract_news_source_id
 
 
 class TransformOperations:

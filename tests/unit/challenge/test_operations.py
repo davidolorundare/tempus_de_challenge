@@ -1157,6 +1157,24 @@ class TestTransformOperations:
         """test the function to flatten a json to csv."""
         pass
 
+    def test_transform_headlines_to_csv(self):
+        """test macro function to flatten a set of json files to one csv.
+
+        Operations Performed:
+
+            - get context-specific 'headlines' and 'csv' directories
+            - iterate through respective pipeline's 'headlines' dir
+
+            - open up a pipeline_execution_data_top_headlines.csv
+            - for each json file:
+                extract common format of all entries within it
+                convert to csv format and append into this csv
+            - write-close csv and store in 'csv' directory
+
+
+        """
+        pass
+
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
