@@ -638,6 +638,7 @@ class TestNetworkOperations:
         # create function aliases
         keyword_headline_func = c.NetworkOperations.get_news_keyword_headlines
         storage_headline_dir_func = c.FileStorage.get_headlines_directory
+        storage_news_dir_func = c.FileStorage.get_news_directory
 
         # response object returns an OK status code
         response.status_code = requests.codes.ok
@@ -656,7 +657,8 @@ class TestNetworkOperations:
         response.request = request
 
         # retrieve the path to the folder the json file is saved to
-        path = storage_headline_dir_func("tempus_bonus_challenge_dag")
+        path_headline = storage_headline_dir_func("tempus_bonus_challenge_dag")
+        path_news = storage_news_dir_func("tempus_bonus_challenge_dag")
 
         # filename of the keyword headline json file that will be created
         fname = "cancer_headlines"
@@ -666,11 +668,12 @@ class TestNetworkOperations:
             patcher.setUp()
 
             # create a fake filesystem directory to test the method
-            patcher.fs.create_dir(path)
+            patcher.fs.create_dir(path_headline)
+            patcher.fs.create_dir(path_news)
 
         # Act
             result = keyword_headline_func(response,
-                                           headlines_dir=path,
+                                           headlines_dir=path_headline,
                                            filename=fname)
 
             # return to the real filesystem and clear pyfakefs resources

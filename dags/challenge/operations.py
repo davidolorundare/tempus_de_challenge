@@ -482,7 +482,7 @@ class NetworkOperations:
             if data_file.endswith('.json'):
                 news_files.append(data_file)
 
-        NewsInfoDTO()
+        pipeline_info = NewsInfoDTO(dag_id)
 
         # process the collated json files   - Can be extracted as a new method.
         for js in news_files:
@@ -571,8 +571,10 @@ class NetworkOperations:
         # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
         pipeline_name = "tempus_bonus_challenge_dag"
+        pipeline_info = NewsInfoDTO(pipeline_name)
+
         if not headlines_dir:
-            headlines_dir = FileStorage.get_headlines_directory(pipeline_name)
+            headlines_dir = pipeline_info.headline_directory
 
         # parse the json data from the Response object to get
         # the headlines for this keyword
@@ -822,9 +824,9 @@ class NewsInfoDTO:
 
             # for the 'tempus_challenge_dag' pipeline we need to retrieve the
             # collated news sources json files from the upstream task
-            self.news_files = []
+            self.news_json_files = []
             if self.pipeline == "tempus_challenge_dag":
-                self.news_files = self.get_news_files()
+                self.news_json_files = self.load_news_files()
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -854,17 +856,17 @@ class NewsInfoDTO:
             return FileStorage.get_csv_directory(self.pipeline)
 
         @property
-        def news_files(self) -> str:
+        def news_files(self) -> list:
             """returns json files in the news directory of this pipeline."""
-            return self.news_files
+            return self.news_json_files
 
         def load_news_files(self):
             """get the contents of the pipeline's news directory."""
 
             files = []
 
-            if self.news_directory:
-                for data_file in os.listdir(self.news_directory):
+            if self.news_directory() and os.listdir(self.news_directory()):
+                for data_file in os.listdir(self.news_directory()):
                     if data_file.endswith('.json'):
                         files.append(data_file)
             return files
