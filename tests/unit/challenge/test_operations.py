@@ -384,13 +384,28 @@ class TestFileStorage:
         assert result is True
         assert file_is_present is True
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="crafting good tests requires more time")
     def test_write_source_headlines_to_file_success(self):
         """writes of news source headlines to a directory succeed."""
 
-    @pytest.mark.skip
-    def test_write_source_headlines_to_file_fails(self):
+    def test_write_source_headlines_to_file_no_argument_fails(self):
         """writes of news source headlines to a directory fail."""
+
+        # Arrange
+        key = None
+        ids = ['abc-news-au', 'bbc-news']
+        names = ['ABCNews', 'BBCNews']
+        hd_dir = '/tempdata/data'
+        # Act
+        with pytest.raises(ValueError) as err:
+            c.FileStorage.write_source_headlines_to_file(ids,
+                                                         names,
+                                                         hd_dir,
+                                                         key)
+
+        # Assert
+        actual_message = str(err.value)
+        assert "is blank" in actual_message
 
     def test_write_json_to_file_fails_with_wrong_directory_path(self):
         """write of json data to a file to a non-existent directory
@@ -1017,7 +1032,6 @@ class TestExtractOperations:
         expected_headlines = ["Odell Beckham Jr. walks into locker room"]
         assert result == expected_headlines
 
-    # @pytest.mark.skip(reason="crafting good dummy data requires more time")
     def test_extract_jsons_source_info_succeds(self, home_directory_res):
         """list of news json successfully extracts source id and names."""
 

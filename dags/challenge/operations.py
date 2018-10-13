@@ -244,13 +244,31 @@ class FileStorage:
             :param api_key: string News API Key used for performing retrieval
                 of a source's top headlines remotely
             :type api_key: string
+
+        # Raises:
+            ValueError: if any of the arguments are left blank
         """
 
         log.info("Running write_source_headlines_to_file method")
 
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        source_headlines_func = NetworkOperations.get_source_headlines
+
+        # error check for non-set arguments
+        if not source_ids:
+            raise ValueError("Argument '{}' is blank".format(source_ids))
+        if not source_names:
+            raise ValueError("Argument '{}' is blank".format(source_names))
+        if not headline_dir:
+            raise ValueError("Argument '{}' is blank".format(headline_dir))
+        if not api_key:
+            raise ValueError("Argument '{}' is blank".format(api_key))
+
         # get the headlines of each source
         for index, value in enumerate(source_ids):
-            headlines_obj = cls.get_source_headlines(value, api_key=api_key)
+            headlines_obj = source_headlines_func(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
                 headline_json = headlines_obj.json()
                 # descriptive name of the headline file.
