@@ -1202,4 +1202,3 @@ class TestParsedHeadlineJson:
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
     """test the functions in the NewsInfoDto class"""
-    """test the functions in the ParsedHeadlineJSON class"""
