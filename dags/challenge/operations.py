@@ -247,35 +247,24 @@ class FileStorage:
             :type api_key: string
         """
 
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        create_headline_json_func = ExtractOperations.create_top_headlines_json
-        extract_headline_func = ExtractOperations.extract_news_headlines
-
         # get the headlines of each source
         for index, value in enumerate(source_ids):
             headlines_obj = cls.get_source_headlines(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
-                headlines_list = extract_headline_func(headlines_obj.json())
+                headline_json = headlines_obj.json()
+                # descriptive name of the headline file.
+                # use the source id rather than source name, since
+                # (after testing) it was discovered that strange formattings
+                # like 'Reddit /r/all' get read by the open() like a directory
+                # path rather than a filename, and hence requires another
+                # separate parsing all together.
+                # Is of the form  'source_id' + '_headlines'
+                fname = str(value) + "_headlines"
 
-            # assembly a json object from source and headline
-            headline_json = create_headline_json_func(value,
-                                                      source_names[index],
-                                                      headlines_list)
-            # descriptive name of the headline file.
-            # use the source id rather than source name, since
-            # (after testing) it was discovered that strange formattings
-            # like 'Reddit /r/all' get read by the open() like a directory
-            # path rather than a filename, and hence requires another separate
-            # parsing all together.
-            # Is of the form  'source_id' + '_headlines'
-            fname = str(value) + "_headlines"
-
-            # write this json object to the headlines directory
-            FileStorage.write_json_to_file(headline_json,
-                                           headline_dir,
-                                           fname)
+                # write this json object to the headlines directory
+                FileStorage.write_json_to_file(headline_json,
+                                               headline_dir,
+                                               fname)
 
         # return with a verification that these operations succeeded
         if os.listdir(headline_dir):
