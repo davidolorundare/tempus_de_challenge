@@ -785,7 +785,7 @@ class ExtractOperations:
         return query_keyword.lower()
 
 
-class ParsedHeadlineJSON:
+class ParsedHeadlineJson:
         """parsed headline json object from a keyword headline Response object.
 
 
@@ -835,6 +835,11 @@ class ParsedHeadlineJSON:
         extract_headline_func = ExtractOperations.extract_news_headlines
         source_extract_func = ExtractOperations.extract_news_source_id
 
+        # reference to tuple of the list of each news source id and name.
+        extracted_sources = None
+        extracted_names = None
+        extracted_ids = None
+
         @property
         def headline_directory(self) -> str:
             """returns the path to this pipeline's headline directory."""
@@ -865,11 +870,6 @@ class ParsedHeadlineJSON:
                     if data_file.endswith('.json'):
                         files.append(data_file)
             return files
-
-        # reference to tuple of the list of each news source id and name.
-        extracted_sources = None
-        extracted_names = None
-        extracted_ids = None
 
 
 class TransformOperations:
