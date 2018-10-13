@@ -1017,20 +1017,106 @@ class TestExtractOperations:
         expected_headlines = ["Odell Beckham Jr. walks into locker room"]
         assert result == expected_headlines
 
+    # @pytest.mark.skip(reason="crafting good dummy data requires more time")
     def test_extract_jsons_source_info_succeds(self, home_directory_res):
         """list of news json successfully extracts source id and names."""
 
         # Arrange
-        dummy_data_one = {"source": {
-                          "id": 'abc-new1',
-                          "name": 'ABC News1'},
+        dummy_data_one = {"sources": [
+                          {"id": 3435},
+                          {"name": 'ABC News1'}],
+                          "name": [
+                          {"ido": 3435},
+                          {"name": 'ABC News1'}],
                           "headlines": ['headlines1', 'headlines2']}
 
-        dummy_data_two = {"source": {
-                          "id": 'abc-new2',
-                          "name": 'ABC News2'},
+        dummy_data_two = {"sources": [
+                          {"id": 33435},
+                          {"name": 'ABC News2'}],
+                          "name": [
+                          {"ido": 3465635},
+                          {"name": 'ABC News2'}],
                           "headlines": ['headlines1', 'headlines2']}
 
+        dummy_data = {"status": "ok", "sources": [
+                     {
+                      "id": "abc-news",
+                      "name": "ABC News",
+                      "description":
+                      "Your trusted source for breaking news, analysis, exclusive \
+                      interviews, headlines, and videos at ABCNews.com.",
+                      "url": "https://abcnews.go.com",
+                      "category": "general",
+                      "language": "en",
+                      "country": "us"},
+                     {"id": "abc-news-au",
+                      "name": "ABC News (AU)",
+                      "description": "Australia's most trusted source of local, \
+                      national and world news. Comprehensive, independent, \
+                      in-depth analysis, the latest business, sport, weather \
+                      and more.",
+                      "url": "http://www.abc.net.au/news",
+                      "category": "general",
+                      "language": "en",
+                      "country": "au"}]
+                      }
+
+        js_one_data = json.dumps(dummy_data_one)
+        js_two_data = json.dumps(dummy_data_two)
+        js_data = json.dumps(dummy_data)
+        extract_func_alias = c.ExtractOperations.extract_jsons_source_info
+
+        news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
+        js_dir = news_path
+        js_list = ['stuff1.json', 'stuff2.json']
+        jss_list = ['stuff3.json']
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create dummy files
+            full_file_path1 = os.path.join(js_dir, 'stuff1.json')
+            full_file_path2 = os.path.join(js_dir, 'stuff2.json')
+            full_file_path3 = os.path.join(js_dir, 'stuff3.json')
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(js_dir)
+            patcher.fs.create_file(full_file_path1, contents=js_one_data)
+            patcher.fs.create_file(full_file_path2, contents=js_two_data)
+            patcher.fs.create_file(full_file_path3, contents=js_data)
+
+        # Act
+            actual_result = extract_func_alias(jss_list, js_dir)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        expected = (['abc-new1', 'abc-new2'], ['ABC News1', 'ABC News2'])
+        assert expected == actual_result
+
+    def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
+        """list of news json fails at extracting source id and names with
+        bad data.
+        """
+
+        # Arrange
+        dummy_data_one = {"sources": {
+                          "id": "u'asd",
+                          "name": "u'erw"},
+                          "headlines": []}
+
+        dummy_data_two = {"sources": [
+                          {"id": 33435},
+                          {"nafme": 'ABC News2'}],
+                          "name": [
+                          {"ido": 3465635},
+                          {"name": 'ABC News2'}],
+                          "headlines": ['headlines1', 'headlines2']}
+
+        js_one_data = json.dumps(dummy_data_one)
+        js_two_data = json.dumps(dummy_data_two)
         extract_func_alias = c.ExtractOperations.extract_jsons_source_info
 
         news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
@@ -1047,22 +1133,23 @@ class TestExtractOperations:
 
             # create a fake filesystem directory to test the method
             patcher.fs.create_dir(js_dir)
-            patcher.fs.create_file(full_file_path1, contents=dummy_data_one)
-            patcher.fs.create_file(full_file_path2, contents=dummy_data_two)
+            patcher.fs.create_file(full_file_path1,
+                                   contents=js_one_data,
+                                   encoding="utf-16")
+            patcher.fs.create_file(full_file_path2,
+                                   contents=js_two_data,
+                                   encoding="utf-16")
 
         # Act
-            actual_result = extract_func_alias(js_list, js_dir)
+            with pytest.raises(ValueError) as err:
+                extract_func_alias(js_list, js_dir)
 
+            expected = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        expected = (['abc-new1', 'abc-new2'], ['ABC News1', 'ABC News2'])
-        assert expected == actual_result
-
-    @pytest.mark.skip
-    def test_extract_jsons_source_info_fails(self):
-        """list of news json fails at extracting source id and names."""
+        assert "Parsing Error" in expected
 
     def test_extract_news_source_id_no_sources_fails(self):
         """no source tag in the json data fails the extraction process."""

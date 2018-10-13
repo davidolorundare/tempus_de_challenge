@@ -709,8 +709,10 @@ class ExtractOperations:
         sources_names = []
 
         for source in json_data["sources"]:
-            sources_ids.append(str(source["id"]))
-            sources_names.append(str(source["name"]))
+            ids = source["id"]
+            sources_ids.append(str(ids).lower())
+            name = source["name"]
+            sources_names.append(str(name).lower())
 
         return sources_ids, sources_names
 
