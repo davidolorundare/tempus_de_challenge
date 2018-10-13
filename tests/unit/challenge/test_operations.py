@@ -1013,11 +1013,11 @@ class TestExtractOperations:
         assert result == expected_headlines
 
     @pytest.mark.skip
-    def extract_jsons_source_info_succeds(self):
+    def test_extract_jsons_source_info_succeds(self):
         """list of news json successfully extracts source id and names."""
 
     @pytest.mark.skip
-    def extract_jsons_source_info_fails(self):
+    def test_extract_jsons_source_info_fails(self):
         """list of news json fails at extracting source id and names."""
 
     def test_extract_news_source_id_no_sources_fails(self):
@@ -1221,3 +1221,5 @@ class TestParsedHeadlineJson:
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
     """test the functions in the NewsInfoDto class"""
+
+    def test_
