@@ -482,6 +482,8 @@ class NetworkOperations:
             if data_file.endswith('.json'):
                 news_files.append(data_file)
 
+        NewsInfoDTO()
+
         # process the collated json files   - Can be extracted as a new method.
         for js in news_files:
             json_path = os.path.join(news_dir, js)
@@ -785,8 +787,8 @@ class ExtractOperations:
         return query_keyword.lower()
 
 
-class ParsedHeadlineJson:
-        """parsed headline json object from a keyword headline Response object.
+class NewsInfoDTO:
+        """information about the news data this pipeline uses.
 
 
         This class functions as a Data Transfer Object(DTO).
@@ -812,14 +814,10 @@ class ParsedHeadlineJson:
             ValueError: if the required 'pipeline_name' argument is left blank
         """
 
-        def __init__(self, json_data, pipeline_name):
-            if not json_data:
-                raise ValueError("Argument json_data cannot be left blank")
-
+        def __init__(self, pipeline_name):
             if not pipeline_name:
                 raise ValueError("Argument pipeline_name cannot be left blank")
 
-            self.data = json_data
             self.pipeline = str(pipeline_name)
 
             # for the 'tempus_challenge_dag' pipeline we need to retrieve the
@@ -870,6 +868,34 @@ class ParsedHeadlineJson:
                     if data_file.endswith('.json'):
                         files.append(data_file)
             return files
+
+
+class ParseHeadlineJson:
+        """parsed headline json object from a keyword headline Response object.
+
+
+        This class functions as a Data Transfer Object(DTO).
+
+        The get_news_headlines() function was refactored after discovering
+        that alot of its functionalities were shared with that of the function
+        get_news_keyword_headlines(). In order to create a common interface to
+        write to at the end of the Extraction phase (the 'E' in ETL) the author
+        decided to create a separate class which abstracted much of the shared
+        functionality.
+        Refactoring the get_news_headlines() function also made it easier to
+        unit test as well.
+
+        # Arguments:
+            :param json_data: the json news data from which the news-headlines
+                will be extracted from.
+            :type json_data: dict
+            :param pipeline_name: name of the current DAG pipeline.
+            :type pipeline_name: string
+
+        # Raises:
+            ValueError: if the required 'json_data' argument is left blank
+            ValueError: if the required 'pipeline_name' argument is left blank
+        """
 
 
 class TransformOperations:
