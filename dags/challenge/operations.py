@@ -246,6 +246,8 @@ class FileStorage:
             :type api_key: string
         """
 
+        log.info("Running write_source_headlines_to_file method")
+
         # get the headlines of each source
         for index, value in enumerate(source_ids):
             headlines_obj = cls.get_source_headlines(value, api_key=api_key)
@@ -525,13 +527,13 @@ class NetworkOperations:
         extracted_ids = source_info[0]
         extracted_names = source_info[1]
 
-        # get the headlines of sources, write them to json files
+        # get the headlines of sources, write them to json files. Note status.
         write_stat = source_headlines_writer(extracted_ids,
                                              extracted_names,
                                              pipeline_info.headlines_directory,
                                              apikey)
 
-        # PythonOperator callable needs to return True or False.
+        # PythonOperator callable needs to return True or False status.
         return write_stat
 
     @classmethod
@@ -542,8 +544,7 @@ class NetworkOperations:
         """processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
-        'tempus_bonus_challenge_dag'. The function acts as a wrapper
-        around the get_news() function.
+        'tempus_bonus_challenge_dag'.
 
         # Arguments:
             :param response: http response object returned from the
@@ -574,10 +575,12 @@ class NetworkOperations:
         if not headlines_dir:
             headlines_dir = pipeline_info.headline_directory
 
-        # write to json data to a file with the query-keyword
-        # as its filename.
+        # retrieve the json data from the Response object
         data = response.json()
 
+        # write to json data to a file with the query-keyword
+        # as its filename. Note status of the operation.
+        # True implies the write went okay, False otherwise.
         write_stat = FileStorage.write_json_to_file(data,
                                                     headlines_dir,
                                                     filename)
