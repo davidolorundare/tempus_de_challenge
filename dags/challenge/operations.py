@@ -457,20 +457,6 @@ class NetworkOperations:
         dag_id = str(context['dag'].dag_id)
         pipeline_info = NewsInfoDTO(dag_id)
 
-        # reference to the news sources and headlines directories
-        headline_dir = FileStorage.get_headlines_directory(dag_id)
-        news_dir = FileStorage.get_news_directory(dag_id)
-
-        # News Headline extraction per source
-        # inspect the news directory and collate the json file in there;
-        # list of all the json news files in that directory from upstream tasks
-        # - Can be extracted as a new method.
-        news_files = []
-
-        for data_file in os.listdir(news_dir):
-            if data_file.endswith('.json'):
-                news_files.append(data_file)
-
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit .
@@ -485,7 +471,7 @@ class NetworkOperations:
 
         # process the collated json files   - Can be extracted as a new method.
         for js in pipeline_info.news_files:
-            json_path = os.path.join(news_dir, js)
+            json_path = os.path.join(pipeline_info.news_directory, js)
 
             # read each news json and extract the news sources
             with open(json_path, "r") as js_file:
@@ -523,13 +509,15 @@ class NetworkOperations:
             fname = str(value) + "_headlines"
 
             # write this json object to the headlines directory
-            FileStorage.write_json_to_file(headline_json, headline_dir, fname)
+            FileStorage.write_json_to_file(headline_json,
+                                           pipeline_info.headlines_directory,
+                                           fname)
 
         # return with a verification that these operations succeeded
-        if os.listdir(headline_dir):
+        if os.listdir(pipeline_info.headlines_directory):
             # airflow logging
             log.info("Files in Headlines Directory: ")
-            log.info(os.listdir(headline_dir))
+            log.info(os.listdir(pipeline_info.headlines_directory))
             # PythonOperator callable needs to return True or False.
             return True
         else:
@@ -842,7 +830,7 @@ class NewsInfoDTO:
         extracted_ids = None
 
         @property
-        def headline_directory(self) -> str:
+        def headlines_directory(self) -> str:
             """returns the path to this pipeline's headline directory."""
             return FileStorage.get_headlines_directory(self.pipeline)
 
