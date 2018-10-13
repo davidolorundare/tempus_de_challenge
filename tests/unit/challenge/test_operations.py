@@ -1222,4 +1222,11 @@ class TestParsedHeadlineJson:
 class TestNewsInfoDTO:
     """test the functions in the NewsInfoDto class"""
 
-    def test_
+    def test_newsinfodto_initialization_succeeds(self):
+        """creation of a new instance of the class suceeds"""
+
+        # Arrange
+        
+        # Act
+
+        # Assert
