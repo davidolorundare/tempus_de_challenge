@@ -1004,6 +1004,14 @@ class TestExtractOperations:
         expected_headlines = ["Odell Beckham Jr. walks into locker room"]
         assert result == expected_headlines
 
+    @pytest.mark.skip
+    def extract_jsons_source_info_succeds(self):
+        """list of news json successfully extracts source id and names."""
+
+    @pytest.mark.skip
+    def extract_jsons_source_info_fails(self):
+        """list of news json fails at extracting source id and names."""
+
     def test_extract_news_source_id_no_sources_fails(self):
         """no source tag in the json data fails the extraction process."""
 

@@ -226,6 +226,10 @@ class FileStorage:
             raise IOError("Error in Reading Data - IOError")
 
     @classmethod
+    def write_headlines_to_file(cls):
+        """"""
+
+    @classmethod
     def get_news_directory(cls, pipeline_name: str):
         """returns the news directory path for a given DAG pipeline.
 
