@@ -1097,7 +1097,39 @@ class TransformOperations:
 
     @classmethod
     def helper_execute_kw_json_transformation(cls, directory, timestamp):
-        """runs a block of code to transform json to csv.
+        """runs a block of code to transform keyword json headlines to csv.
+
+        # Arguments:
+            :param directory: directory having the jsons to
+                execute a transformation on.
+            :type directory: string
+            :param timestamp: date of the pipeline execution that
+                should be appended to created csv files
+            :type timestamp: Date
+        """
+
+        log.info("Running helper_execute_kw_json_transformation method")
+
+        # transformation operation status
+        status = None
+
+        # the name the created csv file should be given
+        fname = None
+
+        # transform all jsons in the 'headlines' directory
+        if os.listdir(directory):
+            for file in os.listdir(directory):
+                if file.endswith('.json'):
+                    key = file.split("_")[1]
+                    fname = timestamp + "_" + key + "_headlines.csv"
+                    status = cls.transform_keyword_headlines_to_csv(file,
+                                                                    fname)
+
+        return status
+
+    @classmethod
+    def helper_execute_json_transformation(cls, directory, timestamp):
+        """runs a block of code to transform json headlines to csv.
 
         # Arguments:
             :param directory: directory having the jsons to
@@ -1117,15 +1149,8 @@ class TransformOperations:
         fname = None
 
         # transform all jsons in the 'headlines' directory
-        if os.listdir(directory):
-            for file in os.listdir(directory):
-                if file.endswith('.json'):
-                    key = file.split("_")[1]
-                    fname = timestamp + "_" + key + "_headlines.csv"
-                    status = cls.transform_keyword_headlines_to_csv(file,
-                                                                    fname)
 
-        return status
+        return status, fname
 
     @classmethod
     def transform_news_headlines_to_csv(cls, json_data, csv_filename):
