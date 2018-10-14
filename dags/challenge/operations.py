@@ -1061,20 +1061,36 @@ class TransformOperations:
 
         log.info("Running transform_headlines_to_csv method")
 
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        kw_headline_csv = cls.transform_keyword_headlines_to_csv
+
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
         pipeline_info = NewsInfoDTO(pipeline_name)
         transform_status = None
+        headline_dir = pipeline_info.get_headlines_directory
+        # execution date of the current pipeline
+        exec_date = str(context['ds'])
+        # the name the created csv file should be given
+        fname = None
 
         # perform context-specific transformations
         if pipeline_name == "tempus_challenge_dag":
+            # transform all jsons in the 'headlines' directory
             pipeline_info.print('er')
             # transform_news_headlines_to_csv
             # other things
             return transform_status
         elif pipeline_name == "tempus_bonus_challenge_dag":
-            pipeline_info.print('boo')
-            # other things
+            # transform all jsons in the 'headlines' directory
+            if os.listdir(headline_dir):
+                for file in os.listdir(headline_dir):
+                    if file.endswith('.json'):
+                        key = file.split("_")[1]
+                        fname = exec_date + "_" + key + "_headlines.csv"
+                        transform_status = kw_headline_csv(file, fname)
             return transform_status
         else:
             # the active pipeline is not one of the two we developed for.
@@ -1082,6 +1098,10 @@ class TransformOperations:
             # log this issue in Airflow and return an error status
             log.info("This pipeline {} is not valid".format(pipeline_name))
             return False
+
+    @classmethod
+    def helper_execute_transformation(cls):
+        """runs a block of code to transform json to csv"""
 
     @classmethod
     def transform_news_headlines_to_csv(cls, json_data, csv_filename):
@@ -1099,7 +1119,7 @@ class TransformOperations:
         return 2
 
     @classmethod
-    def transform_keyword_headlines_to_csv(cls, json_file, csv_filename):
+    def transform_keyword_headlines_to_csv(cls, json_file, csv_filename=None):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1133,6 +1153,8 @@ class TransformOperations:
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
+        if not csv_filename:
+            csv_filename = "sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(path_or_buf=csv_save_path)
 
