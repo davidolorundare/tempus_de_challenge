@@ -1077,7 +1077,10 @@ class TransformOperations:
             # other things
             return transform_status
         else:
+            # the active pipeline is not one of the two we developed for.
             print("This pipeline {} is not valid".format(pipeline_name))
+            # log this issue in Airflow and return an error status
+            log.info("This pipeline {} is not valid".format(pipeline_name))
             return False
 
     @classmethod
