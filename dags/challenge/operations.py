@@ -1055,6 +1055,52 @@ class TransformOperations:
     """handles functionality for flattening CSVs."""
 
     @classmethod
+    def transform_headlines_to_csv(cls, json_dir):
+        """converts the jsons in a given directory to csv.
+
+        Use different transformation methods depending on the
+        current active pipeline.
+
+        For the 'tempus_challenge_dag' pipeline, the function
+        `transform_news_headlines_to_csv` is used.
+        For the 'tempus_bonus_challenge_dag' pipeline, the function
+        `transform_keyword_headlines_to_csv` is used.
+
+        The end transformations are stored in the respective 'csv'
+        folders of the respective pipelines.
+
+                Pipeline 1  CSV: Tempus Challenge DAG
+        For the 'tempus_challenge_dag' pipeline all the news headlines
+        from all the english sources are flattened and transformed into
+        one single csv file, the pipeline execution date is appended to
+        the end transformed csv. It is of the form:
+        `pipeline_execution_date`_headlines.csv
+
+                Pipeline 2 CSVs: Tempus Bonus Challenge DAG
+        For each the four keywords queries of the 'tempus_bonus_challenge_dag'
+         - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', 'Immunotheraphy' - the
+        result is four separate csv files, each representing all the headlines
+        about that particular keyword. The pipeline execution date is appended
+        to the end transformed csv's. The keyword headline files are of form:
+        `pipeline_execution_date`_`keyword`_`headlines`.csv
+        """
+
+        return 2
+
+    @classmethod
+    def transform_news_headlines_to_csv(cls, json_data):
+        """converts the json contents of a given folder into a csv.
+
+        The function specifically operates on jsons in the 'headlines'
+        fold of the 'tempus_bonus_challenge_dag' pipeline.
+
+        Uses the Pandas library to parse, traverse and flatten the
+        json data into a csv file.
+        """
+
+        return 2
+
+    @classmethod
     def transform_keyword_headlines_to_csv(cls, json_file, csv_filename):
         """converts the json contents of a given folder into a csv.
 
@@ -1080,19 +1126,6 @@ class TransformOperations:
         transformed_df = TransformOperations.transform_data_to_dataframe(data)
 
         # transform to csv
-
-        return 2
-
-    @classmethod
-    def transform_news_headlines_to_csv(cls, json_data):
-        """converts the json contents of a given folder into a csv.
-
-        The function specifically operates on jsons in the 'headlines'
-        fold of the 'tempus_bonus_challenge_dag' pipeline.
-
-        Uses the Pandas library to parse, traverse and flatten the
-        json data into a csv file.
-        """
 
         return 2
 
@@ -1127,24 +1160,6 @@ class TransformOperations:
             news_df[field_names[index]] = news_data[field]
 
         return news_df
-
-    @classmethod
-    def transform_headlines_to_csv(cls, json_dir):
-        """converts the jsons in a given directory to csv.
-
-        Use different transformation methods depending on the
-        current active pipeline.
-
-        For the 'tempus_challenge_dag' pipeline, the function
-        `transform_news_headlines_to_csv` is used.
-        For the 'tempus_bonus_challenge_dag' pipeline, the function
-        `transform_keyword_headlines_to_csv` is used.
-
-        The end transformations are stored in the respective 'csv'
-        folders of the respective pipelines.
-        """
-
-        return 2
 
 
 class UploadOperations:
