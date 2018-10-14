@@ -76,6 +76,7 @@ start_task = DummyOperator(task_id='start', dag=dag)
 storage_func_alias = c.FileStorage.create_storage
 headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
 transform_func_alias = c.TransformOperations.transform_headlines_to_csv
+upload_func_alias = c.UploadOperations.upload_csv_to_s3
 
 # create a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
