@@ -1649,7 +1649,8 @@ class TestTransformOperations:
 
     @pytest.mark.skip
     def test_transform_headlines_to_csv_conversion_failure(self):
-        """flattening of a set of json files to csv fails properly.
+        """flattening of a set of json files to csv fails when a
+        non-existent DAG pipeline name is used.
 
         Operations Performed:
 
