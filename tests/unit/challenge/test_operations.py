@@ -1396,7 +1396,7 @@ class TestTransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        tf_kw_func = c.TransformOperations.transform_keyword_headlines_to_csv
+        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
 
         # Act
 
@@ -1404,7 +1404,7 @@ class TestTransformOperations:
 
         data = None
 
-        result = tf_kw_func(data)
+        result = tf_func(data)
 
         assert result == 2
 

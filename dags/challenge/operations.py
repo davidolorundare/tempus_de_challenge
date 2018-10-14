@@ -978,9 +978,13 @@ class TransformOperations:
         fold of the 'tempus_bonus_challenge_dag' pipeline.
         """
 
+        return 2
+
     @classmethod
     def transform_headlines_to_csv(cls, json_dir):
         """converts the jsons in a given directory to csv."""
+
+        return 2
 
 
 class UploadOperations:
