@@ -1196,6 +1196,11 @@ class TestExtractOperations:
         invalid_df = pd.DataFrame()
         total_results = [0, 0, 0]
         status = ['ok', 'ok', 'ok']
+        articles = []
+
+        invalid_df['status'] = status
+        invalid_df['totalResults'] = total_results
+        invalid_df['articles'] = articles
 
         # Act
 
