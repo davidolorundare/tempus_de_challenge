@@ -1449,6 +1449,27 @@ class TestTransformOperations:
 
         assert result == 2
 
+    def test_transform_data_to_dataframe_success(self):
+        """conversion of a dictionary of numpy array news data into
+        a Pandas Dataframe succeed"""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_data_to_dataframe
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
     def test_transform_keyword_headlines_to_csv_conversion_failure(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder fails."""
