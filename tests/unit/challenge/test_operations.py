@@ -1387,8 +1387,9 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
-    def test_transform_keyword_headlines_to_csv(self):
-        """test the function to flatten a json to csv."""
+    def test_transform_keyword_headlines_to_csv_success(self):
+        """call to flatten jsons in the tempus_bonus_challenge_dag headline
+        folder succeeds."""
 
         # Arrange
 
@@ -1407,8 +1408,44 @@ class TestTransformOperations:
 
         assert result == 2
 
-    def test_transform_news_headlines_to_csv(self):
-        """test the function to flatten a json to csv."""
+    def test_transform_news_headlines_to_csv_success(self):
+        """call to flatten jsons in the tempus_challenge_dag headline
+        folder succeeds."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
+    @pytest.mark.skip
+    def test_transform_headlines_to_csv(self):
+        """test macro function to flatten a set of json files to csv.
+
+        Operations Performed:
+
+            - get context-specific 'headlines' and 'csv' directories
+            - iterate through respective pipeline's 'headlines' dir
+
+            - open up a pipeline_execution_data_top_headlines.csv
+            - for each json file:
+                extract common format of all entries within it
+                convert to csv format and append into this csv
+            - write-close csv and store in 'csv' directory
+
+
+        """
 
         # Arrange
 
@@ -1426,25 +1463,6 @@ class TestTransformOperations:
         result = tf_func(data)
 
         assert result == 2
-
-    @pytest.mark.skip
-    def test_transform_headlines_to_csv(self):
-        """test macro function to flatten a set of json files to one csv.
-
-        Operations Performed:
-
-            - get context-specific 'headlines' and 'csv' directories
-            - iterate through respective pipeline's 'headlines' dir
-
-            - open up a pipeline_execution_data_top_headlines.csv
-            - for each json file:
-                extract common format of all entries within it
-                convert to csv format and append into this csv
-            - write-close csv and store in 'csv' directory
-
-
-        """
-        pass
 
 
 @pytest.mark.uploadtests

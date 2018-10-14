@@ -962,9 +962,25 @@ class TransformOperations:
 
     @classmethod
     def transform_keyword_headlines_to_csv(cls, json_data):
-        """converts the contents in a json object into a csv."""
+        """converts the json contents of a given folder into a csv.
+
+        The function specifically operates on jsons in the 'headlines'
+        folder of the 'tempus_bonus_challenge_dag' pipeline.
+        """
 
         return 2
+
+    @classmethod
+    def transform_news_headlines_to_csv(cls, json_data):
+        """converts the json contents of a given folder into a csv.
+
+        The function specifically operates on jsons in the 'headlines'
+        fold of the 'tempus_bonus_challenge_dag' pipeline.
+        """
+
+    @classmethod
+    def transform_headlines_to_csv(cls, json_dir):
+        """converts the jsons in a given directory to csv."""
 
 
 class UploadOperations:
