@@ -1133,7 +1133,7 @@ class TransformOperations:
         return status
 
     @classmethod
-    def helper_execute_json_transformation(cls, directory, timestamp):
+    def helper_execute_json_transformation(cls, directory, timestamp=None):
         """runs a block of code to transform json headlines to csv.
 
         # Arguments:
@@ -1152,6 +1152,10 @@ class TransformOperations:
 
         # the name the created csv file should be given
         fname = None
+
+        # execution date cannot be None
+        if not timestamp:
+            timestamp = datetime.datetime.now()
 
         # transform all jsons in the 'headlines' directory
 
