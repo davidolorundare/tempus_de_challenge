@@ -1275,16 +1275,13 @@ class TransformOperations:
 
         # ensure status of operation is communicated to caller function
         op_status = None
-        query_key = csv_filename.split("_")[1]
         if os.listdir(csv_dir):
-            log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
+            log.info("english news headlines csv saved in {}".format(csv_dir))
             op_status = True
         else:
             op_status = False
 
         return op_status
-
-        return 2
 
     @classmethod
     def transform_keyword_headlines_to_csv(cls, json_file, csv_filename=None):
