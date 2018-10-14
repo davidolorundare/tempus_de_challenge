@@ -1700,7 +1700,6 @@ class TestTransformOperations:
         result = tf_func(info_func=news_info_class, **airflow_context)
 
         # Assert
-
         assert result is False
 
 
