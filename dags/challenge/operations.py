@@ -1107,7 +1107,7 @@ class TransformOperations:
 
         # error-check
         if not news_data:
-            raise ValueError("news_data cannot be empty")
+            raise ValueError("news data argument cannot be empty")
 
         field_names = ['news_source_id',
                        'news_source_name',
