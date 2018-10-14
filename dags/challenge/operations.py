@@ -1073,8 +1073,8 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        transform_json_fnc = cls.helper_execute_keyword_json_transformation
-        transform_keyword_json_fnc = cls.helper_execute_json_transformation
+        transform_json_fnc = cls.helper_execute_json_transformation
+        transform_key_json_fnc = cls.helper_execute_keyword_json_transformation
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
@@ -1092,13 +1092,11 @@ class TransformOperations:
         # perform context-specific transformations
         if pipeline_name == "tempus_challenge_dag":
             # transform all jsons in the 'headlines' directory
-            pipeline_info.print('er')
-            # transform_news_headlines_to_csv
-            # other things
+            transform_status = transform_json_fnc(headline_dir, exec_date)
             return transform_status
         elif pipeline_name == "tempus_bonus_challenge_dag":
             # transform all jsons in the 'headlines' directory
-            transform_status = transform_json_fnc(headline_dir, exec_date)
+            transform_status = transform_key_json_fnc(headline_dir, exec_date)
             return transform_status
         else:
             # the active pipeline is not one of the two we developed for.
