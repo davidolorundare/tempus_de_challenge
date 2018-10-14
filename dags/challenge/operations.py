@@ -1111,9 +1111,21 @@ class TransformOperations:
         data = extr_frm_frame_fnc(keyword_data)
         transformed_df = trans_to_frame_fnc(data)
 
-        # transform to csv
+        # transform to csv and save in the 'csv' datastore
+        csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
+        csv_save_path = os.path.join(csv_dir, csv_filename)
+        transformed_df.to_csv(path_or_buf=csv_save_path)
 
-        return 2
+        # ensure status of operation is communicated to caller function
+        op_status = None
+        query_key = csv_filename.split("_")[1]
+        if os.listdir(csv_dir):
+            log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
+            op_status = True
+        else:
+            op_status = False
+
+        return op_status
 
     @classmethod
     def transform_data_to_dataframe(cls, news_data):
