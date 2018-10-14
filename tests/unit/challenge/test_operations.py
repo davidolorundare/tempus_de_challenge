@@ -1185,26 +1185,35 @@ class TestExtractOperations:
     @pytest.mark.skip
     def test_extract_news_data_from_dataframe_success(self):
         """extraction of information from news dataframe succeeds."""
-    @pytest.mark.skip
-    def test_extract_news_data_from_dataframe_no_article_fails(self):
+
+    def test_extract_news_data_from_dataframe_no_articles_fails(self):
         """extraction of information from news dataframe fails
         if there are no news articles.
         """
 
         # Arrange
+
         # craft the invalid dataframe data
-        invalid_df = pd.DataFrame()
+        data = pd.DataFrame()
         total_results = [0, 0, 0]
         status = ['ok', 'ok', 'ok']
-        articles = []
+        articles = [None, None, None]
 
-        invalid_df['status'] = status
-        invalid_df['totalResults'] = total_results
-        invalid_df['articles'] = articles
+        data['status'] = status
+        data['totalResults'] = total_results
+        data['articles'] = articles
 
         # Act
+        result = c.ExtractOperations.extract_news_data_from_dataframe(data)
 
         # Assert
+        # we know the function's return value is a dictionary.
+        empty_dict = None
+        if not result:
+            empty_dict = True
+        else:
+            empty_dict = False
+        assert empty_dict is True
 
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
         """list of news json fails at extracting source id and names with

@@ -895,7 +895,7 @@ class ExtractOperations:
         # dictionary representing the extracted news data
         extracted_data = {}
 
-        # error check
+        # error check - no articles means this json had no news data
         if num_of_articles == 0:
             return extracted_data
 
