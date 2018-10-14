@@ -1182,7 +1182,7 @@ class TestExtractOperations:
         expected = (['bbc-news', 'abc-news-au'], ['bbc news', 'bbc news (au)'])
         assert expected == actual_result
 
-    def test_extract_news_data_from_dataframe_success(self):
+    def test_extract_news_data_from_dataframe_succeeds(self):
         """extraction of information from news dataframe succeeds."""
 
         # Arrange
@@ -1552,7 +1552,7 @@ class TestTransformOperations:
 
     @pytest.mark.skip
     def test_transform_data_to_dataframe_fails(self):
-        """conversion of a dictionary of numpy array news data into
+        """conversion of a dictionary of news data into
         a Pandas Dataframe fails"""
 
         # Arrange
@@ -1562,13 +1562,18 @@ class TestTransformOperations:
         # is more than PEP-8's 79 line-character limit.
         tf_func = c.TransformOperations.transform_data_to_dataframe
 
+        # function fails when the incoming news data is empty
+        data = None
+
         # Act
+        with pytest.raises(ValueError) as err:
+            tf_func(data)
 
         # Assert
 
-        data = None
+        
 
-        result = tf_func(data)
+        result = 
 
         assert result == 2
 

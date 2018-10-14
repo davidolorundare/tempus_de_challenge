@@ -1075,9 +1075,9 @@ class TransformOperations:
         # use Pandas to read in the json file
         keyword_data = pd.read_json(json_file)
 
-        # extraction
-        data = extract_news_data_from_dataframe(keyword_data)
-        transformed_df = transform_data_to_dataframe(data)
+        # extraction and intermediate-transformation of the news json
+        data = ExtractOperations.extract_news_data_from_dataframe(keyword_data)
+        transformed_df = TransformOperations.transform_data_to_dataframe(data)
 
         # transform to csv
 
@@ -1098,25 +1098,35 @@ class TransformOperations:
 
     @classmethod
     def transform_data_to_dataframe(cls, news_data):
-        """converts a dictionary of numpy array news data into
-        a Pandas Dataframe.
+        """converts a dictionary of news data into a Pandas Dataframe.
 
         # Arguments:
             :param data: extracted news data information.
             :type data: dict
         """
 
-        # field_names = ['news_source_id',
-        #                'news_source_name',
-        #                'news_author',
-        #                'news_title',
-        #                'news_description',
-        #                'news_url',
-        #                'news_image_url',
-        #                'news_publication_date',
-        #                'news_content']
+        # error-check
+        if not news_data:
+            raise ValueError("news_data cannot be empty")
 
-        return 2
+        field_names = ['news_source_id',
+                       'news_source_name',
+                       'news_author',
+                       'news_title',
+                       'news_description',
+                       'news_url',
+                       'news_image_url',
+                       'news_publication_date',
+                       'news_content']
+
+        # craft the transformed dataframe
+        news_df = pd.DataFrame()
+
+        # populate the columns of the dataframe
+        for index, field in enumerate(list(news_data.keys())):
+            news_df[field_names[index]] = news_data[field]
+
+        return news_df
 
     @classmethod
     def transform_headlines_to_csv(cls, json_dir):
