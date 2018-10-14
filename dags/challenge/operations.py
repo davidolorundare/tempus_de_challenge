@@ -1151,6 +1151,26 @@ class TransformOperations:
     def helper_execute_json_transformation(cls, directory, timestamp=None):
         """runs a block of code to transform json headlines to csv.
 
+
+        A number of performance issues need to be considered for this task:
+
+        The intent of the code is combined multiple jsons files into one csv.
+        This could be done using Pandas's DataFrame object
+        as an intermediary format - performing the merge in DataFrames
+        as a stream OR as a batch (both which have their memory tradeoffs)
+        This could also be done using csv's - by converting each json file
+        # into a csv and doing the merger there (also as either stream OR
+        # batch) using for example Python's CSV.
+
+        Though the author is familiar with both Pandas and CSV libraries,
+        I decided to use Pandas - due to it being, in my opinion, more
+        powerful than the mere CSV library. Pandas also uses the CSV library
+        internal and has highly flexible functions for manipulating both
+        json and csv data.
+
+        I decided to use Pandas's DataFrame object as the intermediary format
+        and a Batch merging approach.
+
         # Arguments:
             :param directory: directory having the jsons to
                 execute a transformation on.
@@ -1174,15 +1194,6 @@ class TransformOperations:
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
-
-        # a number of performance issues need to be considered:
-        # The intent of the code is combined multiple jsons files into
-        # one csv's. This could be done using Pandas's DataFrame object
-        # as an intermediary format - performing the merge in DataFrames
-        # as a stream OR as a batch (both which have their memory tradeoffs)
-        # This could also be done using csv's - by converting each json file
-        # into a csv and doing the merger there (also as either stream OR
-        # batch) using for example Python's CSV.
 
         print('spooky')
 
