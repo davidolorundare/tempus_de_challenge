@@ -75,6 +75,7 @@ start_task = DummyOperator(task_id='start', dag=dag)
 # PEP8's 79 line-character limit
 storage_func_alias = c.FileStorage.create_storage
 headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
+transform_func_alias = c.TransformOperations.transform_headlines_to_csv
 
 # create a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
@@ -140,7 +141,10 @@ extract_headlines_task = PythonOperator(task_id='extract_headl_kw_task',
                                         dag=dag)
 
 # transform the data, resulting in a flattened csv
-flatten_csv_task = DummyOperator(task_id='transform_to_csv_kw_task', dag=dag)
+flatten_csv_task = PythonOperator(task_id='transform_to_csv_kw_task',
+                                  provide_context=True,
+                                  python_callable=transform_func_alias,
+                                  dag=dag)
 
 # upload the flattened csv into my S3 bucket
 upload_csv_task = DummyOperator(task_id='upload_csv_to_s3_kw_task', dag=dag)
