@@ -1256,8 +1256,8 @@ class TransformOperations:
             :param frame: single DataFrame consisting of all english news
                 sources headlines
             :type frame: DataFrame
-            :param filename: the filename of the transformed csv
-            :type filename: string
+            :param csv_filename: the filename of the transformed csv
+            :type csv_filename: string
         """
 
         log.info("Running transform_news_headlines_to_csv method")
@@ -1297,8 +1297,8 @@ class TransformOperations:
             :param json_file: a json file containing top news headlines
                 based on a keyword
             :type json_file: file
-            :param filename: the filename of the transformed csv
-            :type filename: string
+            :param csv_filename: the filename of the transformed csv
+            :type csv_filename: string
         """
 
         log.info("Running transform_keyword_headlines_to_csv method")
