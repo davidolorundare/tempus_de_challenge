@@ -1390,9 +1390,40 @@ class TestTransformOperations:
     def test_transform_keyword_headlines_to_csv(self):
         """test the function to flatten a json to csv."""
 
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_kw_func = c.TransformOperations.transform_keyword_headlines_to_csv
+
+        # Act
+
+        # Assert
+
         data = None
 
-        result = c.TransformOperations.flatten_json_to_csv(data)
+        result = tf_kw_func(data)
+
+        assert result == 2
+
+    def test_transform_headlines_to_csv(self):
+        """test the function to flatten a json to csv."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = None  # c.TransformOperations.transform_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
 
         assert result == 2
 
