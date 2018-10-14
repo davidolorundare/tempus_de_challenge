@@ -9,6 +9,7 @@ class.
 
 import config
 import errno
+import numpy as np
 import json
 import logging
 import os
@@ -890,16 +891,28 @@ class ExtractOperations:
             :type frame: DataFrame
         """
 
+        num_of_articles = frame['totalResults'][0]
+
         # Using Pandas, extract required information from the given dataframe,
         # each is a numpy array.
-        source_id = ''
-        source_name = ''
+        source_id = [frame['articles'][index]['source']['id']
+                     for index in np.arange(num_of_articles)]
+
+        source_name = [frame['articles'][index]['source']['name']
+                       for index in np.arange(num_of_articles)]
+
         author = ''
+
         title = ''
+
         description = ''
+
         url = ''
+
         url_to_image = ''
+
         published_at = ''
+
         content = ''
 
         # compose a dictionary with the extracted information
@@ -1080,15 +1093,15 @@ class TransformOperations:
             :type data: dict
         """
 
-        field_names = ['news_source_id',
-                       'news_source_name',
-                       'news_author',
-                       'news_title',
-                       'news_description',
-                       'news_url',
-                       'news_image_url',
-                       'news_publication_date',
-                       'news_content']
+        # field_names = ['news_source_id',
+        #                'news_source_name',
+        #                'news_author',
+        #                'news_title',
+        #                'news_description',
+        #                'news_url',
+        #                'news_image_url',
+        #                'news_publication_date',
+        #                'news_content']
 
         return 2
 
@@ -1107,7 +1120,6 @@ class TransformOperations:
         The end transformations are stored in the respective 'csv'
         folders of the respective pipelines.
         """
-
 
         return 2
 
