@@ -1064,17 +1064,18 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        kw_headline_csv = cls.transform_keyword_headlines_to_csv
+        transform_json_fnc = cls.helper_execute_kw_json_transformation
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
         pipeline_info = NewsInfoDTO(pipeline_name)
-        transform_status = None
         headline_dir = pipeline_info.get_headlines_directory
+
         # execution date of the current pipeline
         exec_date = str(context['ds'])
-        # the name the created csv file should be given
-        fname = None
+
+        # transformation operation status
+        transform_status = None
 
         # perform context-specific transformations
         if pipeline_name == "tempus_challenge_dag":
@@ -1085,12 +1086,7 @@ class TransformOperations:
             return transform_status
         elif pipeline_name == "tempus_bonus_challenge_dag":
             # transform all jsons in the 'headlines' directory
-            if os.listdir(headline_dir):
-                for file in os.listdir(headline_dir):
-                    if file.endswith('.json'):
-                        key = file.split("_")[1]
-                        fname = exec_date + "_" + key + "_headlines.csv"
-                        transform_status = kw_headline_csv(file, fname)
+            transform_status = transform_json_fnc(headline_dir, exec_date)
             return transform_status
         else:
             # the active pipeline is not one of the two we developed for.
@@ -1100,8 +1096,36 @@ class TransformOperations:
             return False
 
     @classmethod
-    def helper_execute_transformation(cls):
-        """runs a block of code to transform json to csv"""
+    def helper_execute_kw_json_transformation(cls, directory, timestamp):
+        """runs a block of code to transform json to csv.
+
+        # Arguments:
+            :param directory: directory having the jsons to
+                execute a transformation on.
+            :type directory: string
+            :param timestamp: date of the pipeline execution that
+                should be appended to created csv files
+            :type timestamp: Date
+        """
+
+        log.info("Running helper_execute_json_transformation method")
+
+        # transformation operation status
+        status = None
+
+        # the name the created csv file should be given
+        fname = None
+
+        # transform all jsons in the 'headlines' directory
+        if os.listdir(directory):
+            for file in os.listdir(directory):
+                if file.endswith('.json'):
+                    key = file.split("_")[1]
+                    fname = timestamp + "_" + key + "_headlines.csv"
+                    status = cls.transform_keyword_headlines_to_csv(file,
+                                                                    fname)
+
+        return status
 
     @classmethod
     def transform_news_headlines_to_csv(cls, json_data, csv_filename):
