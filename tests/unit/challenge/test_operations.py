@@ -1550,7 +1550,6 @@ class TestTransformOperations:
 
         assert result == 2
 
-    @pytest.mark.skip
     def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of news data into
         a Pandas Dataframe fails"""
@@ -1570,12 +1569,8 @@ class TestTransformOperations:
             tf_func(data)
 
         # Assert
-
-        
-
-        result = 
-
-        assert result == 2
+        actual_message = str(err.value)
+        assert "news data argument cannot be empty" in actual_message
 
     @pytest.mark.skip
     def test_transform_keyword_headlines_to_csv_conversion_failure(self):
