@@ -1137,13 +1137,20 @@ class TransformOperations:
 
         # transform individual jsons in the 'headlines' directory into
         # individual csv files
+        files = None
+
         if os.listdir(directory):
-            for file in os.listdir(directory):
-                if file.endswith('.json'):
-                    key = file.split("_")[1]
-                    fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                    status = cls.transform_keyword_headlines_to_csv(file,
-                                                                    fname)
+            files = [file for file in os.listdir(directory)
+                     if file.endswith('.json')]
+
+        # check existence of json files before beginning transformation
+        if not files:
+            raise FileNotFoundError("Directory has no json-headline files")
+        else:
+            for file in files:
+                key = file.split("_")[1]
+                fname = str(timestamp) + "_" + key + "_top_headlines.csv"
+                status = cls.transform_keyword_headlines_to_csv(file, fname)
 
         return status
 
@@ -1194,6 +1201,17 @@ class TransformOperations:
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
+
+        files = None
+
+        if os.listdir(directory):
+            files = [file for file in os.listdir(directory)
+                     if file.endswith('.json')]
+
+        # check existence of json files before beginning transformation
+        if not files:
+            raise FileNotFoundError("Directory has no json-headline files")
+        else:
 
         print('spooky')
 
