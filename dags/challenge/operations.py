@@ -1135,7 +1135,8 @@ class TransformOperations:
         if not timestamp:
             timestamp = datetime.datetime.now()
 
-        # transform all jsons in the 'headlines' directory
+        # transform individual jsons in the 'headlines' directory into
+        # individual csv files
         if os.listdir(directory):
             for file in os.listdir(directory):
                 if file.endswith('.json'):
@@ -1171,7 +1172,8 @@ class TransformOperations:
         if not timestamp:
             timestamp = datetime.datetime.now()
 
-        # transform all jsons in the 'headlines' directory
+        # transform individual jsons in the 'headlines' directory into one
+        # single csv file
 
         return status, fname
 
