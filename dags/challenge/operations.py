@@ -1234,6 +1234,8 @@ class TransformOperations:
         else:
             print('spooky')
             # DO AWESOME THINGS HERE
+            # REAL DO AWESOME THINGS !!! - Batch transform and DataFrame Merge
+            # merged_df = AWESOME_THINGS()
 
         fname = str(timestamp) + "_top_headlines.csv"
         status = cls.transform_news_headlines_to_csv(merged_df, fname)
@@ -1260,11 +1262,9 @@ class TransformOperations:
 
         log.info("Running transform_news_headlines_to_csv method")
 
-        # Some other things
-
-        # input is a single DataFrame
-        print("WHAT TO DO NEXT")
-        transformed_df = None
+        # input is a single DataFrame consisting of all english news sources
+        # headlines
+        transformed_df = frame
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
