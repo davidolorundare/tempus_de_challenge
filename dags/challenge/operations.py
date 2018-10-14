@@ -1029,7 +1029,7 @@ class TransformOperations:
     """handles functionality for flattening CSVs."""
 
     @classmethod
-    def transform_headlines_to_csv(cls, json_dir):
+    def transform_headlines_to_csv(cls, **context):
         """converts the jsons in a given directory to csv.
 
         Use different transformation methods depending on the
@@ -1061,10 +1061,14 @@ class TransformOperations:
 
         log.info("Running transform_headlines_to_csv method")
 
+        # get active pipeline information
+        pipeline_name = context['dag'].dag_id
+        pipeline_info = NewsInfoDTO(pipeline_name)
+
         return 2
 
     @classmethod
-    def transform_news_headlines_to_csv(cls, json_data):
+    def transform_news_headlines_to_csv(cls, json_data, csv_filename):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
