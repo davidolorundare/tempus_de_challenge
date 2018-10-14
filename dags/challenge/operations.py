@@ -1073,7 +1073,8 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        transform_json_fnc = cls.helper_execute_kw_json_transformation
+        transform_json_fnc = cls.helper_execute_keyword_json_transformation
+        transform_keyword_json_fnc = cls.helper_execute_json_transformation
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
