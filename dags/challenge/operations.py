@@ -1140,7 +1140,7 @@ class TransformOperations:
             for file in os.listdir(directory):
                 if file.endswith('.json'):
                     key = file.split("_")[1]
-                    fname = str(timestamp) + "_" + key + "_headlines.csv"
+                    fname = str(timestamp) + "_" + key + "_top_headlines.csv"
                     status = cls.transform_keyword_headlines_to_csv(file,
                                                                     fname)
 
@@ -1216,7 +1216,7 @@ class TransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
-        trans_to_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
+        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
 
         # use Pandas to read in the json file
         keyword_data = pd.read_json(json_file)
