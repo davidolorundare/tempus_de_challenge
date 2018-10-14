@@ -1037,9 +1037,12 @@ class TransformOperations:
         current active pipeline.
 
         For the 'tempus_challenge_dag' pipeline, the function
-        `transform_news_headlines_to_csv` is used.
+        `transform_news_headlines_to_csv` is used via a helper-function
+        `helper_execute_json_transformation`.
+
         For the 'tempus_bonus_challenge_dag' pipeline, the function
-        `transform_keyword_headlines_to_csv` is used.
+        `transform_keyword_headlines_to_csv` is used via a helper-function
+        `helper_execute_keyword_json_transformation`.
 
         The end transformations are stored in the respective 'csv'
         datastore folders of the respective pipelines.
