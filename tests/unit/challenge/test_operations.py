@@ -1182,9 +1182,10 @@ class TestExtractOperations:
         assert expected == actual_result
 
     def test_extract_news_data_from_dataframe_success(self):
-        """"""
+        """extraction of information from news dataframe succeeds."""
+
     def test_extract_news_data_from_dataframe_failure(self):
-        """"""
+        """extraction of information from news dataframe fails."""
 
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
         """list of news json fails at extracting source id and names with
