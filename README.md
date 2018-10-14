@@ -163,7 +163,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 
 ---
-### Approach to Project
+### Project Plan/Initial Approach
 
 - A week of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto library, Python Integration Testing, Using Python Test Doubles, and applying Python Test-Driven Development in practice.
 
