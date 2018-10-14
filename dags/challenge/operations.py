@@ -1165,6 +1165,8 @@ class TransformOperations:
 
         log.info("Running transform_news_headlines_to_csv method")
 
+        print("WHAT TO DO NEXT")
+
         return 2
 
     @classmethod
