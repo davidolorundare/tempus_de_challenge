@@ -1217,7 +1217,7 @@ class TransformOperations:
             timestamp = datetime.datetime.now()
 
         # the entire merged DataFrame of all the jsons
-        transformed_merged_df = None
+        merged_df = None
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
@@ -1233,12 +1233,12 @@ class TransformOperations:
             raise NoFilesFoundError("Directory has no json-headline files")
         else:
             print('spooky')
+            # DO AWESOME THINGS HERE
 
-        print('spooky')
+        fname = str(timestamp) + "_top_headlines.csv"
+        status = cls.transform_news_headlines_to_csv(merged_df, fname)
 
-        status = cls.transform_news_headlines_to_csv()
-
-        return status, fname
+        return status
 
     @classmethod
     def transform_news_headlines_to_csv(cls, frame, csv_filename):
