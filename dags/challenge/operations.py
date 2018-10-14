@@ -1107,7 +1107,9 @@ class TransformOperations:
             return False
 
     @classmethod
-    def helper_execute_kw_json_transformation(cls, directory, timestamp=None):
+    def helper_execute_keyword_json_transformation(cls,
+                                                   directory,
+                                                   timestamp=None):
         """runs a block of code to transform keyword json headlines to csv.
 
         # Arguments:
@@ -1119,7 +1121,7 @@ class TransformOperations:
             :type timestamp: datetime object
         """
 
-        log.info("Running helper_execute_kw_json_transformation method")
+        log.info("Running helper_execute_keyword_json_transformation method")
 
         # transformation operation status
         status = None

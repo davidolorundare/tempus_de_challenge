@@ -1524,7 +1524,7 @@ class TestTransformOperations:
 
         assert result == 2
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="functions used internally were tested already")
     def test_transform_headlines_to_csv_keyword_success(self,
                                                         airflow_context):
         """flattening of a set of json files to csv fails properly."""
@@ -1542,7 +1542,7 @@ class TestTransformOperations:
         news_info_test = MagicMock(spec=c.NewsInfoDTO)
 
         # use the pytest resource representing an airflow context object
-        airflow_context['dag'].dag_id = "tempus_challenge_dag"
+        airflow_context['dag'].dag_id = "tempus_bonus_challenge_dag"
         airflow_context['execution_date'] = datetime.datetime.now()
 
         # setup a dummy class as a Mock object initializing the property
@@ -1563,7 +1563,7 @@ class TestTransformOperations:
         # Assert
         assert result == 0
 
-    @pytest.mark.skip
+    @pytest.mark.skip(reason="functions used internally were tested already")
     def test_transform_headlines_to_csv_non_keyword_success(self,
                                                             airflow_context):
         """flattening of a set of json files to csv fails properly."""
