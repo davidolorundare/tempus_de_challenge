@@ -1407,7 +1407,7 @@ class TestTransformOperations:
 
         assert result == 2
 
-    def test_transform_headlines_to_csv(self):
+    def test_transform_news_headlines_to_csv(self):
         """test the function to flatten a json to csv."""
 
         # Arrange
