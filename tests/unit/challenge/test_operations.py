@@ -1768,9 +1768,3 @@ class TestNewsInfoDTO:
         # Assert
         actual_message = str(err.value)
         assert "Argument pipeline_name cannot be left blank" in actual_message
-
-
-@pytest.mark.skip
-@pytest.mark.headlinejsontests
-class TestParsedHeadlineJson:
-    """test the functions in the ParsedHeadlineJSON class."""
