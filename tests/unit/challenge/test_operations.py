@@ -1415,7 +1415,7 @@ class TestTransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        tf_func = None  # c.TransformOperations.transform_headlines_to_csv
+        tf_func = c.TransformOperations.transform_headlines_to_csv
 
         # Act
 
