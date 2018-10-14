@@ -1181,6 +1181,11 @@ class TestExtractOperations:
         expected = (['bbc-news', 'abc-news-au'], ['bbc news', 'bbc news (au)'])
         assert expected == actual_result
 
+    def test_extract_news_data_from_dataframe_success(self):
+        """"""
+    def test_extract_news_data_from_dataframe_failure(self):
+        """"""
+
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
         """list of news json fails at extracting source id and names with
         bad data.
