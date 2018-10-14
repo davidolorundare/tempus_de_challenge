@@ -82,6 +82,7 @@ upload_func_alias = c.UploadOperations.upload_csv_to_s3
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
                                          python_callable=storage_func_alias,
+                                         retries=3,
                                          dag=dag)
 
 # retrieve all english news sources
@@ -110,12 +111,14 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
 headlines_task = PythonOperator(task_id='extract_headlines_task',
                                 provide_context=True,
                                 python_callable=headlines_func_alias,
+                                retries=3,
                                 dag=dag)
 
 # transform the data, resulting in a flattened csv
 flatten_csv_task = PythonOperator(task_id='transform_to_csv_task',
                                   provide_context=True,
                                   python_callable=transform_func_alias,
+                                  retries=3,
                                   dag=dag)
 
 # upload the flattened csv into my S3 bucket

@@ -82,6 +82,7 @@ upload_func_alias = c.UploadOperations.upload_csv_to_s3
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
                                          python_callable=storage_func_alias,
+                                         retries=3,
                                          dag=dag)
 
 # retrieve all top news headlines for specific keywords
@@ -93,7 +94,6 @@ news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    response_check=headlines_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_headlines_first_kw_task',
-                                   retries=3,
                                    dag=dag)
 
 news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
@@ -103,7 +103,6 @@ news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    response_check=headlines_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_headlines_second_kw_task',
-                                   retries=3,
                                    dag=dag)
 
 news_kw3_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
@@ -113,7 +112,6 @@ news_kw3_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    response_check=headlines_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_headlines_third_kw_task',
-                                   retries=3,
                                    dag=dag)
 
 news_kw4_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
@@ -123,7 +121,6 @@ news_kw4_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    response_check=headlines_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_headlines_fourth_kw_task',
-                                   retries=3,
                                    dag=dag)
 
 # detect existence of retrieved news data
@@ -139,12 +136,14 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
 extract_headlines_task = PythonOperator(task_id='extract_headl_kw_task',
                                         provide_context=True,
                                         python_callable=headlines_func_alias,
+                                        retries=3,
                                         dag=dag)
 
 # transform the data, resulting in a flattened csv
 flatten_csv_task = PythonOperator(task_id='transform_to_csv_kw_task',
                                   provide_context=True,
                                   python_callable=transform_func_alias,
+                                  retries=3,
                                   dag=dag)
 
 # upload the flattened csv into my S3 bucket
