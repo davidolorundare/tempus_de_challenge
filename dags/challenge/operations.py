@@ -1045,11 +1045,11 @@ class TransformOperations:
         """
 
         # use Pandas to read in the json file
-        # keyword_data = pd.read_json(json_file)
+        keyword_data = pd.read_json(json_file)
 
         # extraction
-        # data = extract_news_data_from_dataframe(keyword_data)
-        # transformed_df = transform_data_to_dataframe(data)
+        data = extract_news_data_from_dataframe(keyword_data)
+        transformed_df = transform_data_to_dataframe(data)
 
         # transform to csv
 
@@ -1069,10 +1069,16 @@ class TransformOperations:
         return 2
 
     @classmethod
+    def transform_data_to_dataframe(cls, data):
+        """converts a dictionary of numpy array news data into
+        a Pandas Dataframe.
+        """
+
+        return 2
+
+    @classmethod
     def transform_headlines_to_csv(cls, json_dir):
         """converts the jsons in a given directory to csv."""
-
-
 
         return 2
 
