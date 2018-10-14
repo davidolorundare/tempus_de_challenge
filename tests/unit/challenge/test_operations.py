@@ -1664,11 +1664,9 @@ class TestTransformOperations:
 
         assert result == 2
 
-    @patch('c.NewsInfoDTO', autospec=True)
-    @patch('c.NewsInfoDTO', autospec=True)
+    # @patch('NewsInfoDTO', autospec=True)
+    # @patch('NewsInfoDTO', autospec=True)
     def test_transform_headlines_to_csv_conversion_failure(self,
-                                                           news_info_class,
-                                                           news_info_test,
                                                            airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
@@ -1691,6 +1689,10 @@ class TestTransformOperations:
         tf_func = c.TransformOperations.transform_headlines_to_csv
 
         # Arrange
+        # setup Mocks needed
+        news_info_class = MagicMock(spec=c.NewsInfoDTO)
+        news_info_test = MagicMock(spec=c.NewsInfoDTO)
+
         # use the pytest resource representing an airflow context object
         airflow_context['dag'] = "non_existent_pipeline_name"
         airflow_context['execution_date'] = datetime.datetime.now()
@@ -1708,7 +1710,7 @@ class TestTransformOperations:
         # Act
         # on calling the function with a wrong pipeline name it fails,
         # returning False to signal a failed status
-        result = tf_func(info_func=news_info_class, context=airflow_context)
+        result = tf_func(info_func=news_info_class, **airflow_context)
 
         # Assert
 
