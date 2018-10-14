@@ -8,6 +8,8 @@ tempus_env/
 faker.py
 dumper.json
 dumpery.json
+duster.json
+jupyter/
 
 # pytest coverage info
 .coverage

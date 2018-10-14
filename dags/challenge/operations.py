@@ -966,6 +966,9 @@ class TransformOperations:
 
         The function specifically operates on jsons in the 'headlines'
         folder of the 'tempus_bonus_challenge_dag' pipeline.
+
+        Uses the Pandas library to parse, traverse and flatten the
+        json data into a csv file.
         """
 
         return 2
@@ -976,6 +979,9 @@ class TransformOperations:
 
         The function specifically operates on jsons in the 'headlines'
         fold of the 'tempus_bonus_challenge_dag' pipeline.
+
+        Uses the Pandas library to parse, traverse and flatten the
+        json data into a csv file.
         """
 
         return 2
