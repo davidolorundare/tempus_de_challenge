@@ -1543,8 +1543,7 @@ class TestTransformOperations:
         extracted_data = {'source_id': ["wired"],
                           'source_name': ["Wired"],
                           'author': ["Klint Finley"],
-                          'title': ["Microsoft Calls a Truce in the Linux\
-                          Patent Wars"],
+                          'title': ["Microsoft Calls a Truce in Patent Wars"],
                           'description': ["The software giant, whose\
                           former CEO once called\
                           Linux a \\\"cancer,\\\" will let others use 60,000\
@@ -1569,14 +1568,14 @@ class TestTransformOperations:
         # because the dataframe has multiple columns which might be all tedious
         # verify in a single test case, we verify the value of just three
         # columns: source_id, source_name, and title
-        source_id = result_df['news_source_id']
-        source_name = result_df['news_source_name']
-        title = result_df['news_title']
+        actual_source_id = result_df['news_source_id'][0]
+        actual_source_name = result_df['news_source_name'][0]
+        actual_title = result_df['news_title'][0]
 
         # verify the actual result with expectations
-        assert "wired" in source_id
-        assert "Wired" in source_name
-        assert "Microsoft Calls a Truce in the Linux Patent Wars" in title
+        assert "wired" in actual_source_id
+        assert "Wired" in actual_source_name
+        assert "Microsoft Calls a Truce in Patent Wars" in actual_title
 
     def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of news data into
