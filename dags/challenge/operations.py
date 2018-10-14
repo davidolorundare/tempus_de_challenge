@@ -896,7 +896,7 @@ class ExtractOperations:
         extracted_data = {}
 
         # error check - no articles means this json had no news data
-        if num_of_articles == 0:
+        if num_of_articles < 1:
             return extracted_data
 
         # Using Pandas, extract required information from the given dataframe

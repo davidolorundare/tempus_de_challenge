@@ -1182,9 +1182,51 @@ class TestExtractOperations:
         expected = (['bbc-news', 'abc-news-au'], ['bbc news', 'bbc news (au)'])
         assert expected == actual_result
 
-    @pytest.mark.skip
     def test_extract_news_data_from_dataframe_success(self):
         """extraction of information from news dataframe succeeds."""
+
+        # Arrange
+
+        # craft the invalid dataframe data
+        data = pd.DataFrame()
+        total_results = [1]
+        status = ['ok']
+
+        source1 = {"source": {"id": "wired", "name": "Wired"},
+                   "author": "Klint Finley", "title": "Microsoft\
+                   Calls a Truce in the Linux\
+                    Patent Wars", "description": "The software giant, whose\
+                     former CEO once called\
+                    Linux a \\\"cancer,\\\" will let others use 60,000\
+                     patents for Linux-related open source pro\
+                     jects.", "url": "https://www.wired.com/story/mic\
+                     rosoft-calls-truce-in-linux-patent-wars/", "urlToImage": "https://med\
+                     ia.wired.com/photos/5bbe9c0f2b915f2dff96d6f4/191:100/pas\
+                     s/Satya-Microsoft-MichelleG.jpg", "publishedAt": "20\
+                     18-10-11T23:33:03Z", "content": "Microsoft is calling\
+                      for a truce in the patent war. This week the company\
+                       said it will allow more than 2,600 other companies,\
+                        including traditional rivals like Google and IBM,\
+                         to use the technology behind 60,000 Microsoft\
+                          patents for their own Linux related o… [+4435 chars]"}
+
+        articles = [source1]
+
+        data['status'] = status
+        data['totalResults'] = total_results
+        data['articles'] = articles
+
+        # Act
+        result = c.ExtractOperations.extract_news_data_from_dataframe(data)
+
+        # Assert
+        # we know the function's return value is a dictionary.
+        empty_dict = None
+        if not result:
+            empty_dict = True
+        else:
+            empty_dict = False
+        assert empty_dict is False
 
     def test_extract_news_data_from_dataframe_no_articles_fails(self):
         """extraction of information from news dataframe fails
