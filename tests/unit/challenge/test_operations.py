@@ -1539,7 +1539,7 @@ class TestTransformOperations:
         # is more than PEP-8's 79 line-character limit.
         tf_func = c.TransformOperations.transform_data_to_dataframe
 
-        # craft the dummy dataframe data
+        # craft the dummy extracted news data
         extracted_data = {'source_id': ["wired"],
                           'source_name': ["Wired"],
                           'author': ["Klint Finley"],
@@ -1569,13 +1569,14 @@ class TestTransformOperations:
         # because the dataframe has multiple columns which might be all tedious
         # verify in a single test case, we verify the value of just three
         # columns: source_id, source_name, and title
-        actual_source_id = result_df['source_id']
-        actual_source_name = result_df['source_name']
-        actual_headline_title = result_df['title']
+        source_id = result_df['news_source_id']
+        source_name = result_df['news_source_name']
+        title = result_df['news_title']
+
         # verify the actual result with expectations
-        assert actual_source_id == "wired"
-        assert actual_source_name == "Wired"
-        assert actual_headline_title ==
+        assert "wired" in source_id
+        assert "Wired" in source_name
+        assert "Microsoft Calls a Truce in the Linux Patent Wars" in title
 
     def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of news data into
