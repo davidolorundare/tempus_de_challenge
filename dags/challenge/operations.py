@@ -35,6 +35,11 @@ class MissingApiKeyError(ValueError):
     pass
 
 
+class NoFilesFoundError(FileNotFoundError):
+    """raised no files of a particular type exist in a directory"""
+    pass
+
+
 class FileStorage:
     """Handles functionality for data storage."""
 
@@ -1145,7 +1150,7 @@ class TransformOperations:
 
         # check existence of json files before beginning transformation
         if not files:
-            raise FileNotFoundError("Directory has no json-headline files")
+            raise NoFilesFoundError("Directory has no json-headline files")
         else:
             for file in files:
                 key = file.split("_")[1]
@@ -1168,6 +1173,14 @@ class TransformOperations:
         This could also be done using csv's - by converting each json file
         # into a csv and doing the merger there (also as either stream OR
         # batch) using for example Python's CSV.
+
+        Memory Tradeoffs:
+        We work with the assumption that processing all these jsons together
+        at once isn't possible - especially in case of json data sets that
+        don't fit into memory (even if we optimized types and filtered some
+        of the data). In this instance, a better strategy will be to make the
+        transformation in chunks (or batches)
+
 
         Though the author is familiar with both Pandas and CSV libraries,
         I decided to use Pandas - due to it being, in my opinion, more
@@ -1210,8 +1223,9 @@ class TransformOperations:
 
         # check existence of json files before beginning transformation
         if not files:
-            raise FileNotFoundError("Directory has no json-headline files")
+            raise NoFilesFoundError("Directory has no json-headline files")
         else:
+            print('spooky')
 
         print('spooky')
 
