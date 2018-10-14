@@ -1664,23 +1664,10 @@ class TestTransformOperations:
 
         assert result == 2
 
-    # @patch('NewsInfoDTO', autospec=True)
-    # @patch('NewsInfoDTO', autospec=True)
     def test_transform_headlines_to_csv_conversion_failure(self,
                                                            airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
-
-        Operations Performed:
-
-            - get context-specific 'headlines' and 'csv' directories
-            - iterate through respective pipeline's 'headlines' dir
-
-            - open up a pipeline_execution_data_top_headlines.csv
-            - for each json file:
-                extract common format of all entries within it
-                convert to csv format and append into this csv
-            - write-close csv and store in 'csv' directory
         """
 
         # Function Aliases
