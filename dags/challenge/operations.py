@@ -891,6 +891,8 @@ class ExtractOperations:
             :type frame: DataFrame
         """
 
+        log.info("Running extract_news_data_from_dataframe method")
+
         num_of_articles = frame['totalResults'][0]
         # dictionary representing the extracted news data
         extracted_data = {}
@@ -1023,34 +1025,6 @@ class NewsInfoDTO:
             return files
 
 
-class ParseHeadlineJson:
-        """parsed headline json object from a keyword headline Response object.
-
-
-        This class functions as a Data Transfer Object(DTO).
-
-        The get_news_headlines() function was refactored after discovering
-        that alot of its functionalities were shared with that of the function
-        get_news_keyword_headlines(). In order to create a common interface to
-        write to at the end of the Extraction phase (the 'E' in ETL) the author
-        decided to create a separate class which abstracted much of the shared
-        functionality.
-        Refactoring the get_news_headlines() function also made it easier to
-        unit test as well.
-
-        # Arguments:
-            :param json_data: the json news data from which the news-headlines
-                will be extracted from.
-            :type json_data: dict
-            :param pipeline_name: name of the current DAG pipeline.
-            :type pipeline_name: string
-
-        # Raises:
-            ValueError: if the required 'json_data' argument is left blank
-            ValueError: if the required 'pipeline_name' argument is left blank
-        """
-
-
 class TransformOperations:
     """handles functionality for flattening CSVs."""
 
@@ -1085,6 +1059,8 @@ class TransformOperations:
         `pipeline_execution_date`_`keyword`_`headlines`.csv
         """
 
+        log.info("Running transform_headlines_to_csv method")
+
         return 2
 
     @classmethod
@@ -1097,6 +1073,8 @@ class TransformOperations:
         Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
         """
+
+        log.info("Running transform_news_headlines_to_csv method")
 
         return 2
 
@@ -1118,12 +1096,20 @@ class TransformOperations:
             :type filename: string
         """
 
+        log.info("Running transform_keyword_headlines_to_csv method")
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
+        trans_to_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
+
         # use Pandas to read in the json file
         keyword_data = pd.read_json(json_file)
 
         # extraction and intermediate-transformation of the news json
-        data = ExtractOperations.extract_news_data_from_dataframe(keyword_data)
-        transformed_df = TransformOperations.transform_data_to_dataframe(data)
+        data = extr_frm_frame_fnc(keyword_data)
+        transformed_df = trans_to_frame_fnc(data)
 
         # transform to csv
 
@@ -1137,6 +1123,8 @@ class TransformOperations:
             :param data: extracted news data information.
             :type data: dict
         """
+
+        log.info("Running transform_data_to_dataframe method")
 
         # error-check
         if not news_data:
@@ -1168,6 +1156,13 @@ class UploadOperations:
     Reads a 'csv' directory's files and uploads them to
     an Amazon S3 bucket using the S3 Hook and boto library.
     """
+
+    @classmethod
+    def upload_csv_to_s3(cls):
+        """uploads all the files in a given directory to an Amazon S3
+        bucket location."""
+
+        pass
 
 
 def process_retrieved_data(self):

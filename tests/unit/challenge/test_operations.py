@@ -1682,7 +1682,12 @@ class TestUploadOperations:
     """test the functions for task to upload csvs to Amazon S3."""
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3(self):
+    def test_upload_csv_to_s3_succeeds(self):
+        """test the uploading of csvs to an s3 location."""
+        pass
+
+    @pytest.mark.skip
+    def test_upload_csv_to_s3_fails(self):
         """test the uploading of csvs to an s3 location."""
         pass
 
