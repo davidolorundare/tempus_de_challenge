@@ -1042,6 +1042,8 @@ class TransformOperations:
             :param json_file: a json file containing top news headlines
                 based on a keyword
             :type json_file: file
+            :param filename: the filename of the transformed csv
+            :type filename: string
         """
 
         # use Pandas to read in the json file
@@ -1069,16 +1071,40 @@ class TransformOperations:
         return 2
 
     @classmethod
-    def transform_data_to_dataframe(cls, data):
+    def transform_data_to_dataframe(cls, news_data):
         """converts a dictionary of numpy array news data into
         a Pandas Dataframe.
+
+        # Arguments:
+            :param data: extracted news data information.
+            :type data: dict
         """
+
+        field_names = ['news_source_id',
+                       'news_source_name',
+                       'news_author',
+                       'news_title',
+                       'news_description',
+                       'news_url',
+                       'news_image_url',
+                       'news_publication_date',
+                       'news_content']
 
         return 2
 
     @classmethod
     def transform_headlines_to_csv(cls, json_dir):
-        """converts the jsons in a given directory to csv."""
+        """converts the jsons in a given directory to csv.
+
+        Use different transformation methods depending on the
+        current active pipeline.
+
+        For the 'tempus_challenge_dag' pipeline, the function
+        `transform_news_headlines_to_csv` is used.
+        For the 'tempus_bonus_challenge_dag' pipeline, the function
+        `transform_keyword_headlines_to_csv` is used.
+        """
+
 
         return 2
 
