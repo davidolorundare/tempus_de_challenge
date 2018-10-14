@@ -961,14 +961,18 @@ class TransformOperations:
     """handles functionality for flattening CSVs."""
 
     @classmethod
-    def flatten_json_to_csv(cls, json_data):
+    def transform_keyword_headlines_to_csv(cls, json_data):
         """converts the contents in a json object into a csv."""
 
         return 2
 
 
 class UploadOperations:
-    """handles functionality for uploading flattened CSVs."""
+    """handles functionality for uploading flattened CSVs.
+
+    Reads a 'csv' directory's files and uploads them to
+    an Amazon S3 bucket using the S3 Hook and boto library.
+    """
 
 
 def process_retrieved_data(self):

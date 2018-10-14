@@ -1387,7 +1387,7 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
-    def test_flatten_to_csv(self):
+    def test_transform_keyword_headlines_to_csv(self):
         """test the function to flatten a json to csv."""
 
         data = None
@@ -1430,12 +1430,6 @@ class TestUploadOperations:
     def test_source_headlines(self):
         """test the flattening of csvs and their s3 upload for each source."""
         pass
-
-
-@pytest.mark.skip
-@pytest.mark.headlinejsontests
-class TestParsedHeadlineJson:
-    """test the functions in the ParsedHeadlineJSON class."""
 
 
 @pytest.mark.newsinfotests
@@ -1519,3 +1513,9 @@ class TestNewsInfoDTO:
         # Assert
         actual_message = str(err.value)
         assert "Argument pipeline_name cannot be left blank" in actual_message
+
+
+@pytest.mark.skip
+@pytest.mark.headlinejsontests
+class TestParsedHeadlineJson:
+    """test the functions in the ParsedHeadlineJSON class."""
