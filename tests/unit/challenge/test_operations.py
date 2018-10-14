@@ -16,7 +16,7 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 
 from airflow.models import DAG
-# from airflow.models import Variable
+from airflow.models import Variable
 
 from dags import challenge as c
 from dags import config
@@ -1463,6 +1463,24 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
+    @pytest.fixture(scope='class')
+    def airflow_context(self) -> dict:
+        """returns an airflow context object for tempus_challenge_dag.
+
+        Mimics parts of the airflow context returned during execution
+        of the tempus_challenge_dag.
+
+        https://airflow.apache.org/code.html#default-variables
+        """
+
+        dag = MagicMock(spec=DAG)
+        dag.dag_id = "tempus_challenge_dag"
+
+        return {
+            'ds': datetime.datetime.now().isoformat().split('T')[0],
+            'dag': dag
+        }
+
     @pytest.mark.skip
     def test_transform_keyword_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
@@ -1648,7 +1666,8 @@ class TestTransformOperations:
         assert result == 2
 
     @pytest.mark.skip
-    def test_transform_headlines_to_csv_conversion_failure(self):
+    def test_transform_headlines_to_csv_conversion_failure(self,
+                                                           airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
 
@@ -1664,14 +1683,18 @@ class TestTransformOperations:
             - write-close csv and store in 'csv' directory
         """
 
-        # Arrange
-
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         tf_func = c.TransformOperations.transform_headlines_to_csv
 
+        # Arrange
+        # use the pytest resource representing an airflow context object
+        airflow_context['dag'] = "non_existent_pipeline_name"
+        airflow_context['execution_date'] = datetime.datetime.now()
+
         # Act
+        result = tf_func(airflow_context)
 
         # Assert
 
