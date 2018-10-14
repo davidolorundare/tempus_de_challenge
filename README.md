@@ -87,13 +87,20 @@ The pipeline tasks are identical to that of the first. The only difference is in
 
 - Four [Airflow SimpleHTTPOperators](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) are defined, which make separate parallel HTTP GET requests to the News API's 'top-headlines' endpoint directly with the assigned API Key and a query for specific keywords: 'Tempus Labs', 'Eric Lefokosky', 'Cancer', and Immunotherapy. This fetches data on each of these keywords. The Python callback function which handles the return Response object stores them as four JSON files in the 'headlines' folder, created in an earlier step, for the 'tempus_bonus_challenge_dag'.
 
+#### Transformations Notes
+The end transformations are stored in the respective `csv` datastore folders of the respective pipelines.
+
+                Pipeline 1  CSV: Tempus Challenge DAG
+For the 'tempus_challenge_dag' pipeline all the news headlines from all the english sources are flattened and transformed into one single csv file, the pipeline execution date is appended to the end transformed csv. It is of the form: `pipeline_execution_date_headlines.csv`
+
+                Pipeline 2 CSVs: Tempus Bonus Challenge DAG
+For each the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', 'Immunotheraphy' - the result is four separate csv files, each representing all the headlines about that particular keyword. The pipeline execution date is appended to the end transformed csv's. The keyword headline files are of form:`pipeline_execution_date_keyword_headlines.csv`
 
 ---
 ### Running Code and Usage
 
+Two running demos are shown below; of both Pipelines.
 GIF OF CODE RUNNING/USAGE
-
-End with an example of getting some data out of the system or using it for a little demo.
 
 ---
 ### Running Tests (Unit and Integration)
