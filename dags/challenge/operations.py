@@ -1105,7 +1105,7 @@ class TransformOperations:
             :type directory: string
             :param timestamp: date of the pipeline execution that
                 should be appended to created csv files
-            :type timestamp: Date
+            :type timestamp: datetime object
         """
 
         log.info("Running helper_execute_kw_json_transformation method")
@@ -1137,7 +1137,7 @@ class TransformOperations:
             :type directory: string
             :param timestamp: date of the pipeline execution that
                 should be appended to created csv files
-            :type timestamp: Date
+            :type timestamp: datetime object
         """
 
         log.info("Running helper_execute_json_transformation method")
