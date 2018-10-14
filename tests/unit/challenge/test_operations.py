@@ -1528,8 +1528,7 @@ class TestTransformOperations:
 
         assert result == 2
 
-    @pytest.mark.skip
-    def test_transform_data_to_dataframe_success(self):
+    def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""
 
@@ -1540,15 +1539,43 @@ class TestTransformOperations:
         # is more than PEP-8's 79 line-character limit.
         tf_func = c.TransformOperations.transform_data_to_dataframe
 
+        # craft the dummy dataframe data
+        extracted_data = {'source_id': ["wired"],
+                          'source_name': ["Wired"],
+                          'author': ["Klint Finley"],
+                          'title': ["Microsoft Calls a Truce in the Linux\
+                          Patent Wars"],
+                          'description': ["The software giant, whose\
+                          former CEO once called\
+                          Linux a \\\"cancer,\\\" will let others use 60,000\
+                          patents for Linux-related open source projects."],
+                          'url': ["https://www.wired.com/story/microsoft-ca\
+                          lls-truce-in-linux-patent-wars/"],
+                          'url_to_image': ["https://media.wired.com/photos/5bb\
+                          e9c0f2b915f2dff96d6f4/191:100/pass/Satya-Microsoft-M\
+                          ichelleG.jpg"],
+                          'published_at': ["2018-10-11T23:33:03Z"],
+                          'content': ["Microsoft is calling for a truce in the\
+                           patent war. This week the company said it will\
+                            allow more than 2,600 other companies, including\
+                             traditional rivals like Google and IBM, to use\
+                              the technology behind 60,000 Microsoft patents\
+                               for their own Linux related o… [+4435 chars]"]}
+
         # Act
+        result_df = tf_func(extracted_data)
 
         # Assert
-
-        data = None
-
-        result = tf_func(data)
-
-        assert result == 2
+        # because the dataframe has multiple columns which might be all tedious
+        # verify in a single test case, we verify the value of just three
+        # columns: source_id, source_name, and title
+        actual_source_id = result_df['source_id']
+        actual_source_name = result_df['source_name']
+        actual_headline_title = result_df['title']
+        # verify the actual result with expectations
+        assert actual_source_id == "wired"
+        assert actual_source_name == "Wired"
+        assert actual_headline_title ==
 
     def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of news data into

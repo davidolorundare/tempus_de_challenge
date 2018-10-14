@@ -1122,7 +1122,7 @@ class TransformOperations:
         # craft the transformed dataframe
         news_df = pd.DataFrame()
 
-        # populate the columns of the dataframe
+        # populate the columns of the dataframe with news data
         for index, field in enumerate(list(news_data.keys())):
             news_df[field_names[index]] = news_data[field]
 
