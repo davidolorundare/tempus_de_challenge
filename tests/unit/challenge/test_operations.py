@@ -16,7 +16,6 @@ from unittest.mock import MagicMock
 from unittest.mock import patch
 
 from airflow.models import DAG
-from airflow.models import Variable
 
 from dags import challenge as c
 from dags import config
@@ -1666,7 +1665,9 @@ class TestTransformOperations:
         assert result == 2
 
     @pytest.mark.skip
+    @patch('c.NewsInfoDTO', autospec=True)
     def test_transform_headlines_to_csv_conversion_failure(self,
+                                                           new_info_func,
                                                            airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.

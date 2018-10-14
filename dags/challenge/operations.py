@@ -1030,7 +1030,7 @@ class TransformOperations:
     """handles functionality for flattening CSVs."""
 
     @classmethod
-    def transform_headlines_to_csv(cls, **context):
+    def transform_headlines_to_csv(cls, info_func=None, **context):
         """converts the jsons in a given directory to csv.
 
         Use different transformation methods depending on the
@@ -1058,6 +1058,14 @@ class TransformOperations:
         about that particular keyword. The pipeline execution date is appended
         to the end transformed csv's. The keyword headline files are of form:
         `pipeline_execution_date`_`keyword`_`headlines`.csv
+
+        #  Arguments:
+            :param info_func: function used to provide more information
+                about the current pipeline
+            :type info_func: function
+            :param context: Airflow context object reference to the current
+                pipeline.
+            :type info_func: dict
         """
 
         log.info("Running transform_headlines_to_csv method")
@@ -1069,7 +1077,9 @@ class TransformOperations:
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
-        pipeline_info = NewsInfoDTO(pipeline_name)
+        if not info_func:
+            info_func = NewsInfoDTO
+        pipeline_info = info_func(pipeline_name)
         headline_dir = pipeline_info.get_headlines_directory
 
         # execution date of the current pipeline
