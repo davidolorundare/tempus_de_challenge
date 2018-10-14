@@ -1525,7 +1525,8 @@ class TestTransformOperations:
         assert result == 2
 
     @pytest.mark.skip
-    def test_transform_headlines_to_csv_conversion_success(self):
+    def test_transform_headlines_to_csv_keyword_success(self,
+                                                        airflow_context):
         """flattening of a set of json files to csv fails properly."""
 
         # Arrange
@@ -1535,15 +1536,71 @@ class TestTransformOperations:
         # is more than PEP-8's 79 line-character limit.
         tf_func = c.TransformOperations.transform_news_headlines_to_csv
 
+        # Arrange
+        # setup Mocks needed
+        news_info_class = MagicMock(spec=c.NewsInfoDTO)
+        news_info_test = MagicMock(spec=c.NewsInfoDTO)
+
+        # use the pytest resource representing an airflow context object
+        airflow_context['dag'].dag_id = "tempus_challenge_dag"
+        airflow_context['execution_date'] = datetime.datetime.now()
+
+        # setup a dummy class as a Mock object initializing the property
+        # that transform_headlines_to_csv() exercises
+        news_info_test.get_headlines_directory = "/dummy/dir/headlines"
+
+        # setup the dummy NewsInfoDTO class that, on intialization
+        # acquires information about a pipeline-name passed in.
+        # when it is first called, with a pipeline name, it initializes
+        # various properties and returns an instance.
+        news_info_class.side_effect = news_info_test
+
         # Act
+        # on calling the function with a wrong pipeline name it fails,
+        # returning False to signal a failed status
+        result = tf_func(info_func=news_info_class, **airflow_context)
 
         # Assert
+        assert result == 0
 
-        data = None
+    @pytest.mark.skip
+    def test_transform_headlines_to_csv_non_keyword_success(self,
+                                                            airflow_context):
+        """flattening of a set of json files to csv fails properly."""
 
-        result = tf_func(data)
+        # Arrange
 
-        assert result == 2
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Arrange
+        # setup Mocks needed
+        news_info_class = MagicMock(spec=c.NewsInfoDTO)
+        news_info_test = MagicMock(spec=c.NewsInfoDTO)
+
+        # use the pytest resource representing an airflow context object
+        airflow_context['dag'].dag_id = "tempus_challenge_dag"
+        airflow_context['execution_date'] = datetime.datetime.now()
+
+        # setup a dummy class as a Mock object initializing the property
+        # that transform_headlines_to_csv() exercises
+        news_info_test.get_headlines_directory = "/dummy/dir/headlines"
+
+        # setup the dummy NewsInfoDTO class that, on intialization
+        # acquires information about a pipeline-name passed in.
+        # when it is first called, with a pipeline name, it initializes
+        # various properties and returns an instance.
+        news_info_class.side_effect = news_info_test
+
+        # Act
+        # on calling the function with a wrong pipeline name it fails,
+        # returning False to signal a failed status
+        result = tf_func(info_func=news_info_class, **airflow_context)
+
+        # Assert
+        assert result == 0
 
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
@@ -1664,8 +1721,8 @@ class TestTransformOperations:
 
         assert result == 2
 
-    def test_transform_headlines_to_csv_conversion_failure(self,
-                                                           airflow_context):
+    def test_transform_headlines_to_csv_wrong_pipeline_fails(self,
+                                                             airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
         """
