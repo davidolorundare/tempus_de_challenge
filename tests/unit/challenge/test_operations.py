@@ -8,6 +8,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 
 import datetime
 import json
+import pandas as pd
 import os
 
 
@@ -1181,11 +1182,26 @@ class TestExtractOperations:
         expected = (['bbc-news', 'abc-news-au'], ['bbc news', 'bbc news (au)'])
         assert expected == actual_result
 
+    @pytest.mark.skip
     def test_extract_news_data_from_dataframe_success(self):
         """extraction of information from news dataframe succeeds."""
 
-    def test_extract_news_data_from_dataframe_failure(self):
-        """extraction of information from news dataframe succeeds."""
+    def test_extract_news_data_from_dataframe_no_article_fails(self):
+        """extraction of information from news dataframe fails
+        if there are no news articles.
+        """
+
+        # Arrange
+        # craft the invalid dataframe data
+        invalid_df = pd.DataFrame()
+        total_results = [0,0,0]
+        status = ['ok', 'ok', 'ok']
+
+        # Act
+
+        # Assert 
+
+
 
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
         """list of news json fails at extracting source id and names with
@@ -1393,6 +1409,7 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
+    @pytest.mark.skip
     def test_transform_keyword_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder succeeds."""
@@ -1414,6 +1431,7 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
     def test_transform_news_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
@@ -1435,6 +1453,7 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
     def test_transform_headlines_to_csv_conversion_success(self):
         """flattening of a set of json files to csv fails properly."""
 
@@ -1455,6 +1474,7 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
     def test_transform_data_to_dataframe_success(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""
@@ -1497,6 +1517,7 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
     def test_transform_keyword_headlines_to_csv_conversion_failure(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder fails."""
@@ -1518,6 +1539,7 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
     def test_transform_news_headlines_to_csv_conversion_failure(self):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder fails."""
