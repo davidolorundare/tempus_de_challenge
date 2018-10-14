@@ -1185,7 +1185,7 @@ class TestExtractOperations:
     @pytest.mark.skip
     def test_extract_news_data_from_dataframe_success(self):
         """extraction of information from news dataframe succeeds."""
-
+    @pytest.mark.skip
     def test_extract_news_data_from_dataframe_no_article_fails(self):
         """extraction of information from news dataframe fails
         if there are no news articles.
@@ -1194,14 +1194,12 @@ class TestExtractOperations:
         # Arrange
         # craft the invalid dataframe data
         invalid_df = pd.DataFrame()
-        total_results = [0,0,0]
+        total_results = [0, 0, 0]
         status = ['ok', 'ok', 'ok']
 
         # Act
 
-        # Assert 
-
-
+        # Assert
 
     def test_extract_jsons_source_info_no_data_fails(self, home_directory_res):
         """list of news json fails at extracting source id and names with
@@ -1496,7 +1494,8 @@ class TestTransformOperations:
 
         assert result == 2
 
-     def test_transform_data_to_dataframe_fails(self):
+    @pytest.mark.skip
+    def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe fails"""
 
