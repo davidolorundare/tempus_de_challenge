@@ -1064,8 +1064,21 @@ class TransformOperations:
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
         pipeline_info = NewsInfoDTO(pipeline_name)
+        transform_status = None
 
-        return 2
+        # perform context-specific transformations
+        if pipeline_name == "tempus_challenge_dag":
+            pipeline_info.print('er')
+            # transform_news_headlines_to_csv
+            # other things
+            return transform_status
+        elif pipeline_name == "tempus_bonus_challenge_dag":
+            pipeline_info.print('boo')
+            # other things
+            return transform_status
+        else:
+            print("This pipeline {} is not valid".format(pipeline_name))
+            return False
 
     @classmethod
     def transform_news_headlines_to_csv(cls, json_data, csv_filename):
