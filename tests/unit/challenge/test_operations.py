@@ -1387,7 +1387,7 @@ class TestExtractOperations:
 class TestTransformOperations:
     """test the functions for task to transform json headlines to csv."""
 
-    def test_transform_keyword_headlines_to_csv_success(self):
+    def test_transform_keyword_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder succeeds."""
 
@@ -1408,7 +1408,7 @@ class TestTransformOperations:
 
         assert result == 2
 
-    def test_transform_news_headlines_to_csv_success(self):
+    def test_transform_news_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
@@ -1429,9 +1429,71 @@ class TestTransformOperations:
 
         assert result == 2
 
+    def test_transform_headlines_to_csv_conversion_success(self):
+        """flattening of a set of json files to csv fails properly."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
+    def test_transform_keyword_headlines_to_csv_conversion_failure(self):
+        """call to flatten jsons in the tempus_bonus_challenge_dag headline
+        folder fails."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
+    def test_transform_news_headlines_to_csv_conversion_failure(self):
+        """call to flatten jsons in the tempus_challenge_dag headline
+        folder fails."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
     @pytest.mark.skip
-    def test_transform_headlines_to_csv(self):
-        """test macro function to flatten a set of json files to csv.
+    def test_transform_headlines_to_csv_conversion_failure(self):
+        """flattening of a set of json files to csv fails properly.
 
         Operations Performed:
 
@@ -1443,8 +1505,6 @@ class TestTransformOperations:
                 extract common format of all entries within it
                 convert to csv format and append into this csv
             - write-close csv and store in 'csv' directory
-
-
         """
 
         # Arrange
