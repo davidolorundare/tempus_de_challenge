@@ -1694,7 +1694,7 @@ class TestTransformOperations:
         news_info_test = MagicMock(spec=c.NewsInfoDTO)
 
         # use the pytest resource representing an airflow context object
-        airflow_context['dag'] = "non_existent_pipeline_name"
+        airflow_context['dag'].dag_id = "non_existent_pipeline_name"
         airflow_context['execution_date'] = datetime.datetime.now()
 
         # setup a dummy class as a Mock object initializing the property
