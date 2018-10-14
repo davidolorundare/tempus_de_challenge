@@ -12,6 +12,7 @@ import errno
 import json
 import logging
 import os
+import pandas as pd
 import shutil
 import time
 
@@ -847,6 +848,73 @@ class ExtractOperations:
 
         return extracted_sources
 
+    @classmethod
+    def extract_news_data_from_dataframe(cls, frame):
+        """returns extracted information from a news dataframe.
+
+        Based on the API documentation for the top-headlines, for the
+        returned response, the fields that we need from each json object
+        are:
+
+        the identification id of the news source
+        - source id
+
+        the name of the news source
+        - source name
+
+        the author of the new article
+        - author
+
+        the headline or title of the article
+        - title
+
+        description from the article
+        - description
+
+        url to the article
+        - url
+
+        a url to a relevant image for the article
+        - urlToImage
+
+        the date and time the article was published
+        - publishedAt
+
+        the unformatted content of the article
+        - content
+
+        Returns a dictionary containing all these extracted information.
+
+        # Arguments:
+            :param frame: a Pandas DataFrame containing news data
+            :type frame: DataFrame
+        """
+
+        # Using Pandas, extract required information from the given dataframe,
+        # each is a numpy array.
+        source_id = ''
+        source_name = ''
+        author = ''
+        title = ''
+        description = ''
+        url = ''
+        url_to_image = ''
+        published_at = ''
+        content = ''
+
+        # compose a dictionary with the extracted information
+        extracted_data = {'source_id': source_id,
+                          'source_name': source_name,
+                          'author': author,
+                          'title': title,
+                          'description': description,
+                          'url': url,
+                          'url_to_image': url_to_image,
+                          'published_at': published_at,
+                          'content': content}
+
+        return extracted_data
+
 
 class NewsInfoDTO:
         """information about the news data this pipeline uses.
@@ -961,7 +1029,7 @@ class TransformOperations:
     """handles functionality for flattening CSVs."""
 
     @classmethod
-    def transform_keyword_headlines_to_csv(cls, json_data):
+    def transform_keyword_headlines_to_csv(cls, json_file, csv_filename):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -969,7 +1037,21 @@ class TransformOperations:
 
         Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
+
+        # Arguments:
+            :param json_file: a json file containing top news headlines
+                based on a keyword
+            :type json_file: file
         """
+
+        # use Pandas to read in the json file
+        # keyword_data = pd.read_json(json_file)
+
+        # extraction
+        # data = extract_news_data_from_dataframe(keyword_data)
+        # transformed_df = transform_data_to_dataframe(data)
+
+        # transform to csv
 
         return 2
 
@@ -989,6 +1071,8 @@ class TransformOperations:
     @classmethod
     def transform_headlines_to_csv(cls, json_dir):
         """converts the jsons in a given directory to csv."""
+
+
 
         return 2
 
