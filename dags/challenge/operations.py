@@ -1175,6 +1175,17 @@ class TransformOperations:
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
 
+        # a number of performance issues need to be considered:
+        # The intent of the code is combined multiple jsons files into
+        # one csv's. This could be done using Pandas's DataFrame object
+        # as an intermediary format - performing the merge in DataFrames
+        # as a stream OR as a batch (both which have their memory tradeoffs)
+        # This could also be done using csv's - by converting each json file
+        # into a csv and doing the merger there (also as either stream OR
+        # batch) using for example Python's CSV.
+
+        print('spooky')
+
         return status, fname
 
     @classmethod
