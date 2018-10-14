@@ -1664,10 +1664,11 @@ class TestTransformOperations:
 
         assert result == 2
 
-    @pytest.mark.skip
+    @patch('c.NewsInfoDTO', autospec=True)
     @patch('c.NewsInfoDTO', autospec=True)
     def test_transform_headlines_to_csv_conversion_failure(self,
-                                                           new_info_func,
+                                                           news_info_class,
+                                                           news_info_test,
                                                            airflow_context):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
@@ -1694,16 +1695,24 @@ class TestTransformOperations:
         airflow_context['dag'] = "non_existent_pipeline_name"
         airflow_context['execution_date'] = datetime.datetime.now()
 
+        # setup a dummy class as a Mock object initializing the property
+        # that transform_headlines_to_csv() exercises
+        news_info_test.get_headlines_directory = "/dummy/dir/headlines"
+
+        # setup the dummy NewsInfoDTO class that, on intialization
+        # acquires information about a pipeline-name passed in.
+        # when it is first called, with a pipeline name, it initializes
+        # various properties and returns an instance.
+        news_info_class.side_effect = news_info_test
+
         # Act
-        result = tf_func(airflow_context)
+        # on calling the function with a wrong pipeline name it fails,
+        # returning False to signal a failed status
+        result = tf_func(info_func=news_info_class, context=airflow_context)
 
         # Assert
 
-        data = None
-
-        result = tf_func(data)
-
-        assert result == 2
+        assert result is False
 
 
 @pytest.mark.uploadtests
