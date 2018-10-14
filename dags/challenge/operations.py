@@ -1103,6 +1103,9 @@ class TransformOperations:
         `transform_news_headlines_to_csv` is used.
         For the 'tempus_bonus_challenge_dag' pipeline, the function
         `transform_keyword_headlines_to_csv` is used.
+
+        The end transformations are stored in the respective 'csv'
+        folders of the respective pipelines.
         """
 
 
