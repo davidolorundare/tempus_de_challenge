@@ -892,28 +892,41 @@ class ExtractOperations:
         """
 
         num_of_articles = frame['totalResults'][0]
+        # dictionary representing the extracted news data
+        extracted_data = {}
 
-        # Using Pandas, extract required information from the given dataframe,
-        # each is a numpy array.
+        # error check
+        if num_of_articles == 0:
+            return extracted_data
+
+        # Using Pandas, extract required information from the given dataframe
+        # each is a return list of data.
         source_id = [frame['articles'][index]['source']['id']
                      for index in np.arange(num_of_articles)]
 
         source_name = [frame['articles'][index]['source']['name']
                        for index in np.arange(num_of_articles)]
 
-        author = ''
+        author = [frame['articles'][index]['author']
+                  for index in np.arange(num_of_articles)]
 
-        title = ''
+        title = [frame['articles'][index]['title']
+                 for index in np.arange(num_of_articles)]
 
-        description = ''
+        description = [frame['articles'][index]['description']
+                       for index in np.arange(num_of_articles)]
 
-        url = ''
+        url = [frame['articles'][index]['url']
+               for index in np.arange(num_of_articles)]
 
-        url_to_image = ''
+        url_to_image = [frame['articles'][index]['urlToImage']
+                        for index in np.arange(num_of_articles)]
 
-        published_at = ''
+        published_at = [frame['articles'][index]['publishedAt']
+                        for index in np.arange(num_of_articles)]
 
-        content = ''
+        content = [frame['articles'][index]['content']
+                   for index in np.arange(num_of_articles)]
 
         # compose a dictionary with the extracted information
         extracted_data = {'source_id': source_id,
