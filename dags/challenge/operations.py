@@ -893,7 +893,7 @@ class ExtractOperations:
         # Using Pandas, extract required information from the given dataframe,
         # each is a numpy array.
         source_id = ''
-        source_name = ''
+        source_name = ' '
         author = ''
         title = ''
         description = ''
