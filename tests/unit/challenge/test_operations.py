@@ -1686,12 +1686,6 @@ class TestUploadOperations:
         """test the uploading of csvs to an s3 location."""
         pass
 
-    # Loop of extract-transform-load. test_process_data
-    @pytest.mark.skip
-    def test_source_headlines(self):
-        """test the flattening of csvs and their s3 upload for each source."""
-        pass
-
 
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
