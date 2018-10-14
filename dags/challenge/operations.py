@@ -1248,8 +1248,8 @@ class TransformOperations:
         """converts a dictionary of news data into a Pandas Dataframe.
 
         # Arguments:
-            :param data: extracted news data information.
-            :type data: dict
+            :param news_data: extracted news data information.
+            :type news_data: dict
         """
 
         log.info("Running transform_data_to_dataframe method")
