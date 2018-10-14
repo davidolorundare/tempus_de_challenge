@@ -8,6 +8,7 @@ class.
 """
 
 import config
+import datetime
 import errno
 import numpy as np
 import json
@@ -1072,7 +1073,7 @@ class TransformOperations:
         headline_dir = pipeline_info.get_headlines_directory
 
         # execution date of the current pipeline
-        exec_date = str(context['ds'])
+        exec_date = str(context['execution_date'])
 
         # transformation operation status
         transform_status = None
@@ -1096,7 +1097,7 @@ class TransformOperations:
             return False
 
     @classmethod
-    def helper_execute_kw_json_transformation(cls, directory, timestamp):
+    def helper_execute_kw_json_transformation(cls, directory, timestamp=None):
         """runs a block of code to transform keyword json headlines to csv.
 
         # Arguments:
@@ -1116,12 +1117,16 @@ class TransformOperations:
         # the name the created csv file should be given
         fname = None
 
+        # execution date cannot be None
+        if not timestamp:
+            timestamp = datetime.datetime.now()
+
         # transform all jsons in the 'headlines' directory
         if os.listdir(directory):
             for file in os.listdir(directory):
                 if file.endswith('.json'):
                     key = file.split("_")[1]
-                    fname = timestamp + "_" + key + "_headlines.csv"
+                    fname = str(timestamp) + "_" + key + "_headlines.csv"
                     status = cls.transform_keyword_headlines_to_csv(file,
                                                                     fname)
 
