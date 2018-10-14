@@ -1566,8 +1566,12 @@ class TestTransformOperations:
 
         # Assert
         # because the dataframe has multiple columns which might be all tedious
-        # verify in a single test case, we verify the value of just three
-        # columns: source_id, source_name, and title
+        # verifying in a single test case (according to some testing
+        # best-practices, ideally one test case should have just one assert
+        # statement), we verify the value of just three columns: source_id,
+        # source_name, and title.
+        # The three asserts are coherent in this particular instance, since
+        # they evaluate parts of the same returned object.
         actual_source_id = result_df['news_source_id'][0]
         actual_source_name = result_df['news_source_name'][0]
         actual_title = result_df['news_title'][0]
