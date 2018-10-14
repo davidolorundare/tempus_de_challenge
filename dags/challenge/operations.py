@@ -1216,6 +1216,9 @@ class TransformOperations:
         if not timestamp:
             timestamp = datetime.datetime.now()
 
+        # the entire merged DataFrame of all the jsons
+        transformed_merged_df = None
+
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
 
@@ -1233,10 +1236,12 @@ class TransformOperations:
 
         print('spooky')
 
+        status = cls.transform_news_headlines_to_csv()
+
         return status, fname
 
     @classmethod
-    def transform_news_headlines_to_csv(cls, json_data, csv_filename):
+    def transform_news_headlines_to_csv(cls, frame, csv_filename):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1244,6 +1249,13 @@ class TransformOperations:
 
         Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
+
+         # Arguments:
+            :param frame: single DataFrame consisting of all english news
+                sources headlines
+            :type frame: DataFrame
+            :param filename: the filename of the transformed csv
+            :type filename: string
         """
 
         log.info("Running transform_news_headlines_to_csv method")
