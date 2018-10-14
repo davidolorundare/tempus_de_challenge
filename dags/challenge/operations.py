@@ -1174,12 +1174,14 @@ class TransformOperations:
         # into a csv and doing the merger there (also as either stream OR
         # batch) using for example Python's CSV.
 
-        Memory Tradeoffs:
+        Memory Tradeoffs Notes:
         We work with the assumption that processing all these jsons together
         at once isn't possible - especially in case of json data sets that
         don't fit into memory (even if we optimized types and filtered some
         of the data). In this instance, a better strategy will be to make the
-        transformation in chunks (or batches)
+        transformation in chunks (or batches); turning a portion into
+        DataFrames in memory and merging, till we have all the jsons merged
+        as a single DataFrame.
 
 
         Though the author is familiar with both Pandas and CSV libraries,
@@ -1189,7 +1191,9 @@ class TransformOperations:
         json and csv data.
 
         I decided to use Pandas's DataFrame object as the intermediary format
-        and a Batch merging approach.
+        and a Batch merging approach: Transforming the json's, two at a time,
+        into DataFrames and merging them, till the whole jsons are merged into
+        one single DataFrame.
 
         # Arguments:
             :param directory: directory having the jsons to
@@ -1244,7 +1248,29 @@ class TransformOperations:
 
         log.info("Running transform_news_headlines_to_csv method")
 
+        # Some other things
+
+        # input is a single DataFrame
         print("WHAT TO DO NEXT")
+        transformed_df = None
+
+        # transform to csv and save in the 'csv' datastore
+        csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
+        if not csv_filename:
+            csv_filename = "sample.csv"
+        csv_save_path = os.path.join(csv_dir, csv_filename)
+        transformed_df.to_csv(path_or_buf=csv_save_path)
+
+        # ensure status of operation is communicated to caller function
+        op_status = None
+        query_key = csv_filename.split("_")[1]
+        if os.listdir(csv_dir):
+            log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
+            op_status = True
+        else:
+            op_status = False
+
+        return op_status
 
         return 2
 
