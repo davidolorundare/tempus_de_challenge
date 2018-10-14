@@ -1067,7 +1067,7 @@ class TransformOperations:
         `transform_keyword_headlines_to_csv` is used.
 
         The end transformations are stored in the respective 'csv'
-        folders of the respective pipelines.
+        datastore folders of the respective pipelines.
 
                 Pipeline 1  CSV: Tempus Challenge DAG
         For the 'tempus_challenge_dag' pipeline all the news headlines
