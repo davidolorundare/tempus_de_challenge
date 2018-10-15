@@ -1826,9 +1826,9 @@ class TestTransformOperations:
             # function should raise errors on an empty directory
             with pytest.raises(NoFilesFoundError) as err:
                 transfm_fnc(headline_dir,
-                            json_csv_func,
-                            jsons_df_func,
-                            df_csv_func)
+                            json_to_csv_func=json_csv_func,
+                            jsons_to_df_func=jsons_df_func,
+                            df_to_csv_func=df_csv_func)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
