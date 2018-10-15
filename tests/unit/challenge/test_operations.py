@@ -1780,8 +1780,47 @@ class TestTransformOperations:
         """transform of a single news headline json file to csv fails."""
 
     @pytest.mark.skip
-    def test_helper_execute_json_transformation_empty_dir_fails(self):
+    @patch()
+    @patch()
+    @patch()
+    def test_helper_execute_json_transformation_empty_dir_fails(self,
+                                                                json_to_csv_func,
+                                                                jsons_to_df_func,
+                                                                df_to_csv_func):
         """transforming a set of jsons in an empty directory fails."""
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        transfm_fnc = c.TransformOperations.helper_execute_json_transformation
+
+        pipeline_name = "tempus_challenge_dag"
+
+        news_path = os.path.join(home_directory_res,
+                                 'tempdata',
+                                 pipeline_name,
+                                 'news')
+
+        # directory_function = MagicMock()
+        directory_function = news_path
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory to test the method
+            patcher.fs.create_dir(news_path)
+            # patcher.fs.create_file(news_path, contents="news.json")
+
+        # Act
+            news_obj = 
+            files = news_obj.news_files
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert not files
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
