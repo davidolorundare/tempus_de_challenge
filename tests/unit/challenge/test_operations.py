@@ -1867,14 +1867,11 @@ class TestTransformOperations:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem empty directory to test the method
+            # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headline_dir)
-
-            # create a fake filesystem directory files to test the method
-            patcher.fs.create_dir(js_dir)
-            patcher.fs.create_file(full_file_path1, contents=js_one_data)
-            patcher.fs.create_file(full_file_path2, contents=js_two_data)
-            patcher.fs.create_file(full_file_path3, contents=js_three_data)
+            patcher.fs.create_file(full_file_path1, contents='dummy txt')
+            patcher.fs.create_file(full_file_path2, contents='dummy rtf')
+            patcher.fs.create_file(full_file_path3, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
