@@ -1290,7 +1290,7 @@ class TransformOperations:
             raise NoFilesFoundError("Directory has no json-headline files")
 
         if len(files) == 1:
-            # a single file exists, perform direct transformation on just that.
+            # a single json file exists, perform direct transformation on it.
             status = json_to_csv_func(files[0], filename)
         else:
             # transform the json files into DataFrames and merge them into one.
