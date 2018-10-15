@@ -1789,12 +1789,6 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
-    @patch('c.TransformOperations.transform_new_headlines_single_file_to_csv',
-           autospec=True)
-    @patch('c.TransformOperations.transform_jsons_to_dataframe_merger',
-           autospec=True)
-    @patch('c.TransformOperations.transform_news_headlines_to_csv',
-           autospec=True)
     def test_helper_execute_json_transformation_empty_dir_fails(self,
                                                                 json_csv_func,
                                                                 jsons_df_func,
@@ -1810,9 +1804,8 @@ class TestTransformOperations:
         js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
         hdline_csv_fnc = c.TransformOperations.transform_news_headlines_to_csv
 
-
         # Mock out the functions that the function under test uses
-        json_csv_func = MagicMock(spec=js_to_csv)
+        json_csv_func = MagicMock(spec=js_csv_fnc)
         jsons_df_func = MagicMock(spec=js_df_fnc)
         df_csv_func = MagicMock(spec=hdline_csv_fnc)
 
