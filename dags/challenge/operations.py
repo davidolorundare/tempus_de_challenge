@@ -1161,7 +1161,12 @@ class TransformOperations:
         return status
 
     @classmethod
-    def helper_execute_json_transformation(cls, directory, timestamp=None):
+    def helper_execute_json_transformation(cls,
+                                           directory,
+                                           timestamp=None,
+                                           single_file_func=None,
+                                           jsons_to_df_func=None,
+                                           df_to_csv_func=None):
         """runs a block of code to transform json headlines to csv.
 
 
@@ -1222,6 +1227,16 @@ class TransformOperations:
 
         log.info("Running helper_execute_json_transformation method")
 
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        if not single_file_func:
+            single_file_func = cls.transform_new_headlines_single_file_to_csv
+        if not jsons_to_df_func:
+            jsons_to_df_func = cls.transform_jsons_to_dataframe_merger
+        if not df_to_csv_func:
+            df_to_csv_func = cls.transform_news_headlines_to_csv
+
         # transformation operation status
         status = None
 
@@ -1267,8 +1282,7 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single file exists, perform direct transformation on just that.
-            status = cls.transform_new_headlines_single_file_to_csv(files[0],
-                                                                    fname)
+            status = single_file_func(files[0], fname)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_df = cls.transform_jsons_to_dataframe_merger(files)
