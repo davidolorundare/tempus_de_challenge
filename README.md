@@ -123,7 +123,7 @@ The **integration tests** exercise the overall combination of the tasks in the p
 ### Packages Used
 
 1. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
-2. [Amazon Python SDK (boto) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
+2. [Amazon Python SDK (boto 3) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
 3. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
 4. [Python Requests library](http://docs.python-requests.org)
 5. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
