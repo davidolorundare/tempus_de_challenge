@@ -1480,6 +1480,11 @@ class TestTransformOperations:
             'dag': dag
         }
 
+    @pytest.fixture(scope='class')
+    def home_directory_res(self) -> str:
+        """returns a pytest resource - path to the Airflow Home directory."""
+        return str(os.environ['HOME'])
+
     @pytest.mark.skip
     def test_transform_keyword_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
@@ -1779,14 +1784,13 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
-    @pytest.mark.skip
     @patch()
     @patch()
     @patch()
     def test_helper_execute_json_transformation_empty_dir_fails(self,
-                                                                json_to_csv_func,
-                                                                jsons_to_df_func,
-                                                                df_to_csv_func):
+                                                                json_csv_func,
+                                                                jsons_df_func,
+                                                                df_csv_func):
         """transforming a set of jsons in an empty directory fails."""
 
         # Arrange
@@ -1797,10 +1801,9 @@ class TestTransformOperations:
 
         pipeline_name = "tempus_challenge_dag"
 
-        news_path = os.path.join(home_directory_res,
-                                 'tempdata',
-                                 pipeline_name,
-                                 'news')
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
 
         # directory_function = MagicMock()
         directory_function = news_path
@@ -1810,17 +1813,22 @@ class TestTransformOperations:
             patcher.setUp()
 
             # create a fake filesystem directory to test the method
-            patcher.fs.create_dir(news_path)
+            patcher.fs.create_dir(headline_dir)
             # patcher.fs.create_file(news_path, contents="news.json")
 
         # Act
-            news_obj = 
-            files = news_obj.news_files
+            with pytest.raises() as err:
+                transfm_fnc(headline_dir,
+                            json_to_csv_func,
+                            jsons_to_df_func,
+                            df_to_csv_func)
+            
+            actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        assert not files
+        assert "NoFilesFoundError" in actual_message
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
