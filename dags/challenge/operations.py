@@ -1195,6 +1195,19 @@ class TransformOperations:
         (i.e. pairwise merging), into DataFrames and merging them, till the
         whole transformed jsons are merged into one single DataFrame.
 
+        The time complexity of doing a sequential merge (of the news json
+        files) is O(n) which would become a problem to do as the number of
+        files grow.
+
+        An alternative approach follows from the principles in the traditional
+        Merge Sort algorithm - whose time complexity in the best, average, and
+        worst cases are O(n logn) - Space complexity worst case is O(n)
+        http://bigocheatsheet.com/
+
+        From an algorithmic time complexity standpoint, however, O(n) is better
+        than O(n logn). But, more efficient merge-method will be needed when
+        dealing with larger file sizes.
+
         # Arguments:
             :param directory: directory having the jsons to
                 execute a transformation on.
@@ -1221,6 +1234,7 @@ class TransformOperations:
         # been merged so far. There needs to be a way to maintain state.
         # This (empty) DataFrame is created for that purpose and is made into
         # a global Python object within this module/python file.
+        #
         # Use of global variables might not be the ideal way to handle this, as
         # they are generally discouraged in several development
         # environs/instances due to the kinds of unpredictable bugs they
@@ -1228,8 +1242,10 @@ class TransformOperations:
         #
         # Our use of the `global` keyword here for this operation is ONLY time
         # it will EVER be used in this project.
-        # Another alternative, to consider, might be to make use of Airflow's
+        # An alternative, to consider, might be to make use of Airflow's
         # Variable class to store the state of object.
+        # Another alternative, to consider, asides global variables is the use
+        # of Python (function) closures to achieve state maintenance.
         merged_df = pd.DataFrame()
 
         # transform individual jsons in the 'headlines' directory into one
