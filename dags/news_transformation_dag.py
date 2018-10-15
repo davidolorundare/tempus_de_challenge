@@ -38,6 +38,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_challenge_dag/news/"
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
+# https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
 # this should NOT be hardcoded (at least put it in an environment variable)
 # should be replaced with the user's own generate News API Key
 API_KEY = config.NEWS_API_KEY
