@@ -1542,7 +1542,7 @@ class UploadOperations:
         """uploads all the files in a given directory to an Amazon S3
         bucket location."""
 
-        pass
+        return 2
 
 
 def process_retrieved_data(self):

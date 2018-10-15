@@ -1894,15 +1894,33 @@ class TestTransformOperations:
 class TestUploadOperations:
     """test the functions for task to upload csvs to Amazon S3."""
 
-    @pytest.mark.skip
-    def test_upload_csv_to_s3_succeeds_with_call_to_library(self):
+    @pytest.fixture(scope='class')
+    def airflow_context(self) -> dict:
+        """returns an airflow context object for tempus_challenge_dag.
+
+        Mimics parts of the airflow context returned during execution
+        of the tempus_challenge_dag.
+
+        https://airflow.apache.org/code.html#default-variables
+        """
+
+        dag = MagicMock(spec=DAG)
+        dag.dag_id = "tempus_challenge_dag"
+
+        return {
+            'ds': datetime.datetime.now().isoformat().split('T')[0],
+            'dag': dag
+        }
+
+    def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
+                                                            airflow_context):
         """test the uploading of csvs to an s3 location."""
 
         # Arrange
-        bucket_name = 'tempus-challenge-csv-headlines'
+        # bucket_name = 'tempus-challenge-csv-headlines'
 
         # Act
-        result = c.UploadOperations.upload_csv_to_s3(bucket_name)
+        result = c.UploadOperations.upload_csv_to_s3(**airflow_context)
 
         # Assert
         assert result == 2
