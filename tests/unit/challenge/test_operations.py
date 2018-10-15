@@ -1612,7 +1612,7 @@ class TestTransformOperations:
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_succeeds(self):
-        """transforming a set of jsons in a directory succeeds"""
+        """transforming a set of jsons in a valid directory succeeds"""
 
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
@@ -1778,6 +1778,10 @@ class TestTransformOperations:
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails"""
+
+    @pytest.mark.skip
+    def test_helper_execute_json_transformation_empty_dir_fails(self):
+        """transforming a set of jsons in an empty directory fails"""
 
 
 @pytest.mark.uploadtests
