@@ -1223,6 +1223,15 @@ class TransformOperations:
             :param timestamp: date of the pipeline execution that
                 should be appended to created csv files
             :type timestamp: datetime object
+            :param json_to_csv_func: function that transforms a single news
+                json file into a csv
+            :type json_to_csv_func: function
+            :param jsons_to_df_func: function that transforms a set of news
+                json files into intermediary DataFrames and merges them into
+                one final DataFrame
+            :type jsons_to_df_func: function
+            :param df_to_csv_func: function that transforms a single DataFrame
+                into a csv file
         """
 
         log.info("Running helper_execute_json_transformation method")
