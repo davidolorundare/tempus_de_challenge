@@ -10,6 +10,7 @@ class.
 import config
 import datetime
 import errno
+import gc
 import numpy as np
 import json
 import logging
@@ -1302,14 +1303,24 @@ class TransformOperations:
         # setup final DataFrame that will be resulting from the entire merge
         global merged_df
 
-        for index, file in enumerate(json_files):
-            if index == (len(json_files) - 1):
+        for indx, file in enumerate(json_files):
+            if indx == (len(json_files) - 1):
                 break
-            # perform json to DataFrame transformation
-            current_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(read_js_fnc(json_files[index])))
-            next_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(read_js_fnc(json_files[index + 1])))
+            # perform json to DataFrame transformations by function-chaining
+            current_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(
+                                                 read_js_fnc(json_files[indx])
+                                                 ))
+            next_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(
+                                              read_js_fnc(json_files[indx + 1])
+                                              ))
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df, next_file_df])
+            # free up memory by clearing the previously transformed DataFrames
+            del current_file_df
+            del next_file_df
+            # force Python's Garbage Collector to clean up unused variables and
+            # free up memory manually
+            gc.collect()
 
         # return a merged DataFrame of all the jsons
         return merged_df
