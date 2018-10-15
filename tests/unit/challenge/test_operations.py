@@ -1785,7 +1785,7 @@ class TestTransformOperations:
         """merging a set of transformed DataFrames from jsons fails."""
 
     @pytest.mark.skip
-    def test_transform_new_headlines_single_file_to_csv_fails(self):
+    def test_transform_new_headlines_json_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
     def test_helper_execute_json_transformation_empty_dir_fails(self):
