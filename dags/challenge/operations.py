@@ -1203,7 +1203,7 @@ class TransformOperations:
         complexity in the best, average, and worst cases are O(n logn)
         http://bigocheatsheet.com/
 
-        Space complexity worst case is O(n).
+        Space complexity worst case is O(n)
 
         # Arguments:
             :param directory: directory having the jsons to
