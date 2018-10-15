@@ -1193,8 +1193,10 @@ class TransformOperations:
 
         I decided to use Pandas's DataFrame object as the intermediary format
         and a Batch merging approach: Transforming the json's, two at a time
-        (i.e. pairwise merging), into DataFrames and merging them, till the
-        whole transformed jsons are merged into one single DataFrame.
+        (i.e. pairwise merging), into DataFrames and merging them, after which
+        the old DataFrames are cleaned up in memory before the next
+        transform-merge iteration; till the whole transformed jsons are merged
+        into one single DataFrame.
 
         The time complexity of doing a sequential merge (of the news json
         files) is O(n) which would become a problem to do as the number of
