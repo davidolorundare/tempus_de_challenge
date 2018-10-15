@@ -1246,7 +1246,7 @@ class TransformOperations:
             raise NoFilesFoundError("Directory has no json-headline files")
 
         if len(files) < 2:
-            # read that single json file in, transform, and save
+            # a single file exists, perform transformation on just that.
             print('single transform')
         else:
             print('spooky')
