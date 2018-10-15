@@ -1269,10 +1269,10 @@ class TransformOperations:
     def transform_new_headlines_single_file_to_csv(cls,
                                                    json_file,
                                                    csv_filename=None):
-        """converts the json contents of a given folder into a csv.
+        """transforms the json contents of a given file into a csv.
 
         The function specifically operates on jsons in the 'headlines'
-        folder of the 'tempus_bonus_challenge_dag' pipeline.
+        folder of the 'tempus_challenge_dag' pipeline.
 
         Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
@@ -1309,9 +1309,8 @@ class TransformOperations:
 
         # ensure status of operation is communicated to caller function
         op_status = None
-        query_key = csv_filename.split("_")[1]
         if os.listdir(csv_dir):
-            log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
+            log.info("english news headlines csv saved in {}".format(csv_dir))
             op_status = True
         else:
             op_status = False
