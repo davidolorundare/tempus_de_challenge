@@ -1777,11 +1777,17 @@ class TestTransformOperations:
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_fails(self):
-        """transform of a single news headline json file to csv fails"""
+        """transform of a single news headline json file to csv fails."""
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_empty_dir_fails(self):
-        """transforming a set of jsons in an empty directory fails"""
+        """transforming a set of jsons in an empty directory fails."""
+
+    @pytest.mark.skip
+    def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
+        """transforming a set of jsons in an non-empty directory but having no
+        json files fails.
+        """
 
 
 @pytest.mark.uploadtests
