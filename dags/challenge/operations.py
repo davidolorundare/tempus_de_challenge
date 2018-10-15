@@ -1287,6 +1287,13 @@ class TransformOperations:
 
         log.info("Running transform_jsons_to_dataframe_merger method")
 
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
+        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
+        read_js_fnc = pd.read_json
+
         # perform pairwise transformation of the json files into DataFrames
         # and their subsequent merging into a single DataFrame.
         current_file_df = None
@@ -1299,8 +1306,8 @@ class TransformOperations:
             if index == (len(json_files) - 1):
                 break
             # perform json to DataFrame transformation
-            current_file_df = json_files[index]
-            next_file_df = json_files[index + 1]
+            current_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(read_js_fnc(json_files[index])))
+            next_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(read_js_fnc(json_files[index + 1])))
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df, next_file_df])
 
