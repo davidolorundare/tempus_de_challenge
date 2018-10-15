@@ -1209,12 +1209,12 @@ class TransformOperations:
         # transformation operation status
         status = None
 
-        # the name the created csv file should be given
-        fname = None
-
         # execution date cannot be None
         if not timestamp:
             timestamp = datetime.datetime.now()
+
+        # the name the created csv file should be given
+        fname = str(timestamp) + "_top_headlines.csv"
 
         # To perform continous pairwise merging of the dataframe-transformed
         # json files in the directory, we need a way to keep track of what has
@@ -1245,9 +1245,10 @@ class TransformOperations:
         if not files:
             raise NoFilesFoundError("Directory has no json-headline files")
 
-        if len(files) < 2:
-            # a single file exists, perform transformation on just that.
+        if len(files) == 1:
+            # a single file exists, perform direct transformation on just that.
             print('single transform')
+            cls.transform_new_headlines_single_file_to_csv(files[0])
         else:
             print('spooky')
             # DO AWESOME THINGS HERE
@@ -1256,7 +1257,6 @@ class TransformOperations:
             # worst for time complexity, O(n) worst for space complexity.
             # merged_df = AWESOME_THINGS()
 
-        fname = str(timestamp) + "_top_headlines.csv"
         status = cls.transform_news_headlines_to_csv(merged_df, fname)
 
         return status
