@@ -1279,7 +1279,12 @@ class TransformOperations:
     def transform_jsons_to_dataframe_merger(cls, json_files):
         """transforms a set of json files into a DataFrames and merges all of
         them into one.
+
+        # Arguments:
+            :param json_files: a list of json files to be processed.
+            :type json_files: list
         """
+        pass
 
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
