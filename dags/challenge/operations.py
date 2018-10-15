@@ -1263,11 +1263,9 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single file exists, perform direct transformation on just that.
-            print('single transform')
             status = cls.transform_new_headlines_single_file_to_csv(files[0],
                                                                     fname)
         else:
-            print('spooky')
             # transform the json files into DataFrames and merge them into one.
             merged_df = cls.transform_jsons_to_dataframe_merger(files)
             # transform the merged DataFrame into a csv
