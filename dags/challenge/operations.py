@@ -1164,7 +1164,7 @@ class TransformOperations:
     def helper_execute_json_transformation(cls,
                                            directory,
                                            timestamp=None,
-                                           single_file_func=None,
+                                           json_to_csv_func=None,
                                            jsons_to_df_func=None,
                                            df_to_csv_func=None):
         """runs a block of code to transform json headlines to csv.
@@ -1230,8 +1230,8 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        if not single_file_func:
-            single_file_func = cls.transform_new_headlines_single_file_to_csv
+        if not json_to_csv_func:
+            json_to_csv_func = cls.transform_new_headlines_single_file_to_csv
         if not jsons_to_df_func:
             jsons_to_df_func = cls.transform_jsons_to_dataframe_merger
         if not df_to_csv_func:
@@ -1245,7 +1245,7 @@ class TransformOperations:
             timestamp = datetime.datetime.now()
 
         # the name the created csv file should be given
-        fname = str(timestamp) + "_top_headlines.csv"
+        filename = str(timestamp) + "_top_headlines.csv"
 
         # To perform continous pairwise merging of the dataframe-transformed
         # json files in the directory, we need a way to keep track of what has
@@ -1282,12 +1282,12 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single file exists, perform direct transformation on just that.
-            status = single_file_func(files[0], fname)
+            status = json_to_csv_func(files[0], filename)
         else:
             # transform the json files into DataFrames and merge them into one.
-            merged_df = cls.transform_jsons_to_dataframe_merger(files)
+            merged_df = jsons_to_df_func(files)
             # transform the merged DataFrame into a csv
-            status = cls.transform_news_headlines_to_csv(merged_df, fname)
+            status = df_to_csv_func(merged_df, filename)
 
         return status
 
