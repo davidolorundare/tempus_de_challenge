@@ -1216,17 +1216,21 @@ class TransformOperations:
         if not timestamp:
             timestamp = datetime.datetime.now()
 
-        # the entire merged DataFrame of all the jsons to perform continous
-        # pairwise merging on this (empty) DataFrame, there needs to be a way
-        # to maintain state. Use of global variable is an option used here,
-        # though not the most ideal (since use of global variables is generally
-        # discouraged in several instances due the kinds of bugs they
-        # potentially can create - especially in multithreaded environments)
+        # To perform continous pairwise merging of the dataframe-transformed
+        # json files in the directory, we need a way to keep track of what has
+        # been merged so far. There needs to be a way to maintain state.
+        # This (empty) DataFrame is created for that purpose and is made into
+        # a global Python object within this module/python file.
+        # Use of global variables might not be the ideal way to handle this, as
+        # they are generally discouraged in several development
+        # environs/instances due to the kinds of unpredictable bugs they
+        # potentially create - most especially in multithreaded environments)
+        #
         # Our use of the `global` keyword here for this operation is ONLY time
-        # it will ever be used in this project.
-        # Another alternative might be to make use of Airflow's Variable class
-        # to store the state of object.
-        merged_df = None
+        # it will EVER be used in this project.
+        # Another alternative, to consider, might be to make use of Airflow's
+        # Variable class to store the state of object.
+        merged_df = pd.DataFrame()
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
