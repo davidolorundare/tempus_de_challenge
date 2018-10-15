@@ -428,7 +428,6 @@ class TestFileStorage:
             # create a fake filesystem directory to test the method
             # and inject the paramters
             patcher.fs.create_dir(hd_dir)
-            # patcher.fs.create_file(news_path, contents="news.json")
 
         # Act
             stat = c.FileStorage.write_source_headlines_to_file(ids,
@@ -1296,7 +1295,7 @@ class TestExtractOperations:
             full_file_path1 = os.path.join(js_dir, 'stuff1.json')
             full_file_path2 = os.path.join(js_dir, 'stuff2.json')
 
-            # create a fake filesystem directory to test the method
+            # create a fake filesystem directory files to test the method
             patcher.fs.create_dir(js_dir)
             patcher.fs.create_file(full_file_path1,
                                    contents=js_one_data,
@@ -1834,7 +1833,6 @@ class TestTransformOperations:
         # Assert
         assert "Directory is empty" in actual_message
 
-    @pytest.mark.skip
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
         """transforming a set of jsons in an non-empty directory but having no
         json files fails.
@@ -1860,12 +1858,23 @@ class TestTransformOperations:
                                     pipeline_name,
                                     'headlines')
 
+        # create dummy non-json files
+        full_file_path1 = os.path.join(headline_dir, 'stuff1.txt')
+        full_file_path2 = os.path.join(headline_dir, 'stuff2.rtf')
+        full_file_path3 = os.path.join(headline_dir, 'stuff3.doc')
+
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
             # create a fake filesystem empty directory to test the method
             patcher.fs.create_dir(headline_dir)
+
+            # create a fake filesystem directory files to test the method
+            patcher.fs.create_dir(js_dir)
+            patcher.fs.create_file(full_file_path1, contents=js_one_data)
+            patcher.fs.create_file(full_file_path2, contents=js_two_data)
+            patcher.fs.create_file(full_file_path3, contents=js_three_data)
 
         # Act
             # function should raise errors on an empty directory
@@ -1941,7 +1950,6 @@ class TestNewsInfoDTO:
 
             # create a fake filesystem directory to test the method
             patcher.fs.create_dir(news_path)
-            # patcher.fs.create_file(news_path, contents="news.json")
 
         # Act
             news_obj = c.NewsInfoDTO(pipeline_name, directory_function)
