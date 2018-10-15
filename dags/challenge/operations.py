@@ -1240,8 +1240,8 @@ class TransformOperations:
         # environs/instances due to the kinds of unpredictable bugs they
         # potentially create - most especially in multithreaded environments)
         #
-        # Our use of the `global` keyword here for this operation is ONLY time
-        # it will EVER be used in this project.
+        # Hence, our use of the `global` keyword here for this operation is
+        # ONLY time it will ever be used in this project.
         # An alternative, to consider, might be to make use of Airflow's
         # Variable class to store the state of object.
         # Another alternative, to consider, asides global variables is the use
