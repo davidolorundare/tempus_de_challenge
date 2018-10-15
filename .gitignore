@@ -4,7 +4,7 @@ tempus_env/
 # Pytest Cache folder
 .pytest_cache/
 
-# dummy file - used to test things in the repo
+# dummy file - used to test idea/things in the repo - remove all of them in final version
 faker.py
 dumper.json
 dumpery.json
@@ -17,6 +17,6 @@ jupyter/
 # python egg_info dir
 .eggs/
 
-# unsafe to store the news api key openly in your repo
+# unsafe to store the news api key openly in your repo - ensure they are never exposed
 .env
 dags/config.py
