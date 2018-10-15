@@ -1602,6 +1602,10 @@ class TestTransformOperations:
         # Assert
         assert result == 0
 
+    @pytest.mark.skip
+    def test_transform_jsons_to_dataframe_merger_succeeds(self):
+        """merging a set of transformed DataFrames from jsons succeeds."""
+
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""
