@@ -1248,7 +1248,8 @@ class TransformOperations:
         if len(files) == 1:
             # a single file exists, perform direct transformation on just that.
             print('single transform')
-            cls.transform_new_headlines_single_file_to_csv(files[0])
+            status = cls.transform_new_headlines_single_file_to_csv(files[0],
+                                                                    fname)
         else:
             print('spooky')
             # DO AWESOME THINGS HERE
@@ -1260,6 +1261,12 @@ class TransformOperations:
         status = cls.transform_news_headlines_to_csv(merged_df, fname)
 
         return status
+
+    @classmethod
+    def transform_jsons_to_dataframe_merger(cls, json_files):
+        """transforms a set of json files into a DataFrames and merges all of
+        them into one.
+        """
 
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
@@ -1281,7 +1288,7 @@ class TransformOperations:
             :type csv_filename: string
         """
 
-        log.info("Running transform_keyword_headlines_to_csv method")
+        log.info("Running transform_new_headlines_single_file_to_csv method")
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -1297,7 +1304,7 @@ class TransformOperations:
         transformed_df = trans_to_frame_fnc(data)
 
         # transform to csv and save in the 'csv' datastore
-        csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
+        csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
         if not csv_filename:
             csv_filename = "sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
