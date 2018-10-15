@@ -1868,7 +1868,7 @@ class TestTransformOperations:
             patcher.setUp()
 
             # create a fake filesystem directory and files to test the method
-            patcher.fs.create_dir(headline_dir)
+            # patcher.fs.create_dir(headline_dir)
             patcher.fs.create_file(full_file_path1, contents='dummy txt')
             patcher.fs.create_file(full_file_path2, contents='dummy rtf')
             patcher.fs.create_file(full_file_path3, contents='dummy doc')
