@@ -1784,6 +1784,7 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
+    @pytest.mark.skip
     @patch()
     @patch()
     @patch()
@@ -1805,24 +1806,21 @@ class TestTransformOperations:
                                     pipeline_name,
                                     'headlines')
 
-        # directory_function = MagicMock()
-        directory_function = news_path
-
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem directory to test the method
+            # create a fake filesystem empty directory to test the method
             patcher.fs.create_dir(headline_dir)
-            # patcher.fs.create_file(news_path, contents="news.json")
 
         # Act
-            with pytest.raises() as err:
+            # function should raise errors on an empty directory
+            with pytest.raises(NoFilesFoundError) as err:
                 transfm_fnc(headline_dir,
-                            json_to_csv_func,
-                            jsons_to_df_func,
-                            df_to_csv_func)
-            
+                            json_csv_func,
+                            jsons_df_func,
+                            df_csv_func)
+
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()

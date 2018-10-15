@@ -1279,7 +1279,7 @@ class TransformOperations:
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
-        files = None
+        files = []
 
         if os.listdir(directory):
             files = [file for file in os.listdir(directory)
