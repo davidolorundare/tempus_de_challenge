@@ -1789,10 +1789,7 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
-    def test_helper_execute_json_transformation_empty_dir_fails(self,
-                                                                json_csv_func,
-                                                                jsons_df_func,
-                                                                df_csv_func):
+    def test_helper_execute_json_transformation_empty_dir_fails(self):
         """transforming a set of jsons in an empty directory fails."""
 
         # Arrange
@@ -1824,8 +1821,8 @@ class TestTransformOperations:
 
         # Act
             # function should raise errors on an empty directory
-            with pytest.raises(NoFilesFoundError) as err:
-                transfm_fnc(headline_dir,
+            with pytest.raises(FileNotFoundError) as err:
+                transfm_fnc(directory=headline_dir,
                             json_to_csv_func=json_csv_func,
                             jsons_to_df_func=jsons_df_func,
                             df_to_csv_func=df_csv_func)
@@ -1835,7 +1832,7 @@ class TestTransformOperations:
             patcher.tearDown()
 
         # Assert
-        assert "NoFilesFoundError" in actual_message
+        assert "Directory has no json-headline files" in actual_message
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):

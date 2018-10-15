@@ -1287,7 +1287,7 @@ class TransformOperations:
 
         # check existence of json files before beginning transformation
         if not files:
-            raise NoFilesFoundError("Directory has no json-headline files")
+            raise FileNotFoundError("Directory has no json-headline files")
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
