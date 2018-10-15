@@ -9,3 +9,4 @@ os.environ['AWS_ACCESS_KEY_ID'] = AKIAIS5JPFXJCYF7RGVQ
 os.environ['AWS_SECRET_ACCESS_KEY'] = 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
 os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
 os.environ['AWS_PROFILE'] = 'tempus_challenge_user'
+os.environ['AWS_DEFAULT_OUTPUT'] = 'text'
