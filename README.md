@@ -19,7 +19,7 @@
 	* author's PIP version is `18.1`
 3. [Docker](https://www.docker.com)
 	* docker versions are `docker 18.06.1-ce` and `docker-compose 1.22.0`
-4. Register for a free [News API key](https://newsapi.org/register)	
+4. Register for a free [News API key](https://newsapi.org/register)	in order to use their News RESTFul API service.
 5. Register for a free [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
 	* Before beginning to use the Boto library, you should set up authentication credentials. Credentials for your AWS account can be found in the [IAM Console](https://console.aws.amazon.com/iam/home). You can create or use an existing user. Go to manage access keys and generate a new set of keys. For more details on this see the [documentation here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
 
