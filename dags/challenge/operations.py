@@ -1292,12 +1292,20 @@ class TransformOperations:
         current_file_df = None
         next_file_df = None
 
-        # setup the final DataFrame that will be result from the entire merge
+        # setup final DataFrame that will be resulting from the entire merge
         global merged_df
 
         for index, file in enumerate(json_files):
             if index == (len(json_files) - 1):
                 break
+            # perform json to DataFrame transformation
+            current_file_df = json_files[index]
+            next_file_df = json_files[index + 1]
+            # perform merge
+            merged_df = pd.concat([merged_df, current_file_df, next_file_df])
+
+        # return a merged DataFrame of all the jsons
+        return merged_df
 
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
