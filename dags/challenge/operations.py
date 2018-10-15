@@ -1252,13 +1252,10 @@ class TransformOperations:
                                                                     fname)
         else:
             print('spooky')
-            # DO AWESOME THINGS HERE
-            # REAL DO AWESOME THINGS !!! - Batch transform and DataFrame Merge
-            # Idea: use a concept of merge sort O(n logn) best, average and
-            # worst for time complexity, O(n) worst for space complexity.
-            # merged_df = AWESOME_THINGS()
-
-        status = cls.transform_news_headlines_to_csv(merged_df, fname)
+            # transform the json files into DataFrames and merge them into one
+            merged_df = cls.transform_jsons_to_dataframe_merger(files)
+            # transform the merged DataFrame into a csv
+            status = cls.transform_news_headlines_to_csv(merged_df, fname)
 
         return status
 
