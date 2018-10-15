@@ -1285,6 +1285,11 @@ class TransformOperations:
 
         log.info("Running transform_jsons_to_dataframe_merger method")
 
+        for index, file in enumerate(json_files):
+            if index == (len(json_files) - 1):
+                break
+
+
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
                                                    json_file,
