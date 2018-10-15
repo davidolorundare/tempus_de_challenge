@@ -1610,6 +1610,10 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
         """transform of single news headline json file to csv succeeds"""
 
+    @pytest.mark.skip
+    def test_helper_execute_json_transformation_succeeds(self):
+        """transforming a set of jsons in a directory succeeds"""
+
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""

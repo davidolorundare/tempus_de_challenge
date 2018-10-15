@@ -1255,7 +1255,6 @@ class TransformOperations:
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
-
         files = None
 
         if os.listdir(directory):
