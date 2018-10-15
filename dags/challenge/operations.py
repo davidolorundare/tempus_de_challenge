@@ -1195,6 +1195,16 @@ class TransformOperations:
         into DataFrames and merging them, till the whole jsons are merged into
         one single DataFrame.
 
+        The time complexity of doing a sequential merge (of the news json
+        files) is O(n) which would become a problem to do as the number of
+        files grow.
+
+        I decided to use an approach from the Merge Sort algorithm - whose time
+        complexity in the best, average, and worst cases are O(n logn)
+        http://bigocheatsheet.com/
+
+        Space complexity worst case is O(n).
+
         # Arguments:
             :param directory: directory having the jsons to
                 execute a transformation on.
@@ -1235,6 +1245,8 @@ class TransformOperations:
             print('spooky')
             # DO AWESOME THINGS HERE
             # REAL DO AWESOME THINGS !!! - Batch transform and DataFrame Merge
+            # Idea: use a concept of merge sort O(n logn) best, average and
+            # worst for time complexity, O(n) worst for space complexity.
             # merged_df = AWESOME_THINGS()
 
         fname = str(timestamp) + "_top_headlines.csv"
