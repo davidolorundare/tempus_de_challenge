@@ -1763,6 +1763,10 @@ class TestTransformOperations:
         # Assert
         assert result is False
 
+    @pytest.mark.skip
+    def test_transform_jsons_to_dataframe_merger_fails(self):
+        """merging a set of transformed DataFrames from jsons fails."""
+
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
