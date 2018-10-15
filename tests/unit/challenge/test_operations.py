@@ -1897,7 +1897,15 @@ class TestUploadOperations:
     @pytest.mark.skip
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self):
         """test the uploading of csvs to an s3 location."""
-        pass
+
+        # Arrange
+        bucket_name = 'tempus-challenge-csv-headlines'
+
+        # Act
+        result = c.UploadOperations.upload_csv_to_s3(bucket_name)
+
+        # Assert
+        assert result == 2
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_returns_valid_response_with_library_call(self):
