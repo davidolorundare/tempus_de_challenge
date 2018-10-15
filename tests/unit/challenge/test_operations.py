@@ -32,6 +32,11 @@ class MissingApiKeyError(ValueError):
     pass
 
 
+class NoFilesFoundError(FileNotFoundError):
+    """raised no files of a particular type exist in a directory"""
+    pass
+
+
 @pytest.mark.storagetests
 class TestFileStorage:
     """Tests the creation of the tempoary datastores used during ETL tasks.
@@ -1785,9 +1790,12 @@ class TestTransformOperations:
         """transform of a single news headline json file to csv fails."""
 
     @pytest.mark.skip
-    @patch()
-    @patch()
-    @patch()
+    @patch('c.TransformOperations.transform_new_headlines_single_file_to_csv',
+           autospec=True)
+    @patch('c.TransformOperations.transform_jsons_to_dataframe_merger',
+           autospec=True)
+    @patch('c.TransformOperations.transform_news_headlines_to_csv',
+           autospec=True)
     def test_helper_execute_json_transformation_empty_dir_fails(self,
                                                                 json_csv_func,
                                                                 jsons_df_func,
