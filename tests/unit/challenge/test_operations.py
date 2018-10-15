@@ -15,6 +15,7 @@ import os
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
+from airflow.hooks import S3_hook
 from airflow.models import DAG
 
 from dags import challenge as c
