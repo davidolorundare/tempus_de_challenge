@@ -1216,7 +1216,16 @@ class TransformOperations:
         if not timestamp:
             timestamp = datetime.datetime.now()
 
-        # the entire merged DataFrame of all the jsons
+        # the entire merged DataFrame of all the jsons to perform continous
+        # pairwise merging on this (empty) DataFrame, there needs to be a way
+        # to maintain state. Use of global variable is an option used here,
+        # though not the most ideal (since use of global variables is generally
+        # discouraged in several instances due the kinds of bugs they
+        # potentially can create - especially in multithreaded environments)
+        # Our use of the `global` keyword here for this operation is ONLY time
+        # it will ever be used in this project.
+        # Another alternative might be to make use of Airflow's Variable class
+        # to store the state of object.
         merged_df = None
 
         # transform individual jsons in the 'headlines' directory into one
