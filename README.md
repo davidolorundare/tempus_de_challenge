@@ -123,16 +123,16 @@ The **integration tests** exercise the overall combination of the tasks in the p
 ---
 ### Packages Used
 
-1. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
-2. [Amazon Python SDK (boto 3) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
-3. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
-4. [Python Requests library](http://docs.python-requests.org)
-5. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
-6. [Python JSON library](https://docs.python.org/3/library/json.html)
-6. [Pytest](https://docs.pytest.org/en/latest/)
-7. [Pyfakefs](https://pypi.org/project/pyfakefs/)
-8. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
-9. [News API](https://newsapi.org/)
+1. [Amazon Python SDK (boto 3) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
+2. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
+3. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
+4. [News API](https://newsapi.org/)
+5. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
+6. [Pyfakefs](https://pypi.org/project/pyfakefs/)
+7. [Pytest](https://docs.pytest.org/en/latest/)
+8. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
+9. [Python JSON library](https://docs.python.org/3/library/json.html)
+10. [Python Requests library](http://docs.python-requests.org) 
 
 ---
 ### Footnotes
