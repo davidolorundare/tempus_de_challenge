@@ -1281,6 +1281,9 @@ class TransformOperations:
         # single csv file
         files = []
 
+        if not os.listdir(directory):
+            raise FileNotFoundError("Directory is empty")
+
         if os.listdir(directory):
             files = [file for file in os.listdir(directory)
                      if file.endswith('.json')]

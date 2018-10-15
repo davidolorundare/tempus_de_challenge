@@ -1832,13 +1832,55 @@ class TestTransformOperations:
             patcher.tearDown()
 
         # Assert
-        assert "Directory has no json-headline files" in actual_message
+        assert "Directory is empty" in actual_message
 
     @pytest.mark.skip
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
         """transforming a set of jsons in an non-empty directory but having no
         json files fails.
         """
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        transfm_fnc = c.TransformOperations.helper_execute_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_new_headlines_json_to_csv
+        js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
+        hdline_csv_fnc = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Mock out the functions that the function under test uses
+        json_csv_func = MagicMock(spec=js_csv_fnc)
+        jsons_df_func = MagicMock(spec=js_df_fnc)
+        df_csv_func = MagicMock(spec=hdline_csv_fnc)
+
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(headline_dir)
+
+        # Act
+            # function should raise errors on an empty directory
+            with pytest.raises(FileNotFoundError) as err:
+                transfm_fnc(directory=headline_dir,
+                            json_to_csv_func=json_csv_func,
+                            jsons_to_df_func=jsons_df_func,
+                            df_to_csv_func=df_csv_func)
+
+            actual_message = str(err.value)
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory has no json-headline files" in actual_message
 
 
 @pytest.mark.uploadtests
