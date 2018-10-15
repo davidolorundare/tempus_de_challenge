@@ -1262,6 +1262,59 @@ class TransformOperations:
         return status
 
     @classmethod
+    def transform_new_headlines_single_file_to_csv(cls,
+                                                   json_file,
+                                                   csv_filename=None):
+        """converts the json contents of a given folder into a csv.
+
+        The function specifically operates on jsons in the 'headlines'
+        folder of the 'tempus_bonus_challenge_dag' pipeline.
+
+        Uses the Pandas library to parse, traverse and flatten the
+        json data into a csv file.
+
+        # Arguments:
+            :param json_file: a json file containing top news headlines
+                based on a keyword
+            :type json_file: file
+            :param csv_filename: the filename of the transformed csv
+            :type csv_filename: string
+        """
+
+        log.info("Running transform_keyword_headlines_to_csv method")
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
+        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
+
+        # use Pandas to read in the json file
+        keyword_data = pd.read_json(json_file)
+
+        # extraction and intermediate-transformation of the news json
+        data = extr_frm_frame_fnc(keyword_data)
+        transformed_df = trans_to_frame_fnc(data)
+
+        # transform to csv and save in the 'csv' datastore
+        csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
+        if not csv_filename:
+            csv_filename = "sample.csv"
+        csv_save_path = os.path.join(csv_dir, csv_filename)
+        transformed_df.to_csv(path_or_buf=csv_save_path)
+
+        # ensure status of operation is communicated to caller function
+        op_status = None
+        query_key = csv_filename.split("_")[1]
+        if os.listdir(csv_dir):
+            log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
+            op_status = True
+        else:
+            op_status = False
+
+        return op_status
+
+    @classmethod
     def transform_news_headlines_to_csv(cls, frame, csv_filename):
         """converts the json contents of a given folder into a csv.
 
