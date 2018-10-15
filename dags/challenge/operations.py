@@ -1242,8 +1242,10 @@ class TransformOperations:
         #
         # Hence, our use of the `global` keyword here for this operation is
         # ONLY time it will ever be used in this project.
+        #
         # An alternative, to consider, might be to make use of Airflow's
         # Variable class to store the state of object.
+        #
         # Another alternative, to consider, asides global variables is the use
         # of Python (function) closures to achieve state maintenance.
         merged_df = pd.DataFrame()
@@ -1285,10 +1287,17 @@ class TransformOperations:
 
         log.info("Running transform_jsons_to_dataframe_merger method")
 
+        # perform pairwise transformation of the json files into DataFrames
+        # and their subsequent merging into a single DataFrame.
+        current_file_df = None
+        next_file_df = None
+
+        # setup the final DataFrame that will be result from the entire merge
+        global merged_df
+
         for index, file in enumerate(json_files):
             if index == (len(json_files) - 1):
                 break
-
 
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
