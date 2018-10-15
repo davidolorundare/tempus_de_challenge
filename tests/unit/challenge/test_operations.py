@@ -1606,6 +1606,10 @@ class TestTransformOperations:
     def test_transform_jsons_to_dataframe_merger_succeeds(self):
         """merging a set of transformed DataFrames from jsons succeeds."""
 
+    @pytest.mark.skip
+    def test_transform_new_headlines_single_file_to_csv_succeeds(self):
+        """transform of a single news headline json file to csv succeeds"""
+
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""
@@ -1766,6 +1770,10 @@ class TestTransformOperations:
     @pytest.mark.skip
     def test_transform_jsons_to_dataframe_merger_fails(self):
         """merging a set of transformed DataFrames from jsons fails."""
+
+    @pytest.mark.skip
+    def test_transform_new_headlines_single_file_to_csv_fails(self):
+        """transform of a single news headline json file to csv fails"""
 
 
 @pytest.mark.uploadtests

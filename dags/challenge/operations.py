@@ -1282,7 +1282,8 @@ class TransformOperations:
             :param json_files: a list of json files to be processed.
             :type json_files: list
         """
-        pass
+
+        log.info("Running transform_jsons_to_dataframe_merger method")
 
     @classmethod
     def transform_new_headlines_single_file_to_csv(cls,
