@@ -1199,10 +1199,9 @@ class TransformOperations:
         files) is O(n) which would become a problem to do as the number of
         files grow.
 
-        I decided to use an approach from the Merge Sort algorithm - whose time
-        complexity in the best, average, and worst cases are O(n logn)
-        http://bigocheatsheet.com/
-
+        I decided to use an approach follows from the principles in the
+        traditional Merge Sort algorithm - whose time complexity in the best,
+        average, and worst cases are O(n logn) - http://bigocheatsheet.com/
         Space complexity worst case is O(n)
 
         # Arguments:
