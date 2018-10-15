@@ -1191,18 +1191,9 @@ class TransformOperations:
         json and csv data.
 
         I decided to use Pandas's DataFrame object as the intermediary format
-        and a Batch merging approach: Transforming the json's, two at a time,
-        into DataFrames and merging them, till the whole jsons are merged into
-        one single DataFrame.
-
-        The time complexity of doing a sequential merge (of the news json
-        files) is O(n) which would become a problem to do as the number of
-        files grow.
-
-        I decided to use an approach follows from the principles in the
-        traditional Merge Sort algorithm - whose time complexity in the best,
-        average, and worst cases are O(n logn) - http://bigocheatsheet.com/
-        Space complexity worst case is O(n)
+        and a Batch merging approach: Transforming the json's, two at a time
+        (i.e. pairwise merging), into DataFrames and merging them, till the
+        whole transformed jsons are merged into one single DataFrame.
 
         # Arguments:
             :param directory: directory having the jsons to
@@ -1240,6 +1231,10 @@ class TransformOperations:
         # check existence of json files before beginning transformation
         if not files:
             raise NoFilesFoundError("Directory has no json-headline files")
+
+        if len(files) < 2:
+            # read that single json file in, transform, and save
+            print('single transform')
         else:
             print('spooky')
             # DO AWESOME THINGS HERE
