@@ -1789,7 +1789,6 @@ class TestTransformOperations:
     def test_transform_new_headlines_single_file_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
-    @pytest.mark.skip
     @patch('c.TransformOperations.transform_new_headlines_single_file_to_csv',
            autospec=True)
     @patch('c.TransformOperations.transform_jsons_to_dataframe_merger',
@@ -1807,6 +1806,15 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         transfm_fnc = c.TransformOperations.helper_execute_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_new_headlines_json_to_csv
+        js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
+        hdline_csv_fnc = c.TransformOperations.transform_news_headlines_to_csv
+
+
+        # Mock out the functions that the function under test uses
+        json_csv_func = MagicMock(spec=js_to_csv)
+        jsons_df_func = MagicMock(spec=js_df_fnc)
+        df_csv_func = MagicMock(spec=hdline_csv_fnc)
 
         pipeline_name = "tempus_challenge_dag"
 
