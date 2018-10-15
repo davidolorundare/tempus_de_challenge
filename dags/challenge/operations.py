@@ -1268,7 +1268,7 @@ class TransformOperations:
                                                                     fname)
         else:
             print('spooky')
-            # transform the json files into DataFrames and merge them into one
+            # transform the json files into DataFrames and merge them into one.
             merged_df = cls.transform_jsons_to_dataframe_merger(files)
             # transform the merged DataFrame into a csv
             status = cls.transform_news_headlines_to_csv(merged_df, fname)
