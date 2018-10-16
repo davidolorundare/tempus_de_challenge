@@ -1913,6 +1913,7 @@ class TestUploadOperations:
             'dag': dag
         }
 
+    @pytest.mark.skip
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
                                                             airflow_context):
         """tests call to boto library to upload a file is actually made."""
@@ -1958,10 +1959,44 @@ class TestUploadOperations:
                                                             bucket_name,
                                                             'my_dummy_text')
 
-    @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_empty_csv_directory(self):
-        """check for existing bucket corresponding to pipeline return true."""
-        pass
+    def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
+                                                             airflow_context):
+        """function fails if the directory is empty."""
+        
+        # Arrange
+
+        # Mock out the functions that the function under test uses
+        json_csv_func = MagicMock(spec=js_csv_fnc)
+        jsons_df_func = MagicMock(spec=js_df_fnc)
+        df_csv_func = MagicMock(spec=hdline_csv_fnc)
+
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(headline_dir)
+
+        # Act
+            # function should raise errors on an empty directory
+            with pytest.raises(FileNotFoundError) as err:
+                transfm_fnc(directory=headline_dir,
+                            json_to_csv_func=json_csv_func,
+                            jsons_to_df_func=jsons_df_func,
+                            df_to_csv_func=df_csv_func)
+
+            actual_message = str(err.value)
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory is empty" in actual_message
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_fails_with_non_existent_bucket(self):
@@ -1969,12 +2004,9 @@ class TestUploadOperations:
         pass
 
      @pytest.mark.skip
+   
+    @pytest.mark.skip 
     def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self):
-        """test the uploading of csvs to an s3 location."""
-        pass
-
-     @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
         """test the uploading of csvs to an s3 location."""
         pass
 
