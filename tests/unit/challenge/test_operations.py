@@ -1954,8 +1954,10 @@ class TestUploadOperations:
                                 pipeline_name,
                                 'news')
 
-        # create dummy file
-        full_file_path = os.path.join(csv_dir, 'stuff.txt')
+        # create dummy csv files that will be uploaded by the function
+        full_file_path1 = os.path.join(csv_dir, 'stuff1.csv')
+        full_file_path2 = os.path.join(csv_dir, 'stuff2.csv')
+        full_file_path3 = os.path.join(csv_dir, 'stuff3.csv')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
