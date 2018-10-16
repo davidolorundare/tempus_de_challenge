@@ -1587,10 +1587,10 @@ class UploadOperations:
         # ensure pre-existence of the bucket
         if not bucket_name:
             raise ValueError("Bucket name cannot be empty")
-        if bucket_name not in aws_resource.buckets.all():
-            upload_status = False
-            raise FileNotFoundError("Bucket {} does not exist on the server\
-                ".format(bucket_name))
+        # if bucket_name not in aws_resource.buckets.all():
+        #     upload_status = False
+        #     raise FileNotFoundError("Bucket {} does not exist on the server\
+        #         ".format(bucket_name))
 
         # list of all csv files in the directory
         csv_files = []
@@ -1611,9 +1611,9 @@ class UploadOperations:
             raise FileNotFoundError("Directory has no csv-headline files")
 
         # iterate through the files in the directory and upload them to s3
-        for file in csv_files:
-            file_path = os.path.join(csv_directory, file)
-            aws_service_client.upload_file(file_path, bucket_name, file)
+        # for file in csv_files:
+        #     file_path = os.path.join(csv_directory, file)
+        #     aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
         upload_status = True
