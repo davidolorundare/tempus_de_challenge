@@ -1942,10 +1942,17 @@ class TestUploadOperations:
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
 
+        # path to the fake news and csv directories the function under test
+        # uses
         csv_dir = os.path.join(home_directory_res,
                                'tempdata',
                                pipeline_name,
                                'csv')
+
+        news_dir = os.path.join(home_directory_res,
+                                'tempdata',
+                                pipeline_name,
+                                'news')
 
         # create dummy file
         full_file_path = os.path.join(csv_dir, 'stuff.txt')
@@ -1956,6 +1963,9 @@ class TestUploadOperations:
 
             # create a fake filesystem directory and dummy file to test
             # the method
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(csv_dir)
+            patcher.fs.create_dir(news_dir)
             patcher.fs.create_file(full_file_path, contents='dummy txt')
 
         # Act
