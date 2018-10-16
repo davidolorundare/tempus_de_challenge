@@ -2057,7 +2057,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
-        assert "Bucket does not exist on the Server" in actual_message
+        assert "does not exist on the server" in actual_message
 
     def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self,
                                                               airflow_context,
@@ -2165,7 +2165,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
-        assert "Bucket Name cannot be empty" in actual_message
+        assert "Bucket name cannot be empty" in actual_message
 
 
 @pytest.mark.newsinfotests
