@@ -1941,6 +1941,8 @@ class TestUploadOperations:
         # Act
             # attempt uploading a file to a valid s3 bucket
             c.UploadOperations.upload_csv_to_s3(full_file_path1,
+                                                bucket_name,
+                                                'my_dummy_text',
                                                 upload_fnc,
                                                 **airflow_context)
 
@@ -1950,7 +1952,9 @@ class TestUploadOperations:
         # Assert
         # ensure the boto3 upload_file() function was called with correct
         # arguments
-        assert upload_fnc.assert_called_with()
+        assert upload_fnc.assert_called_with(full_file_path1,
+                                             bucket_name,
+                                             'my_dummy_text')
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_returns_valid_bucket_name_for_pipeline(self):
