@@ -1472,7 +1472,6 @@ class TestTransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        # get the current pipeline info
         tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
 
@@ -1591,68 +1590,43 @@ class TestTransformOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_transform_jsons_to_dataframe_merger_succeeds(self):
+    @patch('pandas.read_json', autospec=True)
+    def test_transform_jsons_to_dataframe_merger_succeeds(self,
+                                                          file_reader_func):
         """merging a set of transformed DataFrames from jsons succeeds."""
 
         # Arrange
-        # name of the pipeline under test
-        pipeline_name = "tempus_bonus_challenge_dag"
 
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        # get the current pipeline info
         tf_func = c.TransformOperations.transform_jsons_to_dataframe_merger
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        data_to_df_func = c.TransformOperations.transform_data_to_dataframe
 
         # create the dummy input data that will be passed to the function
         # under test
-        json_files = None
+        json_files = ['file1.json', 'file2.json', 'file3.json']
         transform_data_df = MagicMock(spec=pandas.DataFrame)
-        combined_df = None
 
         # setup a Mock of the extract and transform function dependencies
-        tf_func_mock = MagicMock(spec=tf_func)
+        tf_func_mock = MagicMock(spec=data_to_df_func)
         extract_func_mock = MagicMock(spec=extract_func)
+
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
         file_reader_func.side_effect = lambda data: "read-in json file"
 
-        # path to the fake csv directory the function under test
-        # uses
-        csv_dir = os.path.join(home_directory_res,
-                               'tempdata',
-                               pipeline_name,
-                               'csv')
-
-        # name and path to the file that will be created after transformation
-        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
-        # fp = os.path.join(csv_dir, filename)
-
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
-
-            # create a fake filesystem directory and place the dummy csv files
-            # in that directory to test the method
-            patcher.fs.create_dir(csv_dir)
-
-            # calling the transformed DataFrame's to_csv() creates a new
-            # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
-
         # Act
-            result = tf_func(json_files,
-                             extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
-
-            # clean up and remove the fake filesystem
-            patcher.tearDown()
+        result = tf_func(json_files,
+                         extract_func_mock,
+                         tf_func_mock,
+                         file_reader_func)
 
         # Assert
-        # expected result - merged dataframe of all individual json dataframes
-        assert result == combined_df
+        # an empty dataframe is expected since three empty dataframes were
+        # merged together from the three empty json files.
+        assert result == pd.DataFrame()
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
