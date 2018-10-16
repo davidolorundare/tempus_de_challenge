@@ -1941,7 +1941,7 @@ class TestUploadOperations:
         csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
 
         # create dummy file
-        full_file_path1 = os.path.join(csv_dir, 'stuff1.txt')
+        full_file_path = os.path.join(csv_dir, 'stuff.txt')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1949,7 +1949,7 @@ class TestUploadOperations:
 
             # create a fake filesystem directory and dummy file to test
             # the method
-            patcher.fs.create_file(full_file_path1, contents='dummy txt')
+            patcher.fs.create_file(full_file_path, contents='dummy txt')
 
         # Act
             # attempt uploading a file to a valid s3 bucket
@@ -1965,9 +1965,9 @@ class TestUploadOperations:
         # Assert
         # ensure the boto3 upload_file() function was called with correct
         # arguments
-        assert upload_client.upload_file.assert_called_with(full_file_path1,
+        assert upload_client.upload_file.assert_called_with(full_file_path,
                                                             bucket_name,
-                                                            'stuff1.txt')
+                                                            'stuff.txt')
 
     def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
                                                              airflow_context,
