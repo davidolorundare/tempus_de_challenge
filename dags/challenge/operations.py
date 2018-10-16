@@ -1568,6 +1568,11 @@ class UploadOperations:
             :param service_client: reference to an s3 service client object
                 instance that should be used. If left blank, the function
                 creates a new one.
+            :type service_client: object
+            :param resource_client: reference to an s3 resource service object
+                instance that should be used. If left blank, the function
+                creates a new one.
+            :type service_client: object
             :param context: airflow context object referencing the current
                 pipeline
             :type context: dict
