@@ -1581,6 +1581,8 @@ class UploadOperations:
         upload_status = None
 
         # ensure pre-existence of the bucket
+        if not bucket_name:
+            raise ValueError("Bucket Name cannot be empty")
         if bucket_name not in aws_resource.buckets.all():
             upload_status = False
             raise FileNotFoundError("Bucket does not exist on the Server")

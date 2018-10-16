@@ -1913,6 +1913,13 @@ class TestUploadOperations:
             'dag': dag
         }
 
+    @pytest.fixture(scope='class')
+    def bucket_names(self) -> list:
+        """returns the list of available Amazon S3 buckets."""
+
+        return ['tempus-challenge-csv-headlines',
+                'tempus-bonus-challenge-csv-headlines']
+
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
                                                             airflow_context):
         """tests call to boto library to upload a file is actually made."""
@@ -1925,6 +1932,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
+        resource_client.buckets.all.side_effect = None
 
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
