@@ -1923,9 +1923,10 @@ class TestUploadOperations:
         return ['tempus-challenge-csv-headlines',
                 'tempus-bonus-challenge-csv-headlines']
 
-    def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
-                                                            airflow_context,
-                                                            bucket_names):
+    def test_upload_csv_to_s3_success_with_call_to_library(self,
+                                                           airflow_context,
+                                                           bucket_names,
+                                                           home_directory_res):
         """tests call to boto library to upload a file is actually made."""
 
         # Arrange
