@@ -19,7 +19,6 @@ import pandas as pd
 import shutil
 import time
 
-from airflow.hooks import S3_hook
 from airflow.models import Variable
 
 import requests

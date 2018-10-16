@@ -15,7 +15,6 @@ import os
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
-from airflow.hooks import S3_hook
 from airflow.models import DAG
 
 from dags import challenge as c
@@ -1914,7 +1913,7 @@ class TestUploadOperations:
 
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
                                                             airflow_context):
-        """test the uploading of csvs to an s3 location."""
+        """tests call to boto library to upload a file is actually made."""
 
         # Arrange
         # bucket_name = 'tempus-challenge-csv-headlines'
@@ -1926,12 +1925,12 @@ class TestUploadOperations:
         assert result == 2
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3_returns_valid_response_with_library_call(self):
-        """test the uploading of csvs to an s3 location."""
+    def test_upload_csv_to_s3_returns_valid_bucket_name_for_pipeline(self):
+        """check for existing bucket corresponding to pipeline return true."""
         pass
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_call_to_library(self):
+    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
         """test the uploading of csvs to an s3 location."""
         pass
 
