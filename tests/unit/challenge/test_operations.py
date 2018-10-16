@@ -1894,6 +1894,11 @@ class TestUploadOperations:
     """test the functions for task to upload csvs to Amazon S3."""
 
     @pytest.fixture(scope='class')
+    def home_directory_res(self) -> str:
+        """returns a pytest resource - path to the Airflow Home directory."""
+        return str(os.environ['HOME'])
+
+    @pytest.fixture(scope='class')
     def airflow_context(self) -> dict:
         """returns an airflow context object for tempus_challenge_dag.
 
