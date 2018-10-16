@@ -1942,7 +1942,10 @@ class TestUploadOperations:
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
 
-        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+        csv_dir = os.path.join(home_directory_res,
+                               'tempdata',
+                               pipeline_name,
+                               'csv')
 
         # create dummy file
         full_file_path = os.path.join(csv_dir, 'stuff.txt')
