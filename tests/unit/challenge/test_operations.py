@@ -7,7 +7,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 
 
 import boto3
-import botocore.client.S3
+import boto3.resources.factory.s3.ServiceResource
 import datetime
 import json
 import pandas as pd
@@ -1931,7 +1931,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client = MagicMock()
         resource_client = None
         # MagicMock(spec=boto3.resources.factory.s3.ServiceResource)
         upload_client.upload_file.side_effect = lambda: None
@@ -1980,7 +1980,7 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client = MagicMock()
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
@@ -2026,7 +2026,7 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client = MagicMock()
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
@@ -2074,7 +2074,7 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client = MagicMock()
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
@@ -2128,7 +2128,7 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client = MagicMock()
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
