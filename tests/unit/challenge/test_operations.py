@@ -1951,11 +1951,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            result = c.UploadOperations.upload_news_csv_to_s3(csv_dir,
-                                                              bucket_name,
-                                                              upload_client,
-                                                              resource_client,
-                                                              **airflow_context)
+            result = c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                         bucket_name,
+                                                         upload_client,
+                                                         resource_client,
+                                                         **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -2001,11 +2001,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         upload_client,
-                                                         resource_client,
-                                                         **airflow_context)
+                c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                    bucket_name,
+                                                    upload_client,
+                                                    resource_client,
+                                                    **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -2047,11 +2047,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         upload_client,
-                                                         resource_client,
-                                                         **airflow_context)
+                c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                    bucket_name,
+                                                    upload_client,
+                                                    resource_client,
+                                                    **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -2103,11 +2103,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         upload_client,
-                                                         resource_client,
-                                                         **airflow_context)
+                c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                    bucket_name,
+                                                    upload_client,
+                                                    resource_client,
+                                                    **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -2157,11 +2157,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(ValueError) as err:
-                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         upload_client,
-                                                         resource_client,
-                                                         **airflow_context)
+                c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                    bucket_name,
+                                                    upload_client,
+                                                    resource_client,
+                                                    **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
