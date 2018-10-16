@@ -1921,7 +1921,8 @@ class TestUploadOperations:
                 'tempus-bonus-challenge-csv-headlines']
 
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
-                                                            airflow_context):
+                                                            airflow_context,
+                                                            bucket_names):
         """tests call to boto library to upload a file is actually made."""
 
         # Arrange
@@ -1932,7 +1933,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
-        resource_client.buckets.all.side_effect = None
+        resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
@@ -1969,7 +1970,8 @@ class TestUploadOperations:
                                                             'my_dummy_text')
 
     def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
-                                                             airflow_context):
+                                                             airflow_context,
+                                                             bucket_names):
         """uploading fails if the directory is empty."""
 
         # Arrange
@@ -1978,6 +1980,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
+        resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
