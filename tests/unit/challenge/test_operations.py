@@ -1962,7 +1962,7 @@ class TestUploadOperations:
 
     def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
                                                              airflow_context):
-        """function fails if the directory is empty."""
+        """uploading fails if the directory is empty."""
         
         # Arrange
 
@@ -2018,7 +2018,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = 'non-existent-bucket-name'
 
         # path to csv directory
         csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
