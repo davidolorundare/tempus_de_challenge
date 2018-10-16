@@ -1767,6 +1767,10 @@ class TestTransformOperations:
 
         assert result == 2
 
+    @pytest.mark.skip
+    def test_transform_new_headlines_json_to_csv_fails(self):
+        """transform of a single news headline json file to csv fails."""
+
     def test_transform_headlines_to_csv_wrong_pipeline_fails(self,
                                                              airflow_context):
         """flattening of a set of json files to csv fails when a
@@ -1808,10 +1812,6 @@ class TestTransformOperations:
     @pytest.mark.skip
     def test_transform_jsons_to_dataframe_merger_fails(self):
         """merging a set of transformed DataFrames from jsons fails."""
-
-    @pytest.mark.skip
-    def test_transform_new_headlines_json_to_csv_fails(self):
-        """transform of a single news headline json file to csv fails."""
 
     def test_helper_execute_json_transformation_empty_dir_fails(self):
         """transforming a set of jsons in an empty directory fails."""

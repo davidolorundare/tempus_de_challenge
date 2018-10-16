@@ -1102,6 +1102,7 @@ class TransformOperations:
         pipeline_name = context['dag'].dag_id
         if not info_func:
             info_func = NewsInfoDTO
+
         pipeline_info = info_func(pipeline_name)
         headline_dir = pipeline_info.get_headlines_directory
 
@@ -1317,7 +1318,11 @@ class TransformOperations:
         return status
 
     @classmethod
-    def transform_jsons_to_dataframe_merger(cls, json_files):
+    def transform_jsons_to_dataframe_merger(cls,
+                                            json_files,
+                                            extract_func=None,
+                                            transform_func=None,
+                                            reader_func=None):
         """transforms a set of json files into a DataFrames and merges all of
         them into one.
 
