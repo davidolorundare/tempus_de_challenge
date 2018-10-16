@@ -1965,31 +1965,33 @@ class TestUploadOperations:
         
         # Arrange
 
-        # Mock out the functions that the function under test uses
-        json_csv_func = MagicMock(spec=js_csv_fnc)
-        jsons_df_func = MagicMock(spec=js_df_fnc)
-        df_csv_func = MagicMock(spec=hdline_csv_fnc)
+        # setup a Mock of the boto3 service client and file upload function
+        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client.upload_file.side_effect = lambda: None
 
-        pipeline_name = "tempus_challenge_dag"
+        # get the current pipeline info
+        pipeline_name = airflow_context['dag'].dag_id
 
-        headline_dir = os.path.join('tempdata',
-                                    pipeline_name,
-                                    'headlines')
+        # S3 bucket to upload the file to
+        bucket_name = 'tempus-challenge-csv-headlines'
+
+        # path to csv directory
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
             # create a fake filesystem empty directory to test the method
-            patcher.fs.create_dir(headline_dir)
+            patcher.fs.create_dir(csv_dir)
 
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                transfm_fnc(directory=headline_dir,
-                            json_to_csv_func=json_csv_func,
-                            jsons_to_df_func=jsons_df_func,
-                            df_to_csv_func=df_csv_func)
+                c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
+                                                                  bucket_name,
+                                                                  upload_client,
+                                                                  **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
