@@ -1967,7 +1967,7 @@ class TestUploadOperations:
         # arguments
         assert upload_client.upload_file.assert_called_with(full_file_path1,
                                                             bucket_name,
-                                                            'my_dummy_text')
+                                                            'stuff1.txt')
 
     def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
                                                              airflow_context,
@@ -2015,7 +2015,8 @@ class TestUploadOperations:
         assert "Directory is empty" in actual_message
 
     def test_upload_csv_to_s3_fails_with_non_existent_bucket(self,
-                                                             airflow_context):
+                                                             airflow_context,
+                                                             bucket_names):
         """uploading fails if the s3 bucket location does not already exist."""
 
         # Arrange
@@ -2024,6 +2025,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
+        resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
@@ -2058,7 +2060,8 @@ class TestUploadOperations:
         assert "Bucket does not exist on the Server" in actual_message
 
     def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self,
-                                                              airflow_context):
+                                                              airflow_context,
+                                                              bucket_names):
         """function fails if there are no csv-headline files in the
         directory.
         """
@@ -2069,6 +2072,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
+        resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
@@ -2111,7 +2115,8 @@ class TestUploadOperations:
         assert "Directory has no csv-headline files" in actual_message
 
     def test_upload_csv_to_s3_fails_with_no_bucket_name(self,
-                                                        airflow_context):
+                                                        airflow_context,
+                                                        bucket_names):
         """function fails if the bucket name is left blank"""
 
         # Arrange
@@ -2120,6 +2125,7 @@ class TestUploadOperations:
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
+        resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
