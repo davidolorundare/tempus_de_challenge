@@ -1917,13 +1917,40 @@ class TestUploadOperations:
         """tests call to boto library to upload a file is actually made."""
 
         # Arrange
-        # bucket_name = 'tempus-challenge-csv-headlines'
+        # get the current pipeline info
+        pipeline_name = airflow_context['dag'].dag_id
+
+        # setup a Mock of the boto3 file upload function
+
+        # S3 bucket to upload the file to
+        bucket_name = 'tempus-challenge-csv-headlines'
+
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+
+        # create dummy file
+        full_file_path1 = os.path.join(csv_dir, 'stuff1.txt')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and dummy file to test
+            # the method
+            patcher.fs.create_file(full_file_path1, contents='dummy txt')
 
         # Act
-        result = c.UploadOperations.upload_csv_to_s3(**airflow_context)
+            # attempt uploading a file to a valid s3 bucket
+            c.UploadOperations.upload_csv_to_s3(full_file_path1,
+                                                upload_fnc,
+                                                **airflow_context)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
 
         # Assert
-        assert result == 2
+        # ensure the boto3 upload_file() function was called with those
+        # arguments
+        assert upload_fnc.assert_called_with()
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_returns_valid_bucket_name_for_pipeline(self):
