@@ -1363,7 +1363,6 @@ class TransformOperations:
         # perform pairwise transformation of the json files into DataFrames
         # and their subsequent merging into a single DataFrame.
         current_file_df = None
-        next_file_df = None
 
         # To perform continous pairwise merging of the dataframe-transformed
         # json files in the directory, we need a way to keep track of what has
@@ -1392,16 +1391,14 @@ class TransformOperations:
             # perform json to DataFrame transformations by function-chaining
             current_file_df = transform_func(extract_func(
                                              read_js_func(json_files[indx])))
-            next_file_df = transform_func(extract_func(
-                                          read_js_func(json_files[indx + 1])))
+
             # perform merge
-            merged_df = pd.concat([merged_df, current_file_df, next_file_df])
+            merged_df = pd.concat([merged_df, current_file_df])
             # free up memory by clearing the previously transformed DataFrames
             del current_file_df
-            del next_file_df
             # force Python's Garbage Collector to clean up unused variables and
             # free up memory manually
-            gc.collect()
+            # gc.collect()
 
         # return a merged DataFrame of all the jsons
         return merged_df

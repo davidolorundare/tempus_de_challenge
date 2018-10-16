@@ -1483,6 +1483,8 @@ class TestTransformOperations:
         # setup a Mock of the extract and transform function dependencies
         tf_func_mock = MagicMock(spec=tf_func)
         extract_func_mock = MagicMock(spec=extract_func)
+
+        # define the mock function behaviors when called
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
         file_reader_func.side_effect = lambda data: "read-in json file"
@@ -1605,15 +1607,26 @@ class TestTransformOperations:
 
         # create the dummy input data that will be passed to the function
         # under test
-        json_files = ['file1.json', 'file2.json', 'file3.json']
-        transform_data_df = MagicMock(spec=pandas.DataFrame)
+        json_files = ['file1.json', 'file2.json']
+        transform_data_df1 = pd.DataFrame({'A': ['A0', 'A1', 'A2', 'A3'],
+                                           'B': ['B0', 'B1', 'B2', 'B3'],
+                                           'C': ['C0', 'C1', 'C2', 'C3'],
+                                           'D': ['D0', 'D1', 'D2', 'D3']},
+                                          index=[0, 1, 2, 3])
+
+        transform_data_df2 = pd.DataFrame({'A': ['A4', 'A5', 'A6', 'A7'],
+                                           'B': ['B4', 'B5', 'B6', 'B7'],
+                                           'C': ['C4', 'C5', 'C6', 'C7'],
+                                           'D': ['D4', 'D5', 'D6', 'D7']},
+                                          index=[4, 5, 6, 7])
 
         # setup a Mock of the extract and transform function dependencies
         tf_func_mock = MagicMock(spec=data_to_df_func)
         extract_func_mock = MagicMock(spec=extract_func)
 
+        # define the mock function behaviors when called
         extract_func_mock.side_effect = lambda data: "extracted data"
-        tf_func_mock.side_effect = lambda data: transform_data_df
+        tf_func_mock.side_effect = [transform_data_df1, transform_data_df2]
         file_reader_func.side_effect = lambda data: "read-in json file"
 
         # Act
@@ -1625,7 +1638,16 @@ class TestTransformOperations:
         # Assert
         # an empty dataframe is expected since three empty dataframes were
         # merged together from the three empty json files.
-        assert result == pd.DataFrame()
+        expected_dataframe = pd.DataFrame({'A': ['A0', 'A1', 'A2', 'A3'],
+                                           'B': ['B0', 'B1', 'B2', 'B3'],
+                                           'C': ['C0', 'C1', 'C2', 'C3'],
+                                           'D': ['D0', 'D1', 'D2', 'D3'],
+                                           'A': ['A4', 'A5', 'A6', 'A7'],
+                                           'B': ['B4', 'B5', 'B6', 'B7'],
+                                           'C': ['C4', 'C5', 'C6', 'C7'],
+                                           'D': ['D4', 'D5', 'D6', 'D7']},
+                                          index=[0, 1, 2, 3, 4, 5, 6, 7])
+        assert result == expected_dataframe
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
