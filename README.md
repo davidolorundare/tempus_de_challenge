@@ -81,13 +81,14 @@ Two Amazon S3 buckets were setup by the author:
 	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
 	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
 to store the flattened csv files from the 'tempus_challenge_dag' and 'tempus_bonus_challenge_dag' pipeline respectively. Navigating to these bucket links from any web browser returns any XML list of all their contents. 
-By default a `dummy.txt` file is all that exists in the buckets. To view or download any of the files in the bucket, append the name of that document to the end of the aforementioned links.
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/s3_challenge_bucket.jpeg "Image of Pipeline-1 S3 Bucket")
 
 ---
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/s3_bonus_challenge_bucket.jpeg "Image of Pipeline-2 S3 Bucket")
+
+By default a `dummy.txt` file is all that exists in the buckets. To view or download any of the files in the bucket, append the name of that document to the end of the aforementioned links.
 
 ---
 
