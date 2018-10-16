@@ -1266,7 +1266,7 @@ class TransformOperations:
         if not jsons_to_df_func:
             jsons_to_df_func = cls.transform_jsons_to_dataframe_merger
         if not df_to_csv_func:
-            df_to_csv_func = cls.transform_news_headlines_to_csv
+            df_to_csv_func = cls.transform_headlines_dataframe_to_csv
 
         # transformation operation status
         status = None
@@ -1402,7 +1402,9 @@ class TransformOperations:
         return merged_df
 
     @classmethod
-    def transform_new_headlines_json_to_csv(cls, json_file, csv_filename=None):
+    def transform_news_headlines_json_to_csv(cls,
+                                             json_file,
+                                             csv_filename=None):
         """transforms the json contents of a given file into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1419,7 +1421,7 @@ class TransformOperations:
             :type csv_filename: str
         """
 
-        log.info("Running transform_new_headlines_single_file_to_csv method")
+        log.info("Running transform_news_headlines_json_to_csv method")
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -1452,14 +1454,8 @@ class TransformOperations:
         return op_status
 
     @classmethod
-    def transform_news_headlines_to_csv(cls, frame, csv_filename):
-        """converts the json contents of a given folder into a csv.
-
-        The function specifically operates on jsons in the 'headlines'
-        fold of the 'tempus_bonus_challenge_dag' pipeline.
-
-        Uses the Pandas library to parse, traverse and flatten the
-        json data into a csv file.
+    def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
+        """flatten's a given dataframe into a csv file.
 
          # Arguments:
             :param frame: single DataFrame consisting of all english news
@@ -1469,7 +1465,7 @@ class TransformOperations:
             :type csv_filename: str
         """
 
-        log.info("Running transform_news_headlines_to_csv method")
+        log.info("Running transform_headlines_dataframe_to_csv method")
 
         # input is a single DataFrame consisting of all english news sources
         # headlines
@@ -1493,12 +1489,12 @@ class TransformOperations:
         return op_status
 
     @classmethod
-    def transform_keyword_headlines_to_csv(cls,
-                                           json_file,
-                                           csv_filename=None,
-                                           extract_func=None,
-                                           transform_func=None,
-                                           reader_func=None):
+    def transform_key_headlines_to_csv(cls,
+                                       json_file,
+                                       csv_filename=None,
+                                       extract_func=None,
+                                       transform_func=None,
+                                       reader_func=None):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'

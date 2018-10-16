@@ -1472,7 +1472,7 @@ class TestTransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
+        tf_func = c.TransformOperations.transform_key_headlines_to_csv
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
 
         # create the dummy input data that will be passed to the function
@@ -1765,7 +1765,7 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
+        tf_func = c.TransformOperations.transform_key_headlines_to_csv
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
 
         # create the dummy input data that will be passed to the function
@@ -1864,14 +1864,14 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         transfm_fnc = c.TransformOperations.helper_execute_json_transformation
-        js_csv_fnc = c.TransformOperations.transform_new_headlines_json_to_csv
+        js_csv_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
         js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
-        hdline_csv_fnc = c.TransformOperations.transform_news_headlines_to_csv
+        h_csv_fnc = c.TransformOperations.transform_headlines_dataframe_to_csv
 
         # Mock out the functions that the function under test uses
         json_csv_func = MagicMock(spec=js_csv_fnc)
         jsons_df_func = MagicMock(spec=js_df_fnc)
-        df_csv_func = MagicMock(spec=hdline_csv_fnc)
+        df_csv_func = MagicMock(spec=h_csv_fnc)
 
         pipeline_name = "tempus_challenge_dag"
 
@@ -1911,14 +1911,14 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         transfm_fnc = c.TransformOperations.helper_execute_json_transformation
-        js_csv_fnc = c.TransformOperations.transform_new_headlines_json_to_csv
+        js_csv_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
         js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
-        hdline_csv_fnc = c.TransformOperations.transform_news_headlines_to_csv
+        h_csv_fnc = c.TransformOperations.transform_headlines_dataframe_to_csv
 
         # Mock out the functions that the function under test uses
         json_csv_func = MagicMock(spec=js_csv_fnc)
         jsons_df_func = MagicMock(spec=js_df_fnc)
-        df_csv_func = MagicMock(spec=hdline_csv_fnc)
+        df_csv_func = MagicMock(spec=h_csv_fnc)
 
         pipeline_name = "tempus_challenge_dag"
 
