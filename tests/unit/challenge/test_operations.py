@@ -1913,7 +1913,6 @@ class TestUploadOperations:
             'dag': dag
         }
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
                                                             airflow_context):
         """tests call to boto library to upload a file is actually made."""
@@ -1963,7 +1962,7 @@ class TestUploadOperations:
     def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
                                                              airflow_context):
         """uploading fails if the directory is empty."""
-        
+
         # Arrange
 
         # setup a Mock of the boto3 service client and file upload function
@@ -2003,10 +2002,10 @@ class TestUploadOperations:
         # Assert
         assert "Directory is empty" in actual_message
 
-    @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_non_existent_bucket(self):
-        """uploading fails if the s3 location does not already exist."""
-        
+    def test_upload_csv_to_s3_fails_with_non_existent_bucket(self,
+                                                             airflow_context):
+        """uploading fails if the s3 bucket location does not already exist."""
+
         # Arrange
 
         # setup a Mock of the boto3 service client and file upload function
@@ -2046,12 +2045,10 @@ class TestUploadOperations:
         # Assert
         assert "Bucket does not exist on the Server" in actual_message
 
-     @pytest.mark.skip
-   
-    @pytest.mark.skip 
-    def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self):
+    def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self,
+                                                              airflow_context):
         """test the uploading of csvs to an s3 location."""
-        
+
         # Arrange
 
         # setup a Mock of the boto3 service client and file upload function
