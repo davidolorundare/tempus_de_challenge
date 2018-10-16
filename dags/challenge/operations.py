@@ -1617,7 +1617,3 @@ class UploadOperations:
 
         # return upload status to calling function
         return upload_status
-
-
-def process_retrieved_data(self):
-    """for each news performs a series of ETL operations."""
