@@ -1586,10 +1586,11 @@ class UploadOperations:
 
         # ensure pre-existence of the bucket
         if not bucket_name:
-            raise ValueError("Bucket Name cannot be empty")
+            raise ValueError("Bucket name cannot be empty")
         if bucket_name not in aws_resource.buckets.all():
             upload_status = False
-            raise FileNotFoundError("Bucket does not exist on the Server")
+            raise FileNotFoundError("Bucket {} does not exist on the server\
+                ".format(bucket_name))
 
         # list of all csv files in the directory
         csv_files = []
