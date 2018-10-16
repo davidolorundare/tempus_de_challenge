@@ -1535,6 +1535,8 @@ class TransformOperations:
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
             op_status = True
         else:
+            log.info("{} headlines could not be saved in {}".format(query_key,
+                                                                    csv_dir))
             op_status = False
 
         return op_status
