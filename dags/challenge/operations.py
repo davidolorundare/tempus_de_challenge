@@ -1461,7 +1461,7 @@ class TransformOperations:
                                            json_file,
                                            csv_filename=None,
                                            extract_func=None,
-                                           transfm_to_frame_fnc=None):
+                                           transform_func=None):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1476,6 +1476,12 @@ class TransformOperations:
             :type json_file: file
             :param csv_filename: the filename of the transformed csv
             :type csv_filename: str
+            :param extract_func: the function used to extract news keyword
+                fields from a dataframe
+            :type extract_func: function
+            :param transform_func: the function used to transform news keyword
+                data into a dataframe
+            :type transform_func: function
         """
 
         log.info("Running transform_keyword_headlines_to_csv method")
@@ -1485,14 +1491,15 @@ class TransformOperations:
         # is more than PEP-8's 79 line-character limit.
         if not extract_func:
             extract_func = ExtractOperations.extract_news_data_from_dataframe
-        transfm_to_frame_fnc = TransformOperations.transform_data_to_dataframe
+        if not transform_func:
+            transform_func = TransformOperations.transform_data_to_dataframe
 
         # use Pandas to read in the json file
         keyword_data = pd.read_json(json_file)
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
-        transformed_df = transfm_to_frame_fnc(data)
+        transformed_df = transform_func(data)
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
