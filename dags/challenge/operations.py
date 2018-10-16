@@ -30,6 +30,10 @@ log = logging.getLogger(__name__)
 # airflow creates a home environment variable pointing to the location
 HOME_DIRECTORY = str(os.environ['HOME'])
 
+# final DataFrame that will be result from the entire merge of
+# transformed json new files
+merged_df = pd.DataFrame()
+
 
 class MissingApiKeyError(ValueError):
     """raised when no api key is found or set."""
@@ -1050,7 +1054,7 @@ class TransformOperations:
 
     # final DataFrame that will be result from the entire merge of
     # transformed json new files
-    merged_df = pd.DataFrame()
+    # merged_df = pd.DataFrame()
 
     @classmethod
     def transform_headlines_to_csv(cls, info_func=None, **context):
@@ -1381,9 +1385,6 @@ class TransformOperations:
         # Another alternative, to consider, asides global variables is the use
         # of Python (function) closures to achieve state maintenance.
         global merged_df
-
-        # setup final DataFrame that will be resulting from the entire merge
-        # global merged_df
 
         for indx, file in enumerate(json_files):
             if indx == (len(json_files) - 1):
