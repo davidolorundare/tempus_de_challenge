@@ -77,7 +77,10 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 - The sixth task, the Transformation task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder.
 
 - The seventh task, the Upload task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator is built ontop of the [Airflow S3 Hook](https://airflow.apache.org/code.html#airflow.hooks.S3_hook.S3Hook) and the Amazon Python Boto library; to move the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
-Two Amazon S3 buckets were setup by the author, namely: [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) to store the flattened csv files from the 'tempus_challenge_dag' and [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) to store the flattened csv files from the 'tempus_bonus_challenge_dag'.
+Two Amazon S3 buckets were setup by the author:
+	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
+	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
+to store the flattened csv files from the 'tempus_challenge_dag' and 'tempus_bonus_challenge_dag' pipeline respectively. Navigating to these bucket links from any web browser returns any XML list of all their contents. By default a `dummy.txt` file is all that exists in the buckets. To view or download any of the files in the bucket, append the name of that document to the end of the aforementioned links.
 
 - The final task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to signify the end of the pipeline.
 
