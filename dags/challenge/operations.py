@@ -1585,6 +1585,11 @@ class UploadOperations:
         aws_resource = boto3.resource('s3')
         upload_status = None
 
+        # ensure pre-existence of the bucket
+        if bucket_name not in aws_resource.buckets.all():
+            upload_status = False
+            raise FileNotFoundError("Bucket does not exist on the Server")
+
         # list of all csv files in the directory
         csv_files = []
 
@@ -1602,10 +1607,6 @@ class UploadOperations:
         if not csv_files:
             upload_status = False
             raise FileNotFoundError("Directory has no csv-headline files")
-
-        if bucket_name not in aws_resource.buckets.all():
-            upload_status = False
-            raise FileNotFoundError("Bucket does not exist on the Server")
 
         # iterate through the files in the directory and upload them to s3
         for file in csv_files:
