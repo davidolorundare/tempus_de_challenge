@@ -1560,7 +1560,7 @@ class UploadOperations:
             :param aws_resource: reference to an s3 resource service
                 object instance that should be used. If left blank, the
                 function creates a new one.
-            :type aws_service: object
+            :type aws_resource: object
             :param context: airflow context object referencing the current
                 pipeline
             :type context: dict
