@@ -1929,7 +1929,7 @@ class TestUploadOperations:
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
-        # setup a Mock of the boto3 service client and file upload function
+        # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
@@ -1976,7 +1976,7 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 service client and file upload function
+        # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
@@ -2021,7 +2021,7 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 service client and file upload function
+        # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
@@ -2068,7 +2068,7 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 service client and file upload function
+        # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
@@ -2121,7 +2121,7 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 service client and file upload function
+        # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=botocore.client.S3)
         resource_client = None
         upload_client.upload_file.side_effect = lambda: None
