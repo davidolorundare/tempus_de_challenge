@@ -1014,6 +1014,19 @@ class NewsInfoDTO:
             return FileStorage.get_csv_directory(self.pipeline)
 
         @property
+        def s3_bucket_name(self) -> str:
+            """returns the name of the s3 bucket that stores the csv headline
+            files of this pipeline.
+            """
+
+            if self.pipeline == 'tempus_challenge_dag':
+                return 'tempus-challenge-csv-headlines'
+            elif self.pipeline == 'tempus_bonus_challenge_dag':
+                return 'tempus-bonus-challenge-csv-headlines'
+            else:
+                raise ValueError("No S3 Bucket exists for this Pipeline")
+
+        @property
         def news_files(self) -> list:
             """returns json files in the news directory of this pipeline."""
             return self.news_json_files
