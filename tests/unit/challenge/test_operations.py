@@ -1976,6 +1976,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
+
         # ensure the boto3 upload_file() function was called with correct
         # arguments, resulting outcome should be True from the function
         assert result is True
