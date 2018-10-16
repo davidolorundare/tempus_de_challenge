@@ -1639,7 +1639,7 @@ class TestTransformOperations:
         # an empty dataframe is expected since three empty dataframes were
         # merged together from the three empty json files.
         expected_dataframe = pd.concat([data_df1, data_df2])
-        assert result == expected_dataframe
+        assert expected_dataframe.equals(result)
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
