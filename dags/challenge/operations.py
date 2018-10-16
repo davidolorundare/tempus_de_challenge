@@ -1329,6 +1329,16 @@ class TransformOperations:
         # Arguments:
             :param json_files: a list of json files to be processed.
             :type json_files: list
+            :param extract_func: the function used to extract news keyword
+                fields from a dataframe
+            :type extract_func: function
+            :param transform_func: the function used to transform news keyword
+                data into a dataframe
+            :type transform_func: function
+            :param reader_func: the function used to read-in and process the
+                json file. By Default is the Pandas read_json() function
+            :type reader_func: function
+        """
         """
 
         log.info("Running transform_jsons_to_dataframe_merger method")
