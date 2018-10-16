@@ -1322,20 +1322,20 @@ class TransformOperations:
                                             json_files,
                                             extract_func=None,
                                             transform_func=None,
-                                            reader_func=None):
+                                            read_js_func=None):
         """transforms a set of json files into a DataFrames and merges all of
         them into one.
 
         # Arguments:
             :param json_files: a list of json files to be processed.
             :type json_files: list
-            :param extract_func: the function used to extract news keyword
-                fields from a dataframe
+            :param extract_func: the function used to extract news data
+                from a dataframe
             :type extract_func: function
-            :param transform_func: the function used to transform news keyword
+            :param transform_func: the function used to transform news
                 data into a dataframe
             :type transform_func: function
-            :param read_js_func: the function used to read-in and process the
+            :param read_js_fnc: the function used to read-in and process the
                 json file. By Default is the Pandas read_json() function
             :type read_js_func: function
         """
@@ -1345,9 +1345,12 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
-        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
-        read_js_fnc = pd.read_json
+        if not extract_func:
+            extract_func = ExtractOperations.extract_news_data_from_dataframe
+        if not transform_func:
+            transform_func = TransformOperations.transform_data_to_dataframe
+        if not read_js_func:
+            read_js_func = pd.read_json
 
         # perform pairwise transformation of the json files into DataFrames
         # and their subsequent merging into a single DataFrame.
