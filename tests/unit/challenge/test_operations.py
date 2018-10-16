@@ -1495,8 +1495,9 @@ class TestTransformOperations:
                                pipeline_name,
                                'csv')
 
-        # file that will be created after transformation
+        # name and path to the file that will be created after transformation
         filename = str(datetime.datetime.now()) + "_" + "sample.csv"
+        fp = os.path.join(csv_dir, filename)
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1505,6 +1506,10 @@ class TestTransformOperations:
             # create a fake filesystem directory and place the dummy csv files
             # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
+
+            # calling the transformed DataFrame's to_csv() creates a new
+            # csv file in the fake directory
+            transform_data_df.to_csv.side_effect = patcher.fs.create_file(fp)
 
         # Act
             result = tf_func(dummy_json_file,
