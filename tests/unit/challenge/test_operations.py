@@ -1950,9 +1950,7 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy csv files that will be uploaded by the function
-        full_file_path1 = os.path.join(csv_dir, 'stuff1.csv')
-        full_file_path2 = os.path.join(csv_dir, 'stuff2.csv')
-        full_file_path3 = os.path.join(csv_dir, 'stuff3.csv')
+        full_file_path = os.path.join(csv_dir, 'stuff1.csv')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1962,9 +1960,7 @@ class TestUploadOperations:
             # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path1, contents='1,dummy,txt')
-            patcher.fs.create_file(full_file_path2, contents='2,dummy,rtf')
-            patcher.fs.create_file(full_file_path3, contents='3,dummy,doc')
+            patcher.fs.create_file(full_file_path, contents='1,dummy,txt')
 
         # Act
             # attempt uploading a file to a valid s3 bucket
@@ -1980,17 +1976,10 @@ class TestUploadOperations:
         # Assert
         # ensure the boto3 upload_file() function was called with correct
         # arguments
-        assert upload_client.upload_file.assert_called_with(full_file_path1,
+        assert upload_client.upload_file.assert_called_with(full_file_path,
                                                             bucket_name,
                                                             'stuff1.csv')
 
-        assert upload_client.upload_file.assert_called_with(full_file_path2,
-                                                            bucket_name,
-                                                            'stuff2.csv')
-
-        assert upload_client.upload_file.assert_called_with(full_file_path3,
-                                                            bucket_name,
-                                                            'stuff2.csv')
         assert result is True
 
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
