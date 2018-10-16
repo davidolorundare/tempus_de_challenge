@@ -1551,23 +1551,39 @@ class UploadOperations:
 
     @classmethod
     def upload_news_headline_csv_to_s3(cls,
-                                       file_name_path,
+                                       csv_directory,
                                        bucket_name,
                                        key_name,
                                        service_client=None,
                                        **context):
-        """uploads a given file news headline csv, in a given directory,
-        to an Amazon S3 bucket location."""
+        """uploads a files, in a given directory, to an Amazon S3 bucket
+        location.
+
+        # Arguments:
+            :param csv_directory: path to the directory containing all the
+                csv headline files.
+            :type csv_directory: string
+            :param bucket_name: name of an existing s3 bucket
+            :type bucket_name: string
+            :param key_name: the name the file should be called in the bucket,
+                as an s3 key
+            :type key_name: string
+            :param service_client: reference to an s3 service client object
+                instance that should be used. If left blank, the function
+                creates a new one.
+            :param context: airflow context object referencing the current
+                pipeline
+            :type context: dict
+        """
 
         # retrieve the active pipeline information
         pipeline_info = NewsInfoDTO(context['dag'].dag_id)
-
         pipeline_bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 client object
         client = boto3.client('s3')
 
-        # upload the given file
+        # upload the given csv-headline file
 
         return 2
 
