@@ -1931,7 +1931,7 @@ class TestUploadOperations:
         # setup a Mock of the boto3 resources and file upload functions
         upload_client = MagicMock(spec=boto3.client('s3'))
         resource_client = MagicMock(spec=boto3.resource('s3'))
-        upload_client.upload_file.side_effect = lambda: None
+        upload_client.upload_file.side_effect = lambda fname, bname, key: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # S3 bucket to upload the file to

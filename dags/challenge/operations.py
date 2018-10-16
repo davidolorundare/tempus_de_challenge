@@ -1618,9 +1618,9 @@ class UploadOperations:
             raise FileNotFoundError("Directory has no csv-headline files")
 
         # iterate through the files in the directory and upload them to s3
-        # for file in csv_files:
-        #     file_path = os.path.join(csv_directory, file)
-        #     aws_service_client.upload_file(file_path, bucket_name, file)
+        for file in csv_files:
+            file_path = os.path.join(csv_directory, file)
+            aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
         upload_status = True
