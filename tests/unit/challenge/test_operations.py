@@ -1526,6 +1526,56 @@ class TestTransformOperations:
         # return status of the operation should be True to indicate success
         assert result is True
 
+    @patch('pandas.read_json', autospec=True)
+    def test_transform_jsons_to_dataframe_merger_succeeds(self,
+                                                          file_reader_func):
+        """merging a set of transformed DataFrames from jsons succeeds."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_jsons_to_dataframe_merger
+        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        data_to_df_func = c.TransformOperations.transform_data_to_dataframe
+
+        # create the dummy input data that will be passed to the function
+        # under test
+        json_files = ['file1.json', 'file2.json']
+        data_df1 = pd.DataFrame({'A': ['A0', 'A1', 'A2', 'A3'],
+                                 'B': ['B0', 'B1', 'B2', 'B3'],
+                                 'C': ['C0', 'C1', 'C2', 'C3'],
+                                 'D': ['D0', 'D1', 'D2', 'D3']},
+                                index=[0, 1, 2, 3])
+
+        data_df2 = pd.DataFrame({'A': ['A4', 'A5', 'A6', 'A7'],
+                                 'B': ['B4', 'B5', 'B6', 'B7'],
+                                 'C': ['C4', 'C5', 'C6', 'C7'],
+                                 'D': ['D4', 'D5', 'D6', 'D7']},
+                                index=[4, 5, 6, 7])
+
+        # setup a Mock of the extract and transform function dependencies
+        tf_func_mock = MagicMock(spec=data_to_df_func)
+        extract_func_mock = MagicMock(spec=extract_func)
+
+        # define the mock function behaviors when called
+        extract_func_mock.side_effect = lambda data: "extracted data"
+        tf_func_mock.side_effect = [data_df1, data_df2]
+        file_reader_func.side_effect = lambda data: "read-in json file"
+
+        # Act
+        result = tf_func(json_files,
+                         extract_func_mock,
+                         tf_func_mock,
+                         file_reader_func)
+
+        # Assert
+        # an empty dataframe is expected since three empty dataframes were
+        # merged together from the three empty json files.
+        expected_dataframe = pd.concat([data_df1, data_df2])
+        assert expected_dataframe.equals(result)
+
     @pytest.mark.skip
     def test_transform_news_headlines_to_csv_conversion_success(self):
         """call to flatten jsons in the tempus_challenge_dag headline
@@ -1590,56 +1640,6 @@ class TestTransformOperations:
         # Assert
         # return status of the operation should be True to indicate success
         assert result is True
-
-    @patch('pandas.read_json', autospec=True)
-    def test_transform_jsons_to_dataframe_merger_succeeds(self,
-                                                          file_reader_func):
-        """merging a set of transformed DataFrames from jsons succeeds."""
-
-        # Arrange
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_jsons_to_dataframe_merger
-        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
-        data_to_df_func = c.TransformOperations.transform_data_to_dataframe
-
-        # create the dummy input data that will be passed to the function
-        # under test
-        json_files = ['file1.json', 'file2.json']
-        data_df1 = pd.DataFrame({'A': ['A0', 'A1', 'A2', 'A3'],
-                                 'B': ['B0', 'B1', 'B2', 'B3'],
-                                 'C': ['C0', 'C1', 'C2', 'C3'],
-                                 'D': ['D0', 'D1', 'D2', 'D3']},
-                                index=[0, 1, 2, 3])
-
-        data_df2 = pd.DataFrame({'A': ['A4', 'A5', 'A6', 'A7'],
-                                 'B': ['B4', 'B5', 'B6', 'B7'],
-                                 'C': ['C4', 'C5', 'C6', 'C7'],
-                                 'D': ['D4', 'D5', 'D6', 'D7']},
-                                index=[4, 5, 6, 7])
-
-        # setup a Mock of the extract and transform function dependencies
-        tf_func_mock = MagicMock(spec=data_to_df_func)
-        extract_func_mock = MagicMock(spec=extract_func)
-
-        # define the mock function behaviors when called
-        extract_func_mock.side_effect = lambda data: "extracted data"
-        tf_func_mock.side_effect = [data_df1, data_df2]
-        file_reader_func.side_effect = lambda data: "read-in json file"
-
-        # Act
-        result = tf_func(json_files,
-                         extract_func_mock,
-                         tf_func_mock,
-                         file_reader_func)
-
-        # Assert
-        # an empty dataframe is expected since three empty dataframes were
-        # merged together from the three empty json files.
-        expected_dataframe = pd.concat([data_df1, data_df2])
-        assert expected_dataframe.equals(result)
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
