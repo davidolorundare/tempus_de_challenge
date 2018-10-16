@@ -1959,17 +1959,17 @@ class TestUploadOperations:
                                                             'my_dummy_text')
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3_returns_valid_bucket_name_for_pipeline(self):
+    def test_upload_csv_to_s3_fails_with_empty_csv_directory(self):
         """check for existing bucket corresponding to pipeline return true."""
         pass
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
+    def test_upload_csv_to_s3_fails_with_non_existent_bucket(self):
         """test the uploading of csvs to an s3 location."""
         pass
 
      @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
+    def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self):
         """test the uploading of csvs to an s3 location."""
         pass
 
