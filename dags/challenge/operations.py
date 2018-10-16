@@ -1554,7 +1554,8 @@ class UploadOperations:
     def upload_news_headline_csv_to_s3(cls,
                                        csv_directory,
                                        bucket_name=None,
-                                       service_client=None,
+                                       aws_service_client=None,
+                                       aws_resource_client=None,
                                        **context):
         """uploads a files, in a given directory, to an Amazon S3 bucket
         location.
@@ -1565,14 +1566,14 @@ class UploadOperations:
             :type csv_directory: str
             :param bucket_name: name of an existing s3 bucket
             :type bucket_name: str
-            :param service_client: reference to an s3 service client object
+            :param aws_service_client: reference to an s3 service client object
                 instance that should be used. If left blank, the function
                 creates a new one.
-            :type service_client: object
-            :param resource_client: reference to an s3 resource service object
-                instance that should be used. If left blank, the function
-                creates a new one.
-            :type service_client: object
+            :type aws_service_client: object
+            :param aws_resource_client: reference to an s3 resource service
+                object instance that should be used. If left blank, the
+                function creates a new one.
+            :type aws_service_client: object
             :param context: airflow context object referencing the current
                 pipeline
             :type context: dict
