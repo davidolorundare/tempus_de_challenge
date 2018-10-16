@@ -1533,8 +1533,12 @@ class TransformOperations:
 class UploadOperations:
     """handles functionality for uploading flattened CSVs.
 
-    Reads a 'csv' directory's files and uploads them to
-    an Amazon S3 bucket using the S3 Hook and boto library.
+    Reads a 'csv' directory's files and uploads them to a preexisting
+    Amazon S3 bucket using native boto library.
+
+    The upload function works ONLY with preexisting buckets and strictly
+    assumes that the user has created two buckets in AWS S3 named:
+    'tempus-challenge-csv-headlines' and 'tempus-bonus-challenge-csv-headlines'
     """
 
     @classmethod
