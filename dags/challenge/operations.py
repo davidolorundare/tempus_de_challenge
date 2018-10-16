@@ -1364,12 +1364,10 @@ class TransformOperations:
             if indx == (len(json_files) - 1):
                 break
             # perform json to DataFrame transformations by function-chaining
-            current_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(
-                                                 read_js_fnc(json_files[indx])
-                                                 ))
-            next_file_df = trans_to_frame_fnc(extr_frm_frame_fnc(
-                                              read_js_fnc(json_files[indx + 1])
-                                              ))
+            current_file_df = transform_func(extract_func(
+                                             read_js_func(json_files[indx])))
+            next_file_df = transform_func(extract_func(
+                                          read_js_func(json_files[indx + 1])))
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df, next_file_df])
             # free up memory by clearing the previously transformed DataFrames
