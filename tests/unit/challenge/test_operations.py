@@ -1991,9 +1991,10 @@ class TestUploadOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_upload_csv_to_s3_fails_with_empty_csv_directory(self,
-                                                             airflow_context,
-                                                             bucket_names):
+    def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
+                                                       airflow_context,
+                                                       bucket_names,
+                                                       home_directory_res):
         """uploading fails if the directory is empty."""
 
         # Arrange
@@ -2010,8 +2011,16 @@ class TestUploadOperations:
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
 
-        # path to csv directory
-        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+        # path to news and csv directories
+        csv_dir = os.path.join(home_directory_res,
+                               'tempdata',
+                               pipeline_name,
+                               'csv')
+
+        news_dir = os.path.join(home_directory_res,
+                                'tempdata',
+                                pipeline_name,
+                                'news')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -2019,6 +2028,7 @@ class TestUploadOperations:
 
             # create a fake filesystem empty directory to test the method
             patcher.fs.create_dir(csv_dir)
+            patcher.fs.create_dir(news_dir)
 
         # Act
             # function should raise errors on an empty directory
