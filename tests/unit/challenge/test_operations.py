@@ -1967,6 +1967,7 @@ class TestUploadOperations:
 
         # setup a Mock of the boto3 service client and file upload function
         upload_client = MagicMock(spec=botocore.client.S3)
+        resource_client = None
         upload_client.upload_file.side_effect = lambda: None
 
         # get the current pipeline info
@@ -2002,8 +2003,45 @@ class TestUploadOperations:
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_fails_with_non_existent_bucket(self):
-        """test the uploading of csvs to an s3 location."""
-        pass
+        """uploading fails if the s3 location does not already exist."""
+        
+        # Arrange
+
+        # setup a Mock of the boto3 service client and file upload function
+        upload_client = MagicMock(spec=botocore.client.S3)
+        resource_client = None
+        upload_client.upload_file.side_effect = lambda: None
+
+        # get the current pipeline info
+        pipeline_name = airflow_context['dag'].dag_id
+
+        # S3 bucket to upload the file to
+        bucket_name = 'tempus-challenge-csv-headlines'
+
+        # path to csv directory
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(csv_dir)
+
+        # Act
+            # function should raise errors on an empty directory
+            with pytest.raises(FileNotFoundError) as err:
+                c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
+                                                                  bucket_name,
+                                                                  upload_client,
+                                                                  **airflow_context)
+
+            actual_message = str(err.value)
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory is empty" in actual_message
 
      @pytest.mark.skip
    
