@@ -1963,12 +1963,13 @@ class TestUploadOperations:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem directory and dummy file to test
-            # the method
-            # create a fake filesystem empty directory to test the method
+            # create a fake filesystem directory and place the dummy csv files
+            # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path, contents='dummy txt')
+            patcher.fs.create_file(full_file_path1, contents='1,dummy,txt')
+            patcher.fs.create_file(full_file_path2, contents='2,dummy,rtf')
+            patcher.fs.create_file(full_file_path3, contents='3,dummy,doc')
 
         # Act
             # attempt uploading a file to a valid s3 bucket
