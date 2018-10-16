@@ -1921,7 +1921,9 @@ class TestUploadOperations:
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
-        # setup a Mock of the boto3 file upload function
+        # setup a Mock of the boto3 service client and file upload function
+        client = MagicMock(spec=botocore.client.S3)
+        client.upload_file.side_effect = lambda: None
 
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
@@ -1944,7 +1946,7 @@ class TestUploadOperations:
             c.UploadOperations.upload_csv_to_s3(full_file_path1,
                                                 bucket_name,
                                                 'my_dummy_text',
-                                                upload_fnc,
+                                                upload_client,
                                                 **airflow_context)
 
             # clean up and remove the fake filesystem
@@ -1953,9 +1955,9 @@ class TestUploadOperations:
         # Assert
         # ensure the boto3 upload_file() function was called with correct
         # arguments
-        assert upload_fnc.assert_called_with(full_file_path1,
-                                             bucket_name,
-                                             'my_dummy_text')
+        assert upload_client.upload_file.assert_called_with(full_file_path1,
+                                                            bucket_name,
+                                                            'my_dummy_text')
 
     @pytest.mark.skip
     def test_upload_csv_to_s3_returns_valid_bucket_name_for_pipeline(self):
