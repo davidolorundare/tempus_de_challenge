@@ -1555,7 +1555,7 @@ class UploadOperations:
                                        csv_directory,
                                        bucket_name=None,
                                        aws_service_client=None,
-                                       aws_resource_client=None,
+                                       aws_resource=None,
                                        **context):
         """uploads a files, in a given directory, to an Amazon S3 bucket
         location.
@@ -1570,10 +1570,10 @@ class UploadOperations:
                 instance that should be used. If left blank, the function
                 creates a new one.
             :type aws_service_client: object
-            :param aws_resource_client: reference to an s3 resource service
+            :param aws_resource: reference to an s3 resource service
                 object instance that should be used. If left blank, the
                 function creates a new one.
-            :type aws_service_client: object
+            :type aws_service: object
             :param context: airflow context object referencing the current
                 pipeline
             :type context: dict
@@ -1587,8 +1587,10 @@ class UploadOperations:
             bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 client object which will perform the uploads
-        aws_client = boto3.client('s3')
-        aws_resource = boto3.resource('s3')
+        if not aws_service_client:
+            aws_service_client = boto3.client('s3')
+        if not aws_resource:
+            aws_resource = boto3.resource('s3')
         upload_status = None
 
         # ensure pre-existence of the bucket
@@ -1617,7 +1619,7 @@ class UploadOperations:
         # iterate through the files in the directory and upload them to s3
         for file in csv_files:
             file_path = os.path.join(csv_directory, file)
-            aws_client.upload_file(file_path, bucket_name, file)
+            aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
         upload_status = True
