@@ -89,6 +89,7 @@ By default a `dummy.txt` file is all that exists in the buckets. To view or down
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/s3_bonus_challenge_bucket.jpeg "Image of Pipeline-2 S3 Bucket")
 
+---
 
 - The final task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to signify the end of the pipeline.
 
