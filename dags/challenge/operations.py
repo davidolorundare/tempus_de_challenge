@@ -1551,12 +1551,12 @@ class UploadOperations:
     """
 
     @classmethod
-    def upload_news_headline_csv_to_s3(cls,
-                                       csv_directory,
-                                       bucket_name=None,
-                                       aws_service_client=None,
-                                       aws_resource=None,
-                                       **context):
+    def upload_news_csv_to_s3(cls,
+                              csv_directory,
+                              bucket_name=None,
+                              aws_service_client=None,
+                              aws_resource=None,
+                              **context):
         """uploads a files, in a given directory, to an Amazon S3 bucket
         location.
 
