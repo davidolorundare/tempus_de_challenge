@@ -1517,7 +1517,7 @@ class TransformOperations:
         # ensure status of operation is communicated to caller function
         op_status = None
         query_key = csv_filename.split("_")[1]
-        if os.listdir(csv_dir):
+        if os.path.isfile(csv_save_path):
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
             op_status = True
         else:

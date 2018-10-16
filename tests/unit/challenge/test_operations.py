@@ -1712,7 +1712,6 @@ class TestTransformOperations:
         actual_message = str(err.value)
         assert "news data argument cannot be empty" in actual_message
 
-    @pytest.mark.skip
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_fails(self,
                                                           file_reader_func,
@@ -1764,7 +1763,7 @@ class TestTransformOperations:
 
             # calling the transformed DataFrame's to_csv() creates a new
             # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
+            transform_data_df.to_csv.side_effect = lambda filepath: "no file"
 
         # Act
             result = tf_func(dummy_json_file,
@@ -1777,7 +1776,8 @@ class TestTransformOperations:
             patcher.tearDown()
 
         # Assert
-        # return status of the operation should be False to indicate success
+        # return status of the operation should be False to indicate the
+        # csv file was not saved to the directory
         assert result is False
 
     @pytest.mark.skip
