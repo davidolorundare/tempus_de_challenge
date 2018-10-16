@@ -1048,6 +1048,10 @@ class NewsInfoDTO:
 class TransformOperations:
     """handles functionality for flattening CSVs."""
 
+    # final DataFrame that will be result from the entire merge of
+    # transformed json new files
+    merged_df = pd.DataFrame()
+
     @classmethod
     def transform_headlines_to_csv(cls, info_func=None, **context):
         """converts the jsons in a given directory to csv.
@@ -1289,7 +1293,7 @@ class TransformOperations:
         #
         # Another alternative, to consider, asides global variables is the use
         # of Python (function) closures to achieve state maintenance.
-        merged_df = pd.DataFrame()
+        merged_dataframe = pd.DataFrame()
 
         # transform individual jsons in the 'headlines' directory into one
         # single csv file
@@ -1311,9 +1315,9 @@ class TransformOperations:
             status = json_to_csv_func(files[0], filename)
         else:
             # transform the json files into DataFrames and merge them into one.
-            merged_df = jsons_to_df_func(files)
+            merged_dataframe = jsons_to_df_func(files)
             # transform the merged DataFrame into a csv
-            status = df_to_csv_func(merged_df, filename)
+            status = df_to_csv_func(merged_dataframe, filename)
 
         return status
 
@@ -1348,7 +1352,7 @@ class TransformOperations:
         if not extract_func:
             extract_func = ExtractOperations.extract_news_data_from_dataframe
         if not transform_func:
-            transform_func = TransformOperations.transform_data_to_dataframe
+            transform_func = cls.transform_data_to_dataframe
         if not read_js_func:
             read_js_func = pd.read_json
 
@@ -1356,9 +1360,10 @@ class TransformOperations:
         # and their subsequent merging into a single DataFrame.
         current_file_df = None
         next_file_df = None
+        global merged_df
 
         # setup final DataFrame that will be resulting from the entire merge
-        global merged_df
+        # global merged_df
 
         for indx, file in enumerate(json_files):
             if indx == (len(json_files) - 1):

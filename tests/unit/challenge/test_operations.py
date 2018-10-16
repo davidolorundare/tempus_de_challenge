@@ -1589,7 +1589,6 @@ class TestTransformOperations:
         # return status of the operation should be True to indicate success
         assert result is True
 
-    @pytest.mark.skip
     @patch('pandas.read_json', autospec=True)
     def test_transform_jsons_to_dataframe_merger_succeeds(self,
                                                           file_reader_func):
