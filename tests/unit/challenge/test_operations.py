@@ -1577,75 +1577,6 @@ class TestTransformOperations:
         assert expected_dataframe.equals(result)
 
     @pytest.mark.skip
-    def test_transform_news_headlines_to_csv_conversion_success(self):
-        """call to flatten jsons in the tempus_challenge_dag headline
-        folder succeeds."""
-
-        # Arrange
-        # name of the pipeline under test
-        pipeline_name = "tempus_bonus_challenge_dag"
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        # get the current pipeline info
-        tf_func = c.TransformOperations.transform_news_headlines_to_csv
-        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
-
-        # create the dummy input data that will be passed to the function
-        # under test
-        dummy_json_file = None
-        transform_data_df = MagicMock(spec=pandas.DataFrame)
-
-        # setup a Mock of the extract and transform function dependencies
-        tf_func_mock = MagicMock(spec=tf_func)
-        extract_func_mock = MagicMock(spec=extract_func)
-        extract_func_mock.side_effect = lambda data: "extracted data"
-        tf_func_mock.side_effect = lambda data: transform_data_df
-        file_reader_func.side_effect = lambda data: "read-in json file"
-
-        # path to the fake csv directory the function under test
-        # uses
-        csv_dir = os.path.join(home_directory_res,
-                               'tempdata',
-                               pipeline_name,
-                               'csv')
-
-        # name and path to the file that will be created after transformation
-        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
-        # fp = os.path.join(csv_dir, filename)
-
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
-
-            # create a fake filesystem directory and place the dummy csv files
-            # in that directory to test the method
-            patcher.fs.create_dir(csv_dir)
-
-            # calling the transformed DataFrame's to_csv() creates a new
-            # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
-
-        # Act
-            result = tf_func(dummy_json_file,
-                             filename,
-                             extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
-
-            # clean up and remove the fake filesystem
-            patcher.tearDown()
-
-        # Assert
-        # return status of the operation should be True to indicate success
-        assert result is True
-
-    @pytest.mark.skip
-    def test_transform_new_headlines_single_file_to_csv_succeeds(self):
-        """transform of single news headline json file to csv succeeds"""
-
-    @pytest.mark.skip
     def test_helper_execute_json_transformation_succeeds(self):
         """transforming a set of jsons in a valid directory succeeds"""
 
@@ -1724,6 +1655,101 @@ class TestTransformOperations:
         actual_message = str(err.value)
         assert "news data argument cannot be empty" in actual_message
 
+    @pytest.mark.skip
+    def test_transform_news_headlines_to_csv_conversion_success(self):
+        """call to flatten jsons in the tempus_challenge_dag headline
+        folder succeeds."""
+
+        # Arrange
+        # name of the pipeline under test
+        pipeline_name = "tempus_bonus_challenge_dag"
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        # get the current pipeline info
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+
+        # create the dummy input data that will be passed to the function
+        # under test
+        dummy_json_file = None
+        transform_data_df = MagicMock(spec=pandas.DataFrame)
+
+        # setup a Mock of the extract and transform function dependencies
+        tf_func_mock = MagicMock(spec=tf_func)
+        extract_func_mock = MagicMock(spec=extract_func)
+        extract_func_mock.side_effect = lambda data: "extracted data"
+        tf_func_mock.side_effect = lambda data: transform_data_df
+        file_reader_func.side_effect = lambda data: "read-in json file"
+
+        # path to the fake csv directory the function under test
+        # uses
+        csv_dir = os.path.join(home_directory_res,
+                               'tempdata',
+                               pipeline_name,
+                               'csv')
+
+        # name and path to the file that will be created after transformation
+        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
+        # fp = os.path.join(csv_dir, filename)
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and place the dummy csv files
+            # in that directory to test the method
+            patcher.fs.create_dir(csv_dir)
+
+            # calling the transformed DataFrame's to_csv() creates a new
+            # csv file in the fake directory
+            transform_data_df.to_csv.side_effect = patcher.fs.create_file
+
+        # Act
+            result = tf_func(dummy_json_file,
+                             filename,
+                             extract_func_mock,
+                             tf_func_mock,
+                             file_reader_func)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        # return status of the operation should be True to indicate success
+        assert result is True
+
+    @pytest.mark.skip
+    def test_transform_new_headlines_single_file_to_csv_succeeds(self):
+        """transform of single news headline json file to csv succeeds"""
+
+    @pytest.mark.skip
+    def test_transform_news_headlines_to_csv_conversion_failure(self):
+        """call to flatten jsons in the tempus_challenge_dag headline
+        folder fails."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_news_headlines_to_csv
+
+        # Act
+
+        # Assert
+
+        data = None
+
+        result = tf_func(data)
+
+        assert result == 2
+
+    @pytest.mark.skip
+    def test_transform_new_headlines_json_to_csv_fails(self):
+        """transform of a single news headline json file to csv fails."""
+
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_fails(self,
                                                           file_reader_func,
@@ -1791,32 +1817,6 @@ class TestTransformOperations:
         # return status of the operation should be False to indicate the
         # csv file was not saved to the directory
         assert result is False
-
-    @pytest.mark.skip
-    def test_transform_news_headlines_to_csv_conversion_failure(self):
-        """call to flatten jsons in the tempus_challenge_dag headline
-        folder fails."""
-
-        # Arrange
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_news_headlines_to_csv
-
-        # Act
-
-        # Assert
-
-        data = None
-
-        result = tf_func(data)
-
-        assert result == 2
-
-    @pytest.mark.skip
-    def test_transform_new_headlines_json_to_csv_fails(self):
-        """transform of a single news headline json file to csv fails."""
 
     def test_transform_headlines_to_csv_wrong_pipeline_fails(self,
                                                              airflow_context):
