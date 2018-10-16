@@ -1360,6 +1360,26 @@ class TransformOperations:
         # and their subsequent merging into a single DataFrame.
         current_file_df = None
         next_file_df = None
+
+        # To perform continous pairwise merging of the dataframe-transformed
+        # json files in the directory, we need a way to keep track of what has
+        # been merged so far. There needs to be a way to maintain state.
+        # This (empty) DataFrame is created for that purpose and is made into
+        # a global Python object within this module/python file.
+        #
+        # Use of global variables might not be the ideal way to handle this, as
+        # they are generally discouraged in several development
+        # environs/instances due to the kinds of unpredictable bugs they
+        # potentially create - most especially in multithreaded environments)
+        #
+        # Hence, our use of the `global` keyword here for this operation is
+        # ONLY time it will ever be used in this project.
+        #
+        # An alternative, to consider, might be to make use of Airflow's
+        # Variable class to store the state of object.
+        #
+        # Another alternative, to consider, asides global variables is the use
+        # of Python (function) closures to achieve state maintenance.
         global merged_df
 
         # setup final DataFrame that will be resulting from the entire merge
