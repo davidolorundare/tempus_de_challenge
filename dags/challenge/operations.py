@@ -1554,7 +1554,7 @@ class UploadOperations:
                          file_name_path,
                          bucket_name,
                          key_name,
-                         upload_func=None,
+                         service_client=None,
                          **context):
         """uploads all the files in a given directory to an Amazon S3
         bucket location."""
