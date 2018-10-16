@@ -1278,25 +1278,7 @@ class TransformOperations:
         # the name the created csv file should be given
         filename = str(timestamp) + "_top_headlines.csv"
 
-        # To perform continous pairwise merging of the dataframe-transformed
-        # json files in the directory, we need a way to keep track of what has
-        # been merged so far. There needs to be a way to maintain state.
-        # This (empty) DataFrame is created for that purpose and is made into
-        # a global Python object within this module/python file.
-        #
-        # Use of global variables might not be the ideal way to handle this, as
-        # they are generally discouraged in several development
-        # environs/instances due to the kinds of unpredictable bugs they
-        # potentially create - most especially in multithreaded environments)
-        #
-        # Hence, our use of the `global` keyword here for this operation is
-        # ONLY time it will ever be used in this project.
-        #
-        # An alternative, to consider, might be to make use of Airflow's
-        # Variable class to store the state of object.
-        #
-        # Another alternative, to consider, asides global variables is the use
-        # of Python (function) closures to achieve state maintenance.
+        # reference to the final merged dataframes of the json files
         merged_dataframe = pd.DataFrame()
 
         # transform individual jsons in the 'headlines' directory into one
