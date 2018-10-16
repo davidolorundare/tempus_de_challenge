@@ -1944,10 +1944,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                bucket_name,
-                                                upload_client,
-                                                **airflow_context)
+            c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
+                                                              bucket_name,
+                                                              upload_client,
+                                                              resource_client
+                                                              **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -1992,6 +1993,7 @@ class TestUploadOperations:
                 c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
                                                                   bucket_name,
                                                                   upload_client,
+                                                                  resource_client,
                                                                   **airflow_context)
 
             actual_message = str(err.value)
@@ -2034,6 +2036,7 @@ class TestUploadOperations:
                 c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
                                                                   bucket_name,
                                                                   upload_client,
+                                                                  resource_client,
                                                                   **airflow_context)
 
             actual_message = str(err.value)
@@ -2041,7 +2044,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
-        assert "Directory is empty" in actual_message
+        assert "Bucket does not exist on the Server" in actual_message
 
      @pytest.mark.skip
    
