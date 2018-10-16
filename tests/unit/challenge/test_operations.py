@@ -1980,9 +1980,15 @@ class TestUploadOperations:
         # Assert
         # ensure the boto3 upload_file() function was called with correct
         # arguments
-        # assert upload_client.upload_file.assert_called_with(full_file_path,
-        #                                                     bucket_name,
-        #                                                     'stuff.txt')
+        assert upload_client.upload_file.assert_called_with(full_file_path1,
+                                                            bucket_name,
+                                                            'stuff1.csv')
+        assert upload_client.upload_file.assert_called_with(full_file_path2,
+                                                            bucket_name,
+                                                            'stuff2.csv')
+        assert upload_client.upload_file.assert_called_with(full_file_path3,
+                                                            bucket_name,
+                                                            'stuff2.csv')
         assert result is True
 
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
