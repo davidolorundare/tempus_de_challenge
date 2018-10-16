@@ -1948,7 +1948,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
-        # ensure the boto3 upload_file() function was called with those
+        # ensure the boto3 upload_file() function was called with correct
         # arguments
         assert upload_fnc.assert_called_with()
 
