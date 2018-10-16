@@ -1024,7 +1024,7 @@ class NewsInfoDTO:
 
             files = []
             if not dir_check_func:
-                dir_check_func = self.news_directory()
+                dir_check_func = self.news_directory
 
             if dir_check_func and os.listdir(dir_check_func):
                 for data_file in os.listdir(dir_check_func):
@@ -1573,7 +1573,7 @@ class UploadOperations:
         log.info("Running upload_news_headline_csv_to_s3 method")
 
         # retrieve the active pipeline information
-        pipeline_info = NewsInfoDTO(context['dag'].dag_id)
+        pipeline_info = NewsInfoDTO(str(context['dag'].dag_id))
         if not bucket_name:
             bucket_name = pipeline_info.s3_bucket_name
 
