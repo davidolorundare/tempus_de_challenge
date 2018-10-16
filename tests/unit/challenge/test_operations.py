@@ -6,8 +6,8 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 """
 
 
-import boto3
-import botocore
+# import boto3
+import botocore.client.S3
 import datetime
 import json
 import pandas as pd
@@ -1913,7 +1913,6 @@ class TestUploadOperations:
             'dag': dag
         }
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_succeeds_with_call_to_library(self,
                                                             airflow_context):
         """tests call to boto library to upload a file is actually made."""

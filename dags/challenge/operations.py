@@ -1550,14 +1550,24 @@ class UploadOperations:
     """
 
     @classmethod
-    def upload_csv_to_s3(cls,
-                         file_name_path,
-                         bucket_name,
-                         key_name,
-                         service_client=None,
-                         **context):
-        """uploads all the files in a given directory to an Amazon S3
-        bucket location."""
+    def upload_news_headline_csv_to_s3(cls,
+                                       file_name_path,
+                                       bucket_name,
+                                       key_name,
+                                       service_client=None,
+                                       **context):
+        """uploads a given file news headline csv, in a given directory,
+        to an Amazon S3 bucket location."""
+
+        # retrieve the active pipeline information
+        pipeline_info = NewsInfoDTO(context['dag'].dag_id)
+
+        pipeline_bucket_name = pipeline_info.s3_bucket_name
+
+        # instantiate an S3 client object
+        client = boto3.client('s3')
+
+        # upload the given file
 
         return 2
 
