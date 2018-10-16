@@ -16,13 +16,12 @@ import numpy as np
 import json
 import logging
 import os
+import requests
 import pandas as pd
 import shutil
 import time
 
 from airflow.models import Variable
-
-import requests
 
 
 log = logging.getLogger(__name__)

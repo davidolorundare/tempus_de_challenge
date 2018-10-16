@@ -4,16 +4,15 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 """
 
 import boto3
-from boto3.resources.factory import ServiceResource
 import datetime
 import json
 import pandas as pd
 import os
-
+import pytest
+import requests
 
 from unittest.mock import MagicMock
 from unittest.mock import patch
-from unittest.mock import create_autospec
 
 from airflow.models import DAG
 
@@ -21,10 +20,6 @@ from dags import challenge as c
 from dags import config
 
 from pyfakefs.fake_filesystem_unittest import Patcher
-
-import pytest
-
-import requests
 
 
 class MissingApiKeyError(ValueError):
