@@ -1502,7 +1502,7 @@ class TransformOperations:
             :type reader_func: function
         """
 
-        log.info("Running transform_keyword_headlines_to_csv method")
+        log.info("Running transform_key_headlines_to_csv method")
 
         # Function Aliases
         # use an alias since the length of the real function call when used
