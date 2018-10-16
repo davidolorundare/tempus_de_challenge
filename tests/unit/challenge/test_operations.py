@@ -1458,7 +1458,9 @@ class TestTransformOperations:
         return str(os.environ['HOME'])
 
     @pytest.mark.skip
+    @patch('pd.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_sucess(self,
+                                                           file_reader_func,
                                                            home_directory_res):
         """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder succeeds."""
@@ -1513,7 +1515,8 @@ class TestTransformOperations:
             result = tf_func(dummy_json_file,
                              filename,
                              extract_func_mock,
-                             tf_func_mock)
+                             tf_func_mock,
+                             file_reader_func)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
