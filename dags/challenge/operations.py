@@ -1551,8 +1551,8 @@ class UploadOperations:
 
     @classmethod
     def upload_csv_to_s3(cls,
-                         filepath,
-                         filename,
+                         file_name_path,
+                         bucket_name,
                          key_name,
                          upload_func=None,
                          **context):
