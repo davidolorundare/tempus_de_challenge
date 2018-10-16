@@ -1584,11 +1584,6 @@ class UploadOperations:
 
         log.info("Running upload_news_headline_csv_to_s3 method")
 
-        # retrieve the active pipeline information
-        pipeline_info = NewsInfoDTO(str(context['dag'].dag_id))
-        if not bucket_name:
-            bucket_name = pipeline_info.s3_bucket_name
-
         # instantiate an S3 client object which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
