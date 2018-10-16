@@ -1487,6 +1487,7 @@ class TestTransformOperations:
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
         file_reader_func.side_effect = lambda data: "read-in json file"
+        transform_data_df.to_csv.side_effect = Patcher.fs.create_file
 
         # path to the fake csv directory the function under test
         # uses
@@ -1497,7 +1498,7 @@ class TestTransformOperations:
 
         # name and path to the file that will be created after transformation
         filename = str(datetime.datetime.now()) + "_" + "sample.csv"
-        fp = os.path.join(csv_dir, filename)
+        # fp = os.path.join(csv_dir, filename)
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1509,7 +1510,7 @@ class TestTransformOperations:
 
             # calling the transformed DataFrame's to_csv() creates a new
             # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
+            # transform_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
             result = tf_func(dummy_json_file,
