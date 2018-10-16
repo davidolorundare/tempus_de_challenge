@@ -1396,7 +1396,7 @@ class TransformOperations:
             del current_file_df
             # force Python's Garbage Collector to clean up unused variables and
             # free up memory manually
-            # gc.collect()
+            gc.collect()
 
         # return a merged DataFrame of all the jsons
         return merged_df
