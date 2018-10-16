@@ -1386,8 +1386,6 @@ class TransformOperations:
         global merged_df
 
         for indx, file in enumerate(json_files):
-            if indx == (len(json_files) - 1):
-                break
             # perform json to DataFrame transformations by function-chaining
             current_file_df = transform_func(extract_func(
                                              read_js_func(json_files[indx])))
