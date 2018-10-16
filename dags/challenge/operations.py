@@ -1461,7 +1461,8 @@ class TransformOperations:
                                            json_file,
                                            csv_filename=None,
                                            extract_func=None,
-                                           transform_func=None):
+                                           transform_func=None,
+                                           reader_func=None):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1482,6 +1483,9 @@ class TransformOperations:
             :param transform_func: the function used to transform news keyword
                 data into a dataframe
             :type transform_func: function
+            :param reader_func: the function used to read-in and process the
+                json file. By Default is the Pandas read_json() function
+            :type reader_func: function
         """
 
         log.info("Running transform_keyword_headlines_to_csv method")
@@ -1495,7 +1499,9 @@ class TransformOperations:
             transform_func = TransformOperations.transform_data_to_dataframe
 
         # use Pandas to read in the json file
-        keyword_data = pd.read_json(json_file)
+        if not reader_func:
+            reader_func = pd.read_json
+        keyword_data = reader_func(json_file)
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
