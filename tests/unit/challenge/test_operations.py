@@ -1602,13 +1602,14 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
+        tf_func = c.TransformOperations.transform_jsons_to_dataframe_merger
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
 
         # create the dummy input data that will be passed to the function
         # under test
-        dummy_json_file = None
+        json_files = None
         transform_data_df = MagicMock(spec=pandas.DataFrame)
+        combined_df = None
 
         # setup a Mock of the extract and transform function dependencies
         tf_func_mock = MagicMock(spec=tf_func)
@@ -1641,8 +1642,7 @@ class TestTransformOperations:
             transform_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
-            result = tf_func(dummy_json_file,
-                             filename,
+            result = tf_func(json_files,
                              extract_func_mock,
                              tf_func_mock,
                              file_reader_func)
@@ -1651,8 +1651,8 @@ class TestTransformOperations:
             patcher.tearDown()
 
         # Assert
-        # return status of the operation should be True to indicate success
-        assert result is True
+        # expected result - merged dataframe of all individual json dataframes
+        assert result == combined_df
 
     @pytest.mark.skip
     def test_transform_new_headlines_single_file_to_csv_succeeds(self):
