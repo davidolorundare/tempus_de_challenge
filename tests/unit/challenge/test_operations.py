@@ -2056,7 +2056,9 @@ class TestUploadOperations:
 
     def test_upload_csv_to_s3_fails_with_no_csvs_in_directory(self,
                                                               airflow_context):
-        """test the uploading of csvs to an s3 location."""
+        """function fails if there are no csv-headline files in the
+        directory.
+        """
 
         # Arrange
 
@@ -2107,7 +2109,7 @@ class TestUploadOperations:
 
     def test_upload_csv_to_s3_fails_with_no_bucket_name(self,
                                                         airflow_context):
-        """test the uploading of csvs to an s3 location."""
+        """function fails if the bucket name is left blank"""
 
         # Arrange
 
@@ -2120,7 +2122,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = None
 
         # path to csv directory
         csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
@@ -2142,7 +2144,7 @@ class TestUploadOperations:
 
         # Act
             # function should raise errors on an empty directory
-            with pytest.raises(FileNotFoundError) as err:
+            with pytest.raises(ValueError) as err:
                 c.UploadOperations.upload_news_csv_to_s3(csv_dir,
                                                          bucket_name,
                                                          upload_client,
@@ -2154,7 +2156,7 @@ class TestUploadOperations:
             patcher.tearDown()
 
         # Assert
-        assert "Directory has no csv-headline files" in actual_message
+        assert "Bucket Name cannot be empty" in actual_message
 
 
 @pytest.mark.newsinfotests
