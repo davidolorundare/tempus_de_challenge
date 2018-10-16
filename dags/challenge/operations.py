@@ -110,14 +110,14 @@ class FileStorage:
 
         # Arguments
             :param dir_name: the name of the datastore directory to create.
-            :type dir_name: string
+            :type dir_name: str
             :param path_join_func: function to use for creating the directory
                 path for the datastore directories. Default is Python's
                 os.path.join()
-            :type path_join_func: string
+            :type path_join_func: str
             :param dir_func: function to use for making the actual datastore
                 folders. Default is Python's os.makedirs() function.
-            :type dir_func: string
+            :type dir_func: function
             :param context: the current Airflow context in which the function
                 or operator is being run in.
             :type context: dict
@@ -179,11 +179,11 @@ class FileStorage:
             :type data: dict
             :param path_to_dir: folder path where the json file will be
                 stored in.
-            :type path_to_dir: string
+            :type path_to_dir: str
             :param filename: the name of the crejsoated json file.
-            :type filename: string
+            :type filename: str
             :param create_date: date the file was created.
-            :type create_date: string
+            :type create_date: str
 
         # Raises:
             OSError: if the directory path given does not exist.
@@ -251,10 +251,10 @@ class FileStorage:
             :type source_names: list
             :param headline_dir: directory path in which the source-headlines
                 should be stored in.
-            :type headline_dir: string
+            :type headline_dir: str
             :param api_key: string News API Key used for performing retrieval
                 of a source's top headlines remotely
-            :type api_key: string
+            :type api_key: str
             :param headline_func: function to use for extracting headlines.
             :type headline_func: function
 
@@ -319,7 +319,7 @@ class FileStorage:
         # Arguments:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
-            :type pipeline_name: string
+            :type pipeline_name: str
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
@@ -358,7 +358,7 @@ class FileStorage:
         # Arguments:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
-            :type pipeline_name: string
+            :type pipeline_name: str
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
@@ -397,7 +397,7 @@ class FileStorage:
         # Arguments:
             :param pipeline_name: the name or ID of the current DAG pipeline
                 running this script.
-            :type pipeline_name: string
+            :type pipeline_name: str
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
@@ -450,10 +450,10 @@ class NetworkOperations:
                 SimpleHTTPOperator http call.
             :type response: Response object
             :param news_dir: directory to store the news data to.
-            :type news_dir: string
+            :type news_dir: str
             :param filename: name of the json file created from the Response
                 object data.
-            :type filename: string
+            :type filename: str
             :param gb_var: global variable used referencing the current
                 DAG pipeline name. This parameter exists because Airflow
                 gives errors when using the `Variable` class to test locally
@@ -463,7 +463,7 @@ class NetworkOperations:
                 variables don't seem to carry over between Airflow tasks.
                 (Using either Airflow's Variable or XCom classes might be more
                 ideal here.)
-            :type gb_var: string
+            :type gb_var: str
         """
 
         log.info("Running get_news method")
@@ -583,10 +583,10 @@ class NetworkOperations:
                 SimpleHTTPOperator http call.
             :type response: Response object
             :param headlines_dir: directory to store the news data to.
-            :type headlines_dir: string
+            :type headlines_dir: str
             :param filename: name of the json file created from the Response
                 object data.
-            :type filename: string
+            :type filename: str
         """
 
         log.info("Running get_news_keyword_headlines method")
@@ -633,16 +633,16 @@ class NetworkOperations:
 
         # Arguments:
             :param source_id: the id of the news source.
-            :type source_id: string
+            :type source_id: str
             :param url_endpoint: the news api source url address. If not filled
                 in the default News API sources endpoint is used.
-            :type url_endpoint: string
+            :type url_endpoint: str
             :param http_method: the Python function to use for making the
                 remote call. If not filled in the default Python Request
                 Library's get() method is used.
             :type http_method: function
             :param api_key: the News API Key for using the News API service.
-            :type api_key: string
+            :type api_key: str
 
         # Raises:
             ValueError: if no news source id is passed in.
@@ -684,9 +684,9 @@ class ExtractOperations:
 
         # Arguments:
             :param source_id: the id of the news source
-            :type source_id: string
+            :type source_id: str
             :param source_name: the name of the news source
-            :type source_name: string
+            :type source_name: str
             :param headlines: list containing all the headlines of the news
                 source, each as a string.
             :type headlines: list
@@ -830,7 +830,7 @@ class ExtractOperations:
             :param json_list: list of jsons whose source info is to be parsed
             :type json_list: list
             :param json_directory: directory where these json files are stored.
-            :type json_list: string
+            :type json_directory: str
 
         # Raises:
             ValueError: if an error during parsing a json file is found
@@ -972,7 +972,7 @@ class NewsInfoDTO:
                 will be extracted from.
             :type json_data: dict
             :param pipeline_name: name of the current DAG pipeline.
-            :type pipeline_name: string
+            :type pipeline_name: str
             :param dir_check_func: function that returns news directory of
                 the pipeline
             :type dir_check_func: function
@@ -1137,7 +1137,7 @@ class TransformOperations:
         # Arguments:
             :param directory: directory having the jsons to
                 execute a transformation on.
-            :type directory: string
+            :type directory: str
             :param timestamp: date of the pipeline execution that
                 should be appended to created csv files
             :type timestamp: datetime object
@@ -1233,7 +1233,7 @@ class TransformOperations:
         # Arguments:
             :param directory: directory having the jsons to
                 execute a transformation on.
-            :type directory: string
+            :type directory: str
             :param timestamp: date of the pipeline execution that
                 should be appended to created csv files
             :type timestamp: datetime object
@@ -1381,7 +1381,7 @@ class TransformOperations:
                 based on a keyword
             :type json_file: file
             :param csv_filename: the filename of the transformed csv
-            :type csv_filename: string
+            :type csv_filename: str
         """
 
         log.info("Running transform_new_headlines_single_file_to_csv method")
@@ -1431,7 +1431,7 @@ class TransformOperations:
                 sources headlines
             :type frame: DataFrame
             :param csv_filename: the filename of the transformed csv
-            :type csv_filename: string
+            :type csv_filename: str
         """
 
         log.info("Running transform_news_headlines_to_csv method")
@@ -1472,7 +1472,7 @@ class TransformOperations:
                 based on a keyword
             :type json_file: file
             :param csv_filename: the filename of the transformed csv
-            :type csv_filename: string
+            :type csv_filename: str
         """
 
         log.info("Running transform_keyword_headlines_to_csv method")
@@ -1562,12 +1562,9 @@ class UploadOperations:
         # Arguments:
             :param csv_directory: path to the directory containing all the
                 csv headline files.
-            :type csv_directory: string
+            :type csv_directory: str
             :param bucket_name: name of an existing s3 bucket
-            :type bucket_name: string
-            :param key_name: the name the file should be called in the bucket,
-                as an s3 key
-            :type key_name: string
+            :type bucket_name: str
             :param service_client: reference to an s3 service client object
                 instance that should be used. If left blank, the function
                 creates a new one.
@@ -1578,16 +1575,32 @@ class UploadOperations:
 
         # retrieve the active pipeline information
         pipeline_info = NewsInfoDTO(context['dag'].dag_id)
-
         if not bucket_name:
             bucket_name = pipeline_info.s3_bucket_name
 
-        # instantiate an S3 client object
-        client = boto3.client('s3')
+        # instantiate an S3 client object which will perform the uploads
+        aws_client = boto3.client('s3')
 
-        # upload the given csv-headline file
+        # list of all csv files in the directory
+        csv_files = []
 
-        return 2
+        # error-checks
+        if not os.listdir(csv_directory):
+            raise FileNotFoundError("Directory is empty")
+
+        if os.listdir(csv_directory):
+            csv_files = [file for file in os.listdir(csv_directory)
+                         if file.endswith('.csv')]
+
+        # check existence of csv files before beginning upload
+        if not csv_files:
+            raise FileNotFoundError("Directory has no csv-headline files")
+
+        # iterate through the files in the directory and upload them to s3
+        for file in csv_files:
+            # strip off the filename from its .csv extension
+            key_name = file.split(".")[0]
+            aws_client.upload_file()
 
 
 def process_retrieved_data(self):
