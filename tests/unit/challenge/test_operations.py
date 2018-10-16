@@ -1923,6 +1923,7 @@ class TestUploadOperations:
 
         # setup a Mock of the boto3 service client and file upload function
         upload_client = MagicMock(spec=botocore.client.S3)
+        resource_client = None
         upload_client.upload_file.side_effect = lambda: None
 
         # S3 bucket to upload the file to
@@ -1943,11 +1944,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
-                                                              bucket_name,
-                                                              upload_client,
-                                                              resource_client
-                                                              **airflow_context)
+            c.UploadOperations.upload_newscsv_to_s3(csv_dir,
+                                                    bucket_name,
+                                                    upload_client,
+                                                    resource_client,
+                                                    **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -1989,11 +1990,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
-                                                                  bucket_name,
-                                                                  upload_client,
-                                                                  resource_client,
-                                                                  **airflow_context)
+                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
+                                                         bucket_name,
+                                                         upload_client,
+                                                         resource_client,
+                                                         **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -2032,11 +2033,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
-                                                                  bucket_name,
-                                                                  upload_client,
-                                                                  resource_client,
-                                                                  **airflow_context)
+                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
+                                                         bucket_name,
+                                                         upload_client,
+                                                         resource_client,
+                                                         **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -2083,11 +2084,11 @@ class TestUploadOperations:
         # Act
             # function should raise errors on an empty directory
             with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_news_headline_csv_to_s3(csv_dir,
-                                                                  bucket_name,
-                                                                  upload_client,
-                                                                  resource_client,
-                                                                  **airflow_context)
+                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
+                                                         bucket_name,
+                                                         upload_client,
+                                                         resource_client,
+                                                         **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
