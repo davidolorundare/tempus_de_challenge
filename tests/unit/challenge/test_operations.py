@@ -1964,11 +1964,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            result = c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         upload_client,
-                                                         resource_client,
-                                                         **airflow_context)
+            c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                bucket_name,
+                                                upload_client,
+                                                resource_client,
+                                                **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -1979,8 +1979,6 @@ class TestUploadOperations:
         assert upload_client.upload_file.assert_called_with(full_file_path,
                                                             bucket_name,
                                                             'stuff1.csv')
-
-        assert result is True
 
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
                                                        airflow_context,
