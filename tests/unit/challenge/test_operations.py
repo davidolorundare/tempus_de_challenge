@@ -2105,6 +2105,57 @@ class TestUploadOperations:
         # Assert
         assert "Directory has no csv-headline files" in actual_message
 
+    def test_upload_csv_to_s3_fails_with_no_bucket_name(self,
+                                                        airflow_context):
+        """test the uploading of csvs to an s3 location."""
+
+        # Arrange
+
+        # setup a Mock of the boto3 service client and file upload function
+        upload_client = MagicMock(spec=botocore.client.S3)
+        resource_client = None
+        upload_client.upload_file.side_effect = lambda: None
+
+        # get the current pipeline info
+        pipeline_name = airflow_context['dag'].dag_id
+
+        # S3 bucket to upload the file to
+        bucket_name = 'tempus-challenge-csv-headlines'
+
+        # path to csv directory
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+
+        # create dummy non-csv files
+        full_file_path1 = os.path.join(csv_dir, 'stuff1.txt')
+        full_file_path2 = os.path.join(csv_dir, 'stuff2.rtf')
+        full_file_path3 = os.path.join(csv_dir, 'stuff3.doc')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            patcher.fs.create_dir(csv_dir)
+            patcher.fs.create_file(full_file_path1, contents='dummy txt')
+            patcher.fs.create_file(full_file_path2, contents='dummy rtf')
+            patcher.fs.create_file(full_file_path3, contents='dummy doc')
+
+        # Act
+            # function should raise errors on an empty directory
+            with pytest.raises(FileNotFoundError) as err:
+                c.UploadOperations.upload_news_csv_to_s3(csv_dir,
+                                                         bucket_name,
+                                                         upload_client,
+                                                         resource_client,
+                                                         **airflow_context)
+
+            actual_message = str(err.value)
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory has no csv-headline files" in actual_message
+
 
 @pytest.mark.newsinfotests
 class TestNewsInfoDTO:
