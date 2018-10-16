@@ -1943,9 +1943,8 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            c.UploadOperations.upload_csv_to_s3(full_file_path1,
+            c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                 bucket_name,
-                                                'my_dummy_text',
                                                 upload_client,
                                                 **airflow_context)
 
@@ -1965,6 +1964,16 @@ class TestUploadOperations:
         pass
 
     @pytest.mark.skip
+    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
+        """test the uploading of csvs to an s3 location."""
+        pass
+
+     @pytest.mark.skip
+    def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
+        """test the uploading of csvs to an s3 location."""
+        pass
+
+     @pytest.mark.skip
     def test_upload_csv_to_s3_fails_with_no_matching_bucket_name(self):
         """test the uploading of csvs to an s3 location."""
         pass
