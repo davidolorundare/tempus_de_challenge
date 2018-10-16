@@ -1951,11 +1951,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            result = c.UploadOperations.upload_newscsv_to_s3(csv_dir,
-                                                             bucket_name,
-                                                             upload_client,
-                                                             resource_client,
-                                                             **airflow_context)
+            result = c.UploadOperations.upload_news_csv_to_s3(csv_dir,
+                                                              bucket_name,
+                                                              upload_client,
+                                                              resource_client,
+                                                              **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
