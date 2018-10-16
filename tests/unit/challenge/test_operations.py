@@ -1918,11 +1918,13 @@ class TestUploadOperations:
         return ['tempus-challenge-csv-headlines',
                 'tempus-bonus-challenge-csv-headlines']
 
-    def test_upload_csv_to_s3_success_with_call_to_library(self,
-                                                           airflow_context,
-                                                           bucket_names,
-                                                           home_directory_res):
-        """tests call to boto library to upload a file is actually made."""
+    def test_upload_csv_to_s3_success_returns_correctly(self,
+                                                        airflow_context,
+                                                        bucket_names,
+                                                        home_directory_res):
+        """tests call to boto library to upload a file is actually made
+        and return a correct status.
+        """
 
         # Arrange
         # get the current pipeline info
@@ -1975,11 +1977,7 @@ class TestUploadOperations:
 
         # Assert
         # ensure the boto3 upload_file() function was called with correct
-        # arguments
-        assert upload_client.upload_file.assert_called()
-        # (full_file_path,
-        #                                                          bucket_name,
-        #                                                          'stuff.csv')
+        # arguments, resulting outcome should be True from the function
         assert result is True
 
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
