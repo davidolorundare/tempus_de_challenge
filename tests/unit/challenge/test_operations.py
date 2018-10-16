@@ -1537,7 +1537,6 @@ class TestTransformOperations:
             patcher.fs.create_dir(news_dir)
 
         # Act
-            #
             result = tf_func(dummy_json_file,
                              filename,
                              extract_func_mock,
