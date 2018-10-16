@@ -1573,6 +1573,8 @@ class UploadOperations:
             :type context: dict
         """
 
+        log.info("Running upload_news_headline_csv_to_s3 method")
+
         # retrieve the active pipeline information
         pipeline_info = NewsInfoDTO(context['dag'].dag_id)
         if not bucket_name:
@@ -1581,12 +1583,14 @@ class UploadOperations:
         # instantiate an S3 client object which will perform the uploads
         aws_client = boto3.client('s3')
         aws_resource = boto3.resource('s3')
+        upload_status = None
 
         # list of all csv files in the directory
         csv_files = []
 
         # error-checks
         if not os.listdir(csv_directory):
+            upload_status = False
             raise FileNotFoundError("Directory is empty")
 
         if os.listdir(csv_directory):
@@ -1596,15 +1600,23 @@ class UploadOperations:
         # check existence of csv files and the bucket itself before beginning
         # the upload
         if not csv_files:
+            upload_status = False
             raise FileNotFoundError("Directory has no csv-headline files")
 
         if bucket_name not in aws_resource.buckets.all():
+            upload_status = False
             raise FileNotFoundError("Bucket does not exist on the Server")
 
         # iterate through the files in the directory and upload them to s3
         for file in csv_files:
             file_path = os.path.join(csv_directory, file)
             aws_client.upload_file(file_path, bucket_name, file)
+
+        # file upload successful if it reached this point without any errors
+        upload_status = True
+
+        # return upload status to calling function
+        return upload_status
 
 
 def process_retrieved_data(self):
