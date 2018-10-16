@@ -7,6 +7,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 
 
 import boto3
+import botocore
 import datetime
 import json
 import pandas as pd
@@ -1922,8 +1923,8 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # setup a Mock of the boto3 service client and file upload function
-        client = MagicMock(spec=botocore.client.S3)
-        client.upload_file.side_effect = lambda: None
+        upload_client = MagicMock(spec=botocore.client.S3)
+        upload_client.upload_file.side_effect = lambda: None
 
         # S3 bucket to upload the file to
         bucket_name = 'tempus-challenge-csv-headlines'
