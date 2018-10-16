@@ -1,13 +1,10 @@
 """Tempus challenge  - Unit Tests.
 
 Defines unit tests for underlining functions to operators of tasks in the DAGs.
-
-
 """
 
-
 import boto3
-import boto3.resources.factory.s3.ServiceResource
+from boto3.resources.factory import ServiceResource
 import datetime
 import json
 import pandas as pd
@@ -16,6 +13,7 @@ import os
 
 from unittest.mock import MagicMock
 from unittest.mock import patch
+from unittest.mock import create_autospec
 
 from airflow.models import DAG
 
@@ -1931,9 +1929,8 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock()
-        resource_client = None
-        # MagicMock(spec=boto3.resources.factory.s3.ServiceResource)
+        upload_client = create_autospec(spec=boto3.client('s3'))
+        resource_client = MagicMock(spec=ServiceResource)
         upload_client.upload_file.side_effect = lambda: None
         resource_client.buckets.all.side_effect = lambda: bucket_names
 
