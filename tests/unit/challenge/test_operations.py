@@ -1479,7 +1479,7 @@ class TestTransformOperations:
         # create the dummy input data that will be passed to the function
         # under test
         dummy_json_file = None
-        transform_data_df = None
+        transform_data_df = MagicMock(spec=pd.DataFrame)
 
         # setup a Mock of the extract and transform function dependencies
         tf_func_mock = MagicMock(spec=tf_func)
@@ -1488,17 +1488,12 @@ class TestTransformOperations:
         tf_func_mock.side_effect = lambda data: transform_data_df
         file_reader_func.side_effect = lambda data: "read-in json file"
 
-        # path to the fake news and csv directories the function under test
+        # path to the fake csv directory the function under test
         # uses
         csv_dir = os.path.join(home_directory_res,
                                'tempdata',
                                pipeline_name,
                                'csv')
-
-        news_dir = os.path.join(home_directory_res,
-                                'tempdata',
-                                pipeline_name,
-                                'news')
 
         # file that will be created after transformation
         filename = str(datetime.datetime.now()) + "_" + "sample.csv"
@@ -1510,7 +1505,6 @@ class TestTransformOperations:
             # create a fake filesystem directory and place the dummy csv files
             # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
-            patcher.fs.create_dir(news_dir)
 
         # Act
             result = tf_func(dummy_json_file,
