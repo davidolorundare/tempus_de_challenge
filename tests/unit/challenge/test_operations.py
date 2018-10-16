@@ -1985,7 +1985,6 @@ class TestUploadOperations:
         #                                                     'stuff.txt')
         assert result is True
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
                                                        airflow_context,
                                                        bucket_names,
@@ -2041,7 +2040,6 @@ class TestUploadOperations:
         # Assert
         assert "Directory is empty" in actual_message
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_non_existent_bucket_fails(self,
                                                         airflow_context,
                                                         bucket_names,
@@ -2097,7 +2095,6 @@ class TestUploadOperations:
         # Assert
         assert "does not exist on the server" in actual_message
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_no_csvs_in_directory_fails(self,
                                                          airflow_context,
                                                          bucket_names,
@@ -2163,7 +2160,6 @@ class TestUploadOperations:
         # Assert
         assert "Directory has no csv-headline files" in actual_message
 
-    @pytest.mark.skip
     def test_upload_csv_to_s3_fails_with_no_bucket_name(self,
                                                         airflow_context,
                                                         bucket_names,
