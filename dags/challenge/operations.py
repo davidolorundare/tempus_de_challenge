@@ -1580,6 +1580,7 @@ class UploadOperations:
 
         # instantiate an S3 client object which will perform the uploads
         aws_client = boto3.client('s3')
+        aws_resource = boto3.resource('s3')
 
         # list of all csv files in the directory
         csv_files = []
@@ -1592,15 +1593,18 @@ class UploadOperations:
             csv_files = [file for file in os.listdir(csv_directory)
                          if file.endswith('.csv')]
 
-        # check existence of csv files before beginning upload
+        # check existence of csv files and the bucket itself before beginning
+        # the upload
         if not csv_files:
             raise FileNotFoundError("Directory has no csv-headline files")
 
+        if bucket_name not in aws_resource.buckets.all():
+            raise FileNotFoundError("Bucket does not exist on the Server")
+
         # iterate through the files in the directory and upload them to s3
         for file in csv_files:
-            # strip off the filename from its .csv extension
-            key_name = file.split(".")[0]
-            aws_client.upload_file()
+            file_path = os.path.join(csv_directory, file)
+            aws_client.upload_file(file_path, bucket_name, file)
 
 
 def process_retrieved_data(self):
