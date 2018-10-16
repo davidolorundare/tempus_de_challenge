@@ -6,6 +6,7 @@ Defines unit tests for underlining functions to operators of tasks in the DAGs.
 """
 
 
+import boto3
 import datetime
 import json
 import pandas as pd

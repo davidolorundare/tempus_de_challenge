@@ -1537,7 +1537,7 @@ class UploadOperations:
     """
 
     @classmethod
-    def upload_csv_to_s3(cls, **context):
+    def upload_csv_to_s3(cls, filename, upload_func=None, **context):
         """uploads all the files in a given directory to an Amazon S3
         bucket location."""
 
