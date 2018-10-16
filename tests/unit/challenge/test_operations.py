@@ -947,33 +947,6 @@ class TestExtractOperations:
         """returns a pytest resource - path to the Airflow Home directory."""
         return str(os.environ['HOME'])
 
-    @pytest.mark.skip(reason="will write a test for this macro-function,\
-        though the functions it uses have all been tested")
-    def test_get_news_headlines(self):
-        """test the retrieval of the top headlines."""
-
-        # Test Cases Needed:
-        #       What does 'get_headlines' do really ?:
-        #
-        # get context-specific news directory (get_news_directory)
-        #
-        # for each file in that directory
-        #   read the file (json load) in (get_headlines)
-        #   get the news sources id and put them in a list (extract source-id)
-        #
-        # for each id
-        #   make an http call get each headlines as json (get_source_headlines)
-        #   extract the headlines and put them into a json (extract_headlines)
-        #   write the json to the 'headlines' directory (write_to_json)
-
-        # Arrange
-
-        # Act
-        result = c.NetworkOperations.get_news_headlines()
-
-        # Assert
-        assert result is True
-
     @patch('requests.PreparedRequest', autospec=True)
     @patch('requests.Response', autospec=True)
     def test_extract_headline_keyword_success(self, response_obj, request_obj):
