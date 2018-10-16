@@ -7,6 +7,7 @@ functions executed by both dag pipelines are implemented in the same Operations
 class.
 """
 
+import boto3
 import config
 import datetime
 import errno
@@ -1552,8 +1553,7 @@ class UploadOperations:
     @classmethod
     def upload_news_headline_csv_to_s3(cls,
                                        csv_directory,
-                                       bucket_name,
-                                       key_name,
+                                       bucket_name=None,
                                        service_client=None,
                                        **context):
         """uploads a files, in a given directory, to an Amazon S3 bucket
@@ -1578,7 +1578,9 @@ class UploadOperations:
 
         # retrieve the active pipeline information
         pipeline_info = NewsInfoDTO(context['dag'].dag_id)
-        pipeline_bucket_name = pipeline_info.s3_bucket_name
+
+        if not bucket_name:
+            bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 client object
         client = boto3.client('s3')
