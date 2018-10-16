@@ -1457,7 +1457,11 @@ class TransformOperations:
         return op_status
 
     @classmethod
-    def transform_keyword_headlines_to_csv(cls, json_file, csv_filename=None):
+    def transform_keyword_headlines_to_csv(cls,
+                                           json_file,
+                                           csv_filename=None,
+                                           extract_func=None,
+                                           transfm_to_frame_fnc=None):
         """converts the json contents of a given folder into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1479,15 +1483,16 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
-        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
+        if not extract_func:
+            extract_func = ExtractOperations.extract_news_data_from_dataframe
+        transfm_to_frame_fnc = TransformOperations.transform_data_to_dataframe
 
         # use Pandas to read in the json file
         keyword_data = pd.read_json(json_file)
 
         # extraction and intermediate-transformation of the news json
-        data = extr_frm_frame_fnc(keyword_data)
-        transformed_df = trans_to_frame_fnc(data)
+        data = extract_func(keyword_data)
+        transformed_df = transfm_to_frame_fnc(data)
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
