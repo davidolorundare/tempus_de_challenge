@@ -1512,7 +1512,7 @@ class TransformOperations:
         if not csv_filename:
             csv_filename = str(datetime.datetime.now()) + "_" + "sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
-        transformed_df.to_csv(path_or_buf=csv_save_path)
+        transformed_df.to_csv(csv_save_path)
 
         # ensure status of operation is communicated to caller function
         op_status = None

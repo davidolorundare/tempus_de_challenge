@@ -7,6 +7,7 @@ import boto3
 import datetime
 import json
 import pandas as pd
+import pandas
 import os
 import pytest
 import requests
@@ -1457,8 +1458,7 @@ class TestTransformOperations:
         """returns a pytest resource - path to the Airflow Home directory."""
         return str(os.environ['HOME'])
 
-    @pytest.mark.skip
-    @patch('pd.read_json', autospec=True)
+    @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_sucess(self,
                                                            file_reader_func,
                                                            home_directory_res):
@@ -1473,13 +1473,13 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_func = c.TransformOperations.transform_data_to_dataframe
+        tf_func = c.TransformOperations.transform_keyword_headlines_to_csv
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
 
         # create the dummy input data that will be passed to the function
         # under test
         dummy_json_file = None
-        transform_data_df = MagicMock(spec=pd.DataFrame)
+        transform_data_df = MagicMock(spec=pandas.DataFrame)
 
         # setup a Mock of the extract and transform function dependencies
         tf_func_mock = MagicMock(spec=tf_func)
@@ -1509,7 +1509,7 @@ class TestTransformOperations:
 
             # calling the transformed DataFrame's to_csv() creates a new
             # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file(fp)
+            transform_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
             result = tf_func(dummy_json_file,
