@@ -1983,9 +1983,11 @@ class TestUploadOperations:
         assert upload_client.upload_file.assert_called_with(full_file_path1,
                                                             bucket_name,
                                                             'stuff1.csv')
+
         assert upload_client.upload_file.assert_called_with(full_file_path2,
                                                             bucket_name,
                                                             'stuff2.csv')
+
         assert upload_client.upload_file.assert_called_with(full_file_path3,
                                                             bucket_name,
                                                             'stuff2.csv')
