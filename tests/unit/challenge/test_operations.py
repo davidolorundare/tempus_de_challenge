@@ -1911,12 +1911,11 @@ class TestTransformOperations:
         # setup a Mock of the transform function dependencies
         transform_func_func_mock = MagicMock(spec=transform_func)
         extract_func_mock = MagicMock(spec=extract_func)
-        transformed_df = MagicMock(spec=pandas.DataFrame)
+        transformed_data_df = MagicMock(spec=pandas.DataFrame)
 
         # setup the behaviors of these Mocks
-        transformed_df.to_csv.side_effect = lambda *arg: "data transformed"
         extract_func_mock.side_effect = lambda data: "extracted data"
-        transform_func_func_mock.side_effect = lambda data: transformed_df
+        transform_func_func_mock.side_effect = lambda data: transformed_data_df
         reader_func.side_effect = lambda json_file: "success reading json"
 
         # create one dummy json file
@@ -1931,6 +1930,10 @@ class TestTransformOperations:
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir_res)
             patcher.fs.create_file(full_file_path)
+
+            # calling the transformed DataFrame's to_csv() creates a new
+            # csv file in the fake directory
+            transformed_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
             result = trnsfm_fnc(full_file_path,
