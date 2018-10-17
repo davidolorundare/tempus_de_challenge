@@ -1947,9 +1947,60 @@ class TestTransformOperations:
         # indicate success
         assert result is True
 
-    @pytest.mark.skip
-    def test_transform_news_headlines_one_json_to_csv_fails(self):
+    @patch('pandas.read_json', autospec=True)
+    def test_transform_news_headlines_one_json_to_csv_fails(self,
+                                                            reader_func,
+                                                            csv_dir_res):
         """transform of a single news headline json file to csv fails."""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        # get the current pipeline info
+        transform_func = c.TransformOperations.transform_data_to_dataframe
+        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        trnsfm_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
+
+        # setup a Mock of the transform function dependencies
+        transform_func_func_mock = MagicMock(spec=transform_func)
+        extract_func_mock = MagicMock(spec=extract_func)
+        transformed_data_df = MagicMock(spec=pandas.DataFrame)
+
+        # setup the behaviors of these Mocks
+        extract_func_mock.side_effect = lambda data: "extracted data"
+        transform_func_func_mock.side_effect = lambda data: transformed_data_df
+        reader_func.side_effect = lambda json_file: "success reading json"
+
+        # create one dummy json file
+        full_file_path = os.path.join(csv_dir_res, 'dummy.json')
+
+        # setup a fake headlines directory which the function under test
+        # requires be already existent
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            patcher.fs.create_dir(csv_dir_res)
+            patcher.fs.create_file(full_file_path)
+
+            # calling the transformed DataFrame's to_csv() fails and
+            # doesn't created a new file in the fake directory
+            transformed_data_df.to_csv.side_effect = lambda *args: None
+
+        # Act
+            result = trnsfm_fnc(full_file_path,
+                                "dummy.csv",
+                                extract_func=extract_func_mock,
+                                transform_func=transform_func_func_mock,
+                                read_js_func=reader_func)
+
+        # Assert
+        # return status of the transformation operation should be False to
+        # indicate failure - the csv file could not be created
+        assert result is False
 
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_fails(self,
