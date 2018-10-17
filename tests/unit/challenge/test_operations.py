@@ -1747,28 +1747,6 @@ class TestTransformOperations:
         assert "Wired" in actual_source_name
         assert "Microsoft Calls a Truce in Patent Wars" in actual_title
 
-    def test_transform_data_to_dataframe_fails(self):
-        """conversion of a dictionary of news data into
-        a Pandas Dataframe fails"""
-
-        # Arrange
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_data_to_dataframe
-
-        # function fails when the incoming news data is empty
-        data = None
-
-        # Act
-        with pytest.raises(ValueError) as err:
-            tf_func(data)
-
-        # Assert
-        actual_message = str(err.value)
-        assert "news data argument cannot be empty" in actual_message
-
     @pytest.mark.skip
     def test_transform_headlines_to_csv_convert_pipelineone_succeeds(self):
         """call to flatten jsons in the tempus_challenge_dag headline
@@ -1898,28 +1876,6 @@ class TestTransformOperations:
         # Assert
         # return status of the operation should be True to indicate success
         assert result is True
-
-    @pytest.mark.skip
-    def test_transform_news_headlines_to_csv_conversion_failure(self):
-        """call to flatten jsons in the tempus_challenge_dag headline
-        folder fails."""
-
-        # Arrange
-
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_news_headlines_to_csv
-
-        # Act
-
-        # Assert
-
-        data = None
-
-        result = tf_func(data)
-
-        assert result == 2
 
     @pytest.mark.skip
     def test_transform_new_headlines_json_to_csv_fails(self):
@@ -2131,6 +2087,27 @@ class TestTransformOperations:
         # Assert
         assert "Directory has no json-headline files" in actual_message
 
+    def test_transform_data_to_dataframe_fails(self):
+        """conversion of a dictionary of news data into
+        a Pandas Dataframe fails"""
+
+        # Arrange
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tf_func = c.TransformOperations.transform_data_to_dataframe
+
+        # function fails when the incoming news data is empty
+        data = None
+
+        # Act
+        with pytest.raises(ValueError) as err:
+            tf_func(data)
+
+        # Assert
+        actual_message = str(err.value)
+        assert "news data argument cannot be empty" in actual_message
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
