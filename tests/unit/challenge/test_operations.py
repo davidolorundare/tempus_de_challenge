@@ -1790,14 +1790,22 @@ class TestTransformOperations:
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headline_dir_res
 
+        # create three dummy json files
+        full_file_path_one = os.path.join(headline_dir_res, 'dummy1.json')
+        full_file_path_two = os.path.join(headline_dir_res, 'dummy2.json')
+        full_file_path_three = os.path.join(headline_dir_res, 'dummy3.json')
+
         # setup a fake headlines directory which the function under test
         # requires be already existent
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem empty directory to test the method
+            # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headline_dir_res)
+            patcher.fs.create_file(full_file_path_one)
+            patcher.fs.create_file(full_file_path_two)
+            patcher.fs.create_file(full_file_path_three)
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
@@ -1839,7 +1847,16 @@ class TestTransformOperations:
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
         tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
-        news_info_obj.get_headlines_directory = headline_dir_res
+
+        pipeline_name = 'tempus_bonus_challenge_dag'
+        news_info_obj.get_headlines_directory = os.path.join('tempdata',
+                                                             pipeline_name,
+                                                             'headlines')
+
+        # create three dummy json files
+        full_file_path_one = os.path.join(headline_dir, 'dummy1.json')
+        full_file_path_two = os.path.join(headline_dir, 'dummy2.json')
+        full_file_path_three = os.path.join(headline_dir, 'dummy3.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -1847,8 +1864,11 @@ class TestTransformOperations:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem empty directory to test the method
+            # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headline_dir_res)
+            patcher.fs.create_file(full_file_path_one)
+            patcher.fs.create_file(full_file_path_two)
+            patcher.fs.create_file(full_file_path_three)
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
