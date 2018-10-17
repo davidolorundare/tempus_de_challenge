@@ -7,7 +7,6 @@ init:
 	pip install --upgrade setuptools
 	pip install -r requirements-setup.txt
 	pip install -r requirements-test.txt
-	pip install coveralls
 	pip install -r requirements.txt
 
 run: clean
