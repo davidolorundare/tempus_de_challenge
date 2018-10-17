@@ -1768,8 +1768,6 @@ class TestTransformOperations:
         folder succeeds."""
 
         # Arrange
-        # name of the pipeline under test
-        pipeline_name = "tempus_bonus_challenge_dag"
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -1787,38 +1785,16 @@ class TestTransformOperations:
         news_info_obj = MagicMock(spec=info_obj)
 
         # setup the behaviors of these Mocks
-        tf_json_func_mock.side_effect = lambda data: "extracted data"
-        tf_keyword_json_func_mock.side_effect = lambda data: transform_data_df
+        tf_json_func_mock.side_effect = lambda dir, exec_date: True
+        tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headlines_dir_res
 
-        # path to the fake csv directory the function under test
-        # uses
-        csv_dir = os.path.join(home_directory_res,
-                               'tempdata',
-                               pipeline_name,
-                               'csv')
-
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
-
-            # create a fake filesystem directory and place the dummy csv files
-            # in that directory to test the method
-            patcher.fs.create_dir(csv_dir)
-
-            # calling the transformed DataFrame's to_csv() creates a new
-            # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
-
         # Act
-            result = tf_func(pipeline_information=pipeline_info_obj,
-                             transform_json_fnc=tf_json_func_mock,
-                             transform_key_json_fnc=tf_keyword_json_func_mock,
-                             **airflow_context)
-
-            # clean up and remove the fake filesystem
-            patcher.tearDown()
+        result = tf_json_func(pipeline_information=pipeline_info_obj,
+                              transform_json_fnc=tf_json_func_mock,
+                              transform_key_json_fnc=tf_keyword_json_func_mock,
+                              **airflow_context)
 
         # Assert
         # return status of the transformation operation should be True to
