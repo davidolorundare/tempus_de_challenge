@@ -1807,63 +1807,38 @@ class TestTransformOperations:
         folder succeeds."""
 
         # Arrange
-        # name of the pipeline under test
-        pipeline_name = "tempus_bonus_challenge_dag"
 
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_func = c.TransformOperations.transform_headlines_to_csv
-        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        tf_json_func = c.TransformOperations.helper_execute_json_transformation
+        j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
+        transfm_fnc = c.TransformOperations.transform_headlines_to_csv
 
-        # create the dummy input data that will be passed to the function
-        # under test
-        dummy_json_file = None
-        transform_data_df = MagicMock(spec=pandas.DataFrame)
+        info_obj = c.NewsInfoDTO
 
-        # setup a Mock of the extract and transform function dependencies
-        tf_func_mock = MagicMock(spec=tf_func)
-        extract_func_mock = MagicMock(spec=extract_func)
-        extract_func_mock.side_effect = lambda data: "extracted data"
-        tf_func_mock.side_effect = lambda data: transform_data_df
-        file_reader_func.side_effect = lambda data: "read-in json file"
+        # setup a Mock of the transform function dependencies
+        tf_json_func_mock = MagicMock(spec=tf_json_func)
+        tf_keyword_json_func_mock = MagicMock(spec=j_fn)
+        pipeline_info_obj = MagicMock(spec=info_obj)
+        news_info_obj = MagicMock(spec=info_obj)
 
-        # path to the fake csv directory the function under test
-        # uses
-        csv_dir = os.path.join(home_directory_res,
-                               'tempdata',
-                               pipeline_name,
-                               'csv')
-
-        # name and path to the file that will be created after transformation
-        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
-        # fp = os.path.join(csv_dir, filename)
-
-        with Patcher() as patcher:
-            # setup pyfakefs - the fake filesystem
-            patcher.setUp()
-
-            # create a fake filesystem directory and place the dummy csv files
-            # in that directory to test the method
-            patcher.fs.create_dir(csv_dir)
-
-            # calling the transformed DataFrame's to_csv() creates a new
-            # csv file in the fake directory
-            transform_data_df.to_csv.side_effect = patcher.fs.create_file
+        # setup the behaviors of these Mocks
+        tf_json_func_mock.side_effect = lambda dir, exec_date: True
+        tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
+        pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
+        news_info_obj.get_headlines_directory = headline_dir_res
 
         # Act
-            result = tf_func(dummy_json_file,
-                             filename,
-                             extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
-
-            # clean up and remove the fake filesystem
-            patcher.tearDown()
+        result = transfm_fnc(pipeline_information=pipeline_info_obj,
+                             transform_json_fnc=tf_json_func_mock,
+                             transform_key_json_fnc=tf_keyword_json_func_mock,
+                             **airflow_context)
 
         # Assert
-        # return status of the operation should be True to indicate success
+        # return status of the transformation operation should be True to
+        # indicate success
         assert result is True
 
     @pytest.mark.skip
