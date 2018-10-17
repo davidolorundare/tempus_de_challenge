@@ -1760,7 +1760,6 @@ class TestTransformOperations:
         assert "Wired" in actual_source_name
         assert "Microsoft Calls a Truce in Patent Wars" in actual_title
 
-    @pytest.mark.skip
     def test_transform_headlines_to_csv_pipelineone_success(self,
                                                             airflow_context,
                                                             headline_dir_res):

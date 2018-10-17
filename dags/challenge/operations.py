@@ -1274,7 +1274,7 @@ class TransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         if not json_to_csv_func:
-            json_to_csv_func = cls.transform_new_headlines_json_to_csv
+            json_to_csv_func = cls.transform_news_headlines_json_to_csv
         if not jsons_to_df_func:
             jsons_to_df_func = cls.transform_jsons_to_dataframe_merger
         if not df_to_csv_func:
