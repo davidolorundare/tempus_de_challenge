@@ -4,6 +4,7 @@ python:
 cache: pip
 # install dependencies
 install:
+  - export AIRFLOW_GPL_UNIDECODE="yes"
   - pip install -r requirements-test.txt
   - pip install -r requirements.txt
   - pip install -r requirements-setup.txt
