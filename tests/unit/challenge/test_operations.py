@@ -1939,7 +1939,8 @@ class TestTransformOperations:
         assert result is False
 
     def test_transform_headlines_to_csv_wrong_pipeline_fails(self,
-                                                             airflow_context):
+                                                             airflow_context,
+                                                             headline_dir_res):
         """flattening of a set of json files to csv fails when a
         non-existent DAG pipeline name is used.
         """
@@ -2097,6 +2098,7 @@ class TestTransformOperations:
         # Assert
         actual_message = str(err.value)
         assert "news data argument cannot be empty" in actual_message
+
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
