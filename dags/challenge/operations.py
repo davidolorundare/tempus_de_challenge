@@ -1396,7 +1396,10 @@ class TransformOperations:
     @classmethod
     def transform_news_headlines_json_to_csv(cls,
                                              json_file,
-                                             csv_filename=None):
+                                             csv_filename=None,
+                                             extract_func=None,
+                                             transform_func=None,
+                                             read_js_func=None):
         """transforms the json contents of a given file into a csv.
 
         The function specifically operates on jsons in the 'headlines'
@@ -1411,6 +1414,15 @@ class TransformOperations:
             :type json_file: file
             :param csv_filename: the filename of the transformed csv
             :type csv_filename: str
+            :param extract_func: the function used to extract news data
+                from a dataframe
+            :type extract_func: function
+            :param transform_func: the function used to transform news
+                data into a dataframe
+            :type transform_func: function
+            :param read_js_fnc: the function used to read-in and process the
+                json file. By Default is the Pandas read_json() function
+            :type read_js_func: function
         """
 
         log.info("Running transform_news_headlines_json_to_csv method")
@@ -1418,11 +1430,15 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        extr_frm_frame_fnc = ExtractOperations.extract_news_data_from_dataframe
-        trans_to_frame_fnc = TransformOperations.transform_data_to_dataframe
+        if not extract_func:
+            extract_func = ExtractOperations.extract_news_data_from_dataframe
+        if not transform_func:
+            transform_func = TransformOperations.transform_data_to_dataframe
+        if not read_js_func:
+            read_js_func = pd.read_json
 
         # use Pandas to read in the json file
-        keyword_data = pd.read_json(json_file)
+        keyword_data = read_js_func(json_file)
 
         # extraction and intermediate-transformation of the news json
         data = extr_frm_frame_fnc(keyword_data)
