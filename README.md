@@ -36,6 +36,7 @@
 	* In this terminal export, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable `NEWS_API_KEY` and set its value to be the key you obtained.
 
 	* Run the command `make init` ; this downloads all of the project's dependencies.
+		- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
 
 	* Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
 
