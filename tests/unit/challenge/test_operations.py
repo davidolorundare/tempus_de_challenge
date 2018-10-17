@@ -1937,7 +1937,7 @@ class TestTransformOperations:
 
         # Act
             result = trnsfm_fnc(full_file_path,
-                                csv_filename="dummy.csv",
+                                "dummy.csv",
                                 extract_func=extract_func_mock,
                                 transform_func=transform_func_func_mock,
                                 read_js_func=reader_func)
