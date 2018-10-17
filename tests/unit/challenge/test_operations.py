@@ -1819,7 +1819,7 @@ class TestTransformOperations:
     def test_transform_headlines_to_csv_pipelinetwo_success(self,
                                                             headline_dir_res,
                                                             airflow_context):
-        """call to flatten jsons in the tempus_bonus_challenge_dag headline
+        """call to flatten jsons in the 'tempus_bonus_challenge_dag' headline
         folder succeeds."""
 
         # Arrange
