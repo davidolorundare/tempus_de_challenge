@@ -1776,13 +1776,11 @@ class TestTransformOperations:
         j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
         transfm_fnc = c.TransformOperations.transform_headlines_to_csv
 
-        info_obj = c.NewsInfoDTO
-
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_json_func)
         tf_keyword_func_mock = MagicMock(spec=j_fn)
-        pipeline_info_obj = MagicMock(spec=info_obj)
-        news_info_obj = MagicMock(spec=info_obj)
+        pipeline_info_obj = MagicMock(spec=c.NewsInfoDTO)
+        news_info_obj = MagicMock(spec=c.NewsInfoDTO)
 
         # setup the behaviors of these Mocks
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
@@ -1835,13 +1833,11 @@ class TestTransformOperations:
         j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
         transfm_fnc = c.TransformOperations.transform_headlines_to_csv
 
-        info_obj = c.NewsInfoDTO
-
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_json_func)
         tf_keyword_func_mock = MagicMock(spec=j_fn)
-        pipeline_info_obj = MagicMock(spec=info_obj)
-        news_info_obj = MagicMock(spec=info_obj)
+        pipeline_info_obj = MagicMock(spec=c.NewsInfoDTO)
+        news_info_obj = MagicMock(spec=c.NewsInfoDTO)
 
         # setup the behaviors of these Mocks
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
