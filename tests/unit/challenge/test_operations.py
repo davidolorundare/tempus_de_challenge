@@ -1134,15 +1134,15 @@ class TestExtractOperations:
             patcher.setUp()
 
             # create dummy files
-            full_file_path1 = os.path.join(js_dir, 'stuff1.json')
-            full_file_path2 = os.path.join(js_dir, 'stuff2.json')
-            full_file_path3 = os.path.join(js_dir, 'stuff3.json')
+            full_file_path_one = os.path.join(js_dir, 'stuff1.json')
+            full_file_path_two = os.path.join(js_dir, 'stuff2.json')
+            full_file_path_three = os.path.join(js_dir, 'stuff3.json')
 
             # create a fake filesystem directory to test the method
             patcher.fs.create_dir(js_dir)
-            patcher.fs.create_file(full_file_path1, contents=js_one_data)
-            patcher.fs.create_file(full_file_path2, contents=js_two_data)
-            patcher.fs.create_file(full_file_path3, contents=js_three_data)
+            patcher.fs.create_file(full_file_path_one, contents=js_one_data)
+            patcher.fs.create_file(full_file_path_two, contents=js_two_data)
+            patcher.fs.create_file(full_file_path_three, contents=js_three_data)
 
         # Act
             actual_result = extract_func_alias(js_list, js_dir)
