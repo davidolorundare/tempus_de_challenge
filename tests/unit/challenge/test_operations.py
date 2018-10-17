@@ -1903,19 +1903,19 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_json_func = c.TransformOperations.helper_execute_json_transformation
-        j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
-        transfm_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
+        transform_func = c.TransformOperations.transform_data_to_dataframe
+        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        trnsfm_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
 
         # setup a Mock of the transform function dependencies
-        tf_json_func_mock = MagicMock(spec=tf_json_func)
-        transform_func_func_mock = MagicMock(spec=j_fn)
+        transform_func_func_mock = MagicMock(spec=transform_func)
+        extract_func_mock = MagicMock(spec=extract_func)
         pipeline_info_obj = MagicMock(spec=c.NewsInfoDTO)
         news_info_obj = MagicMock(spec=c.NewsInfoDTO)
 
         # setup the behaviors of these Mocks
         extract_func_mock.side_effect = lambda dir, exec_date: True
-        tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
+        transform_func_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headline_dir_res
 
@@ -1933,7 +1933,7 @@ class TestTransformOperations:
             patcher.fs.create_file(full_file_path)
 
         # Act
-            result = transfm_fnc(full_file_path_one,
+            result = trnsfm_fnc(full_file_path_one,
                                  csv_filename="dummy.csv",
                                  extract_func=extract_func_mock,
                                  transform_func=transform_func_func_mock,
