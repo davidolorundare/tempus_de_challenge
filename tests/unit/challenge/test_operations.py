@@ -1653,7 +1653,7 @@ class TestTransformOperations:
         # indicating the single json file passed in was successfully
         # converted to a csv
         json_csv_func.side_effect = lambda files, filename: True
-        jsons_df_func.side_effect = pd.DataFrame()
+        jsons_df_func.side_effect = lambda files: pd.DataFrame()
         df_csv_func.side_effect = lambda dataframe, filename: True
 
         # setup pipeline information
