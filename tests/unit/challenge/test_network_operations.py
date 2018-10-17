@@ -4,7 +4,6 @@ Defines unit tests for the underlining functions the
 task to call remote News APIs methods performs in the DAGs.
 """
 
-import os
 import pytest
 import requests
 
@@ -120,7 +119,7 @@ class TestNetworkOperations:
         endpoint = "top-headlines?"
         params = "sources=abc-news"
         id_source = params.split("=")[1]
-        key = os.environ["NEWS_API_KEY"]
+        key = "news api key"
 
         # craft http request
         header = "/".join([base_url, endpoint])
@@ -153,7 +152,7 @@ class TestNetworkOperations:
         params = "sources=abc-news"
         id_source = params.split("=")[1]
         header = "/".join([base_url, endpoint])
-        key = os.environ["NEWS_API_KEY"]
+        key = "news api key"
 
         # Act
         result = c.NetworkOperations.get_source_headlines(id_source,
@@ -235,7 +234,7 @@ class TestNetworkOperations:
         params = "sources=abc-news"
         id_source = params.split("=")[1]
         header = "/".join([base_url, endpoint])
-        key = os.environ["NEWS_API_KEY"]
+        key = "news api key"
 
         # Act
         result = c.NetworkOperations.get_source_headlines(id_source,
@@ -255,7 +254,7 @@ class TestNetworkOperations:
         endpoint = "top-headlines?"
         id_source = None
         header = "/".join([base_url, endpoint])
-        key = os.environ["NEWS_API_KEY"]
+        key = "news api key"
 
         # Act
         with pytest.raises(ValueError) as err:
