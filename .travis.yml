@@ -1,13 +1,14 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 cache: pip
-# install dependencies
 install:
-  - export AIRFLOW_GPL_UNIDECODE="yes"
-  - pip install -r requirements-test.txt
-  - pip install -r requirements.txt
-  - pip install -r requirements-setup.txt
-# run unit and integration tests
+- export AIRFLOW_GPL_UNIDECODE="yes"
+- pip install -r requirements-test.txt
+- pip install -r requirements.txt
+- pip install -r requirements-setup.txt
 script:
-  - make test
+- make test
+env:
+  newsapi:
+    secure: XdSKag1jA+WmuGFtLUA26yWbwMU5inwdZve7OonBVeQV2Nt+PRvdJkx8u6GaITv97qK4dty0ioBC8DkKSJ+H3Ili6EUMjzw0FsboYM2XvXQ5mLoP6S5zKlXKfmxoXRuGaF4avgfNljJ+98166+LmIaQCF83UZrQkXU4kU+cwi0jSI9cAJ7DSH5gtJIXNKbUZ9sg+WHoYbsfpqrDnYX01DwbLtid8XraxalVAiRem/5kZIBCt9LFsoOAsBfdqzP/XvHiiBG49kue5Bj4V01COmm1yU4GrbztcOFFzZNraK4Rt3CDTe7onpkjBsvWaVi6uBD2a18DSZzYbEPEpz9QitjZYErl/bwgJ7YNy0C+X101QLUv8707SwrKplpOxvOV7BEQyCcoo90T8bgUh5wrNs3hFffwtk3u+z60+f4swIDpAtXvjTwtFGfVGZziefwcafS2hMU7uDkca/WI3y+bGM+cQfOwlvBPFP+2G1xAmFCZqxEUFJdOA3pX4+rEEeBAhbO8YZA76HT2WrhYCuff73dEitHFstakcTCwXbBxj4heIoa5qk3XHBv7jZqgjlPrGHH6vtxF0GpRbTayO8cKPKiQPXp2WzGdiZP0M4h5I503F8dUH9ArpMKPCXkoOK/dOmuL81s0PBErdCl5XJenUYLjKyIIEb/60EiQMB9TmtVQ=
