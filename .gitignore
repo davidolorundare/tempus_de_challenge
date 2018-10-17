@@ -4,13 +4,6 @@ tempus_env/
 # Pytest Cache folder
 .pytest_cache/
 
-# dummy file - used to test idea/things in the repo - remove all of them in final version
-faker.py
-dumper.json
-dumpery.json
-duster.json
-jupyter/
-
 # pytest coverage info
 .coverage
 

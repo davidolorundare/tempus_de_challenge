@@ -1,0 +1,97 @@
+{
+    "status": "ok",
+    "totalResults": 7,
+    "articles": [
+        {
+            "source": {
+                "id": "cbc-news",
+                "name": "CBC News"
+            },
+            "author": "CBC News",
+            "title": "How Gord Downie fought to the end to reveal 'The Secret Path' to Canadians | CBC News",
+            "description": "In his last year, while living with his own tragic story of terminal cancer, singer Gord Downie was consumed by another. He was transfixed by Chanie Wenjack, a 12-year-old Anishinaabe residential school student who died of hunger and exhaustion while trying t\u2026",
+            "url": "http://www.cbc.ca/news/entertainment/national-gord-downie-secret-path-chanie-wenjack-1.4846918",
+            "urlToImage": "https://i.cbc.ca/1.4360028.1508334030!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/gord-downie.jpg",
+            "publishedAt": "2018-10-12T12:53:07.8701968Z",
+            "content": "In his last year, while living with his own tragic story, Gord Downie was consumed by another. Chanie Wenjack, a 12-year-old Anishinaabe boy, ran away from a residential school in northern Ontario 52 years ago. He died of hunger and exhaustion trying to walk \u2026 [+5598 chars]"
+        },
+        {
+            "source": {
+                "id": "google-news-in",
+                "name": "Google News (India)"
+            },
+            "author": "Pratiksha Ramkumar",
+            "title": "Coimbatore hospital removes \u2018world\u2019s heaviest ovarian cancer tumour\u2019 - Times of India",
+            "description": "Hospital authorities on Thursday evening said the tumour weighed 33.5kg, which is equivalent to 11 full term babies born at an average weight of 3kg e",
+            "url": "https://timesofindia.indiatimes.com/city/coimbatore/coimbatore-hospital-removes-worlds-heaviest-ovarian-cancer-tumour/articleshow/66181579.cms",
+            "urlToImage": "https://static.toiimg.com/thumb/msid-66181558,width-1070,height-580,imgsize-1331549,resizemode-6,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
+            "publishedAt": "2018-10-12T11:08:14+00:00",
+            "content": "COIMBATORE: A hospital in Coimbatore has removed what could be the worlds heaviest ovarian cancer tumour from a 46-year-old woman from Ooty. Hospital authorities on Thursday evening said the tumour weighed 33.5kg, which is equivalent to 11 full term babies bo\u2026 [+2172 chars]"
+        },
+        {
+            "source": {
+                "id": "independent",
+                "name": "Independent"
+            },
+            "author": "Roisin O'Connor",
+            "title": "Elvis Costello: 'I wish I could write like Lionel Richie \u2013 but heartfelt love songs just aren't what I do'",
+            "description": "The English singer-songwriter speaks about his new record 'Look Now', a \u2018dramatised\u2019 cancer operation, and why he\u2019s unlikely to retire any of his more controversial tracks in the Time's Up era",
+            "url": "http://www.independent.co.uk/arts-entertainment/music/features/elvis-costello-interview-look-now-album-cancer-tour-dates-metoo-ed-sheeran-a8579441.html",
+            "urlToImage": "https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/10/09/16/lead-credit-james-omara-0.jpg",
+            "publishedAt": "2018-10-12T06:34:00Z",
+            "content": "Elvis Costello turned on the television one night enjoying a quiet evening after dinner with his eldest son only to find a singer on a new reality show doing a terrible impression of him. He thought he was hallucinating. I couldnt believe it! he says, settled\u2026 [+11058 chars]"
+        },
+        {
+            "source": {
+                "id": "wired",
+                "name": "Wired"
+            },
+            "author": "Klint Finley",
+            "title": "Microsoft Calls a Truce in the Linux Patent Wars",
+            "description": "The software giant, whose former CEO once called Linux a \\\"cancer,\\\" will let others use 60,000 patents for Linux-related open source projects.",
+            "url": "https://www.wired.com/story/microsoft-calls-truce-in-linux-patent-wars/",
+            "urlToImage": "https://media.wired.com/photos/5bbe9c0f2b915f2dff96d6f4/191:100/pass/Satya-Microsoft-MichelleG.jpg",
+            "publishedAt": "2018-10-11T23:33:03Z",
+            "content": "Microsoft is calling for a truce in the patent war. This week the company said it will allow more than 2,600 other companies, including traditional rivals like Google and IBM, to use the technology behind 60,000 Microsoft patents for their own Linux related o\u2026 [+4435 chars]"
+        },
+        {
+            "source": {
+                "id": "fortune",
+                "name": "Fortune"
+            },
+            "author": "Sy Mukherjee",
+            "title": "Why Cancer Biotech Allogene Just Scored an Eye Popping $324 Million IPO",
+            "description": "Cancer biotech Allogene raised a staggering $324 million in its IPO, valuing the company at more than $2 billion. Here's what the firm does.",
+            "url": "http://fortune.com/2018/10/11/biotech-allogene-ipo/",
+            "urlToImage": "https://fortunedotcom.files.wordpress.com/2018/10/allogene-ipo-biotech-e1539288031756.jpg",
+            "publishedAt": "2018-10-11T20:03:36Z",
+            "content": "Biotech\u2019s red-hot IPO streak shows no signs of slowing down. In fact, on Thursday, cancer drug maker Allogene Therapeutics pulled off the biggest public offering in at least a decade (and one of the most lucrative, ever, period). The firm raised $324 million \u2026 [+1807 chars]"
+        },
+        {
+            "source": {
+                "id": "medical-news-today",
+                "name": "Medical News Today"
+            },
+            "author": "Ana Sandoiu",
+            "title": "Breast cancer: Omega-3-rich diet may stop tumors from spreading",
+            "description": "A diet rich in omega-3 fatty acids may halt the growth of cancer cells by strengthening the immune system and curbing inflammation.",
+            "url": "http://www.medicalnewstoday.com/articles/323312.php",
+            "urlToImage": "https://cdn1.medicalnewstoday.com/content/images/hero/323/323312/323312_1100.jpg",
+            "publishedAt": "2018-10-11T00:00:00Z",
+            "content": "New research shows that a diet rich in marine omega-3 fatty acids slows the growth and spread of breast cancer cells in female mice. The diet enriched with omega-3 also improved the rodents' survival. A vast body of research hails the benefits of a diet rich \u2026 [+3573 chars]"
+        },
+        {
+            "source": {
+                "id": "medical-news-today",
+                "name": "Medical News Today"
+            },
+            "author": "Tim Newman",
+            "title": "New risk factor for mouth cancer uncovered",
+            "description": "There are several risk factors associated with mouth cancer. A recent study conducted in Taiwan might add another to the list: air pollution.",
+            "url": "http://www.medicalnewstoday.com/articles/323289.php",
+            "urlToImage": "https://cdn1.medicalnewstoday.com/content/images/hero/323/323289/323289_1100.jpg",
+            "publishedAt": "2018-10-11T00:00:00Z",
+            "content": "In some regions, mouth cancer incidence has risen. A recent study uncovers a new risk factor that might help explain these increases. In certain parts of the world, over the past couple of decades, mouth cancer rates have soared. For instance, in the United K\u2026 [+3868 chars]"
+        }
+    ]
+}
