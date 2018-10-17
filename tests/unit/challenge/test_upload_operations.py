@@ -5,6 +5,19 @@ the uploading to the Amazon S3 the transformed news data
 task performed in the DAGs.
 """
 
+import boto3
+import datetime
+import os
+import pytest
+
+from unittest.mock import MagicMock
+
+from airflow.models import DAG
+
+from dags import challenge as c
+
+from pyfakefs.fake_filesystem_unittest import Patcher
+
 
 @pytest.mark.uploadtests
 class TestUploadOperations:
