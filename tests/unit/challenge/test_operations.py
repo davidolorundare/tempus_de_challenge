@@ -1881,7 +1881,7 @@ class TestTransformOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_transform_news_headlines_json_to_csv_succeed(self):
+    def test_transform_news_headlines_json_to_csv_succeeds(self):
         """transform of a single news headline json file to csv succeeds."""
 
     @pytest.mark.skip
