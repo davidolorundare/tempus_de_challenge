@@ -538,7 +538,7 @@ class NetworkOperations:
         log.info("Running get_news_headlines method")
 
         # reference to the news api key
-        apikey = config.NEWS_API_KEY
+        apikey = os.environ['NEWS_API_KEY']
 
         # grab details about the current dag pipeline runnning
         dag_id = str(context['dag'].dag_id)
