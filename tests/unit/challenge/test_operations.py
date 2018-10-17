@@ -1780,21 +1780,30 @@ class TestTransformOperations:
 
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_json_func)
-        tf_keyword_json_func_mock = MagicMock(spec=j_fn)
+        tf_keyword_func_mock = MagicMock(spec=j_fn)
         pipeline_info_obj = MagicMock(spec=info_obj)
         news_info_obj = MagicMock(spec=info_obj)
 
         # setup the behaviors of these Mocks
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
-        tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
+        tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headline_dir_res
 
+        # setup a fake headlines directory which the function under test
+        # requires be already existent
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(headline_dir_res)
+
         # Act
-        result = transfm_fnc(pipeline_information=pipeline_info_obj,
-                             transform_json_fnc=tf_json_func_mock,
-                             transform_key_json_fnc=tf_keyword_json_func_mock,
-                             **airflow_context)
+            result = transfm_fnc(pipeline_information=pipeline_info_obj,
+                                 transform_json_fnc=tf_json_func_mock,
+                                 transform_key_json_fnc=tf_keyword_func_mock,
+                                 **airflow_context)
 
         # Assert
         # return status of the transformation operation should be True to
@@ -1802,7 +1811,9 @@ class TestTransformOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_transform_headlines_to_csv_convert_pipelinetwo_succeeds(self):
+    def test_transform_headlines_to_csv_pipelinetwo_success(self,
+                                                            headline_dir_res,
+                                                            airflow_context):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
@@ -1820,21 +1831,30 @@ class TestTransformOperations:
 
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_json_func)
-        tf_keyword_json_func_mock = MagicMock(spec=j_fn)
+        tf_keyword_func_mock = MagicMock(spec=j_fn)
         pipeline_info_obj = MagicMock(spec=info_obj)
         news_info_obj = MagicMock(spec=info_obj)
 
         # setup the behaviors of these Mocks
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
-        tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
+        tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headline_dir_res
 
+        # setup a fake headlines directory which the function under test
+        # requires be already existent
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem empty directory to test the method
+            patcher.fs.create_dir(headline_dir_res)
+
         # Act
-        result = transfm_fnc(pipeline_information=pipeline_info_obj,
-                             transform_json_fnc=tf_json_func_mock,
-                             transform_key_json_fnc=tf_keyword_json_func_mock,
-                             **airflow_context)
+            result = transfm_fnc(pipeline_information=pipeline_info_obj,
+                                 transform_json_fnc=tf_json_func_mock,
+                                 transform_key_json_fnc=tf_keyword_func_mock,
+                                 **airflow_context)
 
         # Assert
         # return status of the transformation operation should be True to
