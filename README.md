@@ -33,18 +33,18 @@
 
 2. Open a command line terminal and navigate to the root of the repo directory.
 
-	* In this terminal export, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable `NEWS_API_KEY` and set its value to be the key you obtained.
+3. In this terminal export, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable `NEWS_API_KEY` and set its value to be the key you obtained.
 
-	* Run the command `make init` ; this downloads all of the project's dependencies.
-		- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
+4. Run the command `make init` ; this downloads all of the project's dependencies.
+	- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
 
-	* Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
+5. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
 
-	* Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
-		- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
-		- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
-		- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
-		- In the Console UI (shown below) click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each. The steps are numbered in order.
+6. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
+	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
+	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
+	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
+	- In the Console UI (shown below) click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each. The steps are numbered in order.
 
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/airflow_ui_console.jpeg "Airflow Console UI - Activate and Trigger Dags")
 
