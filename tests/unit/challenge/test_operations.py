@@ -1447,16 +1447,29 @@ class TestTransformOperations:
 
         dag = MagicMock(spec=DAG)
         dag.dag_id = "tempus_challenge_dag"
+        current_execution_time = str(datetime.datetime.now())
 
         return {
-            'ds': datetime.datetime.now().isoformat().split('T')[0],
-            'dag': dag
+            'dag': dag,
+            'execution_date': current_execution_time
         }
 
     @pytest.fixture(scope='class')
     def home_directory_res(self) -> str:
         """returns a pytest resource - path to the Airflow Home directory."""
         return str(os.environ['HOME'])
+
+    @pytest.fixture(scope='class')
+    def headlines_dir_res(self) -> str:
+        """returns a pytest resource - path to the 'tempus_challenge_dag'
+        pipeline headlines directory.
+        """
+
+        headlines_path = os.path.join(self.home_directory_res,
+                                      'tempdata',
+                                      'tempus_challenge_dag',
+                                      'headlines')
+        return headlines_path
 
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_sucess(self,
@@ -1749,7 +1762,8 @@ class TestTransformOperations:
 
     @pytest.mark.skip
     def test_transform_headlines_to_csv_pipelineone_succeeds(self,
-                                                             airflow_context):
+                                                             airflow_context,
+                                                             headlines_dir_res):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
@@ -1776,6 +1790,7 @@ class TestTransformOperations:
         tf_json_func_mock.side_effect = lambda data: "extracted data"
         tf_keyword_json_func_mock.side_effect = lambda data: transform_data_df
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
+        news_info_obj.get_headlines_directory = headlines_dir_res
 
         # path to the fake csv directory the function under test
         # uses
