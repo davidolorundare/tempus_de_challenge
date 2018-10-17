@@ -7,7 +7,7 @@
 
 **Build**: [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
 
-**Coverage**: [![Coverage Status](https://coveralls.io/repos/github/davidolorundare/tempus_de_challenge/badge.svg?branch=master)](https://coveralls.io/github/davidolorundare/tempus_de_challenge?branch=master)
+**Coverage**: [![codecov](https://codecov.io/gh/davidolorundare/tempus_de_challenge/branch/master/graph/badge.svg)](https://codecov.io/gh/davidolorundare/tempus_de_challenge)
 
 
 ---
@@ -123,7 +123,7 @@ GIF OF CODE RUNNING/USAGE
 
 * This project's unit and integration tests can be found in the `tests` folder in the root directory; with the unit tests in the `unit` subdirectory and the integration tests in the `integration` subdirectory. 
 	- Running `make test` from the command line runs all the tests for the associated Python functions used in the project.
-* The project uses [Flake8](http://flake8.pycqa.org/en/latest/) as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and [Coveralls](https://coveralls.io/); these can be further integrated in a [Continuous Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
+* The project uses [Flake8](http://flake8.pycqa.org/en/latest/) as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and [Codecov](https://Codecov.io/); these can be further integrated in a [Continuous Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
 
 The **unit tests** consists of five test suites corresponding to the five core tasks in the two data pipelines. They are split into python files with the prefix `test_xxxxx`, where xxxxx is the name of the kind of functionality being tested.
 The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit testing and test coverage checks, as well as the [Python Mocking library](https://docs.python.org/dev/library/unittest.mock.html) and [PyFakeFS](https://pypi.org/project/pyfakefs/) for simulating I/O dependencies such as functions interacting with the filesystem or making external network calls. The test core suites are:
@@ -140,7 +140,7 @@ The **integration tests** exercise the overall combination of the tasks in the p
 
 1. [Amazon Python SDK (boto 3) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
 2. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
-3. [Coveralls](https://coveralls.io/)
+3. [Codecov](https://codecov.io/)
 4. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
 5. [News API](https://newsapi.org/)
 6. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
