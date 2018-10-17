@@ -1984,7 +1984,6 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir_res)
-            patcher.fs.create_file(full_file_path)
 
             # calling the transformed DataFrame's to_csv() fails and
             # doesn't created a new file in the fake directory
@@ -1999,7 +1998,8 @@ class TestTransformOperations:
 
         # Assert
         # return status of the transformation operation should be False to
-        # indicate failure - the csv file could not be created
+        # indicate failure - the csv file could not be created as no csv
+        # directory exists
         assert result is False
 
     @patch('pandas.read_json', autospec=True)
