@@ -1057,7 +1057,11 @@ class TransformOperations:
     # merged_df = pd.DataFrame()
 
     @classmethod
-    def transform_headlines_to_csv(cls, info_func=None, **context):
+    def transform_headlines_to_csv(cls,
+                                   info_func=None,
+                                   transform_json_fnc=None,
+                                   transform_key_json_fnc=None,
+                                   **context):
         """converts the jsons in a given directory to csv.
 
         Use different transformation methods depending on the
@@ -1096,6 +1100,14 @@ class TransformOperations:
             :param context: Airflow context object reference to the current
                 pipeline.
             :type info_func: dict
+            :param transform_json_fnc: function for transformaing the json
+                headline files in the 'headlines' directory of the
+                'tempus_challenge_dag' pipeline
+            :type transform_json_fnc: function
+            :param transform_key_json_fnc: function for transformaing the json
+                headline files in the 'headlines' directory of the
+                'tempus_bonus_challenge_dag' pipeline
+            :type transform_key_json_fnc: function
         """
 
         log.info("Running transform_headlines_to_csv method")
