@@ -1576,9 +1576,61 @@ class TestTransformOperations:
         expected_dataframe = pd.concat([data_df1, data_df2])
         assert expected_dataframe.equals(result)
 
-    @pytest.mark.skip
     def test_helper_execute_json_transformation_succeeds(self):
         """transforming a set of jsons in a valid directory succeeds"""
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        transfm_fnc = c.TransformOperations.helper_execute_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
+        js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
+        h_csv_fnc = c.TransformOperations.transform_headlines_dataframe_to_csv
+
+        # Mock out the functions that the function under test uses
+        json_csv_func = MagicMock(spec=js_csv_fnc)
+        jsons_df_func = MagicMock(spec=js_df_fnc)
+        df_csv_func = MagicMock(spec=h_csv_fnc)
+
+        # Mock out the behavior of the function under test, returns True
+        # indicating the single json file passed in was successfully
+        # converted to a csv
+        json_csv_func.side_effect = True
+
+        # setup pipeline information
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        # create dummy json file
+        full_file_path = os.path.join(headline_dir, 'dummy.json')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory containing one json file
+            # to test the method
+            patcher.fs.create_dir(headline_dir)
+            patcher.fs.create_file(full_file_path)
+
+        # Act
+            # function should raise errors on an empty directory
+            result = transfm_fnc(directory=headline_dir,
+                                 json_to_csv_func=json_csv_func,
+                                 jsons_to_df_func=jsons_df_func,
+                                 df_to_csv_func=df_csv_func)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        # the transformation of the one json file succeeds and status returned
+        # is True
+        assert result is True
 
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
