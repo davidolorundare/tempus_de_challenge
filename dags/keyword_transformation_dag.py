@@ -42,7 +42,8 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 # https://12factor.net/config
 # https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
 # this should NOT be hardcoded (at least put it in an environment variable)
-# should be replaced with the user's own generate News API Key
+# user should export their own generate News API Key to their commandline
+# with the keyname 'NEWS_API_KEY'
 API_KEY = os.environ["NEWS_API_KEY"]
 
 # Connection object for the News API endpoints
