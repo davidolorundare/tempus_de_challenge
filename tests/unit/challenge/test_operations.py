@@ -1816,7 +1816,6 @@ class TestTransformOperations:
         # indicate success
         assert result is True
 
-    @pytest.mark.skip
     def test_transform_headlines_to_csv_pipelinetwo_success(self,
                                                             headline_dir_res,
                                                             airflow_context):
@@ -1848,8 +1847,8 @@ class TestTransformOperations:
         pipeline_name = 'tempus_bonus_challenge_dag'
         airflow_context['dag'].dag_id = pipeline_name
         headlines_directory = os.path.join('tempdata',
-                                            pipeline_name,
-                                            'headlines')
+                                           pipeline_name,
+                                           'headlines')
 
         news_info_obj.get_headlines_directory = headlines_directory
 
