@@ -1058,7 +1058,7 @@ class TransformOperations:
 
     @classmethod
     def transform_headlines_to_csv(cls,
-                                   info_func=None,
+                                   pipeline_information=None,
                                    transform_json_fnc=None,
                                    transform_key_json_fnc=None,
                                    **context):
@@ -1094,9 +1094,9 @@ class TransformOperations:
         `pipeline_execution_date`_`keyword`_`headlines`.csv
 
         #  Arguments:
-            :param info_func: function used to provide more information
-                about the current pipeline
-            :type info_func: function
+            :param pipeline_information: object that provide more information
+                about the current pipeline. Defaults to the NewsInfoDTO class.
+            :type pipeline_information: object
             :param context: Airflow context object reference to the current
                 pipeline.
             :type info_func: dict
@@ -1120,10 +1120,10 @@ class TransformOperations:
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
-        if not info_func:
-            info_func = NewsInfoDTO
+        if not pipeline_information:
+            pipeline_information = NewsInfoDTO
 
-        pipeline_info = info_func(pipeline_name)
+        pipeline_info = pipeline_information(pipeline_name)
         headline_dir = pipeline_info.get_headlines_directory
 
         # execution date of the current pipeline
