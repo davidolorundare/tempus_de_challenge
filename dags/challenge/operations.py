@@ -1059,8 +1059,8 @@ class TransformOperations:
     @classmethod
     def transform_headlines_to_csv(cls,
                                    pipeline_information=None,
-                                   transform_json_fnc=None,
-                                   transform_key_json_fnc=None,
+                                   tf_json_func=None,
+                                   tf_key_json_func=None,
                                    **context):
         """converts the jsons in a given directory to csv.
 
@@ -1100,14 +1100,14 @@ class TransformOperations:
             :param context: Airflow context object reference to the current
                 pipeline.
             :type info_func: dict
-            :param transform_json_fnc: function for transformaing the json
+            :param tf_json_func: function for transformaing the json
                 headline files in the 'headlines' directory of the
                 'tempus_challenge_dag' pipeline
-            :type transform_json_fnc: function
-            :param transform_key_json_fnc: function for transformaing the json
+            :type tf_json_func: function
+            :param tf_key_json_func: function for transformaing the json
                 headline files in the 'headlines' directory of the
                 'tempus_bonus_challenge_dag' pipeline
-            :type transform_key_json_fnc: function
+            :type tf_key_json_func: function
         """
 
         log.info("Running transform_headlines_to_csv method")
@@ -1115,8 +1115,10 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        transform_json_fnc = cls.helper_execute_json_transformation
-        transform_key_json_fnc = cls.helper_execute_keyword_json_transformation
+        if not transform_json_fnc:
+            tf_json_func = cls.helper_execute_json_transformation
+        if not transform_key_json_fnc:
+            tf_key_json_func = cls.helper_execute_keyword_json_transformation
 
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
