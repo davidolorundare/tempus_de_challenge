@@ -1632,7 +1632,6 @@ class TestTransformOperations:
         # is True
         assert result is True
 
-    @pytest.mark.skip
     def test_helper_execute_json_transformation_for_three_jsons_succeeds(self):
         """transforming a set of jsons in a valid directory succeeds"""
 
