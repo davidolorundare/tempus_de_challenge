@@ -2269,7 +2269,7 @@ class TestUploadOperations:
             patcher.fs.create_dir(news_dir)
             patcher.fs.create_file(full_file_path_one, contents='1,dummy,txt')
             patcher.fs.create_file(full_file_path_two, contents='2,dummy,rtf')
-            patcher.fs.create_file(full_file_path_three, contents='3,dummy,doc')
+            patcher.fs.create_file(full_file_path_three, contents='3,dumy,doc')
 
         # Act
             # function should raise errors on an empty directory
@@ -2321,9 +2321,9 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy non-csv files
-        full_file_path1 = os.path.join(csv_dir, 'stuff1.txt')
-        full_file_path2 = os.path.join(csv_dir, 'stuff2.rtf')
-        full_file_path3 = os.path.join(csv_dir, 'stuff3.doc')
+        full_file_path_one = os.path.join(csv_dir, 'stuff1.txt')
+        full_file_path_two = os.path.join(csv_dir, 'stuff2.rtf')
+        full_file_path_three = os.path.join(csv_dir, 'stuff3.doc')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -2332,9 +2332,9 @@ class TestUploadOperations:
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path1, contents='dummy txt')
-            patcher.fs.create_file(full_file_path2, contents='dummy rtf')
-            patcher.fs.create_file(full_file_path3, contents='dummy doc')
+            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
+            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
