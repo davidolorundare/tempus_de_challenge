@@ -1653,9 +1653,9 @@ class TestTransformOperations:
         # Mock out the behavior of the function under test, returns True
         # indicating the single json file passed in was successfully
         # converted to a csv
-        json_csv_func.side_effect = True
+        json_csv_func.side_effect = lambda files, filename: True
         jsons_df_func.side_effect = pd.DataFrame()
-        df_csv_func = True
+        df_csv_func.side_effect = lambda dataframe, filename: True
 
         # setup pipeline information
         pipeline_name = "tempus_challenge_dag"
