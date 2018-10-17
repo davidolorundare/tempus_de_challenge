@@ -1763,6 +1763,7 @@ class TestTransformOperations:
         # get the current pipeline info
         tf_func = c.TransformOperations.transform_headlines_to_csv
         extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+        info_func = 
 
         # create the dummy input data that will be passed to the function
         # under test
@@ -1772,6 +1773,7 @@ class TestTransformOperations:
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_func)
         tf_keyword_json_func_mock = MagicMock(spec=extract_func)
+        pipeline_info_obj = MagicMock(spec)
 
         # setup the behaviors of these Mocks
         extract_func_mock.side_effect = lambda data: "extracted data"
@@ -1784,10 +1786,6 @@ class TestTransformOperations:
                                'tempdata',
                                pipeline_name,
                                'csv')
-
-        # name and path to the file that will be created after transformation
-        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
-        # fp = os.path.join(csv_dir, filename)
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -1802,7 +1800,7 @@ class TestTransformOperations:
             transform_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
-            result = tf_func(info_func=pipeline_info_func,
+            result = tf_func(pipeline_information=pipeline_info_obj,
                              transform_json_fnc=tf_json_func_mock,
                              transform_key_json_fnc=tf_keyword_json_func_mock,
                              **airflow_context)
@@ -1811,7 +1809,7 @@ class TestTransformOperations:
             patcher.tearDown()
 
         # Assert
-        # return status of the transformation operation should be True to 
+        # return status of the transformation operation should be True to
         # indicate success
         assert result is True
 
