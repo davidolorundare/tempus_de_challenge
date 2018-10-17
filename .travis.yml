@@ -5,6 +5,8 @@ cache: pip
 # install dependencies
 install:
   - pip install -r requirements-test.txt
+  - pip install -r requirements.txt
+  - pip install -r requirements-setup.txt
 # run unit and integration tests
 script:
   - make test
