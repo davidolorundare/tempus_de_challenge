@@ -1807,8 +1807,8 @@ class TestTransformOperations:
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
-                                 transform_json_fnc=tf_json_func_mock,
-                                 transform_key_json_fnc=tf_keyword_func_mock,
+                                 tf_json_func=tf_json_func_mock,
+                                 tf_key_json_func=tf_keyword_func_mock,
                                  **airflow_context)
 
         # Assert
@@ -1868,8 +1868,8 @@ class TestTransformOperations:
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
-                                 transform_json_fnc=tf_json_func_mock,
-                                 transform_key_json_fnc=tf_keyword_func_mock,
+                                 tf_json_func=tf_json_func_mock,
+                                 tf_key_json_func=tf_keyword_func_mock,
                                  **airflow_context)
 
         # Assert
