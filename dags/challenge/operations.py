@@ -1137,11 +1137,11 @@ class TransformOperations:
         # perform context-specific transformations
         if pipeline_name == "tempus_challenge_dag":
             # transform all jsons in the 'headlines' directory
-            transform_status = transform_json_fnc(headline_dir, exec_date)
+            transform_status = tf_json_func(headline_dir, exec_date)
             return transform_status
         elif pipeline_name == "tempus_bonus_challenge_dag":
             # transform all jsons in the 'headlines' directory
-            transform_status = transform_key_json_fnc(headline_dir, exec_date)
+            transform_status = tf_key_json_func(headline_dir, exec_date)
             return transform_status
         else:
             # the active pipeline is not one of the two we developed for.
