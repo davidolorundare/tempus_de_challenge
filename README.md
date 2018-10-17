@@ -33,7 +33,7 @@
 
 2. Open a command line terminal and navigate to the root of the repo directory.
 
-	* Export to this commandline, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable 'NEWS_API_KEY' and set its value to be the key you obtained.
+	* In this terminal export, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable `NEWS_API_KEY` and set its value to be the key you obtained.
 
 	* Run the command `make init` ; this downloads all of the project's dependencies.
 
