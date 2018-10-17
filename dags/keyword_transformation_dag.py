@@ -44,6 +44,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 # this should NOT be hardcoded (at least put it in an environment variable)
 # user should export their own generate News API Key to their commandline
 # with the keyname 'NEWS_API_KEY'
+# See project README for more details.
 API_KEY = os.environ["NEWS_API_KEY"]
 
 # Connection object for the News API endpoints
