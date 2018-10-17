@@ -21,7 +21,7 @@
 	* docker versions are `docker 18.06.1-ce` and `docker-compose 1.22.0`
 4. Register for a free [News API key](https://newsapi.org/register)	in order to use their News RESTFul API service.
 5. Register for a free [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
-	* Before beginning to use the Boto library, you should set up authentication credentials. Credentials for your AWS account can be found in the [IAM Console](https://console.aws.amazon.com/iam/home). You can create or use an existing user. Go to manage access keys and generate a new set of keys. For more details on this see the [documentation here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
+	* Before beginning to use the Boto library, you should set up authentication credentials. Credentials for your AWS account can be found in the [IAM Console](https://console.aws.amazon.com/iam/home). You can create or use an existing user. Go to manage access keys and generate a new set of keys. These are needed required for the project to make S3 bucket-upload requests. For more details on this see the [documentation here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
 	* Create two AWS S3 buckets with your account. Name them `tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`. These buckets will hold the final csv transformations and the project-code *expects* these two buckets to already exist, as it **does not** programmatically create them before
 	uploading and will throw errors if they are detected not to exist in S3.
 
