@@ -1763,7 +1763,7 @@ class TestTransformOperations:
     @pytest.mark.skip
     def test_transform_headlines_to_csv_pipelineone_success(self,
                                                             airflow_context,
-                                                            headlines_dir_res):
+                                                            headline_dir_res):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
@@ -1788,7 +1788,7 @@ class TestTransformOperations:
         tf_json_func_mock.side_effect = lambda dir, exec_date: True
         tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
-        news_info_obj.get_headlines_directory = headlines_dir_res
+        news_info_obj.get_headlines_directory = headline_dir_res
 
         # Act
         result = tf_json_func(pipeline_information=pipeline_info_obj,
