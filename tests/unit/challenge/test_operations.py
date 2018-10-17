@@ -1748,7 +1748,8 @@ class TestTransformOperations:
         assert "Microsoft Calls a Truce in Patent Wars" in actual_title
 
     @pytest.mark.skip
-    def test_transform_headlines_to_csv_convert_pipelineone_succeeds(self):
+    def test_transform_headlines_to_csv_pipelineone_succeeds(self,
+                                                             airflow_context):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
@@ -1768,9 +1769,11 @@ class TestTransformOperations:
         dummy_json_file = None
         transform_data_df = MagicMock(spec=pandas.DataFrame)
 
-        # setup a Mock of the extract and transform function dependencies
-        tf_func_mock = MagicMock(spec=tf_func)
-        extract_func_mock = MagicMock(spec=extract_func)
+        # setup a Mock of the transform function dependencies
+        tf_json_func_mock = MagicMock(spec=tf_func)
+        tf_keyword_json_func_mock = MagicMock(spec=extract_func)
+
+        # setup the behaviors of these Mocks
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
         file_reader_func.side_effect = lambda data: "read-in json file"
@@ -1799,17 +1802,17 @@ class TestTransformOperations:
             transform_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
-            result = tf_func(dummy_json_file,
-                             filename,
-                             extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
+            result = tf_func(info_func=pipeline_info_func,
+                             transform_json_fnc=tf_json_func_mock,
+                             transform_key_json_fnc=tf_keyword_json_func_mock,
+                             **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        # return status of the operation should be True to indicate success
+        # return status of the transformation operation should be True to 
+        # indicate success
         assert result is True
 
     @pytest.mark.skip
