@@ -1820,7 +1820,7 @@ class TestTransformOperations:
     def test_transform_headlines_to_csv_pipelinetwo_success(self,
                                                             headline_dir_res,
                                                             airflow_context):
-        """call to flatten jsons in the tempus_challenge_dag headline
+        """call to flatten jsons in the tempus_bonus_challenge_dag headline
         folder succeeds."""
 
         # Arrange
@@ -1840,19 +1840,23 @@ class TestTransformOperations:
         news_info_obj = MagicMock(spec=c.NewsInfoDTO)
 
         # setup the behaviors of these Mocks
-        tf_json_func_mock.side_effect = lambda dir, exec_date: True
-        tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
+        tf_json_func_mock.side_effect = lambda dir, exec_date: None
+        tf_keyword_func_mock.side_effect = lambda dir, exec_date: True
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
 
+        # setup the information about the active pipeline
         pipeline_name = 'tempus_bonus_challenge_dag'
-        news_info_obj.get_headlines_directory = os.path.join('tempdata',
-                                                             pipeline_name,
-                                                             'headlines')
+        airflow_context['dag'].dag_id = pipeline_name
+        headlines_directory = os.path.join('tempdata',
+                                            pipeline_name,
+                                            'headlines')
+
+        news_info_obj.get_headlines_directory = headlines_directory
 
         # create three dummy json files
-        full_file_path_one = os.path.join(headline_dir, 'dummy1.json')
-        full_file_path_two = os.path.join(headline_dir, 'dummy2.json')
-        full_file_path_three = os.path.join(headline_dir, 'dummy3.json')
+        full_file_path_one = os.path.join(headlines_directory, 'dummy1.json')
+        full_file_path_two = os.path.join(headlines_directory, 'dummy2.json')
+        full_file_path_three = os.path.join(headlines_directory, 'dummy3.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -1861,7 +1865,7 @@ class TestTransformOperations:
             patcher.setUp()
 
             # create a fake filesystem directory and files to test the method
-            patcher.fs.create_dir(headline_dir_res)
+            patcher.fs.create_dir(headlines_directory)
             patcher.fs.create_file(full_file_path_one)
             patcher.fs.create_file(full_file_path_two)
             patcher.fs.create_file(full_file_path_three)
