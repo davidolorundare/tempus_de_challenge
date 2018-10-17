@@ -77,6 +77,8 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 Two Amazon S3 buckets were setup by the author:
 	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
 	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
+---
+
 to store the flattened csv files from the 'tempus_challenge_dag' and 'tempus_bonus_challenge_dag' pipeline respectively. Navigating to these bucket links from any web browser returns any XML list of all their contents. 
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/s3_challenge_bucket.jpeg "Image of Pipeline-1 S3 Bucket")
