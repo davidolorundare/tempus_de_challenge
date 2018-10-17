@@ -1900,10 +1900,6 @@ class TestTransformOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_transform_new_headlines_single_file_to_csv_succeeds(self):
-        """transform of single news headline json file to csv succeeds"""
-
-    @pytest.mark.skip
     def test_transform_news_headlines_to_csv_conversion_failure(self):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder fails."""
