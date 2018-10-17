@@ -1115,9 +1115,9 @@ class TransformOperations:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        if not transform_json_fnc:
+        if not tf_json_func:
             tf_json_func = cls.helper_execute_json_transformation
-        if not transform_key_json_fnc:
+        if not tf_key_json_func:
             tf_key_json_func = cls.helper_execute_keyword_json_transformation
 
         # get active pipeline information
