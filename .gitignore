@@ -9,6 +9,3 @@ tempus_env/
 
 # python egg_info dir
 .eggs/
-
-# unsafe to store the news api key openly in your repo - ensure they are never exposed
-dags/config.py
