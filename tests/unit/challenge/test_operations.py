@@ -1122,7 +1122,7 @@ class TestExtractOperations:
 
         js_one_data = json.dumps(dummy_dta1)
         js_two_data = json.dumps(dummy_dta2)
-        js_three_data = json.dumps(dummy_dta3)
+        js_thre_data = json.dumps(dummy_dta3)
         extract_func_alias = c.ExtractOperations.extract_jsons_source_info
 
         news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
@@ -1142,7 +1142,7 @@ class TestExtractOperations:
             patcher.fs.create_dir(js_dir)
             patcher.fs.create_file(full_file_path_one, contents=js_one_data)
             patcher.fs.create_file(full_file_path_two, contents=js_two_data)
-            patcher.fs.create_file(full_file_path_three, contents=js_three_data)
+            patcher.fs.create_file(full_file_path_three, contents=js_thre_data)
 
         # Act
             actual_result = extract_func_alias(js_list, js_dir)
@@ -1248,34 +1248,34 @@ class TestExtractOperations:
                           {"name": 'ABC News2'}],
                           "headlines": ['headlines1', 'headlines2']}
 
-        js_one_data = json.dumps(dummy_data_one)
-        js_two_data = json.dumps(dummy_data_two)
+        json_file_one_data = json.dumps(dummy_data_one)
+        json_file_two_data = json.dumps(dummy_data_two)
         extract_func_alias = c.ExtractOperations.extract_jsons_source_info
 
         news_path = os.path.join(home_directory_res, 'tempdata', 'jsons')
-        js_dir = news_path
-        js_list = ['stuff1.json', 'stuff2.json']
+        json_directory = news_path
+        json_list = ['stuff1.json', 'stuff2.json']
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
             # create dummy files
-            full_file_path1 = os.path.join(js_dir, 'stuff1.json')
-            full_file_path2 = os.path.join(js_dir, 'stuff2.json')
+            full_file_path_one = os.path.join(json_directory, 'stuff1.json')
+            full_file_path_two = os.path.join(json_directory, 'stuff2.json')
 
             # create a fake filesystem directory files to test the method
-            patcher.fs.create_dir(js_dir)
-            patcher.fs.create_file(full_file_path1,
-                                   contents=js_one_data,
+            patcher.fs.create_dir(json_directory)
+            patcher.fs.create_file(full_file_path_one,
+                                   contents=json_file_one_data,
                                    encoding="utf-16")
-            patcher.fs.create_file(full_file_path2,
-                                   contents=js_two_data,
+            patcher.fs.create_file(full_file_path_two,
+                                   contents=json_file_two_data,
                                    encoding="utf-16")
 
         # Act
             with pytest.raises(ValueError) as err:
-                extract_func_alias(js_list, js_dir)
+                extract_func_alias(json_list, json_directory)
 
             expected = str(err.value)
             # clean up and remove the fake filesystem
