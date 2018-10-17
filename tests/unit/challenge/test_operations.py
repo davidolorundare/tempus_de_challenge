@@ -1471,6 +1471,18 @@ class TestTransformOperations:
                                       'headlines')
         return headlines_path
 
+    @pytest.fixture(scope='class')
+    def csv_dir_res(self) -> str:
+        """returns a pytest resource - path to the 'tempus_challenge_dag'
+        pipeline csv directory.
+        """
+
+        csv_path = os.path.join(self.home_directory_res(),
+                                'tempdata',
+                                'tempus_challenge_dag',
+                                'csv')
+        return csv_path
+
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_sucess(self,
                                                            file_reader_func,
@@ -1880,8 +1892,9 @@ class TestTransformOperations:
         # indicate success
         assert result is True
 
-    @pytest.mark.skip
-    def test_transform_news_headlines_one_json_to_csv_succeeds(self):
+    @patch('pandas.read_json', autospec=True)
+    def test_transform_news_headlines_one_json_to_csv_succeeds(self,
+                                                               reader_func):
         """transform of a single news headline json file to csv succeeds."""
 
         # Arrange
@@ -1892,24 +1905,22 @@ class TestTransformOperations:
         # get the current pipeline info
         tf_json_func = c.TransformOperations.helper_execute_json_transformation
         j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
-        transfm_fnc = c.TransformOperations.transform_headlines_to_csv
+        transfm_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
 
         # setup a Mock of the transform function dependencies
         tf_json_func_mock = MagicMock(spec=tf_json_func)
-        tf_keyword_func_mock = MagicMock(spec=j_fn)
+        transform_func_func_mock = MagicMock(spec=j_fn)
         pipeline_info_obj = MagicMock(spec=c.NewsInfoDTO)
         news_info_obj = MagicMock(spec=c.NewsInfoDTO)
 
         # setup the behaviors of these Mocks
-        tf_json_func_mock.side_effect = lambda dir, exec_date: True
+        extract_func_mock.side_effect = lambda dir, exec_date: True
         tf_keyword_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
         news_info_obj.get_headlines_directory = headline_dir_res
 
         # create three dummy json files
-        full_file_path_one = os.path.join(headline_dir_res, 'dummy1.json')
-        full_file_path_two = os.path.join(headline_dir_res, 'dummy2.json')
-        full_file_path_three = os.path.join(headline_dir_res, 'dummy3.json')
+        full_file_path_one = os.path.join(headline_dir_res, 'dummy.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -1919,15 +1930,14 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headline_dir_res)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(full_file_path)
 
         # Act
-            result = transfm_fnc(pipeline_information=pipeline_info_obj,
-                                 tf_json_func=tf_json_func_mock,
-                                 tf_key_json_func=tf_keyword_func_mock,
-                                 **airflow_context)
+            result = transfm_fnc(full_file_path_one,
+                                 csv_filename="dummy.csv",
+                                 extract_func=extract_func_mock,
+                                 transform_func=transform_func_func_mock,
+                                 read_js_func=reader_func)
 
         # Assert
         # return status of the transformation operation should be True to
