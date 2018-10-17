@@ -1894,7 +1894,8 @@ class TestTransformOperations:
 
     @patch('pandas.read_json', autospec=True)
     def test_transform_news_headlines_one_json_to_csv_succeeds(self,
-                                                               reader_func):
+                                                               reader_func,
+                                                               csv_dir_res):
         """transform of a single news headline json file to csv succeeds."""
 
         # Arrange
@@ -1910,17 +1911,16 @@ class TestTransformOperations:
         # setup a Mock of the transform function dependencies
         transform_func_func_mock = MagicMock(spec=transform_func)
         extract_func_mock = MagicMock(spec=extract_func)
-        pipeline_info_obj = MagicMock(spec=c.NewsInfoDTO)
-        news_info_obj = MagicMock(spec=c.NewsInfoDTO)
+        transformed_df = MagicMock(spec=pandas.DataFrame)
 
         # setup the behaviors of these Mocks
-        extract_func_mock.side_effect = lambda dir, exec_date: True
-        transform_func_func_mock.side_effect = lambda dir, exec_date: None
-        pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
-        news_info_obj.get_headlines_directory = headline_dir_res
+        transformed_df.to_csv.side_effect = lambda *arg: "data transformed"
+        extract_func_mock.side_effect = lambda data: "extracted data"
+        transform_func_func_mock.side_effect = lambda data: transformed_df
+        reader_func.side_effect = lambda json_file: "success reading json"
 
-        # create three dummy json files
-        full_file_path_one = os.path.join(headline_dir_res, 'dummy.json')
+        # create one dummy json file
+        full_file_path = os.path.join(csv_dir_res, 'dummy.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -1929,15 +1929,15 @@ class TestTransformOperations:
             patcher.setUp()
 
             # create a fake filesystem directory and files to test the method
-            patcher.fs.create_dir(headline_dir_res)
+            patcher.fs.create_dir(csv_dir_res)
             patcher.fs.create_file(full_file_path)
 
         # Act
-            result = trnsfm_fnc(full_file_path_one,
-                                 csv_filename="dummy.csv",
-                                 extract_func=extract_func_mock,
-                                 transform_func=transform_func_func_mock,
-                                 read_js_func=reader_func)
+            result = trnsfm_fnc(full_file_path,
+                                csv_filename="dummy.csv",
+                                extract_func=extract_func_mock,
+                                transform_func=transform_func_func_mock,
+                                read_js_func=reader_func)
 
         # Assert
         # return status of the transformation operation should be True to
