@@ -1761,24 +1761,21 @@ class TestTransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         # get the current pipeline info
-        tf_func = c.TransformOperations.transform_headlines_to_csv
-        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
-        info_func = 
+        tf_json_func = c.TransformOperations.helper_execute_json_transformation
+        j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
 
-        # create the dummy input data that will be passed to the function
-        # under test
-        dummy_json_file = None
-        transform_data_df = MagicMock(spec=pandas.DataFrame)
+        info_obj = c.NewsInfoDTO
 
         # setup a Mock of the transform function dependencies
-        tf_json_func_mock = MagicMock(spec=tf_func)
-        tf_keyword_json_func_mock = MagicMock(spec=extract_func)
-        pipeline_info_obj = MagicMock(spec)
+        tf_json_func_mock = MagicMock(spec=tf_json_func)
+        tf_keyword_json_func_mock = MagicMock(spec=j_fn)
+        pipeline_info_obj = MagicMock(spec=info_obj)
+        news_info_obj = MagicMock(spec=info_obj)
 
         # setup the behaviors of these Mocks
-        extract_func_mock.side_effect = lambda data: "extracted data"
-        tf_func_mock.side_effect = lambda data: transform_data_df
-        file_reader_func.side_effect = lambda data: "read-in json file"
+        tf_json_func_mock.side_effect = lambda data: "extracted data"
+        tf_keyword_json_func_mock.side_effect = lambda data: transform_data_df
+        pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
 
         # path to the fake csv directory the function under test
         # uses
