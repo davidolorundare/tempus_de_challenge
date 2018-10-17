@@ -1881,7 +1881,11 @@ class TestTransformOperations:
         assert result is True
 
     @pytest.mark.skip
-    def test_transform_new_headlines_json_to_csv_fails(self):
+    def test_transform_news_headlines_json_to_csv_succeed(self):
+        """transform of a single news headline json file to csv succeeds."""
+
+    @pytest.mark.skip
+    def test_transform_news_headlines_json_to_csv_fails(self):
         """transform of a single news headline json file to csv fails."""
 
     @patch('pandas.read_json', autospec=True)
