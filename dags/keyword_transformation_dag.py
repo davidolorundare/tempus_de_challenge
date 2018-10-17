@@ -6,6 +6,7 @@ The data is transformed into a tabular structure, and finally stored the an AWS
 S3 Bucket.
 """
 
+import os
 
 from datetime import datetime, timedelta
 
@@ -18,7 +19,6 @@ from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
-import config
 
 
 default_args = {
@@ -43,7 +43,7 @@ NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
 # https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
 # this should NOT be hardcoded (at least put it in an environment variable)
 # should be replaced with the user's own generate News API Key
-API_KEY = config.NEWS_API_KEY
+API_KEY = os.environ["NEWS_API_KEY"]
 
 # Connection object for the News API endpoints
 conn_news_api = Connection(conn_id="newsapi",
