@@ -1460,7 +1460,7 @@ class TestTransformOperations:
         return str(os.environ['HOME'])
 
     @pytest.fixture(scope='class')
-    def headlines_dir_res(self) -> str:
+    def headline_dir_res(self) -> str:
         """returns a pytest resource - path to the 'tempus_challenge_dag'
         pipeline headlines directory.
         """
@@ -1775,6 +1775,7 @@ class TestTransformOperations:
         # get the current pipeline info
         tf_json_func = c.TransformOperations.helper_execute_json_transformation
         j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
+        transfm_fnc = c.TransformOperations.transform_headlines_to_csv
 
         info_obj = c.NewsInfoDTO
 
@@ -1791,10 +1792,10 @@ class TestTransformOperations:
         news_info_obj.get_headlines_directory = headline_dir_res
 
         # Act
-        result = tf_json_func(pipeline_information=pipeline_info_obj,
-                              transform_json_fnc=tf_json_func_mock,
-                              transform_key_json_fnc=tf_keyword_json_func_mock,
-                              **airflow_context)
+        result = transfm_fnc(pipeline_information=pipeline_info_obj,
+                             transform_json_fnc=tf_json_func_mock,
+                             transform_key_json_fnc=tf_keyword_json_func_mock,
+                             **airflow_context)
 
         # Assert
         # return status of the transformation operation should be True to
@@ -1945,34 +1946,47 @@ class TestTransformOperations:
         non-existent DAG pipeline name is used.
         """
 
+        # Arrange
+
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
-        tf_func = c.TransformOperations.transform_headlines_to_csv
+        tf_json_func = c.TransformOperations.helper_execute_json_transformation
+        j_fn = c.TransformOperations.helper_execute_keyword_json_transformation
+        transfm_fnc = c.TransformOperations.transform_headlines_to_csv
 
-        # Arrange
-        # setup Mocks needed
-        news_info_class = MagicMock(spec=c.NewsInfoDTO)
-        news_info_test = MagicMock(spec=c.NewsInfoDTO)
+        info_obj = c.NewsInfoDTO
 
-        # use the pytest resource representing an airflow context object
-        airflow_context['dag'].dag_id = "non_existent_pipeline_name"
-        airflow_context['execution_date'] = datetime.datetime.now()
-
-        # setup a dummy class as a Mock object initializing the property
-        # that transform_headlines_to_csv() exercises
-        news_info_test.get_headlines_directory = "/dummy/dir/headlines"
+        # setup a Mock of the transform function dependencies
+        tf_json_func_mock = MagicMock(spec=tf_json_func)
+        tf_keyword_json_func_mock = MagicMock(spec=j_fn)
 
         # setup the dummy NewsInfoDTO class that, on intialization
         # acquires information about a pipeline-name passed in.
         # when it is first called, with a pipeline name, it initializes
         # various properties and returns an instance.
-        news_info_class.side_effect = news_info_test
+        pipeline_info_obj = MagicMock(spec=info_obj)
+        news_info_obj = MagicMock(spec=info_obj)
+
+        # setup the behaviors of these Mocks
+        tf_json_func_mock.side_effect = lambda dir, exec_date: None
+        tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
+        pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
+        
+        # use the pytest resource representing an airflow context object
+        airflow_context['dag'].dag_id = "non_existent_pipeline_name"
+
+        # setup a dummy class as a Mock object initializing the property
+        # that transform_headlines_to_csv() exercises
+        news_info_obj.get_headlines_directory = "/dummy/dir/headlines"
 
         # Act
         # on calling the function with a wrong pipeline name it fails,
         # returning False to signal a failed status
-        result = tf_func(info_func=news_info_class, **airflow_context)
+        result = transfm_fnc(pipeline_information=pipeline_info_obj,
+                             transform_json_fnc=tf_json_func_mock,
+                             transform_key_json_fnc=tf_keyword_json_func_mock,
+                             **airflow_context)
 
         # Assert
         assert result is False
