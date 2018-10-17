@@ -8,7 +8,6 @@ class.
 """
 
 import boto3
-import config
 import datetime
 import errno
 import gc
