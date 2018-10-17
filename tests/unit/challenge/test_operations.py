@@ -1653,6 +1653,8 @@ class TestTransformOperations:
         # indicating the single json file passed in was successfully
         # converted to a csv
         json_csv_func.side_effect = True
+        jsons_df_func.side_effect = pd.DataFrame()
+        df_csv_func = True
 
         # setup pipeline information
         pipeline_name = "tempus_challenge_dag"
@@ -1661,17 +1663,21 @@ class TestTransformOperations:
                                     pipeline_name,
                                     'headlines')
 
-        # create dummy json file
-        full_file_path = os.path.join(headline_dir, 'dummy.json')
+        # create three dummy json files
+        full_file_path_one = os.path.join(headline_dir, 'dummy1.json')
+        full_file_path_two = os.path.join(headline_dir, 'dummy2.json')
+        full_file_path_three = os.path.join(headline_dir, 'dummy3.json')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem directory containing one json file
+            # create a fake filesystem directory containing three json file
             # to test the method
             patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path)
+            patcher.fs.create_file(full_file_path_one)
+            patcher.fs.create_file(full_file_path_two)
+            patcher.fs.create_file(full_file_path_three)
 
         # Act
             # function should raise errors on an empty directory
