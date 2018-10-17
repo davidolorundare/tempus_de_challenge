@@ -8,6 +8,7 @@ init:
 	pip install -r requirements-setup.txt
 	pip install -r requirements-test.txt
 	pip install -r requirements.txt
+	export AIRFLOW_GPL_UNIDECODE="yes"
 	@echo $API_KEY
 
 run: clean
