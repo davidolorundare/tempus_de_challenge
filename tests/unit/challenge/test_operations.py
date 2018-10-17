@@ -1465,7 +1465,7 @@ class TestTransformOperations:
         pipeline headlines directory.
         """
 
-        headlines_path = os.path.join(self.home_directory_res,
+        headlines_path = os.path.join(self.home_directory_res(),
                                       'tempdata',
                                       'tempus_challenge_dag',
                                       'headlines')
@@ -1972,7 +1972,7 @@ class TestTransformOperations:
         tf_json_func_mock.side_effect = lambda dir, exec_date: None
         tf_keyword_json_func_mock.side_effect = lambda dir, exec_date: None
         pipeline_info_obj.side_effect = lambda pipeline_name: news_info_obj
-        
+
         # use the pytest resource representing an airflow context object
         airflow_context['dag'].dag_id = "non_existent_pipeline_name"
 
