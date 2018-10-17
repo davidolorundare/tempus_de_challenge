@@ -1441,8 +1441,8 @@ class TransformOperations:
         keyword_data = read_js_func(json_file)
 
         # extraction and intermediate-transformation of the news json
-        data = extr_frm_frame_fnc(keyword_data)
-        transformed_df = trans_to_frame_fnc(data)
+        data = extract_func(keyword_data)
+        transformed_df = transform_func(data)
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
