@@ -1761,9 +1761,9 @@ class TestTransformOperations:
         assert "Microsoft Calls a Truce in Patent Wars" in actual_title
 
     @pytest.mark.skip
-    def test_transform_headlines_to_csv_pipelineone_succeeds(self,
-                                                             airflow_context,
-                                                             headlines_dir_res):
+    def test_transform_headlines_to_csv_pipelineone_success(self,
+                                                            airflow_context,
+                                                            headlines_dir_res):
         """call to flatten jsons in the tempus_challenge_dag headline
         folder succeeds."""
 
