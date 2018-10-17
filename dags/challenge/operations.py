@@ -1052,10 +1052,6 @@ class NewsInfoDTO:
 class TransformOperations:
     """handles functionality for flattening CSVs."""
 
-    # final DataFrame that will be result from the entire merge of
-    # transformed json new files
-    # merged_df = pd.DataFrame()
-
     @classmethod
     def transform_headlines_to_csv(cls,
                                    pipeline_information=None,
