@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 
 class UploadOperations:
-    """handles functionality for uploading flattened CSVs in a directory.
+    """Handles functionality for uploading flattened CSVs in a directory.
 
     Reads all files in the 'csv' directory and uploads them to a preexisting
     Amazon S3 bucket using the native Amazon Python (boto) library.
@@ -29,7 +29,7 @@ class UploadOperations:
                          aws_service_client=None,
                          aws_resource=None,
                          **context):
-        """uploads files, in a given directory, to an Amazon S3 bucket
+        """Uploads files, in a given directory, to an Amazon S3 bucket
         location.
 
         # Arguments:

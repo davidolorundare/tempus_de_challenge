@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 
 class NetworkOperations:
-    """handles functionality for making remote calls to the News API."""
+    """Handles functionality for making remote calls to the News API."""
 
     # store the current directory of the airflow home folder
     # airflow creates a home environment variable pointing to the location
@@ -24,9 +24,9 @@ class NetworkOperations:
                  news_dir=None,
                  filename=None,
                  gb_var=None):
-        """processes the response from a remote API call to get english news sources.
+        """Processes the response from a remote API call to get english news sources.
 
-        Returns True is the response is valid and stores the content in the
+        Returns True if the response is valid and stores the content in the
         folder appropriately. Returns False if the response is invalid.
         The function also needs to return True for the SimpleHTTPOperator
         response_check parameter to 'pass' or False to indicate its failure

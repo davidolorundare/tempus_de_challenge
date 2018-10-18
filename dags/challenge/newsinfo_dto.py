@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 
 class NewsInfoDTO:
-        """information-object about the news data this pipeline uses.
+        """Information-object about the news data this pipeline uses.
 
 
         This class functions as a Data Transfer Object(DTO).
@@ -58,27 +58,27 @@ class NewsInfoDTO:
 
         @property
         def headlines_directory(self) -> str:
-            """returns the path to this pipeline's headline directory."""
+            """Returns the path to this pipeline's headline directory."""
             return c.FileStorage.get_headlines_directory(self.pipeline)
 
         @property
         def news_directory(self) -> str:
-            """returns the path to this pipeline's news directory."""
+            """Returns the path to this pipeline's news directory."""
             return c.FileStorage.get_news_directory(self.pipeline)
 
         @property
         def csv_directory(self) -> str:
-            """returns the path to this pipeline's csv directory."""
+            """Returns the path to this pipeline's csv directory."""
             return c.FileStorage.get_csv_directory(self.pipeline)
 
         @property
         def news_files(self) -> list:
-            """returns json files in the news directory of this pipeline."""
+            """Returns json files in the news directory of this pipeline."""
             return self.news_json_files
 
         @property
         def s3_bucket_name(self) -> str:
-            """returns the name of the s3 bucket that stores the csv-headline
+            """Returns the name of the s3 bucket that stores the csv-headline
             files of this pipeline.
             """
 
@@ -90,7 +90,7 @@ class NewsInfoDTO:
                 raise ValueError("No S3 Bucket exists for this Pipeline")
 
         def load_news_files(self, news_dir_path=None):
-            """get the file contents of the pipeline's news directory."""
+            """Gets the file contents of the pipeline's news directory."""
 
             files = []
             if not news_dir_path:
