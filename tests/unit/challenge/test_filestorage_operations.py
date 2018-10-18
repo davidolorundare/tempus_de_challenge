@@ -1,7 +1,7 @@
 """Tempus Data Engineer Challenge  - Unit Tests.
 
 Defines unit tests for the underlining functions the
-file_storage task performs in the DAGs.
+file storage task performs in the DAGs.
 """
 
 import datetime
