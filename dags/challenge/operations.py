@@ -1121,7 +1121,7 @@ class TransformOperations:
             pipeline_information = NewsInfoDTO
 
         pipeline_info = pipeline_information(pipeline_name)
-        headline_dir = pipeline_info.get_headlines_directory
+        headline_dir = pipeline_info.headlines_directory
 
         # execution date of the current pipeline
         exec_date = str(context['execution_date'])
@@ -1378,8 +1378,10 @@ class TransformOperations:
 
         for indx, file in enumerate(json_files):
             # perform json to DataFrame transformations by function-chaining
+            log.info(json_files[indx])
             current_file_df = transform_func(extract_func(
-                                             read_js_func(json_files[indx])))
+                                             read_js_func(json_files[indx],
+                                                          lines=True)))
 
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df])
@@ -1437,7 +1439,7 @@ class TransformOperations:
             read_js_func = pd.read_json
 
         # use Pandas to read in the json file
-        keyword_data = read_js_func(json_file)
+        keyword_data = read_js_func(json_file, lines=True)
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
@@ -1540,7 +1542,7 @@ class TransformOperations:
         # use Pandas to read in the json file
         if not reader_func:
             reader_func = pd.read_json
-        keyword_data = reader_func(json_file)
+        keyword_data = reader_func(json_file, lines=True)
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
