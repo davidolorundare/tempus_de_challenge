@@ -9,8 +9,8 @@ log = logging.getLogger(__name__)
 class UploadOperations:
     """handles functionality for uploading flattened CSVs in a directory.
 
-    Reads a 'csv' directory's files and uploads them to a preexisting
-    Amazon S3 bucket using native boto library.
+    Reads all files in the 'csv' directory and uploads them to a preexisting
+    Amazon S3 bucket using the native Amazon Python (boto) library.
 
     The upload function works ONLY with preexisting buckets and strictly
     assumes that the user has created two buckets in AWS S3 named:
