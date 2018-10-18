@@ -173,8 +173,8 @@ class NetworkOperations:
         # Arguments:
             :param response: http response object returned from the
                 SimpleHTTPOperator http call.
-            :type response: Response object
-            :param headlines_dir: directory to store the news data to.
+            :type response: object
+            :param headlines_dir: directory in which to store the news data.
             :type headlines_dir: str
             :param filename: name of the json file created from the Response
                 object data.
@@ -202,9 +202,9 @@ class NetworkOperations:
         # retrieve the json data from the Response object
         data = response.json()
 
-        # write to json data to a file with the query-keyword
-        # as its filename. Note status of the operation.
-        # True implies the write went okay, False otherwise.
+        # write to json data to a file with the query-keyword as its filename.
+        # Note status of the operation. True implies the write went okay,
+        # False otherwise.
         write_stat = c.FileStorage.write_json_to_file(data,
                                                       headlines_dir,
                                                       filename)
@@ -221,7 +221,7 @@ class NetworkOperations:
                              url_endpoint=None,
                              http_method=None,
                              api_key=None):
-        """retrieve a news source's top-headlines via a remote API call.
+        """Retrieve a news source's top-headlines via a remote API call.
 
         # Arguments:
             :param source_id: the id of the news source.
@@ -234,11 +234,12 @@ class NetworkOperations:
                 Library's get() method is used.
             :type http_method: function
             :param api_key: the News API Key for using the News API service.
+                The key is required to use the API and cannot be left blank.
             :type api_key: str
 
         # Raises:
-            ValueError: if no news source id is passed in.
-            ValueError: if no News API Key is passed in
+            ValueError: if no news source id argument is passed in.
+            ValueError: if no News API Key argument is passed in
 
         """
 
