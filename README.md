@@ -33,7 +33,10 @@
 
 2. Open a command line terminal and navigate to the root of the repo directory.
 
-3. In this terminal export, as an [environmental variable](https://en.wikipedia.org/wiki/Environment_variable), the generated News API Key you obtained after registration. Name the environmental variable `NEWS_API_KEY` and set its value to be the key you obtained.
+3. The application uses[environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step.
+	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
+	
+---
 
 4. Run the command `make init` ; this downloads all of the project's dependencies.
 	- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
