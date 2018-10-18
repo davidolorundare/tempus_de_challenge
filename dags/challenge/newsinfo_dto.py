@@ -31,8 +31,8 @@ class NewsInfoDTO:
 
         # Raises:
             ValueError: if the required 'pipeline_name' argument entered is
-                not valid
-            ValueError: if the required 'pipeline_name' argument is left blank
+                not valid.
+            ValueError: if the required 'pipeline_name' argument is left blank.
         """
 
         # store the current directory of the airflow home folder

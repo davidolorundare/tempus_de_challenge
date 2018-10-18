@@ -32,17 +32,17 @@ class NetworkOperations:
         operator's response_check parameter to pass true, indicating success,
         or False; indicating its failure.
 
-        On successful resposne the json content of the response is store in the
-        appropriate 'news' datastore folder based on dag_id context
-        (need to determine this).
+        On successful response, the json content of the response is stored in
+        the appropriate 'news' datastore folder corresponding to the pipeline
+        name gotten from the upstream task (by Airflow's global Variable)
 
         # Arguments
-            :param response: http response object returned from the
-                SimpleHTTPOperator http call.
-            :type response: Response object
-            :param news_dir: directory to store the news data to.
+            :param response: http response object returned, as a
+            requests.Response object, from the SimpleHTTPOperator http call.
+            :type response: object
+            :param news_dir: directory in which to store the news data.
             :type news_dir: str
-            :param filename: name of the json file created from the Response
+            :param filename: name of the json file, created from the Response
                 object data.
             :type filename: str
             :param gb_var: global variable used referencing the current
