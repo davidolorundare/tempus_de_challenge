@@ -16,6 +16,8 @@ from airflow.models import DAG
 
 from dags import challenge as c
 
+from dags.challenge.filestorage import FileStorage
+
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 
