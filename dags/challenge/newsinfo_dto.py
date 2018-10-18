@@ -38,16 +38,15 @@ class NewsInfoDTO:
             :type json_data: dict
             :param pipeline_name: name of the current DAG pipeline.
             :type pipeline_name: str
-            :param dir_check_func: function that returns news directory of
-                the pipeline
-            :type dir_check_func: function
+            :param news_dir_path: path to the news directory of this pipeline
+            :type news_dir_path: function
 
         # Raises:
             ValueError: if the required 'json_data' argument is left blank
             ValueError: if the required 'pipeline_name' argument is left blank
         """
 
-        def __init__(self, pipeline_name, dir_check_func=None):
+        def __init__(self, pipeline_name, news_dir_path=None):
             valid_dags = ['tempus_challenge_dag', 'tempus_bonus_challenge_dag']
 
             if not pipeline_name:
@@ -62,7 +61,7 @@ class NewsInfoDTO:
             # collated news sources json files from the upstream task
             self.news_json_files = []
             if self.pipeline == "tempus_challenge_dag":
-                self.news_json_files = self.load_news_files(dir_check_func)
+                self.news_json_files = self.load_news_files(news_dir_path)
 
         @property
         def headlines_directory(self) -> str:
@@ -97,15 +96,15 @@ class NewsInfoDTO:
             else:
                 raise ValueError("No S3 Bucket exists for this Pipeline")
 
-        def load_news_files(self, dir_check_func=None):
+        def load_news_files(self, news_dir_path=None):
             """get the contents of the pipeline's news directory."""
 
             files = []
-            if not dir_check_func:
-                dir_check_func = self.news_directory
+            if not news_dir_path:
+                news_dir_path = self.news_directory
 
-            if dir_check_func and os.listdir(dir_check_func):
-                for data_file in os.listdir(dir_check_func):
+            if news_dir_path and os.listdir(news_dir_path):
+                for data_file in os.listdir(news_dir_path):
                     if data_file.endswith('.json'):
                         files.append(data_file)
             return files

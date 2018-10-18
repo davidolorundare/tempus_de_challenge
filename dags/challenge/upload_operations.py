@@ -2,8 +2,6 @@ import boto3
 import logging
 import os
 
-from dags import challenge as c
-
 
 log = logging.getLogger(__name__)
 

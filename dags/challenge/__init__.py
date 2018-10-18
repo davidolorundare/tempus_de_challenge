@@ -1,6 +1,5 @@
 """directory imports."""
 from .sample import *
-# from .operations import *
 from .filestorage_operations import FileStorage
 from .transform_operations import TransformOperations
 from .network_operations import NetworkOperations

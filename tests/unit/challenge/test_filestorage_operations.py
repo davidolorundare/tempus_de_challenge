@@ -19,16 +19,6 @@ from dags import challenge as c
 from pyfakefs.fake_filesystem_unittest import Patcher
 
 
-class MissingApiKeyError(ValueError):
-    """raised when no api key is found or set"""
-    pass
-
-
-class NoFilesFoundError(FileNotFoundError):
-    """raised no files of a particular type exist in a directory"""
-    pass
-
-
 @pytest.mark.storagetests
 class TestFileStorageOperations:
     """Tests the creation of the tempoary datastores used during ETL tasks.
