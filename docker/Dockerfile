@@ -73,12 +73,18 @@ COPY ["Makefile", \
       "requirements.txt", \
       "requirements-test.txt", \
       "requirements-setup.txt", \
+      ".env", \
       "setup.py", \
       "setup.cfg", \
       "README.md", \
       "/tmp/"]
 
 RUN make -C /tmp/ init
+
+# load user-defined environmental variables
+RUN set -a
+RUN . .env
+RUN set +a
 
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg

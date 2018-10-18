@@ -9,3 +9,6 @@ tempus_env/
 
 # python egg_info dir
 .eggs/
+
+# environmental variables used locally
+.env
