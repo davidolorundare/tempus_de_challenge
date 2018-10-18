@@ -5,13 +5,9 @@ import os
 
 log = logging.getLogger(__name__)
 
-# store the current directory of the airflow home folder
-# airflow creates a home environment variable pointing to the location
-HOME_DIRECTORY = str(os.environ['HOME'])
-
 
 class UploadOperations:
-    """handles functionality for uploading flattened CSVs.
+    """handles functionality for uploading flattened CSVs in a directory.
 
     Reads a 'csv' directory's files and uploads them to a preexisting
     Amazon S3 bucket using native boto library.
@@ -20,6 +16,10 @@ class UploadOperations:
     assumes that the user has created two buckets in AWS S3 named:
     'tempus-challenge-csv-headlines' and 'tempus-bonus-challenge-csv-headlines'
     """
+
+    # store the current directory of the airflow home folder
+    # airflow creates a home environment variable pointing to the location
+    HOME_DIRECTORY = str(os.environ['HOME'])
 
     @classmethod
     def upload_csv_to_s3(cls,
