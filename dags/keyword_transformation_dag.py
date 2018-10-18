@@ -168,9 +168,9 @@ start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 
 # make news api calls with the four keywords and ensure the
 # data has been retrieved before beginning the ETL process.
-datastore_creation_task >> news_kw2_task >> file_exists_sensor
-datastore_creation_task >> news_kw3_task >> file_exists_sensor
-datastore_creation_task >> news_kw4_task >> file_exists_sensor
+# datastore_creation_task >> news_kw2_task >> file_exists_sensor
+# datastore_creation_task >> news_kw3_task >> file_exists_sensor
+# datastore_creation_task >> news_kw4_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
