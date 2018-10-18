@@ -18,7 +18,7 @@ class UploadOperations:
     """
 
     # store the current directory of the airflow home folder
-    # airflow creates a home environment variable pointing to the location
+    # airflow creates a home environment variable pointing to the location.
     HOME_DIRECTORY = str(os.environ['HOME'])
 
     @classmethod
@@ -28,14 +28,14 @@ class UploadOperations:
                          aws_service_client=None,
                          aws_resource=None,
                          **context):
-        """uploads a files, in a given directory, to an Amazon S3 bucket
+        """uploads files, in a given directory, to an Amazon S3 bucket
         location.
 
         # Arguments:
             :param csv_directory: path to the directory containing all the
-                csv headline files.
+                csv-headline files.
             :type csv_directory: str
-            :param bucket_name: name of an existing s3 bucket
+            :param bucket_name: name of an existing s3 bucket location.
             :type bucket_name: str
             :param aws_service_client: reference to an s3 service client object
                 instance that should be used. If left blank, the function
@@ -46,7 +46,7 @@ class UploadOperations:
                 function creates a new one.
             :type aws_resource: object
             :param context: airflow context object referencing the current
-                pipeline
+                pipeline.
             :type context: dict
         """
 
