@@ -165,7 +165,7 @@ class NetworkOperations:
                                    response: requests.Response,
                                    headlines_dir=None,
                                    filename=None):
-        """processes the response from the remote API call to get keyword headlines.
+        """Processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
         'tempus_bonus_challenge_dag'.
