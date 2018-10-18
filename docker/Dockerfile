@@ -81,9 +81,7 @@ COPY ["Makefile", \
 
 RUN make -C /tmp/ init
 
-# load user-defined environmental variables
-RUN source .env
-RUN export $(cut -d= -f1 .env)
+RUN echo $NEWS_API_KEY
 
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
