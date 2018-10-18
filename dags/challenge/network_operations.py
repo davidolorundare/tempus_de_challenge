@@ -68,13 +68,15 @@ class NetworkOperations:
         if not gb_var:
             pipeline_name = Variable.get("current_dag_id")
         else:
+            # for instances in which the Airflow Variable doesn't work e.g.
+            # unit testing this class in isolation.
             pipeline_name = gb_var
 
         # assign a default directory to store the data
         if not news_dir:
             news_dir = c.FileStorage.get_news_directory(pipeline_name)
 
-        # assign a default filename for the data
+        # assign a default filename for the data if one isn't set
         fname = filename
         if not filename:
             fname = "english_news_sources"
@@ -82,7 +84,7 @@ class NetworkOperations:
         # copy of the json data
         json_data = response.json()
 
-        # write the data to file
+        # write the data to file if the response status is 'okay'
         if status_code == requests.codes.ok:
             c.FileStorage.write_json_to_file(data=json_data,
                                              path_to_dir=news_dir,
@@ -99,23 +101,21 @@ class NetworkOperations:
 
     @classmethod
     def get_news_headlines(cls, **context):
-        """macro function for the Airflow PythonOperator that processes
+        """Macro function for the Airflow PythonOperator that processes
         the retrieved upstream news json data into top-headlines.
 
-        Operations Performed:
+        Operations Performed in order:
 
         extract the top-headlines and save them to a 'headlines' folder by:
 
-        - getting the context-specific news directory (get_news_directory)
+        - getting the context-specific news directory.
 
         - for each json file in that directory
            - read the file (json.load)
-           - get the news sources id and put them in a list (extract source-id)
+           - get the news sources id and put them in a list.
 
         - for each source id in the list
-           - make httpcall to get its headlines as json (get_source_headlines)
-           - extract the headlines (extract_news_headlines)
-           - put them into a json (create_headline_json_func)
+           - make remote httpcall to get its headlines as json
            - write the json to the 'headlines' directory (write_json_to_file)
 
         # Arguments:
