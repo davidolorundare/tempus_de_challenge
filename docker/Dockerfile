@@ -82,9 +82,8 @@ COPY ["Makefile", \
 RUN make -C /tmp/ init
 
 # load user-defined environmental variables
-RUN set -a
-RUN . /.env
-RUN set +a
+RUN source .env
+RUN export $(cut -d= -f1 .env)
 
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
