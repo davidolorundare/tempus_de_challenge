@@ -27,9 +27,10 @@ class NetworkOperations:
         """Processes the response from a remote API call to get english news sources.
 
         Returns True if the response is valid and stores the content in the
-        folder appropriately. Returns False if the response is invalid.
-        The function also needs to return True for the SimpleHTTPOperator
-        response_check parameter to 'pass' or False to indicate its failure
+        appropriate folder. Returns False if the response is invalid or fails.
+        The function needs to return True for the Airflow SimpleHTTPOperator
+        operator's response_check parameter to pass true, indicating success,
+        or False; indicating its failure.
 
         On successful resposne the json content of the response is store in the
         appropriate 'news' datastore folder based on dag_id context
