@@ -26,11 +26,12 @@ class NewsInfoDTO:
         # Arguments:
             :param pipeline_name: name of the current DAG pipeline.
             :type pipeline_name: str
-            :param news_dir_path: path to the news directory of this pipeline
+            :param news_dir_path: path to the news directory of this pipeline.
             :type news_dir_path: function
 
         # Raises:
-            ValueError: if the required 'json_data' argument is left blank
+            ValueError: if the required 'pipeline_name' argument entered is
+                not valid
             ValueError: if the required 'pipeline_name' argument is left blank
         """
 
@@ -77,7 +78,7 @@ class NewsInfoDTO:
 
         @property
         def s3_bucket_name(self) -> str:
-            """returns the name of the s3 bucket that stores the csv headline
+            """returns the name of the s3 bucket that stores the csv-headline
             files of this pipeline.
             """
 
@@ -89,7 +90,7 @@ class NewsInfoDTO:
                 raise ValueError("No S3 Bucket exists for this Pipeline")
 
         def load_news_files(self, news_dir_path=None):
-            """get the contents of the pipeline's news directory."""
+            """get the file contents of the pipeline's news directory."""
 
             files = []
             if not news_dir_path:

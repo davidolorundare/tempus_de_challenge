@@ -2,8 +2,6 @@
 import logging
 import os
 import requests
-import pandas as pd
-
 
 from airflow.models import Variable
 
@@ -12,17 +10,13 @@ from dags import challenge as c
 
 log = logging.getLogger(__name__)
 
-# store the current directory of the airflow home folder
-# airflow creates a home environment variable pointing to the location
-HOME_DIRECTORY = str(os.environ['HOME'])
-
-# final DataFrame that will be result from the entire merge of
-# transformed json new files
-merged_df = pd.DataFrame()
-
 
 class NetworkOperations:
-    """handles functionality making remote calls to the News API."""
+    """handles functionality for making remote calls to the News API."""
+
+    # store the current directory of the airflow home folder
+    # airflow creates a home environment variable pointing to the location
+    HOME_DIRECTORY = str(os.environ['HOME'])
 
     @classmethod
     def get_news(cls,
