@@ -122,6 +122,9 @@ For each the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_de_challenge.gif "Activating and Triggering a Pipeline Run")
 
+---
+
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_de_challenge_graph-view.gif "Graph View of Pipeline")
 
 ---
 ### Running Tests (Unit and Integration)
