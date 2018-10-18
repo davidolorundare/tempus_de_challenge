@@ -24,7 +24,7 @@ class NetworkOperations:
                  news_dir=None,
                  filename=None,
                  gb_var=None):
-        """processes the response from the API call to get all english news sources.
+        """processes the response from a remote API call to get english news sources.
 
         Returns True is the response is valid and stores the content in the
         folder appropriately. Returns False if the response is invalid.
