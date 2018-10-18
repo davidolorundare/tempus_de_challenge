@@ -35,7 +35,9 @@
 
 3. The application uses[environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step.
 	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
-	
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/configure_api_keys_image.jpeg "Configuring API Keys")
+
+
 ---
 
 4. Run the command `make init` ; this downloads all of the project's dependencies.
