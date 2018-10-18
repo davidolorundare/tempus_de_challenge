@@ -1,24 +1,15 @@
 
 import logging
 import os
-import pandas as pd
 
 from dags import challenge as c
 
 
 log = logging.getLogger(__name__)
 
-# store the current directory of the airflow home folder
-# airflow creates a home environment variable pointing to the location
-HOME_DIRECTORY = str(os.environ['HOME'])
-
-# final DataFrame that will be result from the entire merge of
-# transformed json new files
-merged_df = pd.DataFrame()
-
 
 class NewsInfoDTO:
-        """information about the news data this pipeline uses.
+        """information-object about the news data this pipeline uses.
 
 
         This class functions as a Data Transfer Object(DTO).
@@ -30,12 +21,9 @@ class NewsInfoDTO:
         decided to create a separate class which abstracted much of the shared
         functionality.
         Refactoring the get_news_headlines() function also made it easier to
-        unit test as well.
+        unit test it better as well.
 
         # Arguments:
-            :param json_data: the json news data from which the news-headlines
-                will be extracted from.
-            :type json_data: dict
             :param pipeline_name: name of the current DAG pipeline.
             :type pipeline_name: str
             :param news_dir_path: path to the news directory of this pipeline
@@ -45,6 +33,10 @@ class NewsInfoDTO:
             ValueError: if the required 'json_data' argument is left blank
             ValueError: if the required 'pipeline_name' argument is left blank
         """
+
+        # store the current directory of the airflow home folder
+        # airflow creates a home environment variable pointing to the location
+        HOME_DIRECTORY = str(os.environ['HOME'])
 
         def __init__(self, pipeline_name, news_dir_path=None):
             valid_dags = ['tempus_challenge_dag', 'tempus_bonus_challenge_dag']
