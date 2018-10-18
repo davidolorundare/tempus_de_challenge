@@ -45,15 +45,16 @@ class NetworkOperations:
             :param filename: name of the json file, created from the Response
                 object data.
             :type filename: str
-            :param gb_var: global variable used referencing the current
+            :param gb_var: global variable used to reference the current
                 DAG pipeline name. This parameter exists because Airflow
                 gives errors when using the `Variable` class to test locally
                 for setting/getting, as it requires Airflow be already running.
-                Python's os.environ property is used, in its place, during unit
-                tests for set/getting environ variables. However, os.environ
-                variables don't seem to carry over between Airflow tasks.
+                Python's os.environ property is used, in its place, by default
+                if it is not set (for example, during unit testing).
+                However, using Python's os.environ(), variables don't seem to
+                carry over between Airflow tasks very well.
                 (Using either Airflow's Variable or XCom classes might be more
-                ideal here.)
+                ideal here eventually.)
             :type gb_var: str
         """
 
