@@ -83,7 +83,7 @@ RUN make -C /tmp/ init
 
 # load user-defined environmental variables
 RUN set -a
-RUN . .env
+RUN . /.env
 RUN set +a
 
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
