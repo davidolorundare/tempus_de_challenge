@@ -419,7 +419,15 @@ class TransformOperations:
             read_js_func = pd.read_json
 
         # use Pandas to read in the json file
-        keyword_data = read_js_func(json_file, lines=True)
+        try:
+            keyword_data = read_js_func(json_file, lines=True)
+        except ValueError as err:
+            # if any errors are encountered during reading then skip the
+            # file to the next, but log it to the console.
+            error_message = str(err.value)
+            log.info("Error Encountered: {}".format(error_message))
+            # re-raise the error
+            raise ValueError
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
@@ -522,7 +530,15 @@ class TransformOperations:
         # use Pandas to read in the json file
         if not reader_func:
             reader_func = pd.read_json
-        keyword_data = reader_func(json_file, lines=True)
+        try:
+            keyword_data = reader_func(json_file, lines=True)
+        except ValueError as err:
+            # if any errors are encountered during reading then skip the
+            # file to the next, but log it to the console.
+            error_message = str(err.value)
+            log.info("Error Encountered: {}".format(error_message))
+            # re-raise the error
+            raise ValueError
 
         # extraction and intermediate-transformation of the news json
         data = extract_func(keyword_data)
