@@ -9,17 +9,17 @@ import pandas as pd
 
 log = logging.getLogger(__name__)
 
-# store the current directory of the airflow home folder
-# airflow creates a home environment variable pointing to the location
-HOME_DIRECTORY = str(os.environ['HOME'])
-
-# final DataFrame that will be result from the entire merge of
-# transformed json new files
-merged_df = pd.DataFrame()
-
 
 class ExtractOperations:
-    """handles functionality for extracting headlines."""
+    """Handles functionality for extracting headlines."""
+
+    # store the current directory of the airflow home folder
+    # airflow creates a home environment variable pointing to the location
+    HOME_DIRECTORY = str(os.environ['HOME'])
+
+    # final DataFrame that will be result from the entire merge of
+    # transformed json new files
+    merged_df = pd.DataFrame()
 
     @classmethod
     def create_top_headlines_json(cls, source_id, source_name, headlines):
