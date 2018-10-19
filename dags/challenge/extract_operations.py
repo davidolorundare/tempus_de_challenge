@@ -6,16 +6,15 @@ import os
 import requests
 import pandas as pd
 
-
 log = logging.getLogger(__name__)
+
+# store the current directory of the airflow home folder
+# airflow creates a home environment variable pointing to the location
+HOME_DIRECTORY = str(os.environ['HOME'])
 
 
 class ExtractOperations:
     """Handles functionality for extracting headlines."""
-
-    # store the current directory of the airflow home folder
-    # airflow creates a home environment variable pointing to the location
-    HOME_DIRECTORY = str(os.environ['HOME'])
 
     # final DataFrame that will be result from the entire merge of
     # transformed json new files

@@ -7,6 +7,10 @@ from dags import challenge as c
 
 log = logging.getLogger(__name__)
 
+# store the current directory of the airflow home folder
+# airflow creates a home environment variable pointing to the location
+HOME_DIRECTORY = str(os.environ['HOME'])
+
 
 class NewsInfoDTO:
         """Information-object about the news data this pipeline uses.
@@ -34,10 +38,6 @@ class NewsInfoDTO:
                 not valid.
             ValueError: if the required 'pipeline_name' argument is left blank.
         """
-
-        # store the current directory of the airflow home folder
-        # airflow creates a home environment variable pointing to the location
-        HOME_DIRECTORY = str(os.environ['HOME'])
 
         def __init__(self, pipeline_name, news_dir_path=None):
             valid_dags = ['tempus_challenge_dag', 'tempus_bonus_challenge_dag']
