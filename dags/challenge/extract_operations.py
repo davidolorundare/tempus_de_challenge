@@ -35,9 +35,9 @@ class ExtractOperations:
             :type headlines: list
 
         # Raises:
-            ValueError: if the no source_id is given
-            ValueError: if the no source_name is given
-            ValueError: if the no headlines is given
+            ValueError: if the no source_id is given.
+            ValueError: if the no source_name is given.
+            ValueError: if the no headlines is given.
         """
 
         log.info("Running create_top_headlines_json method")
@@ -58,7 +58,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_source_id(cls, json_data):
-        """returns a list of (string) news source ids from a valid json.
+        """Returns a list of (string) news source ids from a valid json.
 
         # Arguments:
             :param json_data: the json news data from which the news-source
@@ -93,7 +93,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_headlines(cls, json_data):
-        """returns a list of (string) news headlines from a valid json.
+        """Returns a list of (string) news headlines from a valid json.
 
         # Arguments:
             :param json_data: the json news data from which the news-headlines
@@ -101,7 +101,7 @@ class ExtractOperations:
             :type json_data: dict
 
         # Raises:
-            KeyError: if the given json news data has no news 'articles'
+            KeyError: if the given json news data has no news 'articles'.
             ValueError: if the given json news headlines data has a
                 'articles' tag with empty data.
         """
@@ -125,7 +125,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_headline_keyword(cls, response: requests.Response):
-        """extract string query keyword used to request given http Response.
+        """Extract string query keyword used to request given http Response.
 
         It specficially stores the query keyword, from the http Response
         object, that was applied during the http request to the 'top-headlines'
@@ -165,7 +165,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_jsons_source_info(cls, json_list, json_directory):
-        """parses a given list of news jsons for their source ids and names.
+        """Parses a given list of news jsons for their source ids and names.
 
         Returns a tuple of the source id and name.
 
@@ -176,7 +176,7 @@ class ExtractOperations:
             :type json_directory: str
 
         # Raises:
-            ValueError: if an error during parsing a json file is found
+            ValueError: if an error during parsing a json file is found.
         """
 
         log.info("Running extract_jsons_source_info method")
@@ -202,7 +202,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_data_from_dataframe(cls, frame):
-        """returns extracted information from a news dataframe.
+        """Returns extracted information from a news dataframe.
 
         Based on the API documentation for the top-headlines, for the
         returned response, the fields that we need from each json object
@@ -238,7 +238,7 @@ class ExtractOperations:
         Returns a dictionary containing all these extracted information.
 
         # Arguments:
-            :param frame: a Pandas DataFrame containing news data
+            :param frame: a Pandas DataFrame containing news data.
             :type frame: DataFrame
         """
 
