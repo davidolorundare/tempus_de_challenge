@@ -143,7 +143,7 @@ class FileStorage:
                            path_to_dir,
                            filename=None,
                            create_date=None):
-        """writes given json news data to an existing directory.
+        """Writes given json news data to an existing directory.
 
         Perfoms checks if the json data and directory are valid, otherwise
         raises error exceptions. the files are prefixed with the current
@@ -218,24 +218,24 @@ class FileStorage:
                                        headline_dir,
                                        api_key,
                                        headline_func=None):
-        """writes extracted news source headline json data to an existing directory.
+        """Writes extracted news source headline json data to an existing directory.
 
         # Arguments:
-            :param source_ids: list of news source id tags
+            :param source_ids: list of news source id tags.
             :type source_ids: list
-            :param source_names: list of news source name tags
+            :param source_names: list of news source name tags.
             :type source_names: list
             :param headline_dir: directory path in which the source-headlines
                 should be stored in.
             :type headline_dir: str
             :param api_key: string News API Key used for performing retrieval
-                of a source's top headlines remotely
+                of a source's top headlines remotely.
             :type api_key: str
             :param headline_func: function to use for extracting headlines.
             :type headline_func: function
 
         # Raises:
-            ValueError: if any of the arguments are left blank
+            ValueError: if any of the arguments are left blank.
         """
 
         log.info("Running write_source_headlines_to_file method")
@@ -287,7 +287,7 @@ class FileStorage:
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
-        """returns the news directory path for a given DAG pipeline.
+        """Returns the news directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -326,7 +326,7 @@ class FileStorage:
 
     @classmethod
     def get_headlines_directory(cls, pipeline_name: str):
-        """returns the headlines directory path for a given DAG pipeline.
+        """Teturns the headlines directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -365,7 +365,7 @@ class FileStorage:
 
     @classmethod
     def get_csv_directory(cls, pipeline_name: str):
-        """returns the csv directory path for a given DAG pipeline.
+        """Returns the csv directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.

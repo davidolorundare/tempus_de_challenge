@@ -10,10 +10,6 @@ from dags import challenge as c
 
 log = logging.getLogger(__name__)
 
-# store the current directory of the airflow home folder
-# airflow creates a home environment variable pointing to the location
-HOME_DIRECTORY = str(os.environ['HOME'])
-
 # final DataFrame that will be result from the entire merge of
 # transformed json new files
 merged_df = pd.DataFrame()
@@ -21,6 +17,10 @@ merged_df = pd.DataFrame()
 
 class TransformOperations:
     """handles functionality for flattening CSVs."""
+
+    # store the current directory of the airflow home folder
+    # airflow creates a home environment variable pointing to the location
+    HOME_DIRECTORY = str(os.environ['HOME'])
 
     @classmethod
     def transform_headlines_to_csv(cls,
