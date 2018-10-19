@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import requests
-import pandas as pd
 import shutil
 import time
 
@@ -18,19 +17,15 @@ log = logging.getLogger(__name__)
 # airflow creates a home environment variable pointing to the location
 HOME_DIRECTORY = str(os.environ['HOME'])
 
-# final DataFrame that will be result from the entire merge of
-# transformed json new files
-merged_df = pd.DataFrame()
-
 
 class FileStorage:
-    """Handles functionality for data storage."""
+    """Handles functionality for news data storage on the local filesystem."""
 
     @classmethod
     def dummy_function(cls, dummy_arg=None):
-        """function that does absolutely nothing.
+        """Function that does absolutely nothing.
 
-        But, was found useful in some of the code below.
+        But, is useful in some of the code below.
 
         # Arguments:
             :param dummy_arg: some dummy argument.
