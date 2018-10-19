@@ -16,7 +16,7 @@ merged_df = pd.DataFrame()
 
 
 class TransformOperations:
-    """handles functionality for flattening CSVs."""
+    """Handles functionality for flattening CSVs."""
 
     # store the current directory of the airflow home folder
     # airflow creates a home environment variable pointing to the location
@@ -28,7 +28,7 @@ class TransformOperations:
                                    tf_json_func=None,
                                    tf_key_json_func=None,
                                    **context):
-        """converts the jsons in a given directory to csv.
+        """Converts the jsons in a given directory to csv.
 
         Use different transformation methods depending on the
         current active pipeline.
@@ -68,11 +68,11 @@ class TransformOperations:
             :type info_func: dict
             :param tf_json_func: function for transformaing the json
                 headline files in the 'headlines' directory of the
-                'tempus_challenge_dag' pipeline
+                'tempus_challenge_dag' pipeline.
             :type tf_json_func: function
             :param tf_key_json_func: function for transformaing the json
                 headline files in the 'headlines' directory of the
-                'tempus_bonus_challenge_dag' pipeline
+                'tempus_bonus_challenge_dag' pipeline.
             :type tf_key_json_func: function
         """
 
@@ -120,7 +120,7 @@ class TransformOperations:
     def helper_execute_keyword_json_transformation(cls,
                                                    directory,
                                                    timestamp=None):
-        """runs a block of code to transform keyword json headlines to csv.
+        """Helper function which transforms news keyword json-headlines to csv.
 
         # Arguments:
             :param directory: directory having the jsons to
