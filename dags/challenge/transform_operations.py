@@ -127,7 +127,7 @@ class TransformOperations:
                 execute a transformation on.
             :type directory: str
             :param timestamp: date of the pipeline execution that
-                should be appended to created csv files
+                should be appended to created csv files.
             :type timestamp: datetime object
         """
 
@@ -169,7 +169,7 @@ class TransformOperations:
                                            json_to_csv_func=None,
                                            jsons_to_df_func=None,
                                            df_to_csv_func=None):
-        """runs a block of code to transform json headlines to csv.
+        """Helper function which transforms news json-headlines to csv.
 
 
         A number of performance issues need to be considered for this task:
@@ -223,17 +223,17 @@ class TransformOperations:
                 execute a transformation on.
             :type directory: str
             :param timestamp: date of the pipeline execution that
-                should be appended to created csv files
+                should be appended to created csv files.
             :type timestamp: datetime object
             :param json_to_csv_func: function that transforms a single news
-                json file into a csv
+                json file into a csv.
             :type json_to_csv_func: function
             :param jsons_to_df_func: function that transforms a set of news
                 json files into intermediary DataFrames and merges them into
-                one final DataFrame
+                one final DataFrame.
             :type jsons_to_df_func: function
             :param df_to_csv_func: function that transforms a single DataFrame
-                into a csv file
+                into a csv file.
         """
 
         log.info("Running helper_execute_json_transformation method")
@@ -300,13 +300,13 @@ class TransformOperations:
             :param json_files: a list of json files to be processed.
             :type json_files: list
             :param extract_func: the function used to extract news data
-                from a dataframe
+                from a dataframe.
             :type extract_func: function
             :param transform_func: the function used to transform news
-                data into a dataframe
+                data into a dataframe.
             :type transform_func: function
             :param read_js_fnc: the function used to read-in and process the
-                json file. By Default is the Pandas read_json() function
+                json file. By Default is the Pandas read_json() function.
             :type read_js_func: function
         """
 
@@ -372,7 +372,7 @@ class TransformOperations:
                                              extract_func=None,
                                              transform_func=None,
                                              read_js_func=None):
-        """transforms the json contents of a given file into a csv.
+        """Transforms the contents of a given news json file into a csv.
 
         The function specifically operates on jsons in the 'headlines'
         folder of the 'tempus_challenge_dag' pipeline.
@@ -382,18 +382,18 @@ class TransformOperations:
 
         # Arguments:
             :param json_file: a json file containing top news headlines
-                based on a keyword
+                based on a keyword.
             :type json_file: file
-            :param csv_filename: the filename of the transformed csv
+            :param csv_filename: the filename of the transformed csv.
             :type csv_filename: str
             :param extract_func: the function used to extract news data
-                from a dataframe
+                from a dataframe.
             :type extract_func: function
             :param transform_func: the function used to transform news
-                data into a dataframe
+                data into a dataframe.
             :type transform_func: function
             :param read_js_fnc: the function used to read-in and process the
-                json file. By Default is the Pandas read_json() function
+                json file. By Default is the Pandas read_json() function.
             :type read_js_func: function
         """
 
@@ -435,13 +435,13 @@ class TransformOperations:
 
     @classmethod
     def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
-        """flatten's a given dataframe into a csv file.
+        """Flatten's a given dataframe into a csv file.
 
          # Arguments:
             :param frame: single DataFrame consisting of all english news
-                sources headlines
+                sources headlines.
             :type frame: DataFrame
-            :param csv_filename: the filename of the transformed csv
+            :param csv_filename: the filename of the transformed csv.
             :type csv_filename: str
         """
 
@@ -475,7 +475,7 @@ class TransformOperations:
                                        extract_func=None,
                                        transform_func=None,
                                        reader_func=None):
-        """converts the json contents of a given folder into a csv.
+        """Converts the contents of a given news keyword json into a csv.
 
         The function specifically operates on jsons in the 'headlines'
         folder of the 'tempus_bonus_challenge_dag' pipeline.
