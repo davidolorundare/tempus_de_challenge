@@ -97,7 +97,9 @@ news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    response_check=headlines_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_headlines_first_kw_task',
-                                   dag=dag)
+                                   dag=dag,
+                                   retry_delay=timedelta(minutes=3),
+                                   retry_exponential_backoff=True)
 
 news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    method='GET',
