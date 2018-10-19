@@ -485,18 +485,18 @@ class TransformOperations:
 
         # Arguments:
             :param json_file: a json file containing top news headlines
-                based on a keyword
+                based on a keyword.
             :type json_file: file
-            :param csv_filename: the filename of the transformed csv
+            :param csv_filename: the filename of the transformed csv.
             :type csv_filename: str
             :param extract_func: the function used to extract news keyword
-                fields from a dataframe
+                fields from a dataframe.
             :type extract_func: function
             :param transform_func: the function used to transform news keyword
-                data into a dataframe
+                data into a dataframe.
             :type transform_func: function
             :param reader_func: the function used to read-in and process the
-                json file. By Default is the Pandas read_json() function
+                json file. By Default is the Pandas read_json() function.
             :type reader_func: function
         """
 
@@ -541,7 +541,7 @@ class TransformOperations:
 
     @classmethod
     def transform_data_to_dataframe(cls, news_data):
-        """converts a dictionary of news data into a Pandas Dataframe.
+        """Converts a dictionary of news data into a Pandas Dataframe.
 
         # Arguments:
             :param news_data: extracted news data information.
