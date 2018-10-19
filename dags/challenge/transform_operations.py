@@ -350,9 +350,18 @@ class TransformOperations:
         for indx, file in enumerate(json_files):
             # perform json to DataFrame transformations by function-chaining
             log.info(json_files[indx])
-            current_file_df = transform_func(extract_func(
-                                             read_js_func(json_files[indx],
-                                                          lines=True)))
+
+            # read in the json file.
+            try:
+                json_data = read_js_func(json_files[indx], lines=True)
+            except ValueError as err:
+                # if any errors are encountered during reading then skip the
+                # file to the next, but log it to the console.
+                error_message = str(err.value)
+                log.info("Error Encountered: {}".format(error_message))
+                continue
+            # extract news data from the json and transform it into a DataFrame
+            current_file_df = transform_func(extract_func(json_data))
 
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df])
