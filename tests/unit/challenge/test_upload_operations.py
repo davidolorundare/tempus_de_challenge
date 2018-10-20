@@ -58,8 +58,8 @@ class TestUploadOperations:
     @pytest.fixture(scope='function')
     def setup_s3_bucket_res(self,
                             bucket_name,
-                            endpoint=None,
-                            create_bucket=True) -> tuple:
+                            create_bucket=True,
+                            endpoint=None) -> tuple:
         """configure s3 resource and client objects."""
 
         # create an s3 service client object
@@ -184,7 +184,8 @@ class TestUploadOperations:
         bucket_name = 'tempus-challenge-csv-headlines'
 
         # create the s3 client and resource objects required
-        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name,
+                                                            create_bucket=False)
 
         # track the upload status and the buckets contents before and after
         # the upload operation
