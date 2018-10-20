@@ -93,10 +93,10 @@ class TestUploadOperations:
         bucket.delete()
 
     @mock_s3
-    def test_upload_csv_to_s3_success_returns_correctly(self,
-                                                        airflow_context,
-                                                        bucket_names,
-                                                        home_directory_res):
+    def test_upload_csv_to_s3_files_upload_correctly(self,
+                                                     airflow_context,
+                                                     bucket_names,
+                                                     home_directory_res):
         """tests call to boto library to upload a file is actually made
         and return a correct status.
         """
