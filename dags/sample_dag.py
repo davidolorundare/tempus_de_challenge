@@ -3,7 +3,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.dummy_operator import DummyOperator
 
-import challenge as c
+from dags import challenge as c
 
 from datetime import datetime, timedelta
 

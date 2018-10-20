@@ -19,12 +19,13 @@ from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
+# from challenge.filestorage_operations import FileStorage
 
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2018, 11, 4),
+    'start_date': datetime(2018, 10, 19),
     'email': ['david.o@ieee.org'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -36,7 +37,7 @@ default_args = {
 
 # path, relative to AIRFLOW_HOME, to the news folder which
 # stores data from the News API
-NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/news/"
+NEWS_DIR = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/headlines/"
 
 # NEED TO MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
@@ -78,19 +79,19 @@ start_task = DummyOperator(task_id='start', dag=dag)
 # PEP8's 79 line-character limit
 storage_func_alias = c.FileStorage.create_storage
 headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
-transform_func_alias = c.TransformOperations.transform_headlines_to_csv
+flatten_csv_func_alias = c.TransformOperations.transform_headlines_to_csv
 upload_func_alias = c.UploadOperations.upload_csv_to_s3
 
-# create a folder for storing retrieved data on the local filesystem
+# # create a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
                                          provide_context=True,
                                          python_callable=storage_func_alias,
                                          retries=3,
                                          dag=dag)
 
-# retrieve all top news headlines for specific keywords
-# Need to make four SimpleHTTPOperator calls run in parallel
-news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
+# # retrieve all top news headlines for specific keywords
+# # Need to make four SimpleHTTPOperator calls run in parallel
+news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Tempus Labs',
                                          'apiKey': API_KEY},
@@ -101,35 +102,35 @@ news_kw1_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
                                    retry_delay=timedelta(minutes=3),
                                    retry_exponential_backoff=True)
 
-news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Eric Lefkofsky',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_second_kw_task',
-                                   dag=dag)
+# news_kw2_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Eric Lefkofsky',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_second_kw_task',
+#                                    dag=dag)
 
-news_kw3_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Cancer',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_third_kw_task',
-                                   dag=dag)
+# news_kw3_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Cancer',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_third_kw_task',
+#                                    dag=dag)
 
-news_kw4_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Immunotherapy',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_fourth_kw_task',
-                                   dag=dag)
+# news_kw4_task = SimpleHttpOperator(endpoint='v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Immunotherapy',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_fourth_kw_task',
+#                                    dag=dag)
 
-# detect existence of retrieved news data
-file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+# # detect existence of retrieved news data
+file_exists_sensor = FileSensor(filepath=NEWS_DIR,
                                 fs_conn_id="filesys",
                                 poke_interval=5,
                                 soft_fail=True,
@@ -137,28 +138,21 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
                                 task_id='file_sensor_task',
                                 dag=dag)
 
-# retrieve all of the top headlines
-extract_headlines_task = PythonOperator(task_id='extract_headl_kw_task',
-                                        provide_context=True,
-                                        python_callable=headlines_func_alias,
-                                        retries=3,
-                                        dag=dag)
+# # transform the data, resulting in a flattened csv
+flatten_to_csv_task = PythonOperator(task_id='transform_to_csv_kw_task',
+                                     provide_context=True,
+                                     python_callable=flatten_csv_func_alias,
+                                     retries=3,
+                                     dag=dag)
 
-# transform the data, resulting in a flattened csv
-flatten_csv_task = PythonOperator(task_id='transform_to_csv_kw_task',
-                                  provide_context=True,
-                                  python_callable=transform_func_alias,
-                                  retries=3,
-                                  dag=dag)
-
-# upload the flattened csv into my S3 bucket
+# # upload the flattened csv into my S3 bucket
 upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
                                  provide_context=True,
                                  python_callable=upload_func_alias,
                                  retries=3,
                                  dag=dag)
 
-# end workflow
+# # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
 
 
@@ -176,8 +170,6 @@ start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> extract_headlines_task >> flatten_csv_task
-
-# perform a file transfer operation, uploading the CSV data
+# Then perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-flatten_csv_task >> upload_csv_task >> end_task
+file_exists_sensor >> flatten_to_csv_task >> upload_csv_task >> end_task

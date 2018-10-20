@@ -308,6 +308,62 @@ class TestTransformOperations:
         # is True
         assert result is True
 
+    def test_helper_execute_keyword_json_transformation_succeeds(self):
+        """transformation of all files in a set of json files in a directory
+        succeeds.
+        """
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tfnc = c.TransformOperations.helper_execute_keyword_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_key_headlines_to_csv
+
+        # Mock out the functions that the function under test uses
+        headlines_to_csv_func = MagicMock(spec=js_csv_fnc)
+
+        # setup behavior of the function - two of the json files get converted
+        # to csv while transformation of the third fails
+        headlines_to_csv_func.side_effect = [True, True, True]
+
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        # create dummy non-json files
+        full_file_path_one = os.path.join(headline_dir,
+                                          'my_stuff1_headlines.json')
+        full_file_path_two = os.path.join(headline_dir,
+                                          'my_stuff2_headlines.json')
+        full_file_path_three = os.path.join(headline_dir,
+                                            'my_stuff3_headlines.json')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            # patcher.fs.create_dir(headline_dir)
+            patcher.fs.create_file(full_file_path_one)
+            patcher.fs.create_file(full_file_path_two)
+            patcher.fs.create_file(full_file_path_three)
+
+        # Act
+            # function should raise errors on an empty directory
+            result = tfnc(directory=headline_dir,
+                          json_transfm_func=headlines_to_csv_func)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        # expected a True result since all three json files were transformed
+        # to csv
+        assert result is True
+
     def test_transform_data_to_dataframe_succeeds(self):
         """conversion of a dictionary of numpy array news data into
         a Pandas Dataframe succeed"""
@@ -757,7 +813,7 @@ class TestTransformOperations:
         assert "Directory is empty" in actual_message
 
     def test_helper_execute_json_transformation_no_jsons_in_dir_fails(self):
-        """transforming a set of jsons in an non-empty directory but having no
+        """transforming a set of jsons in a non-empty directory but having no
         json files fails.
         """
 
@@ -810,6 +866,111 @@ class TestTransformOperations:
 
         # Assert
         assert "Directory has no json-headline files" in actual_message
+
+    def test_helper_execute_keyword_json_transformation_no_jsons_fails(self):
+        """transforming a set of jsons in a non-empty directory but having no
+        json files fails.
+        """
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tfnc = c.TransformOperations.helper_execute_keyword_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_key_headlines_to_csv
+
+        # Mock out the functions that the function under test uses
+        headlines_to_csv_func = MagicMock(spec=js_csv_fnc)
+
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        # create dummy non-json files
+        full_file_path_one = os.path.join(headline_dir, 'stuff1.txt')
+        full_file_path_two = os.path.join(headline_dir, 'stuff2.rtf')
+        full_file_path_three = os.path.join(headline_dir, 'stuff3.doc')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            # patcher.fs.create_dir(headline_dir)
+            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
+            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
+
+        # Act
+            # function should raise errors on an empty directory
+            with pytest.raises(FileNotFoundError) as err:
+                tfnc(directory=headline_dir,
+                     json_transfm_func=headlines_to_csv_func)
+
+            actual_message = str(err.value)
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory has no json-headline files" in actual_message
+
+    def test_helper_execute_keyword_json_transformation_partialfile_fail(self):
+        """partial transformation of some files in a set of json files within a
+        directory fails.
+        """
+
+        # Arrange
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        tfnc = c.TransformOperations.helper_execute_keyword_json_transformation
+        js_csv_fnc = c.TransformOperations.transform_key_headlines_to_csv
+
+        # Mock out the functions that the function under test uses
+        headlines_to_csv_func = MagicMock(spec=js_csv_fnc)
+
+        # setup behavior of the function - two of the json files get converted
+        # to csv while transformation of the third fails
+        headlines_to_csv_func.side_effect = [True, True, False]
+
+        pipeline_name = "tempus_challenge_dag"
+
+        headline_dir = os.path.join('tempdata',
+                                    pipeline_name,
+                                    'headlines')
+
+        # create dummy non-json files
+        full_file_path_one = os.path.join(headline_dir,
+                                          'my_stuff1_headlines.json')
+        full_file_path_two = os.path.join(headline_dir,
+                                          'my_stuff2_headlines.json')
+        full_file_path_three = os.path.join(headline_dir,
+                                            'my_stuff3_headlines.json')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            # patcher.fs.create_dir(headline_dir)
+            patcher.fs.create_file(full_file_path_one)
+            patcher.fs.create_file(full_file_path_two)
+            patcher.fs.create_file(full_file_path_three)
+
+        # Act
+            # function should raise errors on an empty directory
+            result = tfnc(directory=headline_dir,
+                          json_transfm_func=headlines_to_csv_func)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        # expected a False result since only two of the three json files were
+        # transformed to csv
+        assert result is False
 
     def test_transform_data_to_dataframe_fails(self):
         """conversion of a dictionary of news data into

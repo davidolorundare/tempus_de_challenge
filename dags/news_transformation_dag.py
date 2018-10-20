@@ -23,7 +23,7 @@ import challenge as c
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2018, 11, 4),
+    'start_date': datetime(2018, 10, 19),
     'email': ['david.o@ieee.org'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -103,35 +103,35 @@ get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    dag=dag)
 
 # detect existence of retrieved news data
-file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
-                                fs_conn_id="filesys",
-                                poke_interval=5,
-                                soft_fail=True,
-                                timeout=3600,
-                                task_id='file_sensor_task',
-                                dag=dag)
+# file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+#                                 fs_conn_id="filesys",
+#                                 poke_interval=5,
+#                                 soft_fail=True,
+#                                 timeout=3600,
+#                                 task_id='file_sensor_task',
+#                                 dag=dag)
 
 # retrieve each sources headlines and perform subsequent
 # headline-extraction step
-headlines_task = PythonOperator(task_id='extract_headlines_task',
-                                provide_context=True,
-                                python_callable=headlines_func_alias,
-                                retries=3,
-                                dag=dag)
+# headlines_task = PythonOperator(task_id='extract_headlines_task',
+#                                 provide_context=True,
+#                                 python_callable=headlines_func_alias,
+#                                 retries=3,
+#                                 dag=dag)
 
 # transform the data, resulting in a flattened csv
-flatten_csv_task = PythonOperator(task_id='transform_to_csv_task',
-                                  provide_context=True,
-                                  python_callable=transform_func_alias,
-                                  retries=3,
-                                  dag=dag)
+# flatten_csv_task = PythonOperator(task_id='transform_to_csv_task',
+#                                   provide_context=True,
+#                                   python_callable=transform_func_alias,
+#                                   retries=3,
+#                                   dag=dag)
 
 # upload the flattened csv into my S3 bucket
-upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_task',
-                                 provide_context=True,
-                                 python_callable=upload_func_alias,
-                                 retries=3,
-                                 dag=dag)
+# upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_task',
+#                                  provide_context=True,
+#                                  python_callable=upload_func_alias,
+#                                  retries=3,
+#                                  dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
@@ -141,13 +141,13 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
+start_task >> datastore_creation_task >> get_news_task  # >> file_exists_sensor
 
 # ensure the data has been retrieved before beginning the ETL process.
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-file_exists_sensor >> headlines_task >> flatten_csv_task >> upload_csv_task
+# file_exists_sensor >> headlines_task >> flatten_csv_task >> upload_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-upload_csv_task >> end_task
+# upload_csv_task >> end_task

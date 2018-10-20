@@ -13,9 +13,6 @@ run: clean
 	@echo
 	@echo --- Running Dockerized Airflow ---
 	docker-compose -f docker/docker-compose.yml up --build
-	@echo --- Starting Tempus Bonus Challenge DAG Pipeline ---
-	airflow unpause tempus_bonus_challenge_dag
-	airflow trigger_dag tempus_bonus_challenge_dag
 
 lint:
 	@echo
@@ -25,7 +22,12 @@ lint:
 test:
 	@echo
 	@echo --- Test ---
-	python -m pytest -v --cov=${MODULE} --cov-branch tests/
+	python -m pytest -v -m "not uploadtests" --cov=${MODULE} --cov-branch tests/
+
+integration-test:
+
+	@echo --- CSV Upload Integration Test with Moto Fake S3 APIs ---
+	python -m pytest -v -m uploadtests --cov=${MODULE} --cov-branch tests/
 
 clean:
 	@echo

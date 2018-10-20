@@ -25,6 +25,11 @@
 	* Create two AWS S3 buckets with your account. Name them `tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`. These buckets will hold the final csv transformations and the project-code *expects* these two buckets to already exist, as it **does not** programmatically create them before
 	uploading and will throw errors if they are detected not to exist in S3.
 
+### Optional Prerequisites - for running Integration test with a Fake Amazon S3 server
+1. [RubyGems](https://rubygems.org/) [installation](https://rubygems.org/pages/download)
+2. Register for a free [FakeS3 server license](https://supso.org/projects/fake-s3)
+3. [Install FakeS3](https://github.com/jubos/fake-s3#installation)
+
 
 ---
 ### Setup
@@ -36,6 +41,7 @@
 3. The application uses[environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step.
 	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/configure_api_keys_image.jpeg "Configuring API Keys")
+	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0)
 
 
 ---
@@ -141,7 +147,25 @@ The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit test
 - *TestTransformOperations* which run tests on the task involving conversion of the news headlines JSON data into CSV.
 - *TestUploadOperations* which run tests on the task involving data-transfer of the flattened CSVs to a predefined Amazon S3 bucket.
 
-The **integration tests** exercise the overall combination of the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3.
+The **integration tests** exercise the overall combination of components interacting with each and other and external services. This implies the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3. One test was written. 
+[Moto](http://docs.getmoto.org/en/latest/) a (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
+The Amazon S3 integrations mock tests were done with moto library standalone as well as a running [FakeS3 server](https://github.com/jubos/fake-s3). The test with the FakeS3 server is by default skipped in the test suite. Details on how to run the integration test with the FakeS3 server are describe below:
+	* With [FakeS3 installed](#Optional-Prerequisites) open a command line terminal and
+	navigate to a directory of your choice and run the following command:
+	`fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`
+	This starts the Fake Amazon S3 server.
+	* In the `tests` directory of the project open the `test_upload_operations.py`
+	file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
+	IMAGE OF TEST CASES TO UNCOMMENT
+		
+---
+
+	* Run `make test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
+	* To stop the Fake Amazon S3 server, return to the previous terminal and press `Ctrl+C`
+	to stop it.
+
+
+
 
 ---
 ### Packages Used
@@ -149,14 +173,16 @@ The **integration tests** exercise the overall combination of the tasks in the p
 1. [Amazon Python SDK (boto 3) library](http://boto3.readthedocs.io/en/latest/guide/resources.html)
 2. [Apache Airflow CLI](https://airflow.apache.org/cli.html)
 3. [Codecov](https://codecov.io/)
-4. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
-5. [News API](https://newsapi.org/)
-6. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
-7. [Pyfakefs](https://pypi.org/project/pyfakefs/)
-8. [Pytest](https://docs.pytest.org/en/latest/)
-9. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
-10. [Python JSON library](https://docs.python.org/3/library/json.html)
-11. [Python Requests library](http://docs.python-requests.org) 
+4. [FakeS3](https://github.com/jubos/fake-s3)
+5. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
+6. [Moto](http://docs.getmoto.org/en/latest/) Amazon S3 Mock Server
+7. [News API](https://newsapi.org/)
+8. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
+9. [Pyfakefs](https://pypi.org/project/pyfakefs/)
+10. [Pytest](https://docs.pytest.org/en/latest/)
+11. [Python Data Analysis library (Pandas)](https://pandas.pydata.org/)
+12. [Python JSON library](https://docs.python.org/3/library/json.html)
+13. [Python Requests library](http://docs.python-requests.org) 
 
 ---
 ### Footnotes
@@ -191,7 +217,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	`task_log_reader = file.task` to `task_log_reader = task`
 - The Airflow Community contributed [`airflow.contrib.sensor.file_sensor`](https://airflow.apache.org/_modules/airflow/contrib/sensors/file_sensor.html) and [`airflow.contrib.hooks.fs_hook`](https://airflow.apache.org/_modules/airflow/contrib/hooks/fs_hook.html#FSHook) classes were found to be *very* buggy, especially when trying to configure and test them in a DAG task pipeline.
 
-
+- There are known issues with using the [Moto Server](http://docs.getmoto.org/en/latest/docs/getting_started.html#stand-alone-server-mode) in stand-alone server mode when testing a locally created url endpoint. See [here](https://github.com/spulec/moto/issues/1026)for more details. 
 
 
 ---

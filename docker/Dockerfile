@@ -73,15 +73,12 @@ COPY ["Makefile", \
       "requirements.txt", \
       "requirements-test.txt", \
       "requirements-setup.txt", \
-      ".env", \
       "setup.py", \
       "setup.cfg", \
       "README.md", \
       "/tmp/"]
 
 RUN make -C /tmp/ init
-
-RUN echo $NEWS_API_KEY
 
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
