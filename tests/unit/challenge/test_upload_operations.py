@@ -92,7 +92,7 @@ class TestUploadOperations:
         bucket.objects.all().delete()
         bucket.delete()
 
-    @pytest.mark.skip
+    @mock_s3
     def test_upload_csv_to_s3_success_returns_correctly(self,
                                                         airflow_context,
                                                         bucket_names,
@@ -109,14 +109,15 @@ class TestUploadOperations:
         # bucket_name = self.setUp(bucket_names[0])
         bucket_name = bucket_names[0]
 
-        # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=boto3.client('s3'))
-        resource_client = MagicMock(spec=boto3.resource('s3'))
-        upload_client.upload_file.side_effect = lambda fname, bname, key: None
-        resource_client.buckets.all.side_effect = lambda: bucket_names
+        # create the s3 client and resource objects required
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
-        # S3 bucket to upload the file to
-        # bucket_name = 'tempus-challenge-csv-headlines'
+        # setup a Mock of the boto3 resources and file upload functions
+        # upload_client = MagicMock(spec=boto3.client('s3'))
+        # resource_client = MagicMock(spec=boto3.resource('s3'))
+        # upload_client.upload_file.side_effect = lambda fname,
+        # bname, key: None
+        # resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # path to the fake news and csv directories the function under test
         # uses
@@ -147,12 +148,14 @@ class TestUploadOperations:
             # attempt uploading a file to a valid s3 bucket
             result = c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                          bucket_name,
-                                                         upload_client,
-                                                         resource_client,
+                                                         client_obj,
+                                                         resource_obj,
                                                          **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
+        # clean up the s3 bucket and objects
+        self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
 
@@ -228,7 +231,7 @@ class TestUploadOperations:
             # clean up and remove the fake filesystem
             patcher.tearDown()
         # clean up the s3 bucket
-        # self.teardown_s3_bucket_res(bucket_name)
+        self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
         # upload function returns True if it was called
