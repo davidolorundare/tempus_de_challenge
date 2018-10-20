@@ -1581,8 +1581,7 @@ class TransformOperations:
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
-            error_message = str(err.value)
-            log.info("Error Encountered: {}".format(error_message))
+            log.info("Error Encountered: {}".format(str(err)))
             # re-raise the error
             raise ValueError
 
