@@ -184,8 +184,7 @@ class TestUploadOperations:
         bucket_name = 'tempus-challenge-csv-headlines'
 
         # create the s3 client and resource objects required
-        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name,
-                                                            create_bucket=False)
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
         # track the upload status and the buckets contents before and after
         # the upload operation
@@ -414,7 +413,8 @@ class TestUploadOperations:
         bucket_name = 'non-existent-bucket-name'
 
         # create the s3 client and resource objects required
-        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name,
+                                                            False)
 
         # path to fake news and csv directories the function under test uses
         csv_dir = os.path.join(home_directory_res,
@@ -449,8 +449,8 @@ class TestUploadOperations:
             with pytest.raises(FileNotFoundError) as err:
                 c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                     bucket_name,
-                                                    upload_client,
-                                                    resource_client,
+                                                    client_obj,
+                                                    resource_obj,
                                                     **airflow_context)
 
             actual_message = str(err.value)
