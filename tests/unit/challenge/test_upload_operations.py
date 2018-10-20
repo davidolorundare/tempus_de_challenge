@@ -197,17 +197,24 @@ class TestUploadOperations:
 
             # create a fake filesystem directory from which to upload the csv
             # files to s3
-            csv_dir_upload = os.path.join(home_directory_res,
-                                          'tempdata',
-                                          pipeline_name,
-                                          'csv-upload')
-            patcher.fs.create_dir(csv_dir_upload)
+            csv_dir = os.path.join(home_directory_res,
+                                   'tempdata',
+                                   pipeline_name,
+                                   'csv')
+
+            news_dir = os.path.join(home_directory_res,
+                                    'tempdata',
+                                    pipeline_name,
+                                    'news')
+
+            patcher.fs.create_dir(csv_dir)
+            patcher.fs.create_dir(news_dir)
 
             # create the path to the dummy csv files that will be uploaded
             # by the function call
-            upload_path_one = os.path.join(csv_dir_upload, 'stuff1.csv')
-            upload_path_two = os.path.join(csv_dir_upload, 'stuff2.csv')
-            upload_path_three = os.path.join(csv_dir_upload, 'stuff3.csv')
+            upload_path_one = os.path.join(csv_dir, 'stuff1.csv')
+            upload_path_two = os.path.join(csv_dir, 'stuff2.csv')
+            upload_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
             # place the dummy csv files in that directory to test the method
             patcher.fs.create_file(upload_path_one, contents='1,dummy,txt')
@@ -221,7 +228,7 @@ class TestUploadOperations:
             bucket_contents_before_upload = len(list(bucket.objects.all()))
 
             # Perform the upload operation
-            status = c.UploadOperations.upload_csv_to_s3(csv_dir_upload,
+            status = c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                          bucket_name,
                                                          client_obj,
                                                          resource_obj,
@@ -282,19 +289,25 @@ class TestUploadOperations:
 
             # create a fake filesystem directory from which to upload the csv
             # files to s3
-            csv_dir_upload = os.path.join(home_directory_res,
-                                          'tempdata',
-                                          pipeline_name,
-                                          'csv-upload')
+            csv_dir = os.path.join(home_directory_res,
+                                   'tempdata',
+                                   pipeline_name,
+                                   'csv')
+
+            news_dir = os.path.join(home_directory_res,
+                                    'tempdata',
+                                    pipeline_name,
+                                    'news')
 
             # create the path to the dummy csv files that will be uploaded
             # by the function call
-            upload_path_one = os.path.join(csv_dir_upload, 'stuff1.csv')
-            upload_path_two = os.path.join(csv_dir_upload, 'stuff2.csv')
-            upload_path_three = os.path.join(csv_dir_upload, 'stuff3.csv')
+            upload_path_one = os.path.join(csv_dir, 'stuff1.csv')
+            upload_path_two = os.path.join(csv_dir, 'stuff2.csv')
+            upload_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
             # place the dummy csv files in that directory to test the method
-            patcher.fs.create_dir(csv_dir_upload)
+            patcher.fs.create_dir(csv_dir)
+            patcher.fs.create_dir(news_dir)
             patcher.fs.create_file(upload_path_one, contents='1,dummy,txt')
             patcher.fs.create_file(upload_path_two, contents='2,dummy,txt')
             patcher.fs.create_file(upload_path_three, contents='3,dummy,txt')
@@ -306,7 +319,7 @@ class TestUploadOperations:
             bucket_contents_before_upload = len(list(bucket.objects.all()))
 
             # Perform the upload operation
-            status = c.UploadOperations.upload_csv_to_s3(csv_dir_upload,
+            status = c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                          bucket_name,
                                                          client_obj,
                                                          resource_obj,
