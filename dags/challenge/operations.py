@@ -1658,7 +1658,7 @@ class UploadOperations:
 
     @classmethod
     def upload_csv_to_s3(cls,
-                         csv_directory,
+                         csv_directory=None,
                          bucket_name=None,
                          aws_service_client=None,
                          aws_resource=None,
@@ -1686,6 +1686,13 @@ class UploadOperations:
         """
 
         log.info("Running upload_news_headline_csv_to_s3 method")
+
+        # get information about the current pipeline
+        pipeline_name = context['dag'].dag_id
+        pipeline_info = NewsInfoDTO(pipeline_name)
+
+        if not csv_directory:
+            csv_directory = pipeline_info.csv_directory
 
         # instantiate an S3 client object which will perform the uploads
         if not aws_service_client:
