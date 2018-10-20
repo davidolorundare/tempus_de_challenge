@@ -135,7 +135,7 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy csv files that will be uploaded by the function
-        full_file_path = os.path.join(csv_dir, 'stuff.csv')
+        file_path = os.path.join(csv_dir, 'stuff.csv')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -145,7 +145,7 @@ class TestUploadOperations:
             # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path, contents='1,dummy,txt')
+            patcher.fs.create_file(file_path, contents='1,dummy,txt')
 
         # Act
             # attempt uploading a file to a valid s3 bucket
@@ -170,6 +170,7 @@ class TestUploadOperations:
     @mock_s3
     def test_upload_csv_to_s3_integration_succeeds(self,
                                                    airflow_context,
+                                                   bucket_names,
                                                    home_directory_res):
         """Integration test - function uploads files successfully
         when interacting with a fake Amazon API from the moto library.
@@ -180,7 +181,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # name of the Amazon S3 bucket that will be created
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = bucket_names[0]
 
         # create the s3 client and resource objects required
         client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
@@ -191,30 +192,30 @@ class TestUploadOperations:
         bucket_contents_before_upload = None
         bucket_contents_after_upload = None
 
+        # create a fake filesystem directory from which to upload the csv
+        # files to s3
+        csv_dir = os.path.join(home_directory_res,
+                               'tempdata',
+                               pipeline_name,
+                               'csv')
+
+        news_dir = os.path.join(home_directory_res,
+                                'tempdata',
+                                pipeline_name,
+                                'news')
+
+        # create the path to the dummy csv files that will be uploaded
+        # by the function call
+        upload_path_one = os.path.join(csv_dir, 'stuff1.csv')
+        upload_path_two = os.path.join(csv_dir, 'stuff2.csv')
+        upload_path_three = os.path.join(csv_dir, 'stuff3.csv')
+
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # create a fake filesystem directory from which to upload the csv
-            # files to s3
-            csv_dir = os.path.join(home_directory_res,
-                                   'tempdata',
-                                   pipeline_name,
-                                   'csv')
-
-            news_dir = os.path.join(home_directory_res,
-                                    'tempdata',
-                                    pipeline_name,
-                                    'news')
-
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-
-            # create the path to the dummy csv files that will be uploaded
-            # by the function call
-            upload_path_one = os.path.join(csv_dir, 'stuff1.csv')
-            upload_path_two = os.path.join(csv_dir, 'stuff2.csv')
-            upload_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
             # place the dummy csv files in that directory to test the method
             patcher.fs.create_file(upload_path_one, contents='1,dummy,txt')
@@ -513,9 +514,9 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy non-csv files
-        full_file_path_one = os.path.join(csv_dir, 'stuff1.txt')
-        full_file_path_two = os.path.join(csv_dir, 'stuff2.rtf')
-        full_file_path_three = os.path.join(csv_dir, 'stuff3.doc')
+        file_path_one = os.path.join(csv_dir, 'stuff1.txt')
+        file_path_two = os.path.join(csv_dir, 'stuff2.rtf')
+        file_path_three = os.path.join(csv_dir, 'stuff3.doc')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -524,9 +525,9 @@ class TestUploadOperations:
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
-            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
-            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
+            patcher.fs.create_file(file_path_one, contents='dummy txt')
+            patcher.fs.create_file(file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(file_path_three, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
