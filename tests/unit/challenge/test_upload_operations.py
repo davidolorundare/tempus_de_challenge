@@ -320,6 +320,9 @@ class TestUploadOperations:
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
+        # clean up the s3 bucket
+        self.teardown_s3_bucket_res(bucket_name)
+
         # Assert
         # upload function returns True if it was called
         assert status is True
@@ -524,6 +527,9 @@ class TestUploadOperations:
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
+
+        # clean up the s3 bucket
+        self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
         assert "Directory has no csv-headline files" in actual_message
