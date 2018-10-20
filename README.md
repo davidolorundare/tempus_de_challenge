@@ -156,7 +156,8 @@ The Amazon S3 integrations mock tests were done with moto library standalone as 
 	This starts the Fake Amazon S3 server.
 	* In the `tests` directory of the project open the `test_upload_operations.py`
 	file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
-	IMAGE OF TEST CASES TO UNCOMMENT
+
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/fakes3_server_integration.jpeg "Image of using moto s3 server integration")
 		
 ---
 
