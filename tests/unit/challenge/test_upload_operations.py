@@ -154,6 +154,7 @@ class TestUploadOperations:
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
+
         # clean up the s3 bucket and objects
         self.teardown_s3_bucket_res(bucket_name)
 
@@ -230,6 +231,7 @@ class TestUploadOperations:
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
+
         # clean up the s3 bucket
         self.teardown_s3_bucket_res(bucket_name)
 
@@ -323,7 +325,7 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
-    @pytest.mark.skip
+    @mock_s3
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
                                                        airflow_context,
                                                        bucket_names,
@@ -333,16 +335,19 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=boto3.client('s3'))
-        resource_client = MagicMock(spec=boto3.resource('s3'))
-        upload_client.upload_file.side_effect = lambda: None
-        resource_client.buckets.all.side_effect = lambda: bucket_names
+        # upload_client = MagicMock(spec=boto3.client('s3'))
+        # resource_client = MagicMock(spec=boto3.resource('s3'))
+        # upload_client.upload_file.side_effect = lambda: None
+        # resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = bucket_names[1]
+
+        # create the s3 client and resource objects required
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
         # path to fake news and csv directories the function under test uses
         csv_dir = os.path.join(home_directory_res,
@@ -368,18 +373,22 @@ class TestUploadOperations:
             with pytest.raises(FileNotFoundError) as err:
                 c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                     bucket_name,
-                                                    upload_client,
-                                                    resource_client,
+                                                    client_obj,
+                                                    resource_obj,
                                                     **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
+        # clean up the s3 bucket
+        self.teardown_s3_bucket_res(bucket_name)
+
         # Assert
         assert "Directory is empty" in actual_message
 
     @pytest.mark.skip
+    @mock_s3
     def test_upload_csv_to_s3_non_existent_bucket_fails(self,
                                                         airflow_context,
                                                         bucket_names,
@@ -445,6 +454,7 @@ class TestUploadOperations:
         assert "does not exist on the server" in actual_message
 
     @pytest.mark.skip
+    @mock_s3
     def test_upload_csv_to_s3_no_csvs_in_directory_fails(self,
                                                          airflow_context,
                                                          bucket_names,
