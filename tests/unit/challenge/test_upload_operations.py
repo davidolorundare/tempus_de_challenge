@@ -109,11 +109,10 @@ class TestUploadOperations:
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
-        # bucket_name = None
-        # bucket_name = self.setUp(bucket_names[0])
+        # name of the S3 bucket
         bucket_name = bucket_names[0]
 
-        # create the s3 client and resource objects required
+        # create the S3 client and resource objects required
         client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
         # setup a Mock of the boto3 resources and file upload functions
@@ -251,6 +250,7 @@ class TestUploadOperations:
     @pytest.mark.skip(reason="requires FakeS3 server to be setup and running")
     def test_upload_csv_to_s3_fakes3_integration_succeeds(self,
                                                           airflow_context,
+                                                          bucket_names,
                                                           home_directory_res):
         """Integration Test - csv files upload successfully to a live
         S3 Mock server.
@@ -261,7 +261,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # setup a fake Amazon S3 server using Moto, creating a fake S3 bucket
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = bucket_names[0]
 
         # FakeS3 Server Endpoint
         fake_url = "http://localhost:4567"
@@ -348,7 +348,7 @@ class TestUploadOperations:
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
-        bucket_name = bucket_names[1]
+        bucket_name = bucket_names[0]
 
         # create the s3 client and resource objects required
         client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
@@ -394,7 +394,6 @@ class TestUploadOperations:
     @mock_s3
     def test_upload_csv_to_s3_non_existent_bucket_fails(self,
                                                         airflow_context,
-                                                        bucket_names,
                                                         home_directory_res):
         """uploading fails if the s3 bucket location does not already exist."""
 
@@ -460,7 +459,6 @@ class TestUploadOperations:
         # Assert
         assert "does not exist on the server" in actual_message
 
-    @pytest.mark.skip
     @mock_s3
     def test_upload_csv_to_s3_no_csvs_in_directory_fails(self,
                                                          airflow_context,
@@ -473,16 +471,19 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=boto3.client('s3'))
-        resource_client = MagicMock(spec=boto3.resource('s3'))
-        upload_client.upload_file.side_effect = lambda: None
-        resource_client.buckets.all.side_effect = lambda: bucket_names
+        # upload_client = MagicMock(spec=boto3.client('s3'))
+        # resource_client = MagicMock(spec=boto3.resource('s3'))
+        # upload_client.upload_file.side_effect = lambda: None
+        # resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
-        bucket_name = 'tempus-challenge-csv-headlines'
+        bucket_name = bucket_names[0]
+
+        # create the s3 client and resource objects required
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
         # path to fake news and csv directories
         csv_dir = os.path.join(home_directory_res,
@@ -516,8 +517,8 @@ class TestUploadOperations:
             with pytest.raises(FileNotFoundError) as err:
                 c.UploadOperations.upload_csv_to_s3(csv_dir,
                                                     bucket_name,
-                                                    upload_client,
-                                                    resource_client,
+                                                    client_obj,
+                                                    resource_obj,
                                                     **airflow_context)
 
             actual_message = str(err.value)
