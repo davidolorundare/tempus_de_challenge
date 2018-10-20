@@ -56,7 +56,10 @@ class TestUploadOperations:
                 'tempus-bonus-challenge-csv-headlines']
 
     @pytest.fixture(scope='function')
-    def setup_s3_bucket_res(self, bucket_name, endpoint=None) -> tuple:
+    def setup_s3_bucket_res(self,
+                            bucket_name,
+                            endpoint=None,
+                            create_bucket=True) -> tuple:
         """configure s3 resource and client objects."""
 
         # create an s3 service client object
@@ -80,7 +83,8 @@ class TestUploadOperations:
             raise EnvironmentError(err_message)
 
         # create a fake s3 bucket
-        s3_resource_obj.create_bucket(Bucket=bucket_name)
+        if create_bucket:
+            s3_resource_obj.create_bucket(Bucket=bucket_name)
 
         # setup returns the s3 client and resource objects
         return s3_service_client, s3_resource_obj
@@ -387,7 +391,6 @@ class TestUploadOperations:
         # Assert
         assert "Directory is empty" in actual_message
 
-    @pytest.mark.skip
     @mock_s3
     def test_upload_csv_to_s3_non_existent_bucket_fails(self,
                                                         airflow_context,
@@ -398,16 +401,19 @@ class TestUploadOperations:
         # Arrange
 
         # setup a Mock of the boto3 resources and file upload functions
-        upload_client = MagicMock(spec=boto3.client('s3'))
-        resource_client = MagicMock(spec=boto3.resource('s3'))
-        upload_client.upload_file.side_effect = lambda: None
-        resource_client.buckets.all.side_effect = lambda: bucket_names
+        # upload_client = MagicMock(spec=boto3.client('s3'))
+        # resource_client = MagicMock(spec=boto3.resource('s3'))
+        # upload_client.upload_file.side_effect = lambda: None
+        # resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
         # S3 bucket to upload the file to
         bucket_name = 'non-existent-bucket-name'
+
+        # create the s3 client and resource objects required
+        client_obj, resource_obj = self.setup_s3_bucket_res(bucket_name)
 
         # path to fake news and csv directories the function under test uses
         csv_dir = os.path.join(home_directory_res,
