@@ -150,15 +150,18 @@ The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit test
 The **integration tests** exercise the overall combination of components interacting with each and other and external services. This implies the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3. One test was written. [Moto](http://docs.getmoto.org/en/latest/) a (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
 
 The Amazon S3 integrations mock tests were done with moto library standalone as well as a running [FakeS3 server](https://github.com/jubos/fake-s3). The test with the FakeS3 server is by default skipped in the test suite. Details on how to run the integration test with the FakeS3 server are describe below:
+
+---
+
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/fakes3_server_integration.jpeg "Image of using moto s3 server integration")
+
+---
+
 - With [FakeS3 installed](#Optional-Prerequisites) open a command line terminal and navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
 - Run `make test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
 - To stop the Fake Amazon S3 server, return to the previous terminal and press `Ctrl+C` to stop it.
-
----
-
-![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/fakes3_server_integration.jpeg "Image of using moto s3 server integration")
 
 ---
 ### Packages Used
