@@ -1859,7 +1859,7 @@ class UploadOperations:
             :param csv_directory: path to the directory containing all the
                 csv headline files.
             :type csv_directory: str
-            :param bucket_name: name of an existing s3 bucket
+            :param bucket_name: name of an existing s3 bucket.
             :type bucket_name: str
             :param aws_service_client: reference to an s3 service client object
                 instance that should be used. If left blank, the function
@@ -1870,7 +1870,7 @@ class UploadOperations:
                 function creates a new one.
             :type aws_resource: object
             :param context: airflow context object referencing the current
-                pipeline
+                pipeline.
             :type context: dict
 
         # Raises:
@@ -1883,37 +1883,27 @@ class UploadOperations:
 
         # get information about the current pipeline
         pipeline_name = context['dag'].dag_id
-        pipeline_info = NewsInfoDTO(pipeline_name)
+
+        # inspect the pipeline's csv directory contents
+        return_status, msg, data = cls.upload_directory_check(pipeline_name)
         status = None
+        files = None
 
-        if not csv_directory:
-            csv_directory = pipeline_info.csv_directory
-
-        # list of all csv files in the directory
-        csv_files = []
-
-        # check existence of csv files in the directory itself beginning
-        # the upload
-        # an empty directory is valid, but we do not perform any uploads
-        if not os.listdir(csv_directory):
-            status = True
+        if return_status and msg == "Directory is empty":
+            status = return_status
             log.info("The csv directory is empty")
-            status_msg = "Directory is empty"
-            # raise FileNotFoundError("Directory is empty")
-            return status, status_msg
-
-        if os.listdir(csv_directory):
-            csv_files = [file for file in os.listdir(csv_directory)
-                         if file.endswith('.csv')]
-
-        # a directory with non-csv files is valid, but we do not
-        # perform any uploads
-        if not csv_files:
-            status = True
-            log.info("There are no csv type files in the directory")
-            status_msg = "Directory has no csv-headline files"
-            # raise FileNotFoundError("Directory has no csv-headline files")
-            return status, status_msg
+            return status, msg
+        elif return_status and msg == "Directory has no csv-headline files":
+            status = return_status
+            log.info("There are no csv-type files in the directory")
+            return status, msg
+        elif return_status and msg == "CSV files present":
+            log.info("CSV files found")
+            files = data
+        else:
+            log.info("Error in reading directory")
+            status = return_status
+            return status, msg
 
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
@@ -1934,7 +1924,7 @@ class UploadOperations:
             aws_resource = boto3.resource('s3')
 
         # iterate through the files in the directory and upload them to s3
-        for file in csv_files:
+        for file in files:
             file_path = os.path.join(csv_directory, file)
             aws_service_client.upload_file(file_path, bucket_name, file)
 
