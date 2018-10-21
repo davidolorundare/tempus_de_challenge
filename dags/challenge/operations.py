@@ -1645,7 +1645,8 @@ class TransformOperations:
         csv file is created for the keyword. This absence of news
         articles is logged to the airflow console and the function
         returns its operating status `op_status` as True, indicating
-        to the caller indicating that it completed in a valid state.
+        to the caller indicating that it completed in a valid state,
+        and returning a status message to show this.
 
         # Arguments:
             :param json_file: a json file containing top news headlines
@@ -1668,6 +1669,7 @@ class TransformOperations:
 
         # ensure status of operation is communicated to caller function
         op_status = None
+        status_msg = None
 
         # indicates if the json file has any news articles in it
         has_news_articles = True
