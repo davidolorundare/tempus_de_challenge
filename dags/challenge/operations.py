@@ -1385,7 +1385,7 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
-            status, msg = json_to_csv_func()  # (files[0], filename, reader)
+            status, msg = json_to_csv_func(files[0], filename, reader)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files, reader)
