@@ -233,7 +233,7 @@ class FileStorage:
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
-                json.dump(data, outputfile)
+                json.dump(data, outputfile, indent=4)
             # the file-write was successful so return a True status
             return True
         except IOError:
