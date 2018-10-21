@@ -493,10 +493,11 @@ class NetworkOperations:
 
         # copy of the json data
         json_data = response.json()
+        parsed_data = json.dumps(data)
 
         # write the data to file
         if status_code == requests.codes.ok:
-            FileStorage.write_json_to_file(data=json_data,
+            FileStorage.write_json_to_file(data=parsed_data,
                                            path_to_dir=news_dir,
                                            filename=fname)
             # airflow logging
@@ -849,6 +850,8 @@ class ExtractOperations:
         source_extract_func = ExtractOperations.extract_news_source_id
 
         # process the collated json files
+        # there should be only one news source json file
+        # hence this loop may not be needed
         for js in json_list:
             json_path = os.path.join(json_directory, js)
 
@@ -906,9 +909,19 @@ class ExtractOperations:
 
         log.info("Running extract_news_data_from_dataframe method")
 
-        num_of_articles = frame['totalResults'][0]
+        # TESTING
+        log.info('VALUE')
+        log.info(str(frame))
+        log.info('Status without 0')
+        thing = frame['status']
+        log.info(thing)
+        log.info('Status with 0')
+        log.info(frame['status'][0])
+
+        num_of_articles = frame['totalResults']  # [0]
         # dictionary representing the extracted news data
         extracted_data = {}
+        return {}
 
         # error check - no articles means this json had no news data
         if num_of_articles < 1:
