@@ -1493,7 +1493,7 @@ class TransformOperations:
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
         if not csv_filename:
-            csv_filename = "sample.csv"
+            csv_filename = str(datetime.datetime.now) + "_sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(csv_save_path)
 
@@ -1584,40 +1584,19 @@ class TransformOperations:
         if not transform_func:
             transform_func = TransformOperations.transform_data_to_dataframe
 
-        # TESTING
-        log.info("File Retrieved")
-        log.info(str(json_file))
-
         # use Pandas to read in the json file
         if not reader_func:
             reader_func = pd.read_json
 
-        # TESTING
-        try:
-            with open(json_file, "r") as input:
-                reader = json.load(input)
-                log.info("success reading json in")
-                log.info(str(reader))
-        except IOError:
-            log.info("io error reading")
-        except ValueError:
-            log.info("bad data in json")
-
         try:
             keyword_data = reader_func(path_or_buf=str(json_file),
                                        lines=True)
-            log.info("JSON Read-in Contents")
-            log.info(str(keyword_data))
-            log.info("Type")
-            log.info(type(keyword_data))
-            return True
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
             log.info("Error Encountered: {}".format(str(err)))
             # re-raise the error
-            # raise ValueError
-            return True
+            raise ValueError
 
         # extraction and intermediate-transformation of the news json
         # TESTING
