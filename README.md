@@ -84,7 +84,8 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 
 - The fifth task, the Extraction task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the news JSON data from its folder and uses the JSON library to extract the top-headlines from it, storing the result in the 'headlines' folder.
 
-- The sixth task, the Transformation task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder.
+- The sixth task, the Transformation task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder. If **no news articles were found** in the data then no CSV file is created, the application notes this
+absence in the Airflow Logs for this task.
 
 - The seventh task, the Upload task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator is built ontop of the [Airflow S3 Hook](https://airflow.apache.org/code.html#airflow.hooks.S3_hook.S3Hook) and the Amazon Python Boto library; to move the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
 Two Amazon S3 buckets were setup by the author:
