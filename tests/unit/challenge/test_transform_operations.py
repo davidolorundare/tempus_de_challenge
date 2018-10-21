@@ -220,7 +220,7 @@ class TestTransformOperations:
                                     'headlines')
 
         # create dummy json file
-        full_file_path = os.path.join(headline_dir, 'dummy.json')
+        file_path = os.path.join(headline_dir, 'dummy.json')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -229,7 +229,7 @@ class TestTransformOperations:
             # create a fake filesystem directory containing one json file
             # to test the method
             patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path)
+            patcher.fs.create_file(file_path)
 
         # Act
             # function should raise errors on an empty directory
@@ -278,9 +278,9 @@ class TestTransformOperations:
                                     'headlines')
 
         # create three dummy json files
-        full_file_path_one = os.path.join(headline_dir, 'dummy1.json')
-        full_file_path_two = os.path.join(headline_dir, 'dummy2.json')
-        full_file_path_three = os.path.join(headline_dir, 'dummy3.json')
+        file_path_one = os.path.join(headline_dir, 'dummy1.json')
+        file_path_two = os.path.join(headline_dir, 'dummy2.json')
+        file_path_three = os.path.join(headline_dir, 'dummy3.json')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -289,9 +289,9 @@ class TestTransformOperations:
             # create a fake filesystem directory containing three json file
             # to test the method
             patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(file_path_one)
+            patcher.fs.create_file(file_path_two)
+            patcher.fs.create_file(file_path_three)
 
         # Act
             # function should raise errors on an empty directory
@@ -334,12 +334,12 @@ class TestTransformOperations:
                                     'headlines')
 
         # create dummy non-json files
-        full_file_path_one = os.path.join(headline_dir,
-                                          'my_stuff1_headlines.json')
-        full_file_path_two = os.path.join(headline_dir,
-                                          'my_stuff2_headlines.json')
-        full_file_path_three = os.path.join(headline_dir,
-                                            'my_stuff3_headlines.json')
+        file_path_one = os.path.join(headline_dir,
+                                     'my_stuff1_headlines.json')
+        file_path_two = os.path.join(headline_dir,
+                                     'my_stuff2_headlines.json')
+        file_path_three = os.path.join(headline_dir,
+                                       'my_stuff3_headlines.json')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -347,9 +347,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             # patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(file_path_one)
+            patcher.fs.create_file(file_path_two)
+            patcher.fs.create_file(file_path_three)
 
         # Act
             # function should raise errors on an empty directory
@@ -446,9 +446,9 @@ class TestTransformOperations:
         news_info_obj.get_headlines_directory = headline_dir_res
 
         # create three dummy json files
-        full_file_path_one = os.path.join(headline_dir_res, 'dummy1.json')
-        full_file_path_two = os.path.join(headline_dir_res, 'dummy2.json')
-        full_file_path_three = os.path.join(headline_dir_res, 'dummy3.json')
+        file_path_one = os.path.join(headline_dir_res, 'dummy1.json')
+        file_path_two = os.path.join(headline_dir_res, 'dummy2.json')
+        file_path_three = os.path.join(headline_dir_res, 'dummy3.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -458,9 +458,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headline_dir_res)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(file_path_one)
+            patcher.fs.create_file(file_path_two)
+            patcher.fs.create_file(file_path_three)
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
@@ -510,9 +510,9 @@ class TestTransformOperations:
         news_info_obj.get_headlines_directory = headlines_directory
 
         # create three dummy json files
-        full_file_path_one = os.path.join(headlines_directory, 'dummy1.json')
-        full_file_path_two = os.path.join(headlines_directory, 'dummy2.json')
-        full_file_path_three = os.path.join(headlines_directory, 'dummy3.json')
+        file_path_one = os.path.join(headlines_directory, 'dummy1.json')
+        file_path_two = os.path.join(headlines_directory, 'dummy2.json')
+        file_path_three = os.path.join(headlines_directory, 'dummy3.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -522,9 +522,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(headlines_directory)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(file_path_one)
+            patcher.fs.create_file(file_path_two)
+            patcher.fs.create_file(file_path_three)
 
         # Act
             result = transfm_fnc(pipeline_information=pipeline_info_obj,
@@ -564,7 +564,7 @@ class TestTransformOperations:
         reader_func.side_effect = lambda file, lines: "success reading json"
 
         # create one dummy json file
-        full_file_path = os.path.join(csv_dir_res, 'dummy.json')
+        file_path = os.path.join(csv_dir_res, 'dummy.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -574,14 +574,14 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir_res)
-            patcher.fs.create_file(full_file_path)
+            patcher.fs.create_file(file_path)
 
             # calling the transformed DataFrame's to_csv() creates a new
             # csv file in the fake directory
             transformed_data_df.to_csv.side_effect = patcher.fs.create_file
 
         # Act
-            result = trnsfm_fnc(full_file_path,
+            result = trnsfm_fnc(file_path,
                                 "dummy.csv",
                                 extract_func=extract_func_mock,
                                 transform_func=transform_func_func_mock,
@@ -619,7 +619,7 @@ class TestTransformOperations:
         reader_func.side_effect = lambda file, **lines: "success reading json"
 
         # create one dummy json file
-        full_file_path = os.path.join(csv_dir_res, 'dummy.json')
+        file_path = os.path.join(csv_dir_res, 'dummy.json')
 
         # setup a fake headlines directory which the function under test
         # requires be already existent
@@ -635,7 +635,7 @@ class TestTransformOperations:
             transformed_data_df.to_csv.side_effect = lambda *args: None
 
         # Act
-            result = trnsfm_fnc(full_file_path,
+            result = trnsfm_fnc(file_path,
                                 "dummy.csv",
                                 extract_func=extract_func_mock,
                                 transform_func=transform_func_func_mock,
@@ -838,9 +838,9 @@ class TestTransformOperations:
                                     'headlines')
 
         # create dummy non-json files
-        full_file_path_one = os.path.join(headline_dir, 'stuff1.txt')
-        full_file_path_two = os.path.join(headline_dir, 'stuff2.rtf')
-        full_file_path_three = os.path.join(headline_dir, 'stuff3.doc')
+        file_path_one = os.path.join(headline_dir, 'stuff1.txt')
+        file_path_two = os.path.join(headline_dir, 'stuff2.rtf')
+        file_path_three = os.path.join(headline_dir, 'stuff3.doc')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -848,9 +848,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             # patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
-            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
-            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
+            patcher.fs.create_file(file_path_one, contents='dummy txt')
+            patcher.fs.create_file(file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(file_path_three, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
@@ -889,9 +889,9 @@ class TestTransformOperations:
                                     'headlines')
 
         # create dummy non-json files
-        full_file_path_one = os.path.join(headline_dir, 'stuff1.txt')
-        full_file_path_two = os.path.join(headline_dir, 'stuff2.rtf')
-        full_file_path_three = os.path.join(headline_dir, 'stuff3.doc')
+        file_path_one = os.path.join(headline_dir, 'stuff1.txt')
+        file_path_two = os.path.join(headline_dir, 'stuff2.rtf')
+        file_path_three = os.path.join(headline_dir, 'stuff3.doc')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -899,9 +899,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             # patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
-            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
-            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
+            patcher.fs.create_file(file_path_one, contents='dummy txt')
+            patcher.fs.create_file(file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(file_path_three, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
@@ -942,12 +942,12 @@ class TestTransformOperations:
                                     'headlines')
 
         # create dummy non-json files
-        full_file_path_one = os.path.join(headline_dir,
-                                          'my_stuff1_headlines.json')
-        full_file_path_two = os.path.join(headline_dir,
-                                          'my_stuff2_headlines.json')
-        full_file_path_three = os.path.join(headline_dir,
-                                            'my_stuff3_headlines.json')
+        file_path_one = os.path.join(headline_dir,
+                                     'my_stuff1_headlines.json')
+        file_path_two = os.path.join(headline_dir,
+                                     'my_stuff2_headlines.json')
+        file_path_three = os.path.join(headline_dir,
+                                       'my_stuff3_headlines.json')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -955,9 +955,9 @@ class TestTransformOperations:
 
             # create a fake filesystem directory and files to test the method
             # patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path_one)
-            patcher.fs.create_file(full_file_path_two)
-            patcher.fs.create_file(full_file_path_three)
+            patcher.fs.create_file(file_path_one)
+            patcher.fs.create_file(file_path_two)
+            patcher.fs.create_file(file_path_three)
 
         # Act
             # function should raise errors on an empty directory
