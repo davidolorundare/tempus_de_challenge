@@ -590,7 +590,7 @@ class TestTransformOperations:
         # Assert
         # return status of the transformation operation should be True to
         # indicate success
-        assert result is True
+        assert result[0] is True
 
     @patch('pandas.read_json', autospec=True)
     def test_transform_news_headlines_one_json_to_csv_fails(self,
