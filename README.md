@@ -215,7 +215,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	`task_log_reader = file.task` to `task_log_reader = task`
 - The Airflow Community contributed [`airflow.contrib.sensor.file_sensor`](https://airflow.apache.org/_modules/airflow/contrib/sensors/file_sensor.html) and [`airflow.contrib.hooks.fs_hook`](https://airflow.apache.org/_modules/airflow/contrib/hooks/fs_hook.html#FSHook) classes were found to be *very* buggy, especially when trying to configure and test them in a DAG task pipeline.
 
-- There are known issues with using the [Moto Server](http://docs.getmoto.org/en/latest/docs/getting_started.html#stand-alone-server-mode) in stand-alone server mode when testing a locally created url endpoint. See [here](https://github.com/spulec/moto/issues/1026)for more details. 
+- There are known issues with using the [Moto Server](http://docs.getmoto.org/en/latest/docs/getting_started.html#stand-alone-server-mode) in stand-alone server mode when testing a locally created url endpoint. See [here](https://github.com/spulec/moto/issues/1026) for more details. 
 
 
 ---
