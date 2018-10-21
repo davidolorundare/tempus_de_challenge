@@ -1518,6 +1518,12 @@ class TransformOperations:
 
         log.info("Running transform_news_headlines_json_to_csv method")
 
+        # ensure status of operation is communicated to caller function
+        op_status = None
+
+        # indicates if the news file has any news articles in it
+        has_news_articles = True
+
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
@@ -1542,6 +1548,19 @@ class TransformOperations:
         # extraction and intermediate-transformation of the news json
         keyword_data = pd.DataFrame([keyword_data])
         extracted_data = extract_func(keyword_data)
+
+        # if there are no headline articles then no csv file is
+        # created for this news keyword. the function should not
+        # continue processing, but rather log the absence of news
+        # articles and move on to the next task in the pipeline
+        if not extracted_data:
+            has_news_articles = False
+            log.info("No News articles found, csv not created")
+            op_status = True
+            return op_status
+
+        # function continues in the presence of news articles to process
+        log.info("News Articles Present: {}".format(has_news_articles))
         transformed_df = transform_func(extracted_data)
 
         # transform to csv and save in the 'csv' datastore
