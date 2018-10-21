@@ -266,7 +266,7 @@ class TestTransformOperations:
         # Mock out the behavior of the function under test, returns True
         # indicating the single json file passed in was successfully
         # converted to a csv
-        json_csv_func.side_effect = lambda files, filename, reader: True
+        json_csv_func.side_effect = lambda files, name, reader: True, "success"
         jsons_df_func.side_effect = lambda files, reader: pd.DataFrame()
         df_csv_func.side_effect = lambda dataframe, filename: True
 
