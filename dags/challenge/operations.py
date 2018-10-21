@@ -289,6 +289,7 @@ class FileStorage:
             headlines_obj = headline_func(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
                 headline_json = headlines_obj.json()
+
                 # descriptive name of the headline file.
                 # use the source id rather than source name, since
                 # (after testing) it was discovered that strange formattings
