@@ -1326,8 +1326,9 @@ class TransformOperations:
             raise FileNotFoundError("Directory is empty")
 
         if os.listdir(directory):
-            files = [file for file in os.listdir(directory)
-                     if file.endswith('.json')]
+            for file in os.listdir(directory):
+                if file.endswith('.json'):
+                    files.append(os.path.join(directory, file))
 
         # check existence of json files before beginning transformation
         if not files:
@@ -1335,8 +1336,7 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
-            file_path = os.path.join(directory, files[0])
-            status = json_to_csv_func(file_path, filename)
+            status = json_to_csv_func(files[0], filename)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files)
