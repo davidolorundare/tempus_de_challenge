@@ -230,19 +230,11 @@ class FileStorage:
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
 
-        # TESTING
-        log.info("Filename")
-        log.info(fname)
-        log.info("File Path")
-        log.info(str(fpath))
-
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
                 json.dump(data, outputfile)
-            # TESTING
-            log.info("File - Write was True")
-
+            # the file-write was successful so return a True status
             return True
         except IOError:
             raise IOError("Error in Reading Data - IOError")
