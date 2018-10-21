@@ -782,7 +782,7 @@ class TestTransformOperations:
         # Assert
         # return status of the operation should be False to indicate the
         # csv file was not saved to the directory
-        assert result is False
+        assert result[0] is False
 
     def test_transform_headlines_to_csv_wrong_pipeline_fails(self,
                                                              airflow_context,
