@@ -496,11 +496,10 @@ class NetworkOperations:
 
         # copy of the json data
         json_data = response.json()
-        parsed_data = json.dumps(json_data)
 
         # write the data to file
         if status_code == requests.codes.ok:
-            FileStorage.write_json_to_file(data=parsed_data,
+            FileStorage.write_json_to_file(data=json_data,
                                            path_to_dir=news_dir,
                                            filename=fname)
             # airflow logging
