@@ -416,10 +416,12 @@ class FileStorage:
                                 'tempdata',
                                 'tempus_challenge_dag',
                                 'csv')
+
         csv_bonus_path = os.path.join(HOME_DIRECTORY,
                                       'tempdata',
                                       'tempus_bonus_challenge_dag',
                                       'csv')
+
         csv_store = {'tempus_challenge_dag': csv_path,
                      'tempus_bonus_challenge_dag': csv_bonus_path}
 
