@@ -1483,6 +1483,7 @@ class TransformOperations:
                 log.info("Error Encountered: {}".format(error_message))
 
             # extract news data from the json and transform it into a DataFrame
+            json_data = pd.DataFrame([str(json_data)])
             current_file_df = transform_func(extract_func(json_data))
 
             # perform sequential mergers while freeing up memory
