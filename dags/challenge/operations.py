@@ -1786,6 +1786,59 @@ class UploadOperations:
     """
 
     @classmethod
+    def upload_directory_check(cls, pipeline_name, csv_dir=None):
+        """performs file checks in the csv directory of
+        a given pipeline.
+
+        # Arguments:
+            :param csv_directory: path to the directory
+                containing all the csv headline files.
+            :type csv_directory: str
+            :type csv_directory: str
+            :param bucket_name: name of an existing s3 bucket.
+            :type bucket_name: str
+        """
+
+        log.info("Running upload_directory_check method")
+
+        # get information about the current pipeline
+        pipeline_info = NewsInfoDTO(pipeline_name)
+        status = None
+        message = None
+
+        # list of all csv files in the directory
+        csv_files = []
+
+        if not csv_dir:
+            csv_dir = pipeline_info.csv_directory
+
+        # check existence of csv files in the directory
+        if not os.listdir(csv_dir):
+            status = True
+            message = "Directory is empty"
+            return status, message, csv_files
+
+        if os.listdir(csv_dir):
+            csv_files = [file for file in os.listdir(csv_dir)
+                         if file.endswith('.csv')]
+
+        # a directory with non-csv files is valid
+        if not csv_files:
+            status = True
+            message = "Directory has no csv-headline files"
+            return status, message, csv_files
+        # csv files exist
+        else:
+            status = True
+            message = "CSV files present"
+            return status, message, csv_files
+
+        # some other error occured
+        status = False
+        message = "Unknown error encountered"
+        return status, message, csv_files
+
+    @classmethod
     def upload_csv_to_s3(cls,
                          csv_directory=None,
                          bucket_name=None,
