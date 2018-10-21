@@ -240,6 +240,41 @@ class FileStorage:
             raise IOError("Error in Reading Data - IOError")
 
     @classmethod
+    def json_to_dataframe_reader(cls, json_file):
+        """reads in a news json file and returns a structure suitable
+        for a Pandas DataFrame.
+
+        # Argument:
+            :param json_file: path to the json file.
+            :type json_file: str
+
+        # Raises:
+            IOError: if an error is encountered with opening the file.
+            ValueError: if the json reader encounters an unparsable
+                value.
+        """
+
+        log.info("Running json_to_dataframe_reader method")
+
+        reader_data = None
+
+        try:
+            with open(json_file, "r") as inputfile:
+                reader_data = json.load(inputfile)
+        except IOError as err:
+            # log the error in airflow and reraise to the caller
+            log.info("Decoding Error encountered while reading")
+            log.info(str(err))
+            raise IOError
+        except ValueError as err:
+            # log the error airflow and reraise to the caller
+            log.info("Parsing Error encountered in file")
+            log.info(str(err))
+            raise ValueError
+
+        return reader_data
+
+    @classmethod
     def write_source_headlines_to_file(cls,
                                        source_ids,
                                        source_names,
