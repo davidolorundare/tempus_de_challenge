@@ -1,9 +1,0 @@
-{
-  "tests/unit/challenge/test_extract_operations.py": true,
-  "tests/unit/challenge/test_filestorage_operations.py": true,
-  "tests/unit/challenge/test_network_operations.py": true,
-  "tests/unit/challenge/test_newsinfo_dto.py": true,
-  "tests/unit/challenge/test_sample.py": true,
-  "tests/unit/challenge/test_transform_operations.py": true,
-  "tests/unit/challenge/test_upload_operations.py": true
-}

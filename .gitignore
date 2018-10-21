@@ -3,6 +3,7 @@ tempus_env/
 
 # Pytest Cache folder
 .pytest_cache/
+.cache/
 
 # pytest coverage info
 .coverage
