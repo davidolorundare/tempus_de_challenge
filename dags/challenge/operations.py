@@ -956,15 +956,6 @@ class ExtractOperations:
 
         log.info("Running extract_news_data_from_dataframe method")
 
-        # TESTING
-        log.info('VALUE')
-        log.info(str(frame))
-        log.info('Status without 0')
-        thing = frame['status']
-        log.info(thing)
-        log.info('Status with 0')
-        log.info(frame['status'][0])
-
         num_of_articles = frame['totalResults']  # [0]
         # dictionary representing the extracted news data
         extracted_data = {}
