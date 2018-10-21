@@ -956,10 +956,9 @@ class ExtractOperations:
 
         log.info("Running extract_news_data_from_dataframe method")
 
-        num_of_articles = frame['totalResults']  # [0]
+        num_of_articles = frame['totalResults'][0]
         # dictionary representing the extracted news data
         extracted_data = {}
-        return {}
 
         # error check - no articles means this json had no news data
         if num_of_articles < 1:
