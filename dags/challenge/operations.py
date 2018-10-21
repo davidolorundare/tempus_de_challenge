@@ -1611,6 +1611,12 @@ class TransformOperations:
         Uses the Pandas library to parse, extract and flatten the
         json data into a csv file.
 
+        If there are no news articles in the parsed json file then no
+        csv file is created for the keyword. This absence of news
+        articles is logged to the airflow console and the function
+        returns its operating status `op_status` as True, indicating
+        to the caller indicating that it completed in a valid state.
+
         # Arguments:
             :param json_file: a json file containing top news headlines
                 based on a keyword.
@@ -1629,6 +1635,12 @@ class TransformOperations:
         """
 
         log.info("Running transform_key_headlines_to_csv method")
+
+        # ensure status of operation is communicated to caller function
+        op_status = None
+
+        # indicates if the news file has any news articles in it
+        has_news_articles = True
 
         # Function Aliases
         # use an alias since the length of the real function call when used
@@ -1654,8 +1666,23 @@ class TransformOperations:
         # extraction and intermediate-transformation of the news json
         # TESTING
         log.info("NOW DOING DATA EXTRACT AND TRANSFORM")
+        log.info("using this data")
+        log.info(keyword_data)
         keyword_data = pd.DataFrame([keyword_data])
         extracted_data = extract_func(keyword_data)
+
+        # if there are no headline articles then no csv file is
+        # created for this news keyword. the function should not
+        # continue processing, but rather log the absence of news
+        # articles and move on to the next task in the pipeline
+        if not extracted_data:
+            has_news_articles = False
+            log.info("No News articles found, csv not created")
+            op_status = True
+            return op_status
+
+        # function continues in the presence of news articles to process
+        log.info("News Articles Present: {}".format(has_news_articles))
         transformed_df = transform_func(extracted_data)
 
         # transform to csv and save in the 'csv' datastore
@@ -1665,9 +1692,8 @@ class TransformOperations:
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(csv_save_path)
 
-        # ensure status of operation is communicated to caller function
-        op_status = None
         query_key = csv_filename.split("_")[1]
+
         if os.path.isfile(csv_save_path):
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
             op_status = True
