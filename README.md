@@ -222,6 +222,5 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 ---
 ### Project Plan/Initial Approach
 
-- A week of learning and experimentation with new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto library, Python Integration Testing, Using Python Test Doubles, and applying Python Test-Driven Development in practice.
-
-- two full days of coding, testing, and developing the solution.
+- A week of learning and experimentation with completely new topics: Working with Airflow, RESTFul APIs, Docker, AWS Python Boto library, Python Integration Testing, Using Python Test Doubles, and applying Python Test-Driven Development in practice.
+- A week of coding, testing, and developing the solution.
