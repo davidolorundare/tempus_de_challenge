@@ -647,6 +647,75 @@ class TestTransformOperations:
         # directory exists
         assert result is False
 
+    def test_transform_news_headlines_json_to_csv_no_articles_fails(self):
+        """function behaves properly in the absence of news articles."""
+
+        # Arrange
+
+        # name of the pipeline under test
+        pipeline_name = "tempus_challenge_dag"
+
+        # Function Aliases
+        # use an alias since the length of the real function call when used
+        # is more than PEP-8's 79 line-character limit.
+        # get the current pipeline info
+        tf_func = c.TransformOperations.transform_key_headlines_to_csv
+        extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+
+        # create the dummy input data that will be passed to the function
+        # under test
+        dummy_json_file = None
+        transform_data_df = MagicMock(spec=pandas.DataFrame)
+
+        # setup a Mock of the extract and transform function dependencies
+        tf_func_mock = MagicMock(spec=tf_func)
+        extract_func_mock = MagicMock(spec=extract_func)
+        file_reader_func = MagicMock(spec=pandas.read_json)
+
+        # an empty dictionary returned indicates to the function under
+        # test that no news articles were found in the json file
+        extract_func_mock.side_effect = lambda data: {}
+        tf_func_mock.side_effect = lambda data: transform_data_df
+        file_reader_func.side_effect = lambda data: "read-in json file"
+
+        # calling the transformed DataFrame's to_csv() creates a new
+        # csv file in the fake directory
+        transform_data_df.to_csv.side_effect = lambda filepath: "no file"
+
+        # name and path to the file that will be created after transformation
+        filename = str(datetime.datetime.now()) + "_" + "sample.csv"
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # path to the fake csv directory the function under test
+            # uses
+            csv_dir = os.path.join('tempdata',
+                                   pipeline_name,
+                                   'csv')
+
+            # create a fake filesystem directory and place the dummy csv files
+            # in that directory to test the method
+            patcher.fs.create_dir(csv_dir)
+
+        # Act
+            result = tf_func(dummy_json_file,
+                             filename,
+                             file_reader_func,
+                             extract_func_mock,
+                             tf_func_mock)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        # No news articles is a valid state of the function and returns
+        # True. Inspecting the function's returned status message verifies
+        # that indeed no news article was found
+        assert result[0] is True
+        assert "No News articles found" in result[1]
+
     @patch('pandas.read_json', autospec=True)
     def test_transform_key_headlines_to_csv_convert_fails(self,
                                                           file_reader_func,

@@ -1499,6 +1499,12 @@ class TransformOperations:
         Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
 
+        If there are no news articles in the parsed json file then no
+        csv file is created for the new source. This absence of news
+        articles is logged to the airflow console and the function
+        returns its operating status `op_status` as True, indicating
+        to the caller indicating that it completed in a valid state.
+
         # Arguments:
             :param json_file: a json file containing top news headlines
                 based on a keyword.
@@ -1521,7 +1527,7 @@ class TransformOperations:
         # ensure status of operation is communicated to caller function
         op_status = None
 
-        # indicates if the news file has any news articles in it
+        # indicates if the json file has any news articles in it
         has_news_articles = True
 
         # Function Aliases
@@ -1550,11 +1556,12 @@ class TransformOperations:
         extracted_data = extract_func(keyword_data)
 
         # if there are no headline articles then no csv file is
-        # created for this news keyword. the function should not
+        # created for this news source. the function should not
         # continue processing, but rather log the absence of news
         # articles and move on to the next task in the pipeline
         if not extracted_data:
             has_news_articles = False
+            print("No News articles found, csv not created")
             log.info("No News articles found, csv not created")
             op_status = True
             return op_status
@@ -1658,7 +1665,7 @@ class TransformOperations:
         # ensure status of operation is communicated to caller function
         op_status = None
 
-        # indicates if the news file has any news articles in it
+        # indicates if the json file has any news articles in it
         has_news_articles = True
 
         # Function Aliases
