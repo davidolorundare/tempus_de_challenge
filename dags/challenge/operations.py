@@ -230,10 +230,19 @@ class FileStorage:
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
 
+        # TESTING
+        log.info("Filename")
+        log.info(fname)
+        log.info("File Path")
+        log.info(str(fpath))
+
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
                 json.dump(data, outputfile)
+            # TESTING
+            log.info("File - Write was True")
+
             return True
         except IOError:
             raise IOError("Error in Reading Data - IOError")
@@ -613,15 +622,30 @@ class NetworkOperations:
         # retrieve the json data from the Response object
         data = response.json()
 
+        # TESTING
+        log.info("The Output File:")
+        log.info(json.loads(json.dumps(data)))
+
         # write to json data to a file with the query-keyword
         # as its filename. Note status of the operation.
         # True implies the write went okay, False otherwise.
-        write_stat = FileStorage.write_json_to_file(data,
+        parsed_data = json.dumps(data)
+        write_stat = FileStorage.write_json_to_file(parsed_data,
                                                     headlines_dir,
                                                     filename)
 
         # file-write was successful and 'headlines' folder contains the json
         if write_stat and os.listdir(headlines_dir):
+            # TESTING
+            log.info("File Write WAS REALLY TRUE")
+            log.info("Contents of Headlines Directory")
+            log.info(os.listdir(headlines_dir))
+            log.info("Parsed DATA")
+            fp = os.path.join(headlines_dir, os.listdir(headlines_dir)[0])
+            with open(fp, "r") as input:
+                reader = json.load(input)
+                log.info("success reading json in")
+                log.info(str(reader))
             return True
         else:
             return False
@@ -1196,7 +1220,8 @@ class TransformOperations:
             for file in files:
                 key = file.split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                stat = json_transfm_func(file, fname)
+                file_path = os.path.join(directory, file)
+                stat = json_transfm_func(file_path, fname)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv
@@ -1573,19 +1598,41 @@ class TransformOperations:
         if not transform_func:
             transform_func = TransformOperations.transform_data_to_dataframe
 
+        # TESTING
+        log.info("File Retrieved")
+        log.info(str(json_file))
+
         # use Pandas to read in the json file
         if not reader_func:
             reader_func = pd.read_json
+
+        # TESTING
         try:
-            keyword_data = reader_func(json_file, lines=True)
+            with open(json_file, "r") as input:
+                reader = input.read()  # json.load(input)
+                log.info("success reading json in")
+                log.info(str(reader))
+        except IOError:
+            log.info("io error reading")
+        except ValueError:
+            log.info("bad data in json")
+
+        try:
+            keyword_data = reader_func(path_or_buf=json_file,
+                                       lines=True)
+            log.info("JSON Read-in Contents")
+            log.info(str(keyword_data))
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
             log.info("Error Encountered: {}".format(str(err)))
             # re-raise the error
-            raise ValueError
+            # raise ValueError
+            return True
 
         # extraction and intermediate-transformation of the news json
+        # TESTING
+        log.info("NOW DOING DATA EXTRACT AND TRANSFORM")
         data = extract_func(keyword_data)
         transformed_df = transform_func(data)
 

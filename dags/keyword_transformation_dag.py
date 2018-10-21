@@ -146,11 +146,11 @@ flatten_to_csv_task = PythonOperator(task_id='flatten_to_csv_kw_task',
                                      dag=dag)
 
 # # upload the flattened csv into my S3 bucket
-upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
-                                 provide_context=True,
-                                 python_callable=upload_func_alias,
-                                 retries=3,
-                                 dag=dag)
+# upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
+#                                  provide_context=True,
+#                                  python_callable=upload_func_alias,
+#                                  retries=3,
+#                                  dag=dag)
 
 # # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
@@ -172,4 +172,5 @@ start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 # extracted, and the data transform by flattening into CSV.
 # Then perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-file_exists_sensor >> flatten_to_csv_task >> upload_csv_task >> end_task
+# file_exists_sensor >> flatten_to_csv_task >> upload_csv_task >> end_task
+file_exists_sensor >> flatten_to_csv_task >> end_task
