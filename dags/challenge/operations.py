@@ -240,7 +240,7 @@ class FileStorage:
             raise IOError("Error in Reading Data - IOError")
 
     @classmethod
-    def json_to_dataframe_reader(cls, json_file):
+    def json_to_dataframe_reader(cls, json_file, reader_func=None):
         """reads in a news json file and returns a structure suitable
         for a Pandas DataFrame.
 
@@ -257,6 +257,7 @@ class FileStorage:
         log.info("Running json_to_dataframe_reader method")
 
         reader_data = None
+        # use the default json reader if the parameter is left blank
         if not reader_func:
             reader_func = json.load
 
