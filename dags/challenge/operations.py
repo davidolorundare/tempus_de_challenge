@@ -1480,10 +1480,9 @@ class TransformOperations:
             # extract news data from the json and transform it into a DataFrame
             current_file_df = transform_func(extract_func(json_data))
 
-            # perform merge
+            # perform sequential mergers while freeing up memory
+            # by clearing the previously transformed DataFrames
             merged_df = pd.concat([merged_df, current_file_df])
-
-            # free up memory by clearing the previously transformed DataFrames
             del current_file_df
 
             # force Python's Garbage Collector to clean up unused variables and
