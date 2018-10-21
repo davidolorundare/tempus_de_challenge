@@ -1503,7 +1503,8 @@ class TransformOperations:
         csv file is created for the new source. This absence of news
         articles is logged to the airflow console and the function
         returns its operating status `op_status` as True, indicating
-        to the caller indicating that it completed in a valid state.
+        to the caller indicating that it completed in a valid state,
+        and returning a status message to show this.
 
         # Arguments:
             :param json_file: a json file containing top news headlines
@@ -1526,6 +1527,7 @@ class TransformOperations:
 
         # ensure status of operation is communicated to caller function
         op_status = None
+        status_msg = None
 
         # indicates if the json file has any news articles in it
         has_news_articles = True
@@ -1561,10 +1563,10 @@ class TransformOperations:
         # articles and move on to the next task in the pipeline
         if not extracted_data:
             has_news_articles = False
-            print("No News articles found, csv not created")
+            status_msg = "No News articles found, csv not created"
             log.info("No News articles found, csv not created")
             op_status = True
-            return op_status
+            return op_status, status_msg
 
         # function continues in the presence of news articles to process
         log.info("News Articles Present: {}".format(has_news_articles))
@@ -1582,10 +1584,12 @@ class TransformOperations:
         if os.listdir(csv_dir):
             log.info("english news headlines csv saved in {}".format(csv_dir))
             op_status = True
+            status_msg = "csv file successfully created"
         else:
             op_status = False
+            status_msg = "error encountered during csv file creation"
 
-        return op_status
+        return op_status, status_msg
 
     @classmethod
     def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
