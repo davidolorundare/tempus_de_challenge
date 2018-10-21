@@ -244,7 +244,7 @@ class TestExtractOperations:
         total_results = [1]
         status = ['ok']
 
-        source1 = {"source": {"id": "wired", "name": "Wired"},
+        source1 = [{"source": {"id": "wired", "name": "Wired"},
                    "author": "Klint Finley", "title": "Microsoft\
                    Calls a Truce in the Linux\
                     Patent Wars", "description": "The software giant, whose\
@@ -260,7 +260,7 @@ class TestExtractOperations:
                        said it will allow more than 2,600 other companies,\
                         including traditional rivals like Google and IBM,\
                          to use the technology behind 60,000 Microsoft\
-                          patents for their own Linux related o… [+4435 chars]"}
+                        patents for their own Linux related o… [+4435 chars]"}]
 
         articles = [source1]
 
