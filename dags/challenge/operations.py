@@ -967,31 +967,31 @@ class ExtractOperations:
 
         # Using Pandas, extract required information from the given dataframe
         # each is a return list of data.
-        source_id = [frame['articles'][index]['source']['id']
+        source_id = [frame['articles'][index][0]['source']['id']
                      for index in np.arange(num_of_articles)]
 
-        source_name = [frame['articles'][index]['source']['name']
+        source_name = [frame['articles'][index][0]['source']['name']
                        for index in np.arange(num_of_articles)]
 
-        author = [frame['articles'][index]['author']
+        author = [frame['articles'][index][0]['author']
                   for index in np.arange(num_of_articles)]
 
-        title = [frame['articles'][index]['title']
+        title = [frame['articles'][index][0]['title']
                  for index in np.arange(num_of_articles)]
 
-        description = [frame['articles'][index]['description']
+        description = [frame['articles'][index][0]['description']
                        for index in np.arange(num_of_articles)]
 
-        url = [frame['articles'][index]['url']
+        url = [frame['articles'][index][0]['url']
                for index in np.arange(num_of_articles)]
 
-        url_to_image = [frame['articles'][index]['urlToImage']
+        url_to_image = [frame['articles'][index][0]['urlToImage']
                         for index in np.arange(num_of_articles)]
 
-        published_at = [frame['articles'][index]['publishedAt']
+        published_at = [frame['articles'][index][0]['publishedAt']
                         for index in np.arange(num_of_articles)]
 
-        content = [frame['articles'][index]['content']
+        content = [frame['articles'][index][0]['content']
                    for index in np.arange(num_of_articles)]
 
         # compose a dictionary with the extracted information
