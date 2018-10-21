@@ -1819,6 +1819,11 @@ class UploadOperations:
             :param context: airflow context object referencing the current
                 pipeline
             :type context: dict
+
+        # Raises:
+            ValueError: if the S3 bucket_name argument is left blank.
+            FileNotFoundError: if the bucket has not been already created
+                by the user in their Amazon AWS account.
         """
 
         log.info("Running upload_news_headline_csv_to_s3 method")
@@ -1826,46 +1831,54 @@ class UploadOperations:
         # get information about the current pipeline
         pipeline_name = context['dag'].dag_id
         pipeline_info = NewsInfoDTO(pipeline_name)
+        status = None
 
         if not csv_directory:
             csv_directory = pipeline_info.csv_directory
+
+        # list of all csv files in the directory
+        csv_files = []
+
+        # check existence of csv files in the directory itself beginning
+        # the upload
+        # an empty directory is valid, but we do not perform any uploads
+        if not os.listdir(csv_directory):
+            status = True
+            log.info("The csv directory is empty")
+            status_msg = "Directory is empty"
+            # raise FileNotFoundError("Directory is empty")
+            return status, status_msg
+
+        if os.listdir(csv_directory):
+            csv_files = [file for file in os.listdir(csv_directory)
+                         if file.endswith('.csv')]
+
+        # a directory with non-csv files is valid, but we do not
+        # perform any uploads
+        if not csv_files:
+            status = True
+            log.info("There are no csv type files in the directory")
+            status_msg = "Directory has no csv-headline files"
+            # raise FileNotFoundError("Directory has no csv-headline files")
+            return status, status_msg
+
+        # There are csv files to be uploaded. Check pre-existence
+        # of a VALID S3 bucket.
+        if not bucket_name:
+            status = False
+            raise ValueError("Bucket name cannot be empty")
+
+        buckets = [bucket.name for bucket in aws_resource.buckets.all()]
+        if bucket_name not in buckets:
+            status = False
+            raise FileNotFoundError("Bucket {} does not exist on the server\
+                ".format(bucket_name))
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
         if not aws_resource:
             aws_resource = boto3.resource('s3')
-        upload_status = None
-        status_msg = None
-
-        # ensure pre-existence of the bucket
-        if not bucket_name:
-            raise ValueError("Bucket name cannot be empty")
-
-        buckets = [bucket.name for bucket in aws_resource.buckets.all()]
-        if bucket_name not in buckets:
-            upload_status = False
-            raise FileNotFoundError("Bucket {} does not exist on the server\
-                ".format(bucket_name))
-
-        # list of all csv files in the directory
-        csv_files = []
-
-        # error-checks
-        if not os.listdir(csv_directory):
-            upload_status = False
-            log.info("The csv directory is empty")
-            raise FileNotFoundError("Directory is empty")
-
-        if os.listdir(csv_directory):
-            csv_files = [file for file in os.listdir(csv_directory)
-                         if file.endswith('.csv')]
-
-        # check existence of csv files and the bucket itself before beginning
-        # the upload
-        if not csv_files:
-            upload_status = False
-            raise FileNotFoundError("Directory has no csv-headline files")
 
         # iterate through the files in the directory and upload them to s3
         for file in csv_files:
@@ -1873,7 +1886,7 @@ class UploadOperations:
             aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
-        upload_status = True
+        status_msg = "upload successful"
 
-        # return upload status to calling function
-        return upload_status, status_msg
+        # return status to calling function
+        return status_msg, status_msg
