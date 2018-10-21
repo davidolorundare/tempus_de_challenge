@@ -1581,8 +1581,7 @@ class TransformOperations:
             reader_func = pd.read_json
 
         try:
-            keyword_data = reader_func(path_or_buf=str(json_file),
-                                       lines=True)
+            keyword_data = reader_func(str(json_file), lines=True)
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
