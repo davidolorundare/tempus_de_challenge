@@ -257,10 +257,13 @@ class FileStorage:
         log.info("Running json_to_dataframe_reader method")
 
         reader_data = None
+        if not reader_func:
+            reader_func = json.load
 
         try:
             with open(json_file, "r") as inputfile:
-                reader_data = json.load(inputfile)
+                reader_data = reader_func(inputfile)
+
         except IOError as err:
             # log the error in airflow and reraise to the caller
             log.info("Error in Reading Data - IOError")
