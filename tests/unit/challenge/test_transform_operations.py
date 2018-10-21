@@ -210,7 +210,7 @@ class TestTransformOperations:
         # Mock out the behavior of the function under test, returns True
         # indicating the single json file passed in was successfully
         # converted to a csv
-        json_csv_func.side_effect = lambda files, name, reader: True, "success"
+        json_csv_func.side_effect = lambda files, name, reader: True
 
         # setup pipeline information
         pipeline_name = "tempus_challenge_dag"
