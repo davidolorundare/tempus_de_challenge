@@ -189,7 +189,8 @@ class TestUploadOperations:
 
         # track the upload status and the buckets contents before and after
         # the upload operation
-        status = None
+        stat = None
+        msg = None
         bucket_contents_before_upload = None
         bucket_contents_after_upload = None
 
@@ -249,7 +250,8 @@ class TestUploadOperations:
 
         # Assert
         # upload function returns True if it was called
-        assert status is True
+        assert stat is True
+        assert "upload successful" in msg
 
         # confirm that before uploading the bucket is empty and after uploading
         # there are three files
