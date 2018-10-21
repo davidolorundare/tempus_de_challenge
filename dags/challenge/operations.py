@@ -1885,7 +1885,8 @@ class UploadOperations:
         pipeline_name = context['dag'].dag_id
 
         # inspect the pipeline's csv directory contents
-        return_status, msg, data = cls.upload_directory_check(pipeline_name)
+        return_status, msg, data = cls.upload_directory_check(pipeline_name,
+                                                              csv_directory)
         status = None
         files = None
 
