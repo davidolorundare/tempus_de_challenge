@@ -1390,7 +1390,7 @@ class TransformOperations:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files, reader)
             # transform the merged DataFrame into a csv
-            status, msg = df_to_csv_func(merged_dataframe, filename)
+            status = df_to_csv_func(merged_dataframe, filename)
 
         return status
 
