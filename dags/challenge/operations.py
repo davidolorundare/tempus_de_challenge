@@ -1709,9 +1709,10 @@ class TransformOperations:
         # articles and move on to the next task in the pipeline
         if not extracted_data:
             has_news_articles = False
+            status_msg = "No News articles found, csv not created"
             log.info("No News articles found, csv not created")
             op_status = True
-            return op_status
+            return op_status, status_msg
 
         # function continues in the presence of news articles to process
         log.info("News Articles Present: {}".format(has_news_articles))
@@ -1729,12 +1730,14 @@ class TransformOperations:
         if os.path.isfile(csv_save_path):
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
             op_status = True
+            status_msg = "csv file successfully created"
         else:
             log.info("{} headlines could not be saved in {}".format(query_key,
                                                                     csv_dir))
             op_status = False
+            status_msg = "error encountered during csv file creation"
 
-        return op_status
+        return op_status, status_msg
 
     @classmethod
     def transform_data_to_dataframe(cls, news_data):
