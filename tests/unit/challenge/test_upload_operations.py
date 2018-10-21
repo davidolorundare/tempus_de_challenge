@@ -149,11 +149,11 @@ class TestUploadOperations:
 
         # Act
             # attempt uploading a file to a valid s3 bucket
-            result = c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         client_obj,
-                                                         resource_obj,
-                                                         **airflow_context)
+            stat, msg = c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                            bucket_name,
+                                                            client_obj,
+                                                            resource_obj,
+                                                            **airflow_context)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -165,7 +165,8 @@ class TestUploadOperations:
 
         # ensure the boto3 upload_file() function was called with correct
         # arguments, resulting outcome should be True from the function
-        assert result is True
+        assert stat is True
+        assert "upload successful" in msg
 
     @mock_s3
     def test_upload_csv_to_s3_integration_succeeds(self,
