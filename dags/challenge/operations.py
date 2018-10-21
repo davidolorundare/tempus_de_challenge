@@ -263,12 +263,12 @@ class FileStorage:
                 reader_data = json.load(inputfile)
         except IOError as err:
             # log the error in airflow and reraise to the caller
-            log.info("Decoding Error encountered while reading")
+            log.info("Error in Reading Data - IOError")
             log.info(str(err))
             raise IOError
         except ValueError as err:
             # log the error airflow and reraise to the caller
-            log.info("Parsing Error encountered in file")
+            log.info("Error Decoding - Data is not Valid JSON")
             log.info(str(err))
             raise ValueError
 
