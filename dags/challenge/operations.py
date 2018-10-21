@@ -1350,6 +1350,9 @@ class TransformOperations:
         if not df_to_csv_func:
             df_to_csv_func = cls.transform_headlines_dataframe_to_csv
 
+        # function responsible for reading json files
+        reader = FileStorage.json_to_dataframe_reader
+
         # transformation operation status
         status = None
 
@@ -1384,7 +1387,8 @@ class TransformOperations:
             status = json_to_csv_func(files[0], filename)
         else:
             # transform the json files into DataFrames and merge them into one.
-            merged_dataframe = jsons_to_df_func(files)
+            merged_dataframe = jsons_to_df_func(files,
+                                                read_js_func=reader)
             # transform the merged DataFrame into a csv
             status = df_to_csv_func(merged_dataframe, filename)
 
@@ -1456,7 +1460,7 @@ class TransformOperations:
 
             # read in the json file.
             try:
-                json_data = read_js_func(json_files[indx], lines=True)
+                json_data = read_js_func(json_files[indx])
             except ValueError as err:
                 # if any errors are encountered during reading then skip the
                 # file to the next, but log it to the console.
