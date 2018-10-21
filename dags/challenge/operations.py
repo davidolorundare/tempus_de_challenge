@@ -1468,13 +1468,13 @@ class TransformOperations:
         # of Python (function) closures to achieve state maintenance.
         global merged_df
 
-        for indx, file in enumerate(json_files):
+        for index, file in enumerate(json_files):
             # perform json to DataFrame transformations by function-chaining
-            log.info(json_files[indx])
+            log.info(json_files[index])
 
-            # read in the json file.
+            # read in the json file resulting in an intermediary DataFrame.
             try:
-                json_data = read_js_func(json_files[indx])
+                json_data = read_js_func(json_files[index])
 
             except ValueError as err:
                 # if any errors are encountered during reading then skip the
@@ -1483,7 +1483,7 @@ class TransformOperations:
                 log.info("Error Encountered: {}".format(error_message))
 
             # extract news data from the json and transform it into a DataFrame
-            json_data = pd.DataFrame([str(json_data)])
+            json_data = pd.DataFrame([json_data])
             current_file_df = transform_func(extract_func(json_data))
 
             # perform sequential mergers while freeing up memory
