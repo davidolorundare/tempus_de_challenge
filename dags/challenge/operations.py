@@ -1396,9 +1396,7 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
-            status = json_to_csv_func(files[0],
-                                      filename,
-                                      read_js_func=reader)
+            status = json_to_csv_func(files[0], filename, reader)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files,
@@ -1411,9 +1409,9 @@ class TransformOperations:
     @classmethod
     def transform_jsons_to_dataframe_merger(cls,
                                             json_files,
+                                            read_js_func=None,
                                             extract_func=None,
-                                            transform_func=None,
-                                            read_js_func=None):
+                                            transform_func=None):
         """transforms a set of json files into a DataFrames and merges all of
         them into one.
 
