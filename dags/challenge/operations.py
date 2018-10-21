@@ -1226,6 +1226,9 @@ class TransformOperations:
 
         log.info("Running helper_execute_keyword_json_transformation method")
 
+        # function responsible for reading json files
+        reader = FileStorage.json_to_dataframe_reader
+
         # transformation operation status
         total_status = None
 
@@ -1259,7 +1262,9 @@ class TransformOperations:
             for file in files:
                 key = file.split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                stat = json_transfm_func(file, fname)
+                stat = json_transfm_func(file,
+                                         fname,
+                                         read_js_func=reader)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv
@@ -1650,7 +1655,7 @@ class TransformOperations:
             reader_func = pd.read_json
 
         try:
-            keyword_data = reader_func(str(json_file), lines=True)
+            keyword_data = reader_func(str(json_file))
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
