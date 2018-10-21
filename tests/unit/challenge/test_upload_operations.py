@@ -391,12 +391,11 @@ class TestUploadOperations:
 
         # Act
             # function should raise errors on an empty directory
-            with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                    bucket_name,
-                                                    client_obj,
-                                                    resource_obj,
-                                                    **airflow_context)
+            stat, msg = c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                            bucket_name,
+                                                            client_obj,
+                                                            resource_obj,
+                                                            **airflow_context)
 
             actual_message = str(err.value)
             # clean up and remove the fake filesystem
@@ -406,7 +405,7 @@ class TestUploadOperations:
         self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
-        assert "Directory is empty" in actual_message
+        assert "Directory is empty" in msg
 
     @mock_s3
     def test_upload_csv_to_s3_non_existent_bucket_fails(self,
@@ -578,9 +577,9 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy non-csv files
-        full_file_path_one = os.path.join(csv_dir, 'stuff1.txt')
-        full_file_path_two = os.path.join(csv_dir, 'stuff2.rtf')
-        full_file_path_three = os.path.join(csv_dir, 'stuff3.doc')
+        file_path_one = os.path.join(csv_dir, 'stuff1.txt')
+        file_path_two = os.path.join(csv_dir, 'stuff2.rtf')
+        file_path_three = os.path.join(csv_dir, 'stuff3.doc')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -589,9 +588,9 @@ class TestUploadOperations:
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path_one, contents='dummy txt')
-            patcher.fs.create_file(full_file_path_two, contents='dummy rtf')
-            patcher.fs.create_file(full_file_path_three, contents='dummy doc')
+            patcher.fs.create_file(file_path_one, contents='dummy txt')
+            patcher.fs.create_file(file_path_two, contents='dummy rtf')
+            patcher.fs.create_file(file_path_three, contents='dummy doc')
 
         # Act
             # function should raise errors on an empty directory
