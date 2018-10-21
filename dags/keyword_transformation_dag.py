@@ -138,7 +138,7 @@ file_exists_sensor = FileSensor(filepath=NEWS_DIR,
                                 task_id='file_sensor_task',
                                 dag=dag)
 
-# # transform the data, resulting in a flattened csv
+# extract and transform the data, resulting in a flattened csv
 flatten_to_csv_task = PythonOperator(task_id='flatten_to_csv_kw_task',
                                      provide_context=True,
                                      python_callable=flatten_csv_func_alias,
