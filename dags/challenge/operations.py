@@ -1502,9 +1502,9 @@ class TransformOperations:
     def transform_news_headlines_json_to_csv(cls,
                                              json_file,
                                              csv_filename=None,
+                                             read_js_func=None,
                                              extract_func=None,
-                                             transform_func=None,
-                                             read_js_func=None):
+                                             transform_func=None):
         """Transforms the contents of a given news json file into a csv.
 
         The function specifically operates on jsons in the 'headlines'
