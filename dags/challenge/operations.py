@@ -622,10 +622,6 @@ class NetworkOperations:
         # retrieve the json data from the Response object
         data = response.json()
 
-        # TESTING
-        log.info("The Output File:")
-        log.info(json.loads(json.dumps(data)))
-
         # write to json data to a file with the query-keyword
         # as its filename. Note status of the operation.
         # True implies the write went okay, False otherwise.
@@ -636,16 +632,6 @@ class NetworkOperations:
 
         # file-write was successful and 'headlines' folder contains the json
         if write_stat and os.listdir(headlines_dir):
-            # TESTING
-            log.info("File Write WAS REALLY TRUE")
-            log.info("Contents of Headlines Directory")
-            log.info(os.listdir(headlines_dir))
-            log.info("Parsed DATA")
-            fp = os.path.join(headlines_dir, os.listdir(headlines_dir)[0])
-            with open(fp, "r") as input:
-                reader = json.load(input)
-                log.info("success reading json in")
-                log.info(str(reader))
             return True
         else:
             return False
@@ -1618,9 +1604,12 @@ class TransformOperations:
             log.info("bad data in json")
 
         try:
-            keyword_data = reader_func(path_or_buf=str(json_file))
+            keyword_data = reader_func(path_or_buf=str(json_file),
+                                       lines=True)
             log.info("JSON Read-in Contents")
             log.info(str(keyword_data))
+            log.info("Type")
+            log.info(type(keyword_data))
             return True
         except ValueError as err:
             # if any errors are encountered during reading then skip the
