@@ -1652,7 +1652,7 @@ class TransformOperations:
 
 
 class UploadOperations:
-    """handles functionality for uploading flattened CSVs.
+    """Handles functionality for uploading flattened CSVs.
 
     Reads a 'csv' directory's files and uploads them to a preexisting
     Amazon S3 bucket using native boto library.
