@@ -1609,7 +1609,7 @@ class TransformOperations:
         # TESTING
         try:
             with open(json_file, "r") as input:
-                reader = input.read()  # json.load(input)
+                reader = json.load(input)
                 log.info("success reading json in")
                 log.info(str(reader))
         except IOError:
@@ -1618,7 +1618,7 @@ class TransformOperations:
             log.info("bad data in json")
 
         try:
-            keyword_data = reader_func(path_or_buf=json_file)
+            keyword_data = reader_func(path_or_buf=str(json_file))
             log.info("JSON Read-in Contents")
             log.info(str(keyword_data))
             return True
