@@ -269,59 +269,46 @@ class TestFileStorageOperations:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
-    def test_json_to_dataframe_reader_successfully_reads(self):
-        """a given json file is read successfully"""
+    @patch('json.load')
+    def test_json_to_dataframe_reader_successfully_reads(self, reader):
+        """a given json file is read successfully."""
 
         # Arrange
-        # Function Aliases
-        # use an alias since the length of the real function call when used
-        # is more than PEP-8's 79 line-character limit.
-        transfm_fnc = c.TransformOperations.helper_execute_json_transformation
-        js_csv_fnc = c.TransformOperations.transform_news_headlines_json_to_csv
-        js_df_fnc = c.TransformOperations.transform_jsons_to_dataframe_merger
-        h_csv_fnc = c.TransformOperations.transform_headlines_dataframe_to_csv
+        # dummy json data the mock function will return
+        data = {"status": "ok", "totalResults": 0, "articles": []}
 
-        # Mock out the functions that the function under test uses
-        json_csv_func = MagicMock(spec=js_csv_fnc)
-        jsons_df_func = MagicMock(spec=js_df_fnc)
-        df_csv_func = MagicMock(spec=h_csv_fnc)
-
-        # Mock out the behavior of the function under test, returns True
-        # indicating the single json file passed in was successfully
-        # converted to a csv
-        json_csv_func.side_effect = lambda files, filename: True
-
-        # setup pipeline information
-        pipeline_name = "tempus_challenge_dag"
-
-        headline_dir = os.path.join('tempdata',
-                                    pipeline_name,
-                                    'headlines')
-
-        # create dummy json file
-        full_file_path = os.path.join(headline_dir, 'dummy.json')
+        # Mock out the behavior of the function under test
+        reader.side_effect = lambda file: data
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
+            # create a path to a fake headlines folder
+            headline_dir = os.path.join('tempdata',
+                                        'headlines')
+
+            # create dummy json file
+            file_path = os.path.join(headline_dir, 'dummy.json')
+            file_data = {'status': 'ok',
+                         'totalResults': 0,
+                         'articles': []}
+
             # create a fake filesystem directory containing one json file
             # to test the method
             patcher.fs.create_dir(headline_dir)
-            patcher.fs.create_file(full_file_path)
+            patcher.fs.create_file(file_path, contents=file_data)
 
         # Act
             # function should raise errors on an empty directory
-            result = transfm_fnc(directory=headline_dir,
-                                 json_to_csv_func=json_csv_func,
-                                 jsons_to_df_func=jsons_df_func,
-                                 df_to_csv_func=df_csv_func)
+            result = c.FileStorage.json_to_dataframe_reader(file_path)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        expected = {'status': 'ok', 'totalResults': 0, 'articles': []}
+        expected = {"status": "ok", "totalResults": 0, "articles": []}
+        assert result == expected
 
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """returns correct news path when called correctly with pipeline name.
