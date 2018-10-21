@@ -180,9 +180,9 @@ class TestTransformOperations:
 
         # Act
         result = tf_func(json_files,
+                         file_reader_func,
                          extract_func_mock,
-                         tf_func_mock,
-                         file_reader_func)
+                         tf_func_mock)
 
         # Assert
         # an empty dataframe is expected since three empty dataframes were
