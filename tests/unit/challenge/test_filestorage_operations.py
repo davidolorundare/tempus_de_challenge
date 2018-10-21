@@ -269,6 +269,15 @@ class TestFileStorageOperations:
                                          data_directories_res[2]),
                                          exist_ok=True)
 
+    def test_json_to_dataframe_reader_successfully_reads(self):
+        """a given json file is read successfully"""
+
+        # Arrange
+        
+        # Act
+
+        # Assert
+
     def test_get_news_dir_returns_correct_path(self, home_directory_res):
         """returns correct news path when called correctly with pipeline name.
         """
