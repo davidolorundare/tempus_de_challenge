@@ -29,8 +29,6 @@
 1. [RubyGems](https://rubygems.org/) [installation](https://rubygems.org/pages/download)
 2. Register for a free [FakeS3 server license](https://supso.org/projects/fake-s3)
 3. [Install FakeS3](https://github.com/jubos/fake-s3#installation)
-4. Moto server, installed with the command `pip install moto` and `pip install moto[server]`
-
 
 ---
 ### Getting Started: Setup
@@ -161,7 +159,6 @@ The Amazon S3 integrations mock tests were done with moto library standalone as 
 
 ---
 
-- Open a command line terminal and enter the command `pip install moto`, this installs the moto library which the upload-operation unit and integration tests use to mock a fake Amazon S3 API.
 - With [FakeS3 installed](#Optional-Prerequisites) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
