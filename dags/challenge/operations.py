@@ -1830,7 +1830,7 @@ class UploadOperations:
         if not csv_directory:
             csv_directory = pipeline_info.csv_directory
 
-        # instantiate an S3 client object which will perform the uploads
+        # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
         if not aws_resource:
