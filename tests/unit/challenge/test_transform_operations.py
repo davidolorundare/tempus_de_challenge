@@ -645,7 +645,7 @@ class TestTransformOperations:
         # return status of the transformation operation should be False to
         # indicate failure - the csv file could not be created as no csv
         # directory exists
-        assert result is False
+        assert result[0] is False
 
     def test_transform_news_headlines_json_to_csv_no_articles_fails(self):
         """function behaves properly in the absence of news articles."""
