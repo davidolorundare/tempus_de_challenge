@@ -1566,7 +1566,7 @@ class TransformOperations:
             status_msg = "No News articles found, csv not created"
             log.info("No News articles found, csv not created")
             op_status = True
-            return op_status, status_msg
+            return [op_status, status_msg]
 
         # function continues in the presence of news articles to process
         log.info("News Articles Present: {}".format(has_news_articles))
@@ -1589,7 +1589,7 @@ class TransformOperations:
             op_status = False
             status_msg = "error encountered during csv file creation"
 
-        return op_status, status_msg
+        return [op_status, status_msg]
 
     @classmethod
     def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
