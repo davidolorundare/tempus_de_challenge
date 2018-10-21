@@ -1797,10 +1797,10 @@ class UploadOperations:
 
         It is a valid state for the csv directory to be empty -
         as this implies no news articles was found during retrieval
-        from the newsapi. This function does nothing if no csv
-        files are in the directory rather it logs this absence of
-        such files and returns a True status to indicate that the
-        next task in the pipeline should be executed.
+        from the newsapi via the upstream tasks. This function does
+        nothing if no csv files are in the directory, rather it logs
+        this absence of such files and returns a True status to indicate
+        that the next task in the pipeline should be executed.
 
         # Arguments:
             :param csv_directory: path to the directory containing all the
@@ -1836,6 +1836,7 @@ class UploadOperations:
         if not aws_resource:
             aws_resource = boto3.resource('s3')
         upload_status = None
+        status_msg = None
 
         # ensure pre-existence of the bucket
         if not bucket_name:
@@ -1853,6 +1854,7 @@ class UploadOperations:
         # error-checks
         if not os.listdir(csv_directory):
             upload_status = False
+            log.info("The csv directory is empty")
             raise FileNotFoundError("Directory is empty")
 
         if os.listdir(csv_directory):
@@ -1874,4 +1876,4 @@ class UploadOperations:
         upload_status = True
 
         # return upload status to calling function
-        return upload_status
+        return upload_status, status_msg
