@@ -230,11 +230,11 @@ class TestUploadOperations:
             bucket_contents_before_upload = len(list(bucket.objects.all()))
 
             # Perform the upload operation
-            status = c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                         bucket_name,
-                                                         client_obj,
-                                                         resource_obj,
-                                                         **airflow_context)
+            stat, msg = c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                            bucket_name,
+                                                            client_obj,
+                                                            resource_obj,
+                                                            **airflow_context)
 
             # verify the uploaded files now exist in the bucket, we just
             # uploaded three files, so the number of objects in the bucket
