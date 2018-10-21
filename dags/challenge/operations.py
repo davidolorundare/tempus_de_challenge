@@ -1912,6 +1912,19 @@ class UploadOperations:
             status = False
             raise ValueError("Bucket name cannot be empty")
 
+        # TESTING
+        log.info("Echoing Amazon Credentials")
+        log.info("access key")
+        log.info(os.environ['AWS_ACCESS_KEY_ID'])
+        log.info("secret key")
+        log.info(os.environ['AWS_SECRET_ACCESS_KEY'])
+        log.info("default region")
+        log.info(os.environ['AWS_DEFAULT_REGION'])
+        log.info("profile user")
+        log.info(os.environ['AWS_PROFILE'])
+        log.info("default output")
+        log.info(os.environ['AWS_DEFAULT_OUTPUT'])
+
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
