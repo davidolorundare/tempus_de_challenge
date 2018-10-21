@@ -1886,6 +1886,7 @@ class UploadOperations:
             aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
+        status = True
         status_msg = "upload successful"
 
         # return status to calling function
