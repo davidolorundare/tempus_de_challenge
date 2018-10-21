@@ -397,7 +397,6 @@ class TestUploadOperations:
                                                             resource_obj,
                                                             **airflow_context)
 
-            actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
