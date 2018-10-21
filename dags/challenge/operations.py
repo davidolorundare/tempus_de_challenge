@@ -957,6 +957,7 @@ class ExtractOperations:
         log.info("Running extract_news_data_from_dataframe method")
 
         num_of_articles = frame['totalResults'][0]
+
         # dictionary representing the extracted news data
         extracted_data = {}
 
