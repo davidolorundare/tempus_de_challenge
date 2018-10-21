@@ -1385,12 +1385,12 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
-            status = json_to_csv_func(files[0], filename, reader)[0]
+            status, msg = json_to_csv_func(files[0], filename, reader)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files, reader)
             # transform the merged DataFrame into a csv
-            status = df_to_csv_func(merged_dataframe, filename)[0]
+            status, msg = df_to_csv_func(merged_dataframe, filename)
 
         return status
 
@@ -1566,7 +1566,7 @@ class TransformOperations:
             status_msg = "No News articles found, csv not created"
             log.info("No News articles found, csv not created")
             op_status = True
-            return [op_status, status_msg]
+            return op_status, status_msg
 
         # function continues in the presence of news articles to process
         log.info("News Articles Present: {}".format(has_news_articles))
@@ -1589,7 +1589,7 @@ class TransformOperations:
             op_status = False
             status_msg = "error encountered during csv file creation"
 
-        return [op_status, status_msg]
+        return op_status, status_msg
 
     @classmethod
     def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
