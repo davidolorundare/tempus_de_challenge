@@ -289,7 +289,6 @@ class FileStorage:
             headlines_obj = headline_func(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
                 headline_json = headlines_obj.json()
-                parsed_data = json.dumps(headline_json)
                 # descriptive name of the headline file.
                 # use the source id rather than source name, since
                 # (after testing) it was discovered that strange formattings
@@ -300,7 +299,7 @@ class FileStorage:
                 fname = str(value) + "_headlines"
 
                 # write this json object to the headlines directory
-                FileStorage.write_json_to_file(parsed_data,
+                FileStorage.write_json_to_file(headline_json,
                                                headline_dir,
                                                fname)
 
