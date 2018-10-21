@@ -119,7 +119,7 @@ headlines_task = PythonOperator(task_id='extract_headlines_task',
                                 retries=3,
                                 dag=dag)
 
-# transform the data, resulting in a flattened csv
+# extract and transform the data, resulting in a flattened csv
 flatten_csv_task = PythonOperator(task_id='flatten_to_csv_task',
                                   provide_context=True,
                                   python_callable=transform_func_alias,
