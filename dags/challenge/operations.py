@@ -289,6 +289,7 @@ class FileStorage:
             headlines_obj = headline_func(value, api_key=api_key)
             if headlines_obj.status_code == requests.codes.ok:
                 headline_json = headlines_obj.json()
+                parsed_data = json.dumps(headline_json)
                 # descriptive name of the headline file.
                 # use the source id rather than source name, since
                 # (after testing) it was discovered that strange formattings
@@ -299,7 +300,7 @@ class FileStorage:
                 fname = str(value) + "_headlines"
 
                 # write this json object to the headlines directory
-                FileStorage.write_json_to_file(headline_json,
+                FileStorage.write_json_to_file(parsed_data,
                                                headline_dir,
                                                fname)
 
@@ -493,7 +494,7 @@ class NetworkOperations:
 
         # copy of the json data
         json_data = response.json()
-        parsed_data = json.dumps(data)
+        parsed_data = json.dumps(json_data)
 
         # write the data to file
         if status_code == requests.codes.ok:
