@@ -290,9 +290,7 @@ class TestFileStorageOperations:
 
             # create dummy json file
             file_path = os.path.join(headline_dir, 'dummy.json')
-            file_data = {'status': 'ok',
-                         'totalResults': 0,
-                         'articles': []}
+            file_data = '{"status": "ok", "totalResults": 0, "articles": []}'
 
             # create a fake filesystem directory containing one json file
             # to test the method
@@ -301,7 +299,8 @@ class TestFileStorageOperations:
 
         # Act
             # function should raise errors on an empty directory
-            result = c.FileStorage.json_to_dataframe_reader(file_path)
+            result = c.FileStorage.json_to_dataframe_reader(file_path,
+                                                            reader)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
