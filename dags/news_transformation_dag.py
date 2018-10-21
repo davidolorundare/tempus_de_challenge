@@ -103,13 +103,13 @@ get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    dag=dag)
 
 # detect existence of retrieved news data
-# file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
-#                                 fs_conn_id="filesys",
-#                                 poke_interval=5,
-#                                 soft_fail=True,
-#                                 timeout=3600,
-#                                 task_id='file_sensor_task',
-#                                 dag=dag)
+file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+                                fs_conn_id="filesys",
+                                poke_interval=5,
+                                soft_fail=True,
+                                timeout=3600,
+                                task_id='file_sensor_task',
+                                dag=dag)
 
 # retrieve each sources headlines and perform subsequent
 # headline-extraction step
@@ -141,7 +141,7 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> get_news_task  # >> file_exists_sensor
+start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
 
 # ensure the data has been retrieved before beginning the ETL process.
 # all the news sources are retrieved, the top headlines
