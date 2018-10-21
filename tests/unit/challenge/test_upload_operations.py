@@ -531,14 +531,12 @@ class TestUploadOperations:
 
         # Act
             # function should raise errors on an empty directory
-            with pytest.raises(FileNotFoundError) as err:
-                c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                    bucket_name,
-                                                    client_obj,
-                                                    resource_obj,
-                                                    **airflow_context)
+            stat, msg = c.UploadOperations.upload_csv_to_s3(csv_dir,
+                                                            bucket_name,
+                                                            client_obj,
+                                                            resource_obj,
+                                                            **airflow_context)
 
-            actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
@@ -546,7 +544,7 @@ class TestUploadOperations:
         self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
-        assert "Directory has no csv-headline files" in actual_message
+        assert "Directory has no csv-headline files" in msg
 
     def test_upload_csv_to_s3_fails_with_no_bucket_name(self,
                                                         airflow_context,
