@@ -1602,9 +1602,9 @@ class TransformOperations:
     def transform_key_headlines_to_csv(cls,
                                        json_file,
                                        csv_filename=None,
+                                       reader_func=None,
                                        extract_func=None,
-                                       transform_func=None,
-                                       reader_func=None):
+                                       transform_func=None):
         """Converts the contents of a given news keyword json into a csv.
 
         The function specifically operates on jsons in the 'headlines'
