@@ -1618,10 +1618,10 @@ class TransformOperations:
             log.info("bad data in json")
 
         try:
-            keyword_data = reader_func(path_or_buf=json_file,
-                                       lines=True)
+            keyword_data = reader_func(path_or_buf=json_file)
             log.info("JSON Read-in Contents")
             log.info(str(keyword_data))
+            return True
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
