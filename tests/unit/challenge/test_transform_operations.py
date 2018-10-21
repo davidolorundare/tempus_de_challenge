@@ -138,7 +138,7 @@ class TestTransformOperations:
 
         # Assert
         # return status of the operation should be True to indicate success
-        assert result is True
+        assert result[0] is True
 
     @patch('pandas.read_json', autospec=True)
     def test_transform_jsons_to_dataframe_merger_succeeds(self,
