@@ -620,8 +620,7 @@ class NetworkOperations:
         # write to json data to a file with the query-keyword
         # as its filename. Note status of the operation.
         # True implies the write went okay, False otherwise.
-        parsed_data = json.dumps(data)
-        write_stat = FileStorage.write_json_to_file(parsed_data,
+        write_stat = FileStorage.write_json_to_file(data,
                                                     headlines_dir,
                                                     filename)
 
