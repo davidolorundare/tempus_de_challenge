@@ -6,6 +6,8 @@ install:
 - pip install -r requirements-test.txt
 - pip install -r requirements.txt
 - pip install -r requirements-setup.txt
+- pip install moto
+- pip install moto[server]
 script:
 - make test
 after_success:
