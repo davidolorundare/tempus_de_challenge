@@ -1792,8 +1792,15 @@ class UploadOperations:
                          aws_service_client=None,
                          aws_resource=None,
                          **context):
-        """uploads a files, in a given directory, to an Amazon S3 bucket
+        """Uploads a files, in a given directory, to an Amazon S3 bucket
         location.
+
+        It is a valid state for the csv directory to be empty -
+        as this implies no news articles was found during retrieval
+        from the newsapi. This function does nothing if no csv
+        files are in the directory rather it logs this absence of
+        such files and returns a True status to indicate that the
+        next task in the pipeline should be executed.
 
         # Arguments:
             :param csv_directory: path to the directory containing all the
