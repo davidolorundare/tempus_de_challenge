@@ -1889,4 +1889,4 @@ class UploadOperations:
         status_msg = "upload successful"
 
         # return status to calling function
-        return status_msg, status_msg
+        return status, status_msg
