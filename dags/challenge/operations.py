@@ -1253,9 +1253,7 @@ class TransformOperations:
             for file in files:
                 key = file.split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                stat = json_transfm_func(file,
-                                         fname,
-                                         read_js_func=reader)
+                stat = json_transfm_func(file, fname, reader)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv

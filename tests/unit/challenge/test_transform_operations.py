@@ -129,9 +129,9 @@ class TestTransformOperations:
         # Act
             result = tf_func(dummy_json_file,
                              filename,
+                             file_reader_func,
                              extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
+                             tf_func_mock)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
@@ -703,9 +703,9 @@ class TestTransformOperations:
         # Act
             result = tf_func(dummy_json_file,
                              filename,
+                             file_reader_func,
                              extract_func_mock,
-                             tf_func_mock,
-                             file_reader_func)
+                             tf_func_mock)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
