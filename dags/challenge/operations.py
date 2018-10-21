@@ -1415,7 +1415,7 @@ class TransformOperations:
             except ValueError as err:
                 # if any errors are encountered during reading then skip the
                 # file to the next, but log it to the console.
-                error_message = str(err.value)
+                error_message = str(err)
                 log.info("Error Encountered: {}".format(error_message))
                 continue
             # extract news data from the json and transform it into a DataFrame
