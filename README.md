@@ -5,7 +5,7 @@
 ---
 ### Project Status
 
-**Build**: [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=master)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
+**Build**: [![Build Status](https://travis-ci.org/davidolorundare/tempus_de_challenge.svg?branch=project-with-moto-integration)](https://travis-ci.org/davidolorundare/tempus_de_challenge)
 
 **Coverage**: [![codecov](https://codecov.io/gh/davidolorundare/tempus_de_challenge/branch/master/graph/badge.svg)](https://codecov.io/gh/davidolorundare/tempus_de_challenge)
 
