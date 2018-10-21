@@ -151,7 +151,7 @@ The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit test
 - *TestTransformOperations* which run tests on the task involving conversion of the news headlines JSON data into CSV.
 - *TestUploadOperations* which run tests on the task involving data-transfer of the flattened CSVs to a predefined Amazon S3 bucket.
 
-The **integration tests** exercise the overall combination of components interacting with each and other and external services. This implies the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3. One test was written. [Moto](http://docs.getmoto.org/en/latest/) a (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
+The **integration tests** exercise the overall combination of components interacting with each and other and external services. This implies the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3. Tests were written using Moto. [Moto](http://docs.getmoto.org/en/latest/) a (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
 
 The Amazon S3 integrations mock tests were done with moto library standalone as well as a running [FakeS3 server](https://github.com/jubos/fake-s3). The test with the FakeS3 server is by default skipped in the test suite. Details on how to run the integration test with the FakeS3 server are describe below:
 
@@ -218,7 +218,8 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	`task_log_reader = file.task` to `task_log_reader = task`
 - The Airflow Community contributed [`airflow.contrib.sensor.file_sensor`](https://airflow.apache.org/_modules/airflow/contrib/sensors/file_sensor.html) and [`airflow.contrib.hooks.fs_hook`](https://airflow.apache.org/_modules/airflow/contrib/hooks/fs_hook.html#FSHook) classes were found to be *very* buggy, especially when trying to configure and test them in a DAG task pipeline.
 
-- There are known issues with using the [Moto Server](http://docs.getmoto.org/en/latest/docs/getting_started.html#stand-alone-server-mode) in stand-alone server mode when testing a locally created url endpoint. See [here](https://github.com/spulec/moto/issues/1026) for more details. 
+- There are known issues with using the [Moto Server](http://docs.getmoto.org/en/latest/docs/getting_started.html#stand-alone-server-mode) in stand-alone server mode when testing a locally created url endpoint. See [here](https://github.com/spulec/moto/issues/1026) for more details.
+- Moto breaks the CI builds (e.g. Travis-CI, Circle-CI) when those CI's make pull requests to build this project within their environment. This is due a Moto dependency on a google-compute-engine module that is non-existent in the environment and fails to download. More details on this issue with Travis-CI are [here](https://github.com/travis-ci/travis-ci/issues/7940) and its [fix](https://github.com/travis-ci/travis-ci/issues/7940#issuecomment-310759657).
 
 
 ---
