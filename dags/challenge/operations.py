@@ -1461,18 +1461,22 @@ class TransformOperations:
             # read in the json file.
             try:
                 json_data = read_js_func(json_files[indx])
+
             except ValueError as err:
                 # if any errors are encountered during reading then skip the
                 # file to the next, but log it to the console.
                 error_message = str(err)
                 log.info("Error Encountered: {}".format(error_message))
+
             # extract news data from the json and transform it into a DataFrame
             current_file_df = transform_func(extract_func(json_data))
 
             # perform merge
             merged_df = pd.concat([merged_df, current_file_df])
+
             # free up memory by clearing the previously transformed DataFrames
             del current_file_df
+
             # force Python's Garbage Collector to clean up unused variables and
             # free up memory manually
             gc.collect()
@@ -1526,7 +1530,7 @@ class TransformOperations:
 
         # use Pandas to read in the json file
         try:
-            keyword_data = read_js_func(json_file, lines=True)
+            keyword_data = read_js_func(json_file)
         except ValueError as err:
             # if any errors are encountered during reading then skip the
             # file to the next, but log it to the console.
