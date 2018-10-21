@@ -1554,8 +1554,9 @@ class TransformOperations:
             raise ValueError
 
         # extraction and intermediate-transformation of the news json
-        data = extract_func(keyword_data)
-        transformed_df = transform_func(data)
+        keyword_data = pd.DataFrame([keyword_data])
+        extracted_data = extract_func(keyword_data)
+        transformed_df = transform_func(extracted_data)
 
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
