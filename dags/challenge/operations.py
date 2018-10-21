@@ -1528,7 +1528,7 @@ class TransformOperations:
         # transform to csv and save in the 'csv' datastore
         csv_dir = FileStorage.get_csv_directory("tempus_challenge_dag")
         if not csv_filename:
-            csv_filename = "sample.csv"
+            csv_filename = str(datetime.datetime.now) + "_sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(path_or_buf=csv_save_path)
 
