@@ -325,7 +325,9 @@ class TestTransformOperations:
 
         # setup behavior of the function - two of the json files get converted
         # to csv while transformation of the third fails
-        headlines_to_csv_func.side_effect = [True, True, True]
+        headlines_to_csv_func.side_effect = [(True, "success"),
+                                             (True, "success"),
+                                             (True, "success")]
 
         pipeline_name = "tempus_challenge_dag"
 
