@@ -1196,8 +1196,9 @@ class TransformOperations:
         files = None
 
         if os.listdir(directory):
-            files = [file for file in os.listdir(directory)
-                     if file.endswith('.json')]
+            for file in os.listdir(directory):
+                if file.endswith('.json'):
+                    files.append(os.path.join(directory, file))
 
         # check existence of json files before beginning transformation
         if not files:
@@ -1206,8 +1207,7 @@ class TransformOperations:
             for file in files:
                 key = file.split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                file_path = os.path.join(directory, file)
-                stat = json_transfm_func(file_path, fname)
+                stat = json_transfm_func(file, fname)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv
