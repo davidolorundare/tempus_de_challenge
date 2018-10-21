@@ -1911,17 +1911,17 @@ class UploadOperations:
             status = False
             raise ValueError("Bucket name cannot be empty")
 
-        buckets = [bucket.name for bucket in aws_resource.buckets.all()]
-        if bucket_name not in buckets:
-            status = False
-            raise FileNotFoundError("Bucket {} does not exist on the server\
-                ".format(bucket_name))
-
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
         if not aws_resource:
             aws_resource = boto3.resource('s3')
+
+        buckets = [bucket.name for bucket in aws_resource.buckets.all()]
+        if bucket_name not in buckets:
+            status = False
+            raise FileNotFoundError("Bucket {} does not exist on the server\
+                ".format(bucket_name))
 
         # iterate through the files in the directory and upload them to s3
         for file in files:
