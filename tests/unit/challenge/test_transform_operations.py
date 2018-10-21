@@ -101,7 +101,7 @@ class TestTransformOperations:
         # define the mock function behaviors when called
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
-        file_reader_func.side_effect = lambda data, lines: "read-in json file"
+        file_reader_func.side_effect = lambda data: "read-in json file"
 
         # path to the fake csv directory the function under test
         # uses
@@ -176,7 +176,7 @@ class TestTransformOperations:
         # define the mock function behaviors when called
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = [data_df1, data_df2]
-        file_reader_func.side_effect = lambda data, lines: "read-in json file"
+        file_reader_func.side_effect = lambda data: "read-in json file"
 
         # Act
         result = tf_func(json_files,
@@ -561,7 +561,7 @@ class TestTransformOperations:
         # setup the behaviors of these Mocks
         extract_func_mock.side_effect = lambda data: "extracted data"
         transform_func_func_mock.side_effect = lambda data: transformed_data_df
-        reader_func.side_effect = lambda file, lines: "success reading json"
+        reader_func.side_effect = lambda file: "success reading json"
 
         # create one dummy json file
         file_path = os.path.join(csv_dir_res, 'dummy.json')
@@ -616,7 +616,7 @@ class TestTransformOperations:
         # setup the behaviors of these Mocks
         extract_func_mock.side_effect = lambda data: "extracted data"
         transform_func_func_mock.side_effect = lambda data: transformed_data_df
-        reader_func.side_effect = lambda file, **lines: "success reading json"
+        reader_func.side_effect = lambda file: "success reading json"
 
         # create one dummy json file
         file_path = os.path.join(csv_dir_res, 'dummy.json')
@@ -675,7 +675,7 @@ class TestTransformOperations:
         extract_func_mock = MagicMock(spec=extract_func)
         extract_func_mock.side_effect = lambda data: "extracted data"
         tf_func_mock.side_effect = lambda data: transform_data_df
-        file_reader_func.side_effect = lambda data, lines: "read-in json file"
+        file_reader_func.side_effect = lambda data: "read-in json file"
 
         # path to the fake csv directory the function under test
         # uses

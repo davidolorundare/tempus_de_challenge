@@ -244,6 +244,13 @@ class FileStorage:
         """reads in a news json file and returns a structure suitable
         for a Pandas DataFrame.
 
+        The read_json() function of Pandas fails on certain kinds of
+        news data, with sometimes cryptic error responses. Given the
+        importance of extracting data from parse json files in this
+        project having more control on the outcomes of a json-reader
+        function was desire. The result is this json_to_dataframe_reader
+        function. Which is less of a blackbox unlike Pandas' read_json()
+
         # Argument:
             :param json_file: path to the json file.
             :type json_file: str
