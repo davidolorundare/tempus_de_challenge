@@ -1253,7 +1253,7 @@ class TransformOperations:
             for file in files:
                 key = file.split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                stat = json_transfm_func(file, fname, reader)
+                stat, msg = json_transfm_func(file, fname, reader)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv
@@ -1385,12 +1385,12 @@ class TransformOperations:
 
         if len(files) == 1:
             # a single json file exists, perform direct transformation on it.
-            status = json_to_csv_func(files[0], filename, reader)
+            status, msg = json_to_csv_func(files[0], filename, reader)
         else:
             # transform the json files into DataFrames and merge them into one.
             merged_dataframe = jsons_to_df_func(files, reader)
             # transform the merged DataFrame into a csv
-            status = df_to_csv_func(merged_dataframe, filename)
+            status, msg = df_to_csv_func(merged_dataframe, filename)
 
         return status
 
