@@ -62,7 +62,7 @@ class FileStorage:
 
     @classmethod
     def create_storage(cls, **context):
-        """Create tempoary data storage for the current DAG pipeline.
+        """Creates tempoary data storage for the current DAG pipeline.
 
         # Arguments
             :param context: current Airflow context in which the function or
@@ -97,7 +97,7 @@ class FileStorage:
                            path_join_func=os.path.join,
                            dir_func=os.makedirs,
                            **context):
-        """Create a set of datastore folders in the local filesystem.
+        """Creates a set of datastore folders in the local filesystem.
 
         Creates a 'data' folder in the AIRFLOW_HOME directory, if it doesn't
         already exist (otherwise it replaces the existing one), in which to
@@ -170,7 +170,7 @@ class FileStorage:
                            path_to_dir,
                            filename=None,
                            create_date=None):
-        """writes given json news data to an existing directory.
+        """Writes given json news data to an existing directory.
 
         Perfoms checks if the json data and directory are valid, otherwise
         raises error exceptions. the files are prefixed with the current
@@ -241,7 +241,7 @@ class FileStorage:
 
     @classmethod
     def json_to_dataframe_reader(cls, json_file, reader_func=None):
-        """reads in a news json file and returns a structure suitable
+        """Reads in a news json file and returns a structure suitable
         for a Pandas DataFrame.
 
         The read_json() function of Pandas fails on certain kinds of
@@ -292,7 +292,7 @@ class FileStorage:
                                        headline_dir,
                                        api_key,
                                        headline_func=None):
-        """writes extracted news source headline json data to an existing directory.
+        """Writes extracted news source headline json data to an existing directory.
 
         # Arguments:
             :param source_ids: list of news source id tags
@@ -362,7 +362,7 @@ class FileStorage:
 
     @classmethod
     def get_news_directory(cls, pipeline_name: str):
-        """returns the news directory path for a given DAG pipeline.
+        """Returns the news directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -401,7 +401,7 @@ class FileStorage:
 
     @classmethod
     def get_headlines_directory(cls, pipeline_name: str):
-        """returns the headlines directory path for a given DAG pipeline.
+        """Returns the headlines directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
@@ -440,7 +440,7 @@ class FileStorage:
 
     @classmethod
     def get_csv_directory(cls, pipeline_name: str):
-        """returns the csv directory path for a given DAG pipeline.
+        """Returns the csv directory path for a given DAG pipeline.
 
         For production code this function would be refactored to read-in
         the directory structure from an external config file.
