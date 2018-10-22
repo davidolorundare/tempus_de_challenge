@@ -1882,43 +1882,35 @@ class UploadOperations:
         log.info("Running upload_csv_to_s3 method")
 
         # get information about the current pipeline
-        # pipeline_name = context['dag'].dag_id
-        # pipeline_info = NewsInfoDTO(pipeline_name)
-        # pipeline_csv_dir = pipeline_info.csv_directory
+        pipeline_name = context['dag'].dag_id
+        pipeline_info = NewsInfoDTO(pipeline_name)
+        pipeline_csv_dir = pipeline_info.csv_directory
 
         # # inspect the pipeline's csv directory contents
-        # return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
-        # status = None
-        # files = None
+        return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
+        status = None
+        files = None
 
-        # if return_status and msg == "Directory is empty":
-        #     status = return_status
-        #     log.info("The csv directory is empty")
-        #     return status, msg
-        # elif return_status and msg == "Directory has no csv-headline files":
-        #     status = return_status
-        #     log.info("There are no csv-type files in the directory")
-        #     return status, msg
-        # elif return_status and msg == "CSV files present":
-        #     log.info("CSV files found")
-        #     files = data
-        # else:
-        #     log.info("Error in reading directory")
-        #     status = return_status
-        #     return status, msg
+        if return_status and msg == "Directory is empty":
+            status = return_status
+            log.info("The csv directory is empty")
+            return status, msg
+        elif return_status and msg == "Directory has no csv-headline files":
+            status = return_status
+            log.info("There are no csv-type files in the directory")
+            return status, msg
+        elif return_status and msg == "CSV files present":
+            log.info("CSV files found")
+            files = data
+        else:
+            log.info("Error in reading directory")
+            status = return_status
+            return status, msg
 
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
-        # if not bucket_name:
-        #     bucket_name = pipeline_info.s3_bucket_name
-
-        log.info(os.listdir("."))
-
-        log.info("credentials path")
-        log.info(os.environ["AWS_SHARED_CREDENTIALS_FILE"])
-        log.info(os.environ["AWS_CONFIG_FILE"])
-        log.info("home path")
-        log.info(os.environ["HOME"])
+        if not bucket_name:
+            bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
