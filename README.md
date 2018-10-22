@@ -20,12 +20,12 @@
 3. [Docker](https://www.docker.com)
 	* docker versions are `docker 18.06.1-ce` and `docker-compose 1.22.0`
 4. Register for a free [News API key](https://newsapi.org/register)	in order to use their News RESTFul API service.
-5. Register for a free [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
+5. <a registration="setup">Register</a> for a free [Amazon Web Services](http://aws.amazon.com/) account. This is required for authenticating to S3 using the boto Python SDK library.
 	* Before beginning to use the Boto library, you should set up authentication credentials. Credentials for your AWS account can be found in the [IAM Console](https://console.aws.amazon.com/iam/home). You can create or use an existing user. Go to manage access keys and generate a new set of keys. These are needed required for the project to make S3 bucket-upload requests. For more details on this see the [documentation here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html)
 	* Create two AWS S3 buckets with your account. Name them `tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`. These buckets will hold the final csv transformations and the project-code *expects* these two buckets to already exist, as it **does not** programmatically create them before
 	uploading and will throw errors if they are detected not to exist in S3.
 
-### Optional Prerequisites - for running Integration test with a Fake Amazon S3 server
+### <a prereq="optional-prerequisites">Optional Prerequisites</a> - for running Integration test with a Fake Amazon S3 server
 1. [RubyGems](https://rubygems.org/) [installation](https://rubygems.org/pages/download)
 2. Register for a free [FakeS3 server license](https://supso.org/projects/fake-s3)
 3. [Install FakeS3](https://github.com/jubos/fake-s3#installation)
@@ -75,7 +75,7 @@ Discusses the breakdown of the project goals into the two pipelines.
 
 #### DAG Pipeline 1
 
-The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks (five of which are the core). Its structure is shown below:
+The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of seven tasks (five of which are the core). Its structure is shown below:
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-1_image.jpeg "Image of Pipeline-1 structure")
 
@@ -85,16 +85,15 @@ The pipeline tasks are as follows:
 - Next, using a predefined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), it calls a python function to create three datastore folders for storing the intermediary data for the 'tempus_challenge_dag' that is later on downloaded and transformed. 
 The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdata' directory which is made relative to the airflow home directory.
 	
-- The third task involves a defined [Airflow SimpleHTTPOperator](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) makes an HTTP GET request to the News API's 'sources' endpoint with the assigned API Key, to fetch all english news sources. A Python callback function is defined with this operator, and handles the returned Response object, storing the JSON news data as a file in the 'news' folder.
+- The third task involves a defined [Airflow SimpleHTTPOperator](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) making an HTTP GET request to the News API's 'sources' endpoint with the assigned API Key, to fetch all English news sources. A Python callback function is defined with this operator, and handles processing of the returned Response object, storing the JSON news data as a file in the pipeline's 'news' datastore folder.
 
-- The fourth task involves a defined [Airflow FileSensor](https://airflow.apache.org/code.html#airflow.contrib.sensors.file_sensor.FileSensor) detects whenever the JSON news data has landed in its appropriate directory and kicks off the subsequent ETL stages of the pipeline.
+- The fourth task involves a defined [Airflow FileSensor](https://airflow.apache.org/code.html#airflow.contrib.sensors.file_sensor.FileSensor) detects whenever the JSON news files have landed in the appropriate directory, this kicks off the subsequent ETL stages of the pipeline.
 
-- The fifth task, the Extraction task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the news JSON data from its folder and uses the JSON library to extract the top-headlines from it, storing the result in the 'headlines' folder.
+- The fifth task -Extract and Transform- involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the news JSON data from its folder and using JSON and Pandas libraries extracts the top-headlines from it, storing the result in the 'headlines' folder.
 
-- The sixth task, the Transformation task, involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the top-headlines data from the 'headlines' folder, and using Pandas flattens the JSON data into CSV. The converted CSV data is stored in the 'csv' folder. If **no news articles were found** in the data then no CSV file is created, the application notes this
-absence in the Airflow Logs for this task.
+- Transformations involves a separate predefined python function that reads the top-headlines JSON data from the 'headlines' folder, and using Pandas converts it into an intermidiary DataFrame object which is flattened into CSV. The flattened CSV files are stored in the 'csv' folder. If **no news articles were found** in the data *then no CSV file is created*, the application logs this csv-file absence to the Airflow Logs.
 
-- The seventh task, the Upload task, involves a defined Custom Airflow Operator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. Our custom operator is built ontop of the [Airflow S3 Hook](https://airflow.apache.org/code.html#airflow.hooks.S3_hook.S3Hook) and the Amazon Python Boto library; to move the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
+- The sixth task, the Upload task, involves a defined custom Airflow PythonOperator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. The Operator is built ontop of the Amazon Python Boto library, using [preexisting credentials setup](#setup), and moves the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
 Two Amazon S3 buckets were setup by the author:
 	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
 	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
@@ -167,7 +166,7 @@ The Amazon S3 integrations mock tests were done with moto library standalone as 
 
 ---
 
-- With [FakeS3 installed](#Optional-Prerequisites) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
+- With [FakeS3 installed](#optional-prerequisites) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
 - Run `make test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
@@ -181,7 +180,7 @@ file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_i
 3. [Codecov](https://codecov.io/)
 4. [FakeS3](https://github.com/jubos/fake-s3)
 5. [Flake8 - Python Pep-8 Style Guide Enforcement](http://flake8.pycqa.org/en/latest/)
-6. [Moto](http://docs.getmoto.org/en/latest/) Amazon S3 Mock Server
+6. [Moto Amazon S3 Mock Server](http://docs.getmoto.org/en/latest/) 
 7. [News API](https://newsapi.org/)
 8. [PostgreSQL Python library](https://wiki.postgresql.org/wiki/Psycopg2)
 9. [Pyfakefs](https://pypi.org/project/pyfakefs/)
