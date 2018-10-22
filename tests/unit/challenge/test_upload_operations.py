@@ -350,8 +350,8 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
-    @pytest.mark.skip
-    def test_upload_directory_check_success_with_csv_present(self):
+    def test_upload_directory_check_success_with_csv_present(self,
+                                                             airflow_context):
         """returns appropiate status message on detecting valid csv
         files in the csv directory.
         """
@@ -359,22 +359,27 @@ class TestUploadOperations:
         # Arrange
 
         # get the current pipeline info
-        pipeline_name = airflow_context['dag'].dag_id
+        name = airflow_context['dag'].dag_id
 
-        # path to fakes news and csv directories the function under test uses
-        csv_dir = os.path.join(home_directory_res,
-                               'tempdata',
-                               pipeline_name,
-                               'csv')
-
-        # create dummy non-csv files
-        file_path_one = os.path.join(csv_dir, 'stuff1.csv')
-        file_path_two = os.path.join(csv_dir, 'stuff2.csv')
-        file_path_three = os.path.join(csv_dir, 'stuff3.csv')
+        # status of the directory check operation and value of the data
+        stat = None
+        msg = None
+        val = None
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
+
+            # path to fakes news and csv directories the function
+            # under test uses
+            csv_dir = os.path.join('tempdata',
+                                   name,
+                                   'csv')
+
+            # create dummy non-csv files
+            file_path_one = os.path.join(csv_dir, 'stuff1.csv')
+            file_path_two = os.path.join(csv_dir, 'stuff2.csv')
+            file_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir)
@@ -383,20 +388,17 @@ class TestUploadOperations:
             patcher.fs.create_file(file_path_three, contents='3,dummy,doc')
 
         # Act
-            # function should raise errors on an empty directory
-            with pytest.raises(ValueError) as err:
-                c.UploadOperations.upload_csv_to_s3(csv_dir,
-                                                    bucket_name,
-                                                    upload_client,
-                                                    resource_client,
-                                                    **airflow_context)
+            # with csv files present, success status message is returned
+            stat, msg, val = c.UploadOperations.upload_directory_check(name,
+                                                                       csv_dir)
 
-            actual_message = str(err.value)
             # clean up and remove the fake filesystem
             patcher.tearDown()
 
         # Assert
-        assert "Bucket name cannot be empty" in actual_message
+        assert "CSV files present" in msg
+        assert stat is True
+        assert val is True
 
     @pytest.mark.skip
     def test_upload_directory_check_empty_dir_fails(self, home_directory_res):
