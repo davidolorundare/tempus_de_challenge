@@ -21,10 +21,13 @@ class HelloWorld:
 
 class SuperWorld:
 
-    def __call__(self) -> str:
+    def __init__(self) -> str:
         """Print and return `Hello, <name>!`."""
         log.info("Infinite Testing")
         log.info("HELOLOOOW WORLD")
+
+    def hello(self):
+        log.info("do studd")
 
 
 class PrintExecutionDate:

@@ -22,8 +22,6 @@ import time
 
 from airflow.models import Variable
 
-# from dags import challenge as c
-import challenge as c
 
 log = logging.getLogger(__name__)
 
@@ -1879,11 +1877,6 @@ class UploadOperations:
         """
 
         log.info("Running upload_csv_to_s3 method")
-
-        log.info("Testing External .py call")
-        log.info(c.SuperWorld())
-
-        return True
 
         # get information about the current pipeline
         pipeline_name = context['dag'].dag_id
