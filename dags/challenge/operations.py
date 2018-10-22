@@ -625,7 +625,8 @@ class NetworkOperations:
     def get_news_keyword_headlines(cls,
                                    response: requests.Response,
                                    headlines_dir=None,
-                                   filename=None):
+                                   filename=None,
+                                   **context):
         """Processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
