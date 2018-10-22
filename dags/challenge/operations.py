@@ -1890,7 +1890,8 @@ class UploadOperations:
 
         # get information about the current pipeline
         pipeline_name = context['dag'].dag_id
-        pipeline_csv_dir = NewsInfoDTO(pipeline_name).csv_directory
+        pipeline_info = NewsInfoDTO(pipeline_name)
+        pipeline_csv_dir = pipeline_info.csv_directory
 
         # inspect the pipeline's csv directory contents
         return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
