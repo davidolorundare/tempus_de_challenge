@@ -1918,9 +1918,6 @@ class UploadOperations:
         if not aws_resource:
             aws_resource = boto3.resource('s3')
 
-        log.info("Successful creation of session")
-        return True
-
         buckets = [bucket.name for bucket in aws_resource.buckets.all()]
         if bucket_name not in buckets:
             status = False
@@ -1937,4 +1934,4 @@ class UploadOperations:
         status_msg = "upload successful"
 
         # return status to calling function
-        return status
+        return status, status_msg
