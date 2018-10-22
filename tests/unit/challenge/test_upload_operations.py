@@ -366,33 +366,28 @@ class TestUploadOperations:
         msg = None
         val = None
 
+        # path to fakes news and csv directories the function
+        # under test uses
+        csv_dir = os.path.join('tempdata', name, 'csv')
+
+        # create dummy csv files
+        file_path_one = os.path.join(csv_dir, 'stuff1.csv')
+        file_path_two = os.path.join(csv_dir, 'stuff2.csv')
+        file_path_three = os.path.join(csv_dir, 'stuff3.csv')
+
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
             patcher.setUp()
 
-            # path to fakes news and csv directories the function
-            # under test uses
-            csv_dir = os.path.join(os.environ['HOME'],
-                                   'tempdata',
-                                   name,
-                                   'csv')
-
             # create a fake filesystem directory and files to test the method
             patcher.fs.create_dir(csv_dir)
-
-            # create dummy csv files
-            file_path_one = os.path.join(csv_dir, 'stuff1.csv')
-            file_path_two = os.path.join(csv_dir, 'stuff2.csv')
-            file_path_three = os.path.join(csv_dir, 'stuff3.csv')
-
             patcher.fs.create_file(file_path_one, contents='1,dummy,txt')
             patcher.fs.create_file(file_path_two, contents='2,dummy,rtf')
             patcher.fs.create_file(file_path_three, contents='3,dummy,doc')
 
         # Act
             # with csv files present, success status message is returned
-            stat, msg, val = c.UploadOperations.upload_directory_check(name,
-                                                                       csv_dir)
+            stat, msg, val = c.UploadOperations.upload_directory_check(csv_dir)
 
             # clean up and remove the fake filesystem
             patcher.tearDown()
