@@ -822,7 +822,7 @@ class ExtractOperations:
             raise KeyError("news json has no 'articles' data")
 
         if not json_data["articles"]:
-            print("There are no headlines - 'articles' tag in json is empty")
+            log.info("No headlines - 'articles' tag in json is empty")
             return []
 
         # Get all the articles for this news source
