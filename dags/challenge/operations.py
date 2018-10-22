@@ -487,7 +487,7 @@ class NetworkOperations:
                  news_dir=None,
                  filename=None,
                  gb_var=None):
-        """processes the response from the API call to get all english news sources.
+        """Processes the response from the API call to get all english news sources.
 
         Returns True is the response is valid and stores the content in the
         folder appropriately. Returns False if the response is invalid.
@@ -560,7 +560,7 @@ class NetworkOperations:
 
     @classmethod
     def get_news_headlines(cls, **context):
-        """macro function for the Airflow PythonOperator that processes
+        """Macro function for the Airflow PythonOperator that processes
         the retrieved upstream news json data into top-headlines.
 
         Operations Performed:
@@ -626,7 +626,7 @@ class NetworkOperations:
                                    response: requests.Response,
                                    headlines_dir=None,
                                    filename=None):
-        """processes the response from the remote API call to get keyword headlines.
+        """Processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
         'tempus_bonus_challenge_dag'.
@@ -682,7 +682,7 @@ class NetworkOperations:
                              url_endpoint=None,
                              http_method=None,
                              api_key=None):
-        """retrieve a news source's top-headlines via a remote API call.
+        """Retrieves a news source's top-headlines via a remote API call.
 
         # Arguments:
             :param source_id: the id of the news source.
