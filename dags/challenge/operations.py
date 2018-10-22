@@ -230,9 +230,6 @@ class FileStorage:
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
 
-        log.info("FIlename before write")
-        log.info(fname)
-
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
