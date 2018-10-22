@@ -200,7 +200,7 @@ class FileStorage:
         if not os.path.isdir(path_to_dir):
             raise OSError("Directory {} does not exist".format(path_to_dir))
         if not create_date:
-            create_date = time.strftime("%Y%m%d-%H%M%S")
+            create_date = time.strftime("%Y-%m-%d")
         if not filename:
             filename = "sample"
 
