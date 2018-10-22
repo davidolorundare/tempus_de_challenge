@@ -733,7 +733,7 @@ class ExtractOperations:
 
     @classmethod
     def create_top_headlines_json(cls, source_id, source_name, headlines):
-        """creates a json object out of given news source and its headlines.
+        """Creates a json object out of given news source and its headlines.
 
         # Arguments:
             :param source_id: the id of the news source
@@ -768,7 +768,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_source_id(cls, json_data):
-        """returns a list of (string) news source ids from a valid json.
+        """Returns a list of (string) news source ids from a valid json.
 
         # Arguments:
             :param json_data: the json news data from which the news-source
@@ -803,7 +803,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_headlines(cls, json_data):
-        """returns a list of (string) news headlines from a valid json.
+        """Returns a list of (string) news headlines from a valid json.
 
         # Arguments:
             :param json_data: the json news data from which the news-headlines
@@ -835,11 +835,15 @@ class ExtractOperations:
 
     @classmethod
     def extract_headline_keyword(cls, response: requests.Response):
-        """extract string query keyword used to request given http Response.
+        """Extract string query keyword used to request given http Response.
 
         It specficially stores the query keyword, from the http Response
         object, that was applied during the http request to the 'top-headlines'
         News API endpoint.
+
+        # Arguments:
+            :param response: the http response object
+            :type response: object
         """
 
         log.info("Running extract_headline_keyword method")
@@ -875,7 +879,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_jsons_source_info(cls, json_list, json_directory):
-        """parses a given list of news jsons for their source ids and names.
+        """Parses a given list of news jsons for their source ids and names.
 
         Returns a tuple of the source id and name.
 
@@ -914,7 +918,7 @@ class ExtractOperations:
 
     @classmethod
     def extract_news_data_from_dataframe(cls, frame):
-        """returns extracted information from a news dataframe.
+        """Returns extracted information from a news dataframe.
 
         Based on the API documentation for the top-headlines, for the
         returned response, the fields that we need from each json object
