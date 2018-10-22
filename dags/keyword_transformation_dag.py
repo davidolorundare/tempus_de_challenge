@@ -2,7 +2,7 @@
 
 Describes a data pipeline that would fetch data from the News API based on
 four keywords - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', and 'Immunotherapy'.
-The data is transformed into a tabular structure, and finally stored the an AWS
+The data is transformed into a tabular structure, and finally stored in an AWS
 S3 Bucket.
 """
 
@@ -19,7 +19,6 @@ from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
 import challenge as c
-# from challenge.filestorage_operations import FileStorage
 
 
 default_args = {
