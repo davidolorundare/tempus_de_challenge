@@ -14,6 +14,10 @@ ENV TERM linux
 # Resolves the GPL dependency issue in Airflow 1.10.0
 ENV AIRFLOW_GPL_UNIDECODE yes
 
+# Resolve Amazon Boto credential non-discoverability issue
+ENV AWS_SHARED_CREDENTIALS_FILE /usr/local/airflow/.aws/credentials
+ENV AWS_CONFIG_FILE /usr/local/airflow/.aws/config
+
 # Airflow
 ARG AIRFLOW_HOME=/usr/local/airflow
 

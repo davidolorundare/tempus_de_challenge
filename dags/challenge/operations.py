@@ -1891,32 +1891,38 @@ class UploadOperations:
         status = None
         files = None
 
-        if return_status and msg == "Directory is empty":
-            status = return_status
-            log.info("The csv directory is empty")
-            return status, msg
-        elif return_status and msg == "Directory has no csv-headline files":
-            status = return_status
-            log.info("There are no csv-type files in the directory")
-            return status, msg
-        elif return_status and msg == "CSV files present":
-            log.info("CSV files found")
-            files = data
-        else:
-            log.info("Error in reading directory")
-            status = return_status
-            return status, msg
+        # if return_status and msg == "Directory is empty":
+        #     status = return_status
+        #     log.info("The csv directory is empty")
+        #     return status, msg
+        # elif return_status and msg == "Directory has no csv-headline files":
+        #     status = return_status
+        #     log.info("There are no csv-type files in the directory")
+        #     return status, msg
+        # elif return_status and msg == "CSV files present":
+        #     log.info("CSV files found")
+        #     files = data
+        # else:
+        #     log.info("Error in reading directory")
+        #     status = return_status
+        #     return status, msg
 
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
-        if not bucket_name:
-            bucket_name = pipeline_info.s3_bucket_name
+        # if not bucket_name:
+        #     bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
             aws_service_client = boto3.client('s3')
         if not aws_resource:
             aws_resource = boto3.resource('s3')
+
+        log.info("Buckets available")
+        bucks = [bucket.name for bucket in aws_resource.buckets.all()]
+        log.info(bucks)
+
+        return True
 
         buckets = [bucket.name for bucket in aws_resource.buckets.all()]
         if bucket_name not in buckets:
