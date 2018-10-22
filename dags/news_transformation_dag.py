@@ -89,52 +89,52 @@ transform_func_alias = c.TransformOperations.transform_headlines_to_csv
 upload_func_alias = c.UploadOperations.upload_csv_to_s3
 
 # creates a folder for storing retrieved data on the local filesystem
-# datastore_creation_task = PythonOperator(task_id='create_storage_task',
-#                                          provide_context=True,
-#                                          python_callable=storage_func_alias,
-#                                          retries=3,
-#                                          dag=dag)
+datastore_creation_task = PythonOperator(task_id='create_storage_task',
+                                         provide_context=True,
+                                         python_callable=storage_func_alias,
+                                         retries=3,
+                                         dag=dag)
 
 # retrieve all english news sources
 # Using the News API, a http request is made to the News API's 'sources'
 # endpoint, with its 'language' parameter set to 'en'.
-# get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
-#                                    method='GET',
-#                                    data={'language': 'en',
-#                                          'apiKey': API_KEY},
-#                                    response_check=c.NetworkOperations.get_news,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_news_sources_task',
-#                                    dag=dag,
-#                                    depends_on_past=True,
-#                                    retry_delay=timedelta(minutes=3),
-#                                    retry_exponential_backoff=True,)
+get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
+                                   method='GET',
+                                   data={'language': 'en',
+                                         'apiKey': API_KEY},
+                                   response_check=c.NetworkOperations.get_news,
+                                   http_conn_id='newsapi',
+                                   task_id='get_news_sources_task',
+                                   dag=dag,
+                                   depends_on_past=True,
+                                   retry_delay=timedelta(minutes=3),
+                                   retry_exponential_backoff=True,)
 
-# # detect existence of retrieved news data
-# file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
-#                                 fs_conn_id="filesys",
-#                                 poke_interval=5,
-#                                 soft_fail=True,
-#                                 timeout=3600,
-#                                 task_id='file_sensor_task',
-#                                 dag=dag)
+# detect existence of retrieved news data
+file_exists_sensor = FileSensor(filepath=NEWS_DIRECTORY,
+                                fs_conn_id="filesys",
+                                poke_interval=5,
+                                soft_fail=True,
+                                timeout=3600,
+                                task_id='file_sensor_task',
+                                dag=dag)
 
-# # retrieve each sources headlines and perform subsequent
-# # headline-extraction step
-# headlines_task = PythonOperator(task_id='extract_headlines_task',
-#                                 provide_context=True,
-#                                 python_callable=headlines_func_alias,
-#                                 retries=3,
-#                                 dag=dag,
-#                                 depends_on_past=True)
+# retrieve each sources headlines and perform subsequent
+# headline-extraction step
+headlines_task = PythonOperator(task_id='extract_headlines_task',
+                                provide_context=True,
+                                python_callable=headlines_func_alias,
+                                retries=3,
+                                dag=dag,
+                                depends_on_past=True)
 
-# # extract and transform the data, resulting in a flattened csv
-# flatten_csv_task = PythonOperator(task_id='flatten_to_csv_task',
-#                                   provide_context=True,
-#                                   python_callable=transform_func_alias,
-#                                   retries=3,
-#                                   dag=dag,
-#                                   depends_on_past=True)
+# extract and transform the data, resulting in a flattened csv
+flatten_csv_task = PythonOperator(task_id='flatten_to_csv_task',
+                                  provide_context=True,
+                                  python_callable=transform_func_alias,
+                                  retries=3,
+                                  dag=dag,
+                                  depends_on_past=True)
 
 # upload the flattened csv into my S3 bucket
 upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_task',
@@ -152,16 +152,13 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-# start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
+start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
 
 # ensure the data has been retrieved before beginning the ETL process.
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
-# file_exists_sensor >> headlines_task >> flatten_csv_task
+file_exists_sensor >> headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-# flatten_csv_task >> upload_csv_task >> end_task
-
-# TESTING
-start_task >> upload_csv_task >> end_task
+flatten_csv_task >> upload_csv_task >> end_task
