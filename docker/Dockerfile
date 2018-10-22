@@ -93,6 +93,8 @@ ADD ./.aws/credentials ${AIRFLOW_HOME}/.aws/credentials
 
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
+# Exposed port 9090 since 8080 is in use by another application
+# on author's computer
 EXPOSE 9090 8080 5555 8793
 
 USER airflow
