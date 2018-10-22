@@ -1879,57 +1879,68 @@ class UploadOperations:
                 by the user in their Amazon AWS account.
         """
 
-        log.info("Running upload_news_headline_csv_to_s3 method")
+        log.info("Running upload_csv_to_s3 method")
 
         # get information about the current pipeline
-        pipeline_name = context['dag'].dag_id
+        # pipeline_name = context['dag'].dag_id
 
-        # inspect the pipeline's csv directory contents
-        return_status, msg, data = cls.upload_directory_check(pipeline_name,
-                                                              csv_directory)
-        status = None
+        # # inspect the pipeline's csv directory contents
+        # return_status, msg, data = cls.upload_directory_check(pipeline_name,
+        #                                                       csv_directory)
+        # status = None
         files = None
 
-        if return_status and msg == "Directory is empty":
-            status = return_status
-            log.info("The csv directory is empty")
-            return status, msg
-        elif return_status and msg == "Directory has no csv-headline files":
-            status = return_status
-            log.info("There are no csv-type files in the directory")
-            return status, msg
-        elif return_status and msg == "CSV files present":
-            log.info("CSV files found")
-            files = data
-        else:
-            log.info("Error in reading directory")
-            status = return_status
-            return status, msg
+        # if return_status and msg == "Directory is empty":
+        #     status = return_status
+        #     log.info("The csv directory is empty")
+        #     return status, msg
+        # elif return_status and msg == "Directory has no csv-headline files":
+        #     status = return_status
+        #     log.info("There are no csv-type files in the directory")
+        #     return status, msg
+        # elif return_status and msg == "CSV files present":
+        #     log.info("CSV files found")
+        #     files = data
+        # else:
+        #     log.info("Error in reading directory")
+        #     status = return_status
+        #     return status, msg
 
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
-        if not bucket_name:
-            status = False
-            raise ValueError("Bucket name cannot be empty")
+        # if not bucket_name:
+        #     status = False
+        #     raise ValueError("Bucket name cannot be empty")
 
-        # TESTING
-        log.info("Echoing Amazon Credentials")
-        log.info("access key")
-        log.info(os.environ['AWS_ACCESS_KEY_ID'])
-        log.info("secret key")
-        log.info(os.environ['AWS_SECRET_ACCESS_KEY'])
-        log.info("default region")
-        log.info(os.environ['AWS_DEFAULT_REGION'])
-        log.info("profile user")
-        log.info(os.environ['AWS_PROFILE'])
-        log.info("default output")
-        log.info(os.environ['AWS_DEFAULT_OUTPUT'])
+        log.info(os.listdir("."))
+
+        # setup s3 credentials
+        access_key = os.environ['AWS_ACCESS_KEY_ID']
+        secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
+        region = os.environ['AWS_DEFAULT_REGION']
+        user_name = os.environ['AWS_PROFILE']
+
+        # session = boto3.session.Session(aws_access_key_id=access_key,
+        #                                 aws_secret_access_key=secret_key,
+        #                                 profile_name=user_name,
+        #                                 region_name=region)
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
-            aws_service_client = boto3.client('s3')
+            aws_service_client = boto3.client('s3',
+                                              aws_access_key_id=access_key,
+                                              aws_secret_access_key=secret_key,
+                                              profile_name=user_name,
+                                              region_name=region)
         if not aws_resource:
-            aws_resource = boto3.resource('s3')
+            aws_resource = boto3.resource('s3',
+                                          aws_access_key_id=access_key,
+                                          aws_secret_access_key=secret_key,
+                                          profile_name=user_name,
+                                          region_name=region)
+
+        log.info("Successful creation of session")
+        return True
 
         buckets = [bucket.name for bucket in aws_resource.buckets.all()]
         if bucket_name not in buckets:

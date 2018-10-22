@@ -13,3 +13,4 @@ tempus_env/
 
 # environmental variables used locally
 .env
+.aws/
