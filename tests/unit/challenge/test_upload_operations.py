@@ -96,6 +96,11 @@ class TestUploadOperations:
         bucket.objects.all().delete()
         bucket.delete()
 
+    def test_upload_directory_check_success_with_csv_present(self):
+        """returns appropiate status message on detecting valid csv
+        files in the csv directory.
+        """
+
     @mock_s3
     def test_upload_csv_to_s3_files_upload_correctly(self,
                                                      airflow_context,
@@ -350,9 +355,11 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
+    @pytest.mark.skip
     def test_upload_directory_check_empty_dir_fails(self, home_directory_res):
         """returns appropiate status message on detecting empty directory."""
 
+    @pytest.mark.skip
     def test_upload_directory_check_no_csvs_fails(self, home_directory_res):
         """returns appropiate status message on detecting no csv files
         in the csv directory.
