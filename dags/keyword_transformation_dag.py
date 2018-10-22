@@ -39,12 +39,10 @@ default_args = {
 # stores data from the News API
 NEWS_DIR = "usr/local/airflow/tempdata/tempus_bonus_challenge_dag/headlines/"
 
-# NEED TO MAINTAIN SECRECY OF API KEYS
+# MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
 # https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
-# this should NOT be hardcoded (at least put it in an environment variable)
-# user should export their own generate News API Key to their commandline
-# with the keyname 'NEWS_API_KEY'
+# this should NEVER be hardcoded (at least put it in an environment variable)
 # See project README for more details.
 API_KEY = os.environ["NEWS_API_KEY"]
 
@@ -91,27 +89,27 @@ datastore_creation_task = PythonOperator(task_id='create_storage_task',
 
 # # retrieve all top news headlines for specific keywords
 # # Need to make four SimpleHTTPOperator calls run in parallel
-# news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-#                                    method='GET',
-#                                    data={'q': 'Tempus Labs',
-#                                          'apiKey': API_KEY},
-#                                    response_check=headlines_func_alias,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_headlines_first_kw_task',
-#                                    dag=dag,
-#                                    retry_delay=timedelta(minutes=3),
-#                                    retry_exponential_backoff=True)
+news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+                                   method='GET',
+                                   data={'q': 'Tempus Labs',
+                                         'apiKey': API_KEY},
+                                   response_check=headlines_func_alias,
+                                   http_conn_id='newsapi',
+                                   task_id='get_headlines_first_kw_task',
+                                   dag=dag,
+                                   retry_delay=timedelta(minutes=3),
+                                   retry_exponential_backoff=True)
 
-# news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-#                                    method='GET',
-#                                    data={'q': 'Eric Lefkofsky',
-#                                          'apiKey': API_KEY},
-#                                    response_check=headlines_func_alias,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_headlines_second_kw_task',
-#                                    dag=dag,
-#                                    retry_delay=timedelta(minutes=3),
-#                                    retry_exponential_backoff=True)
+news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+                                   method='GET',
+                                   data={'q': 'Eric Lefkofsky',
+                                         'apiKey': API_KEY},
+                                   response_check=headlines_func_alias,
+                                   http_conn_id='newsapi',
+                                   task_id='get_headlines_second_kw_task',
+                                   dag=dag,
+                                   retry_delay=timedelta(minutes=3),
+                                   retry_exponential_backoff=True)
 
 news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
@@ -124,16 +122,16 @@ news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    retry_delay=timedelta(minutes=3),
                                    retry_exponential_backoff=True)
 
-# news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-#                                    method='GET',
-#                                    data={'q': 'Immunotherapy',
-#                                          'apiKey': API_KEY},
-#                                    response_check=headlines_func_alias,
-#                                    http_conn_id='newsapi',
-#                                    task_id='get_headlines_fourth_kw_task',
-#                                    dag=dag,
-#                                    retry_delay=timedelta(minutes=3),
-#                                    retry_exponential_backoff=True)
+news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+                                   method='GET',
+                                   data={'q': 'Immunotherapy',
+                                         'apiKey': API_KEY},
+                                   response_check=headlines_func_alias,
+                                   http_conn_id='newsapi',
+                                   task_id='get_headlines_fourth_kw_task',
+                                   dag=dag,
+                                   retry_delay=timedelta(minutes=3),
+                                   retry_exponential_backoff=True)
 
 # # detect existence of retrieved news data
 file_exists_sensor = FileSensor(filepath=NEWS_DIR,
@@ -166,13 +164,13 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> news_kw3_task >> file_exists_sensor
+start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 
 # make news api calls with the four keywords and ensure the
 # data has been retrieved before beginning the ETL process.
-# datastore_creation_task >> news_kw2_task >> file_exists_sensor
-# datastore_creation_task >> news_kw3_task >> file_exists_sensor
-# datastore_creation_task >> news_kw4_task >> file_exists_sensor
+datastore_creation_task >> news_kw2_task >> file_exists_sensor
+datastore_creation_task >> news_kw3_task >> file_exists_sensor
+datastore_creation_task >> news_kw4_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.

@@ -36,14 +36,12 @@ default_args = {
 # stores data from the News API
 NEWS_DIRECTORY = "usr/local/airflow/tempdata/tempus_challenge_dag/news/"
 
-# NEED TO MAINTAIN SECRECY OF API KEYS
+# MAINTAIN SECRECY OF API KEYS
 # https://12factor.net/config
 # https://devops.stackexchange.com/questions/3902/passing-secrets-to-a-docker-container
 # https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
 # https://medium.com/@mccode/dont-embed-configuration-or-secrets-in-docker-images-7b2e0f916fdd
-# this should NOT be hardcoded (at least put it in an environment variable)
-# user should export their own generate News API Key to their commandline
-# with the keyname 'NEWS_API_KEY'
+# this should NEVER be hardcoded (at least put it in an environment variable)
 # See project README for more details.
 API_KEY = os.environ["NEWS_API_KEY"]
 
