@@ -1,3 +1,8 @@
+"""Tempus challenge  - Operations and Functions: Transformation Tasks
+
+Describes the code definitions used in the Airflow task of transforming
+JSON news data in the DAG pipelines.
+"""
 
 import datetime
 import gc
@@ -5,7 +10,7 @@ import logging
 import os
 import pandas as pd
 
-import challenge as c
+from dags import challenge as c
 
 
 log = logging.getLogger(__name__)
@@ -89,7 +94,7 @@ class TransformOperations:
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
         if not pipeline_information:
-            pipeline_information = c.NewsInfoDTO
+            pipeline_information = NewsInfoDTO
 
         pipeline_info = pipeline_information(pipeline_name)
         headline_dir = pipeline_info.headlines_directory
@@ -120,7 +125,8 @@ class TransformOperations:
     @classmethod
     def helper_execute_keyword_json_transformation(cls,
                                                    directory,
-                                                   timestamp=None):
+                                                   timestamp=None,
+                                                   json_transfm_func=None):
         """Helper function which transforms news keyword json-headlines to csv.
 
         # Arguments:
@@ -293,7 +299,7 @@ class TransformOperations:
         if not os.listdir(directory):
             raise FileNotFoundError("Directory is empty")
 
-         if os.listdir(directory):
+        if os.listdir(directory):
             for file in os.listdir(directory):
                 if file.endswith('.json'):
                     files.append(os.path.join(directory, file))
@@ -342,7 +348,7 @@ class TransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         if not extract_func:
-            extract_func = c.ExtractOperations.extract_news_data_from_dataframe
+            extract_func = ExtractOperations.extract_news_data_from_dataframe
         if not transform_func:
             transform_func = cls.transform_data_to_dataframe
         if not read_js_func:
@@ -415,7 +421,7 @@ class TransformOperations:
         The function specifically operates on jsons in the 'headlines'
         folder of the 'tempus_challenge_dag' pipeline.
 
-        Uses the Pandas library to parse, extract and flatten the
+        Uses the Pandas library to parse, traverse and flatten the
         json data into a csv file.
 
         If there are no news articles in the parsed json file then no
@@ -559,7 +565,7 @@ class TransformOperations:
         The function specifically operates on jsons in the 'headlines'
         folder of the 'tempus_bonus_challenge_dag' pipeline.
 
-        Uses the Pandas library to parse, traverse and flatten the
+        Uses the Pandas library to parse, extract and flatten the
         json data into a csv file.
 
         If there are no news articles in the parsed json file then no
@@ -592,7 +598,7 @@ class TransformOperations:
         op_status = None
         status_msg = None
 
-        # indicates if the news file has any news articles in it
+        # indicates if the json file has any news articles in it
         has_news_articles = True
 
         # Function Aliases
@@ -616,6 +622,7 @@ class TransformOperations:
             # re-raise the error
             raise ValueError
 
+        # extraction and intermediate-transformation of the news json
         keyword_data = pd.DataFrame([keyword_data])
         extracted_data = extract_func(keyword_data)
 
@@ -631,11 +638,11 @@ class TransformOperations:
             return op_status, status_msg
 
         # function continues in the presence of news articles to process
-        log.info("News Articles Present: {}".format(has_news_articles))
+        log.info("News Articles is Present: {}".format(has_news_articles))
         transformed_df = transform_func(extracted_data)
 
         # transform to csv and save in the 'csv' datastore
-        csv_dir = FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
+        csv_dir = c.FileStorage.get_csv_directory("tempus_bonus_challenge_dag")
         if not csv_filename:
             time = datetime.datetime.now().isoformat().split('T')[0]
             csv_filename = str(time) + "_" + "sample.csv"

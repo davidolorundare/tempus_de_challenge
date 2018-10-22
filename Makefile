@@ -27,7 +27,7 @@ test:
 integration-test:
 
 	@echo --- CSV Upload Integration Test with Moto Fake S3 APIs ---
-	python -m pytest -v -m uploadtests --cov=${MODULE} --cov-branch tests/
+	python -m pytest -v -m uploadtests --cov=${MODULE}/ --cov-branch tests/
 
 clean:
 	@echo

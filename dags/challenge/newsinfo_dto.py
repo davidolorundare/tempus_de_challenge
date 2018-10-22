@@ -1,8 +1,14 @@
+"""Tempus challenge  - Operations and Functions: Helper Tasks
+
+Describes the code definitions used of a Helper Data Transfer Object
+used in several Airflow task functions, in the DAG pipelines.
+"""
+
 
 import logging
 import os
 
-import challenge as c
+from dags import challenge as c
 
 
 log = logging.getLogger(__name__)

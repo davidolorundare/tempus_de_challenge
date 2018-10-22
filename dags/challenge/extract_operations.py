@@ -1,3 +1,9 @@
+"""Tempus challenge  - Operations and Functions: Extraction Tasks
+
+Describes the code definitions used in the Airflow task of extracting
+relevant news source and headline data from JSON news files, in the
+DAG pipelines.
+"""
 
 import numpy as np
 import json

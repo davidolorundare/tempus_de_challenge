@@ -1,3 +1,8 @@
+"""Tempus challenge  - Operations and Functions: Data Storage Tasks
+
+Describes the code definitions used in the Airflow task of creating
+tempoary datastores and storing retrieved data in them, in the DAG pipelines.
+"""
 
 import errno
 import json
@@ -9,7 +14,7 @@ import time
 
 from airflow.models import Variable
 
-import challenge as c
+from dags import challenge as c
 
 
 log = logging.getLogger(__name__)

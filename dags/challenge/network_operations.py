@@ -1,3 +1,9 @@
+"""Tempus challenge  - Operations and Functions: HTTP Remote API call Tasks
+
+Describes the code definitions used in the Airflow task of retrieving
+news data from an external News API, in the DAG pipelines.
+"""
+
 
 import logging
 import os
@@ -5,7 +11,7 @@ import requests
 
 from airflow.models import Variable
 
-import challenge as c
+from dags import challenge as c
 
 
 log = logging.getLogger(__name__)

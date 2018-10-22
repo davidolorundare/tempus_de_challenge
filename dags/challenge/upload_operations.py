@@ -1,11 +1,14 @@
+"""Tempus challenge  - Operations and Functions: Upload Tasks
+
+Describes the code definitions used in the Airflow task of uploading
+CSV files to an Amazon S3 bucket in the DAG pipelines.
+"""
 
 import boto3
 import logging
 import os
 
-# from dags import challenge as c
-
-import challenge as c
+from dags import challenge as c
 
 
 log = logging.getLogger(__name__)
