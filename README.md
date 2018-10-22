@@ -39,10 +39,11 @@
 
 3. Setup a Python virtual environment with the command `virtualenv ENV` where ENV is the root directory path of the project.
 
-4. The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step.
+4. The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file and `.aws` directory respectively, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step. During Docker build-time, these files are copied into the container and made available to the application.
 	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/configure_api_keys_image.jpeg "Configuring API Keys")
-	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0)
+	* An example of the `config` and `credentials` files are shown below.
+	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0). This needs to be done before Airflow is downloaded in the next step.
 
 
 ---
@@ -202,7 +203,9 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 - No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
 
-- Added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`
+- Added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`, to ensure an up to date version of pip is always used.
+
+- The Boto library doesn't detect the AWS API keys when set in the environmental variables. Workaround was to create the `.aws` directory inside the container during Docker build-time and inject the `config` and `credentials` files with the keys.
 
 #### Versioning Issues
 
