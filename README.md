@@ -52,8 +52,6 @@
 	---
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_aws_credentials_image.jpeg "AWS credentials file creation")
 
-	---
-
 ---
 
 5. Run the command `make init` ; this downloads all of the project's dependencies.
