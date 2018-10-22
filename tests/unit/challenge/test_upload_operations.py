@@ -397,9 +397,41 @@ class TestUploadOperations:
         assert stat is True
         assert val == ['stuff1.csv', 'stuff2.csv', 'stuff3.csv']
 
-    @pytest.mark.skip
-    def test_upload_directory_check_empty_dir_fails(self, home_directory_res):
+    def test_upload_directory_check_empty_dir_fails(self, airflow_context):
         """returns appropiate status message on detecting empty directory."""
+
+        # Arrange
+
+        # get the current pipeline info
+        pipeline_name = airflow_context['dag'].dag_id
+
+        # status of the directory check operation and value of the data
+        stat = None
+        msg = None
+        val = None
+
+        # path to fakes news and csv directories the function
+        # under test uses
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
+
+        with Patcher() as patcher:
+            # setup pyfakefs - the fake filesystem
+            patcher.setUp()
+
+            # create a fake filesystem directory and files to test the method
+            patcher.fs.create_dir(csv_dir)
+
+        # Act
+            # with csv files present, success status message is returned
+            stat, msg, val = c.UploadOperations.upload_directory_check(csv_dir)
+
+            # clean up and remove the fake filesystem
+            patcher.tearDown()
+
+        # Assert
+        assert "Directory is empty" in msg
+        assert stat is True
+        assert val is False
 
     @pytest.mark.skip
     def test_upload_directory_check_no_csvs_fails(self, home_directory_res):

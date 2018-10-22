@@ -1877,10 +1877,10 @@ class UploadOperations:
 
         # get information about the current pipeline
         pipeline_name = context['dag'].dag_id
+        pipeline_csv_dir = NewsInfoDTO(pipeline_name).csv_directory
 
         # inspect the pipeline's csv directory contents
-        return_status, msg, data = cls.upload_directory_check(pipeline_name,
-                                                              csv_directory)
+        return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
         status = None
         files = None
 
@@ -1920,7 +1920,7 @@ class UploadOperations:
 
         # iterate through the files in the directory and upload them to s3
         for file in files:
-            file_path = os.path.join(csv_directory, file)
+            file_path = os.path.join(pipeline_csv_dir, file)
             aws_service_client.upload_file(file_path, bucket_name, file)
 
         # file upload successful if it reached this point without any errors
