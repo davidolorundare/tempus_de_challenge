@@ -11,7 +11,7 @@ import requests
 
 from airflow.models import Variable
 
-from dags import challenge as c
+import dags as c
 
 
 log = logging.getLogger(__name__)

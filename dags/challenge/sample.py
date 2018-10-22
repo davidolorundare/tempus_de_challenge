@@ -1,9 +1,5 @@
 import datetime
 
-# remove these later
-import logging
-log = logging.getLogger(__name__)
-
 
 def print_context(**context):
     """Print context provided to function."""
@@ -17,17 +13,6 @@ class HelloWorld:
         hello = 'Hello, {}!'.format(context['params']['name'])
         print(hello)
         return hello
-
-
-class SuperWorld:
-
-    def __init__(self) -> str:
-        """Print and return `Hello, <name>!`."""
-        log.info("Infinite Testing")
-        log.info("HELOLOOOW WORLD")
-
-    def hello(self):
-        log.info("do studd")
 
 
 class PrintExecutionDate:

@@ -1,16 +1,14 @@
-"""directory imports from the challenge package-folder."""
+"""directory imports from the challenge sub-package."""
 from .sample import *
 
-# from .operations import *
+from .storage import *
 
-from .filestorage_operations import *
+from .transform import *
 
-from .transform_operations import *
+from .network import *
 
-from .network_operations import *
+from .upload import *
 
-from .upload_operations import *
+from .extract import *
 
-from .extract_operations import *
-
-from .newsinfo_dto import *
+from .dto import *

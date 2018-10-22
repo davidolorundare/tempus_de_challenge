@@ -24,7 +24,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
-import challenge as c
+import dags as c
 
 
 default_args = {

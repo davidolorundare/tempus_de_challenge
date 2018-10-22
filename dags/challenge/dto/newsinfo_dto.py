@@ -8,7 +8,7 @@ used in several Airflow task functions, in the DAG pipelines.
 import logging
 import os
 
-from dags import challenge as c
+import dags as c
 
 
 log = logging.getLogger(__name__)

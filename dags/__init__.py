@@ -1,2 +1,2 @@
-"""directory imports."""
-# from .challenge import *
+"""directory imports for the dags package."""
+from .challenge import *
