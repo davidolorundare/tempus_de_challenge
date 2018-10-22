@@ -479,7 +479,7 @@ class FileStorage:
 
 
 class NetworkOperations:
-    """handles functionality making remote calls to the News API."""
+    """Handles functionality making remote calls to the News API."""
 
     @classmethod
     def get_news(cls,
@@ -729,7 +729,7 @@ class NetworkOperations:
 
 
 class ExtractOperations:
-    """handles functionality for extracting headlines."""
+    """Handles functionality for extracting headlines."""
 
     @classmethod
     def create_top_headlines_json(cls, source_id, source_name, headlines):
@@ -1013,7 +1013,7 @@ class ExtractOperations:
 
 
 class NewsInfoDTO:
-        """information about the news data this pipeline uses.
+        """Information-object about the news data this pipeline uses.
 
 
         This class functions as a Data Transfer Object(DTO).
