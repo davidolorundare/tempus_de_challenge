@@ -1254,20 +1254,22 @@ class TransformOperations:
         # transform individual jsons in the 'headlines' directory into
         # individual csv files
         files = []
+        filepath = []
 
         if os.listdir(directory):
             for file in os.listdir(directory):
                 if file.endswith('.json'):
-                    files.append(os.path.join(directory, file))
+                    files.append(file)
+                    filepath.append(os.path.join(directory, file))
 
         # check existence of json files before beginning transformation
         if not files:
             raise FileNotFoundError("Directory has no json-headline files")
         else:
-            for file in files:
-                key = file.split("_")[1]
+            for index, path in enumerate(filepath):
+                key = files[index].split("_")[1]
                 fname = str(timestamp) + "_" + key + "_top_headlines.csv"
-                stat, msg = json_transfm_func(file, fname, reader)
+                stat, msg = json_transfm_func(path, fname, reader)
                 per_file_status.append(stat)
 
         # verify that ALL the files successfully were converted to csv
