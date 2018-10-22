@@ -4,6 +4,13 @@ Describes a data pipeline that would fetch data from the News API based on
 four keywords - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', and 'Immunotherapy'.
 The data is transformed into a tabular structure, and finally stored in an AWS
 S3 Bucket.
+
+If for any reason a task that is being run fails, they have been configured to
+try to re-run it after a time delay. This behaviour is helpful in case systems
+are temporarily unavailable (e.g. the News API server). The number of retries
+are configured at both DAG-level and at Task-level. Once all the possible runs
+have been exhausted and the system continuously failed, the task will be marked
+as failed.
 """
 
 import os
@@ -80,14 +87,14 @@ flatten_csv_func_alias = c.TransformOperations.transform_headlines_to_csv
 upload_func_alias = c.UploadOperations.upload_csv_to_s3
 
 # # create a folder for storing retrieved data on the local filesystem
-datastore_creation_task = PythonOperator(task_id='create_storage_task',
-                                         provide_context=True,
-                                         python_callable=storage_func_alias,
-                                         retries=3,
-                                         dag=dag)
+# datastore_creation_task = PythonOperator(task_id='create_storage_task',
+#                                          provide_context=True,
+#                                          python_callable=storage_func_alias,
+#                                          retries=3,
+#                                          dag=dag)
 
-# # retrieve all top news headlines for specific keywords
-# # Need to make four SimpleHTTPOperator calls run in parallel
+# # # retrieve all top news headlines for specific keywords
+# # # Need to make four SimpleHTTPOperator calls run in parallel
 news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
                                    data={'q': 'Tempus Labs',
@@ -99,61 +106,61 @@ news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    retry_delay=timedelta(minutes=3),
                                    retry_exponential_backoff=True)
 
-news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Eric Lefkofsky',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_second_kw_task',
-                                   dag=dag,
-                                   retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True)
+# news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Eric Lefkofsky',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_second_kw_task',
+#                                    dag=dag,
+#                                    retry_delay=timedelta(minutes=3),
+#                                    retry_exponential_backoff=True)
 
-news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Cancer',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_third_kw_task',
-                                   dag=dag,
-                                   retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True)
+# news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Cancer',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_third_kw_task',
+#                                    dag=dag,
+#                                    retry_delay=timedelta(minutes=3),
+#                                    retry_exponential_backoff=True)
 
-news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
-                                   method='GET',
-                                   data={'q': 'Immunotherapy',
-                                         'apiKey': API_KEY},
-                                   response_check=headlines_func_alias,
-                                   http_conn_id='newsapi',
-                                   task_id='get_headlines_fourth_kw_task',
-                                   dag=dag,
-                                   retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True)
+# news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
+#                                    method='GET',
+#                                    data={'q': 'Immunotherapy',
+#                                          'apiKey': API_KEY},
+#                                    response_check=headlines_func_alias,
+#                                    http_conn_id='newsapi',
+#                                    task_id='get_headlines_fourth_kw_task',
+#                                    dag=dag,
+#                                    retry_delay=timedelta(minutes=3),
+#                                    retry_exponential_backoff=True)
 
-# # detect existence of retrieved news data
-file_exists_sensor = FileSensor(filepath=NEWS_DIR,
-                                fs_conn_id="filesys",
-                                poke_interval=5,
-                                soft_fail=True,
-                                timeout=3600,
-                                task_id='file_sensor_task',
-                                dag=dag)
+# # # detect existence of retrieved news data
+# file_exists_sensor = FileSensor(filepath=NEWS_DIR,
+#                                 fs_conn_id="filesys",
+#                                 poke_interval=5,
+#                                 soft_fail=True,
+#                                 timeout=3600,
+#                                 task_id='file_sensor_task',
+#                                 dag=dag)
 
-# extract and transform the data, resulting in a flattened csv
-flatten_to_csv_task = PythonOperator(task_id='flatten_to_csv_kw_task',
-                                     provide_context=True,
-                                     python_callable=flatten_csv_func_alias,
-                                     retries=3,
-                                     dag=dag)
+# # extract and transform the data, resulting in a flattened csv
+# flatten_to_csv_task = PythonOperator(task_id='flatten_to_csv_kw_task',
+#                                      provide_context=True,
+#                                      python_callable=flatten_csv_func_alias,
+#                                      retries=3,
+#                                      dag=dag)
 
-# # upload the flattened csv into my S3 bucket
-upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
-                                 provide_context=True,
-                                 python_callable=upload_func_alias,
-                                 retries=3,
-                                 dag=dag)
+# # # upload the flattened csv into my S3 bucket
+# upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
+#                                  provide_context=True,
+#                                  python_callable=upload_func_alias,
+#                                  retries=3,
+#                                  dag=dag)
 
 # # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
@@ -163,16 +170,19 @@ end_task = DummyOperator(task_id='end', dag=dag)
 # create folder that acts as 'staging area' to store retrieved
 # data before processing. In a production system this would be
 # a real database.
-start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
+# start_task >> datastore_creation_task >> news_kw1_task >> file_exists_sensor
 
 # make news api calls with the four keywords and ensure the
 # data has been retrieved before beginning the ETL process.
-datastore_creation_task >> news_kw2_task >> file_exists_sensor
-datastore_creation_task >> news_kw3_task >> file_exists_sensor
-datastore_creation_task >> news_kw4_task >> file_exists_sensor
+# datastore_creation_task >> news_kw2_task >> file_exists_sensor
+# datastore_creation_task >> news_kw3_task >> file_exists_sensor
+# datastore_creation_task >> news_kw4_task >> file_exists_sensor
 
 # all the news sources are retrieved, the top headlines
 # extracted, and the data transform by flattening into CSV.
 # Then perform a file transfer operation, uploading the CSV data
 # into S3 from local.
-file_exists_sensor >> flatten_to_csv_task >> upload_csv_task >> end_task
+# file_exists_sensor >> flatten_to_csv_task >> upload_csv_task >> end_task
+
+# TESTING
+start_task >> end_task
