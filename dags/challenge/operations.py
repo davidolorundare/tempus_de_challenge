@@ -230,6 +230,9 @@ class FileStorage:
         fname = str(create_date) + "_" + str(filename) + ".json"
         fpath = os.path.join(path_to_dir, fname)
 
+        log.info("FIlename before write")
+        log.info(fname)
+
         # write the json string data to file.
         try:
             with open(fpath, 'w+') as outputfile:
@@ -625,8 +628,7 @@ class NetworkOperations:
     def get_news_keyword_headlines(cls,
                                    response: requests.Response,
                                    headlines_dir=None,
-                                   filename=None,
-                                   **context):
+                                   filename=None):
         """Processes the response from the remote API call to get keyword headlines.
 
         Used by the SimpleHTTPOperator exclusively in the DAG pipeline
@@ -641,9 +643,6 @@ class NetworkOperations:
             :param filename: name of the json file created from the Response
                 object data.
             :type filename: str
-            :param context: airflow context object of the currently running
-                pipeline.
-            :type context: dict
 
         """
 
@@ -655,12 +654,12 @@ class NetworkOperations:
         # use the extracted query-keyword to construct the filename of the
         # final json file
         if not filename:
-            time = context['ds']
+            time = datetime.datetime.now().isoformat().split('T')[0]
             filename = time + "_" + str(query) + "_headlines"
 
         # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
-        pipeline_name = context['dag'].dag_id
+        pipeline_name = "tempus_bonus_challenge_dag"
         pipeline_info = NewsInfoDTO(pipeline_name)
 
         if not headlines_dir:
@@ -1192,7 +1191,8 @@ class TransformOperations:
         headline_dir = pipeline_info.headlines_directory
 
         # execution date of the current pipeline
-        exec_date = str(context['ds'])
+        exec_date = context['execution_date']
+        exec_date = exec_date.strftime("%Y-%m-%d")
 
         # transformation operation status
         transform_status = None
@@ -1685,6 +1685,9 @@ class TransformOperations:
 
         log.info("Running transform_key_headlines_to_csv method")
 
+        log.info("Printing csv Filename")
+        log.info(csv_filename)
+
         # ensure status of operation is communicated to caller function
         op_status = None
         status_msg = None
@@ -1739,6 +1742,9 @@ class TransformOperations:
             csv_filename = str(time) + "_" + "sample.csv"
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(csv_save_path)
+
+        log.info("Splitting filename")
+        log.info(csv_filename.split("_"))
 
         query_key = csv_filename.split("_")[1]
 

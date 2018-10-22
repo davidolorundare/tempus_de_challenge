@@ -125,8 +125,7 @@ class TestNetworkOperations:
         # Act
             result = keyword_headline_func(response,
                                            headlines_dir=path_headline,
-                                           filename=fname,
-                                           **airflow_context)
+                                           filename=fname)
 
             # return to the real filesystem and clear pyfakefs resources
             patcher.tearDown()

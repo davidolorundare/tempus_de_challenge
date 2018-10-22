@@ -36,7 +36,7 @@ class TestTransformOperations:
 
         dag = MagicMock(spec=DAG)
         dag.dag_id = "tempus_challenge_dag"
-        current_execution_time = str(datetime.datetime.now())
+        current_execution_time = datetime.datetime.now()
 
         return {
             'dag': dag,
