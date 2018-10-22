@@ -792,6 +792,8 @@ class ExtractOperations:
 
         sources_ids = []
         sources_names = []
+        num_of_sources = len(json_data["sources"])
+        log.info("Total News Sources Retrieved: {}".format(num_of_sources))
 
         for source in json_data["sources"]:
             ids = source["id"]
