@@ -1043,12 +1043,16 @@ class NewsInfoDTO:
         """
 
         def __init__(self, pipeline_name, dir_check_func=None):
-            valid_dags = ['tempus_challenge_dag', 'tempus_bonus_challenge_dag']
+            self.valid_dags = ['tempus_challenge_dag',
+                               'tempus_bonus_challenge_dag']
+
+            self.valid_buckets = ['tempus-challenge-csv-headlines',
+                                  'tempus-bonus-challenge-csv-headlines']
 
             if not pipeline_name:
                 raise ValueError("Argument pipeline_name cannot be left blank")
 
-            if pipeline_name not in valid_dags:
+            if pipeline_name not in self.valid_dags:
                 raise ValueError("{} not valid pipeline".format(pipeline_name))
 
             self.pipeline = str(pipeline_name)
@@ -1063,6 +1067,13 @@ class NewsInfoDTO:
         def headlines_directory(self) -> str:
             """Returns the path to this pipeline's headline directory."""
             return FileStorage.get_headlines_directory(self.pipeline)
+
+        @property
+        def bucket_name(self) -> str:
+            if self.pipline == 'tempus_challenge_dag':
+                return self.valid_buckets[0]
+            if self.pipline == 'tempus_bonus_challenge_dag':
+                return self.valid_buckets[1]
 
         @property
         def news_directory(self) -> str:
