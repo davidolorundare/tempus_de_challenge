@@ -1597,7 +1597,7 @@ class TransformOperations:
 
     @classmethod
     def transform_headlines_dataframe_to_csv(cls, frame, csv_filename):
-        """Flatten's a given dataframe into a csv file.
+        """Flattens a given dataframe into a csv file.
 
          # Arguments:
             :param frame: single DataFrame consisting of all english news
