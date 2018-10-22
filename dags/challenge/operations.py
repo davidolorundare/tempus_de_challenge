@@ -641,6 +641,10 @@ class NetworkOperations:
             :param filename: name of the json file created from the Response
                 object data.
             :type filename: str
+            :param context: airflow context object of the currently running
+                pipeline.
+            :type context: dict
+
         """
 
         log.info("Running get_news_keyword_headlines method")
@@ -651,7 +655,8 @@ class NetworkOperations:
         # use the extracted query-keyword to construct the filename of the
         # final json file
         if not filename:
-            filename = str(query) + "_headlines"
+            time = context['ds']
+            filename = time + "_" + str(query) + "_headlines"
 
         # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
