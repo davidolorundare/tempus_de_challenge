@@ -355,10 +355,6 @@ class FileStorage:
 
         # return with a verification that these operations succeeded
         if os.listdir(headline_dir):
-            # airflow logging
-            log.info("Files in Headlines Directory: ")
-            log.info(os.listdir(headline_dir))
-
             return True
         else:
             return False
