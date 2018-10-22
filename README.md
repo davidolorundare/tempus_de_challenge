@@ -63,7 +63,7 @@
 7. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
 	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
-	- The pipeline are preconfigured to run already, 1hour apart. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
+	- The pipeline are preconfigured to run immediately, and thereafter at the scheduled times of 12AM and 1AM each day (i.e. 1hour apart). Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 	- In the Console UI (shown below) click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each. The steps are numbered in order.
 
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/airflow_ui_console.jpeg "Airflow Console UI - Activate and Trigger Dags")
