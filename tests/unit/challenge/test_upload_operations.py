@@ -350,6 +350,7 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
+    @pytest.mark.skip
     def test_upload_directory_check_success_with_csv_present(self):
         """returns appropiate status message on detecting valid csv
         files in the csv directory.
@@ -423,12 +424,6 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 resources and file upload functions
-        # upload_client = MagicMock(spec=boto3.client('s3'))
-        # resource_client = MagicMock(spec=boto3.resource('s3'))
-        # upload_client.upload_file.side_effect = lambda: None
-        # resource_client.buckets.all.side_effect = lambda: bucket_names
-
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
@@ -482,12 +477,6 @@ class TestUploadOperations:
 
         # Arrange
 
-        # setup a Mock of the boto3 resources and file upload functions
-        # upload_client = MagicMock(spec=boto3.client('s3'))
-        # resource_client = MagicMock(spec=boto3.resource('s3'))
-        # upload_client.upload_file.side_effect = lambda: None
-        # resource_client.buckets.all.side_effect = lambda: bucket_names
-
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
 
@@ -510,9 +499,9 @@ class TestUploadOperations:
                                 'news')
 
         # create dummy csv files that will be uploaded by the function
-        full_file_path_one = os.path.join(csv_dir, 'stuff1.csv')
-        full_file_path_two = os.path.join(csv_dir, 'stuff2.csv')
-        full_file_path_three = os.path.join(csv_dir, 'stuff3.csv')
+        file_path_one = os.path.join(csv_dir, 'stuff1.csv')
+        file_path_two = os.path.join(csv_dir, 'stuff2.csv')
+        file_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
         with Patcher() as patcher:
             # setup pyfakefs - the fake filesystem
@@ -522,9 +511,9 @@ class TestUploadOperations:
             # in that directory to test the method
             patcher.fs.create_dir(csv_dir)
             patcher.fs.create_dir(news_dir)
-            patcher.fs.create_file(full_file_path_one, contents='1,dummy,txt')
-            patcher.fs.create_file(full_file_path_two, contents='2,dummy,rtf')
-            patcher.fs.create_file(full_file_path_three, contents='3,dumy,doc')
+            patcher.fs.create_file(file_path_one, contents='1,dummy,txt')
+            patcher.fs.create_file(file_path_two, contents='2,dummy,rtf')
+            patcher.fs.create_file(file_path_three, contents='3,dumy,doc')
 
         # Act
             # with no valid bucket existing on the server
@@ -553,12 +542,6 @@ class TestUploadOperations:
         """
 
         # Arrange
-
-        # setup a Mock of the boto3 resources and file upload functions
-        # upload_client = MagicMock(spec=boto3.client('s3'))
-        # resource_client = MagicMock(spec=boto3.resource('s3'))
-        # upload_client.upload_file.side_effect = lambda: None
-        # resource_client.buckets.all.side_effect = lambda: bucket_names
 
         # get the current pipeline info
         pipeline_name = airflow_context['dag'].dag_id
