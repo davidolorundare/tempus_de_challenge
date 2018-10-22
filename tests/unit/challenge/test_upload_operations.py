@@ -350,6 +350,9 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
+    def test_upload_directory_check_empty_dir(self, home_directory_res):
+        """returns appropiate status message on detecting empty directory."""
+
     @mock_s3
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
                                                        airflow_context,
