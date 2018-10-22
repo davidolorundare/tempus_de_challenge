@@ -480,8 +480,8 @@ class TestUploadOperations:
         assert stat is True
         assert val == ['stuff1.txt', 'stuff2.rtf', 'stuff3.doc']
 
-    def test_upload_directory_check_unknown_error_fails(self,
-                                                        airflow_context):
+    def test_upload_directory_check_blank_dir_path_fails(self,
+                                                         airflow_context):
         """returns appropiate status message on encountering errors
         reading the csv directory.
         """
