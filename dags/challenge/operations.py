@@ -1816,7 +1816,7 @@ class UploadOperations:
         if not os.listdir(csv_dir):
             status = True
             message = "Directory is empty"
-            return status, message, csv_files
+            return (status, message, csv_files)
 
         if os.listdir(csv_dir):
             csv_files = [file for file in os.listdir(csv_dir)
@@ -1826,17 +1826,17 @@ class UploadOperations:
         if not csv_files:
             status = True
             message = "Directory has no csv-headline files"
-            return status, message, csv_files
+            return (status, message, csv_files)
         # csv files exist
         else:
             status = True
             message = "CSV files present"
-            return status, message, csv_files
+            return (status, message, csv_files)
 
         # some other error occured
         status = False
         message = "Unknown error encountered"
-        return status, message, csv_files
+        return (status, message, csv_files)
 
     @classmethod
     def upload_csv_to_s3(cls,
@@ -1937,4 +1937,4 @@ class UploadOperations:
         status_msg = "upload successful"
 
         # return status to calling function
-        return status, status_msg
+        return status

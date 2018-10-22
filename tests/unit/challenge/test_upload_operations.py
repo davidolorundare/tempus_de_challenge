@@ -249,14 +249,15 @@ class TestUploadOperations:
         self.teardown_s3_bucket_res(bucket_name)
 
         # Assert
-        # upload function returns True if it was called
-        assert stat is True
-        assert "upload successful" in msg
 
         # confirm that before uploading the bucket is empty and after uploading
         # there are three files
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
+
+        # upload function returns True if it was called
+        assert stat is True
+        assert "upload successful" in msg
 
     @pytest.mark.skip(reason="requires FakeS3 server to be setup and running")
     def test_upload_csv_to_s3_fakes3_integration_succeeds(self,
