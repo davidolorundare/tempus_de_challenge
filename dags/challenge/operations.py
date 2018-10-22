@@ -374,7 +374,7 @@ class FileStorage:
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
-            predefined list mapping of pipline names to their respective
+            predefined list mapping of pipeline names to their respective
             directories.
         """
 
@@ -413,7 +413,7 @@ class FileStorage:
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
-                predefined list mapping of pipline names to their respective
+                predefined list mapping of pipeline names to their respective
                 directories.
         """
 
@@ -452,7 +452,7 @@ class FileStorage:
 
         # Raises:
             ValueError: if the given pipeline name does not exist in a
-            predefined list mapping of pipline names to their respective
+            predefined list mapping of pipeline names to their respective
             directories.
         """
 
@@ -1069,13 +1069,6 @@ class NewsInfoDTO:
             return FileStorage.get_headlines_directory(self.pipeline)
 
         @property
-        def bucket_name(self) -> str:
-            if self.pipline == 'tempus_challenge_dag':
-                return self.valid_buckets[0]
-            if self.pipline == 'tempus_bonus_challenge_dag':
-                return self.valid_buckets[1]
-
-        @property
         def news_directory(self) -> str:
             """Returns the path to this pipeline's news directory."""
             return FileStorage.get_news_directory(self.pipeline)
@@ -1097,9 +1090,9 @@ class NewsInfoDTO:
             """
 
             if self.pipeline == 'tempus_challenge_dag':
-                return 'tempus-challenge-csv-headlines'
+                return self.valid_buckets[0]
             elif self.pipeline == 'tempus_bonus_challenge_dag':
-                return 'tempus-bonus-challenge-csv-headlines'
+                return self.valid_buckets[1]
             else:
                 raise ValueError("No S3 Bucket exists for this Pipeline")
 
@@ -1917,7 +1910,7 @@ class UploadOperations:
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
         if not bucket_name:
-            bucket_name = pipeline_info.bucket_name
+            bucket_name = pipeline_info.s3_bucket_name
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
