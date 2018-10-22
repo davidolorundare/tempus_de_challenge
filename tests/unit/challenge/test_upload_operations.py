@@ -359,7 +359,7 @@ class TestUploadOperations:
         # Arrange
 
         # get the current pipeline info
-        name = airflow_context['dag'].dag_id
+        pipeline_name = airflow_context['dag'].dag_id
 
         # status of the directory check operation and value of the data
         stat = None
@@ -368,7 +368,7 @@ class TestUploadOperations:
 
         # path to fakes news and csv directories the function
         # under test uses
-        csv_dir = os.path.join('tempdata', name, 'csv')
+        csv_dir = os.path.join('tempdata', pipeline_name, 'csv')
 
         # create dummy csv files
         file_path_one = os.path.join(csv_dir, 'stuff1.csv')
