@@ -24,7 +24,7 @@ services:
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "9090:9090"
-        command: sh -c "airflow scheduler & airflow webserver"
+        command: bash -c "airflow scheduler & airflow webserver"
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
             interval: 30s
