@@ -1727,7 +1727,7 @@ class TransformOperations:
             return op_status, status_msg
 
         # function continues in the presence of news articles to process
-        log.info("News Articles Present: {}".format(has_news_articles))
+        log.info("News Articles is Present: {}".format(has_news_articles))
         transformed_df = transform_func(extracted_data)
 
         # transform to csv and save in the 'csv' datastore
