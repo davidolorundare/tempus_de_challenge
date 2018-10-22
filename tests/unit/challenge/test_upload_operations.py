@@ -433,7 +433,6 @@ class TestUploadOperations:
         assert stat is True
         assert not val
 
-    @pytest.mark.skip
     def test_upload_directory_check_no_csvs_fails(self, airflow_context):
         """returns appropiate status message on detecting no csv files
         in the csv directory.
