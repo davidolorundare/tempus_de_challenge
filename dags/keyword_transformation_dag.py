@@ -81,9 +81,9 @@ start_task = DummyOperator(task_id='start', dag=dag)
 
 # use an alias since the length of the real function call is more than
 # PEP8's 79 line-character limit
-storage_func_alias = c.FileStorage.create_storage
-headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
-flatten_csv_func_alias = c.TransformOperations.transform_headlines_to_csv
+# storage_func_alias = c.FileStorage.create_storage
+# headlines_func_alias = c.NetworkOperations.get_news_keyword_headlines
+# flatten_csv_func_alias = c.TransformOperations.transform_headlines_to_csv
 upload_func_alias = c.UploadOperations.upload_csv_to_s3
 
 # # create a folder for storing retrieved data on the local filesystem
@@ -165,8 +165,8 @@ upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
                                  provide_context=True,
                                  python_callable=upload_func_alias,
                                  retries=3,
-                                 dag=dag,
-                                 depends_on_past=True)
+                                 dag=dag)
+# depends_on_past=True)
 
 # # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
