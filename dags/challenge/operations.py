@@ -660,7 +660,7 @@ class NetworkOperations:
 
         # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
-        pipeline_name = "tempus_bonus_challenge_dag"
+        pipeline_name = context['dag'].dag_id
         pipeline_info = NewsInfoDTO(pipeline_name)
 
         if not headlines_dir:

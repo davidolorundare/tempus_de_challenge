@@ -4,8 +4,11 @@ Defines unit tests for the underlining functions the
 task to call remote News APIs methods performs in the DAGs.
 """
 
+import datetime
 import pytest
 import requests
+
+from airflow.models import DAG
 
 from unittest.mock import MagicMock
 from unittest.mock import patch
@@ -17,6 +20,24 @@ from dags import challenge as c
 @pytest.mark.networktests
 class TestNetworkOperations:
     """tests news retrieval functions doing remote calls to the News APIs."""
+
+    @pytest.fixture(scope='class')
+    def airflow_context(self) -> dict:
+        """returns an airflow context object for tempus_challenge_dag.
+
+        Mimics parts of the airflow context returned during execution
+        of the tempus_challenge_dag.
+
+        https://airflow.apache.org/code.html#default-variables
+        """
+
+        dag = MagicMock(spec=DAG)
+        dag.dag_id = "tempus_bonus_challenge_dag"
+
+        return {
+            'ds': datetime.datetime.now().isoformat().split('T')[0],
+            'dag': dag
+        }
 
     @patch('requests.Response', autospec=True)
     def test_get_news_http_call_success(self, response_obj):
