@@ -24,7 +24,9 @@ services:
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "9090:9090"
-        command: webserver
+        command: scheduler
+        command: airflow pause tempus_challenge_dag
+        command: airflow pause tempus_bonus_challenge_dag
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
             interval: 30s
