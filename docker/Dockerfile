@@ -83,6 +83,10 @@ RUN make -C /tmp/ init
 COPY ./docker/script/entrypoint.sh /entrypoint.sh
 COPY ./config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
 
+# Add the AWS directories
+ADD ./.aws/config ${AIRFLOW_HOME}/.aws/config
+ADD ./.aws/credentials ${AIRFLOW_HOME}/.aws/credentials
+
 RUN chown -R airflow: ${AIRFLOW_HOME}
 
 EXPOSE 9090 8080 5555 8793
