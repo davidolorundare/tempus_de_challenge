@@ -654,8 +654,7 @@ class NetworkOperations:
         # use the extracted query-keyword to construct the filename of the
         # final json file
         if not filename:
-            time = datetime.datetime.now().isoformat().split('T')[0]
-            filename = time + "_" + str(query) + "_headlines"
+            filename = str(query) + "_headlines"
 
         # retrieve the path to the headlines directory of this
         # 'tempus_bonus_challenge' pipeline
