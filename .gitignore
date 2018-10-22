@@ -11,6 +11,8 @@ tempus_env/
 # python egg_info dir
 .eggs/
 
+# aws directory
+.aws/
+
 # environmental variables used locally
 .env
-.aws/
