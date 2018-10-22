@@ -1918,12 +1918,6 @@ class UploadOperations:
         if not aws_resource:
             aws_resource = boto3.resource('s3')
 
-        log.info("Buckets available")
-        bucks = [bucket.name for bucket in aws_resource.buckets.all()]
-        log.info(bucks)
-
-        return True
-
         buckets = [bucket.name for bucket in aws_resource.buckets.all()]
         if bucket_name not in buckets:
             status = False
