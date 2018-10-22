@@ -77,7 +77,7 @@ Discusses the breakdown of the project goals into the two pipelines.
 
 The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of seven tasks (five of which are the core). Its structure is shown below:
 
-![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-1_image.jpeg "Image of Pipeline-1 structure")
+![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_dag_pipeline-1-success_image.jpeg "Image of Pipeline-1 structure")
 
 The pipeline tasks are as follows:
 - The first task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to visually indicate the beginning of the pipeline. 
