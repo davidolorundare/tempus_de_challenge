@@ -1821,8 +1821,8 @@ class UploadOperations:
             status = True
             message = "Directory has no csv-headline files"
             return status, message, csv_files
-        # csv files exist
         else:
+            # csv files exist
             status = True
             message = "CSV files present"
             return status, message, csv_files
