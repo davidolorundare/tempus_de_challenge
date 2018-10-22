@@ -25,7 +25,7 @@
 	* Create two AWS S3 buckets with your account. Name them `tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`. These buckets will hold the final csv transformations and the project-code *expects* these two buckets to already exist, as it **does not** programmatically create them before
 	uploading and will throw errors if they are detected not to exist in S3.
 
-### Optional Prerequisites - for running Integration test with a Fake Amazon S3 server
+### <a name="something">Optional Prerequisites </a> - for running Integration test with a Fake Amazon S3 server
 1. [RubyGems](https://rubygems.org/) [installation](https://rubygems.org/pages/download)
 2. Register for a free [FakeS3 server license](https://supso.org/projects/fake-s3)
 3. [Install FakeS3](https://github.com/jubos/fake-s3#installation)
@@ -166,7 +166,7 @@ The Amazon S3 integrations mock tests were done with moto library standalone as 
 
 ---
 
-- With FakeS3 installed already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
+- With [FakeS3 installed](#something) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
 - Run `make test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
