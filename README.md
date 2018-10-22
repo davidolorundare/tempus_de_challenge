@@ -41,10 +41,18 @@
 
 4. The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file and `.aws` directory respectively, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step. During Docker build-time, these files are copied into the container and made available to the application.
 	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
-	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/configure_api_keys_image.jpeg "Configuring API Keys")
-	* An example of the `config` and `credentials` files are shown below.
-	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0). This needs to be done before Airflow is downloaded in the next step.
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_newsapi_key_image.jpeg "Configuring API Keys")
+	* An example of the `.aws` directory, `config` and `credentials` files are shown below.
+	---
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_project_directory_image.jpeg "Creating the AWS directory")
+	---
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_aws_directory_image.jpeg ".aws directory contents")
+	---
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_aws_config_image.jpeg "AWS config file creation")
+	---
+	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_aws_credentials_image.jpeg "AWS credentials file creation")
 
+	---
 
 ---
 
@@ -213,7 +221,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	* When installing `1.10.0` it throws a RuntimeError:
 	>RuntimeError: By default one of Airflow's dependencies installs a GPL dependency (unidecode). To avoid this dependency set SLUGIFY_USES_TEXT_UNIDECODE=yes in your environment when you install or upgrade Airflow. To force installing the GPL version set AIRFLOW_GPL_UNIDECODE.
 	* More details are discussed [here](https://medium.com/datareply/apache-airflow-1-10-0-released-highlights-6bbe7a37a8e1), [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110) [here](https://github.com/pypa/pipenv/issues/2791), and [here](https://stackoverflow.com/questions/52203441/error-while-install-airflow-by-default-one-of-airflows-dependencies-installs-a) 
-	* The solution to this error involves setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` as one of the environment variables in the Docker config file, so that it is available to Airflow during installation.
+	* The solution to this error involved setting either `AIRFLOW_GPL_UNIDECODE=yes` OR `SLUGIFY_USES_TEXT_UNIDECODE=yes` as one of the environment variables in the Docker config file - creating the variable at build-time - so that it would be available to Airflow during its installation.
 	* Running version `1.10.0` gives empty logs (when you click on a task node log in its Task Instance Context Menu) in the UI. The solution to this (found [here](https://github.com/apache/incubator-airflow/blob/master/UPDATING.md#airflow-110)) is to change this line in the airflow.cfg file:
 	`task_log_reader = file.task` to `task_log_reader = task`
 - The Airflow Community contributed [`airflow.contrib.sensor.file_sensor`](https://airflow.apache.org/_modules/airflow/contrib/sensors/file_sensor.html) and [`airflow.contrib.hooks.fs_hook`](https://airflow.apache.org/_modules/airflow/contrib/hooks/fs_hook.html#FSHook) classes were found to be *very* buggy, especially when trying to configure and test them in a DAG task pipeline.
