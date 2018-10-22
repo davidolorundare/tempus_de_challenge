@@ -78,7 +78,10 @@ class TestNetworkOperations:
 
     @patch('requests.PreparedRequest', autospec=True)
     @patch('requests.Response', autospec=True)
-    def test_get_news_keyword_headlines_succeeds(self, response, request):
+    def test_get_news_keyword_headlines_succeeds(self,
+                                                 response,
+                                                 request,
+                                                 airflow_context):
         """call to the function returns successfully"""
 
         # Arrange
@@ -122,7 +125,8 @@ class TestNetworkOperations:
         # Act
             result = keyword_headline_func(response,
                                            headlines_dir=path_headline,
-                                           filename=fname)
+                                           filename=fname,
+                                           **airflow_context)
 
             # return to the real filesystem and clear pyfakefs resources
             patcher.tearDown()
