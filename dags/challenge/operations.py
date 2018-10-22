@@ -1856,7 +1856,7 @@ class UploadOperations:
                          aws_service_client=None,
                          aws_resource=None,
                          **context):
-        """Uploads a files, in a given directory, to an Amazon S3 bucket
+        """Uploads files, in a given directory, to an Amazon S3 bucket
         location.
 
         It is a valid state for the csv directory to be empty -
