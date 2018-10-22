@@ -1912,13 +1912,11 @@ class UploadOperations:
         #     status = False
         #     raise ValueError("Bucket name cannot be empty")
 
-        log.info(os.listdir("."))
-
         # setup s3 credentials
-        access_key = os.environ['AWS_ACCESS_KEY_ID']
-        secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
-        region = os.environ['AWS_DEFAULT_REGION']
-        user_name = os.environ['AWS_PROFILE']
+        # access_key = os.environ['AWS_ACCESS_KEY_ID']
+        # secret_key = os.environ['AWS_SECRET_ACCESS_KEY']
+        # region = os.environ['AWS_DEFAULT_REGION']
+        # user_name = os.environ['AWS_PROFILE']
 
         # session = boto3.session.Session(aws_access_key_id=access_key,
         #                                 aws_secret_access_key=secret_key,
@@ -1927,17 +1925,9 @@ class UploadOperations:
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
-            aws_service_client = boto3.client('s3',
-                                              aws_access_key_id=access_key,
-                                              aws_secret_access_key=secret_key,
-                                              profile_name=user_name,
-                                              region_name=region)
+            aws_service_client = boto3.client('s3')
         if not aws_resource:
-            aws_resource = boto3.resource('s3',
-                                          aws_access_key_id=access_key,
-                                          aws_secret_access_key=secret_key,
-                                          profile_name=user_name,
-                                          region_name=region)
+            aws_resource = boto3.resource('s3')
 
         log.info("Successful creation of session")
         return True
