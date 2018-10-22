@@ -1192,7 +1192,7 @@ class TransformOperations:
         headline_dir = pipeline_info.headlines_directory
 
         # execution date of the current pipeline
-        exec_date = str(context['execution_date'])
+        exec_date = str(context['ds'])
 
         # transformation operation status
         transform_status = None
