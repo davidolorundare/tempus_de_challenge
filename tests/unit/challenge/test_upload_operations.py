@@ -350,8 +350,13 @@ class TestUploadOperations:
         assert bucket_contents_before_upload == 0
         assert bucket_contents_after_upload == 3
 
-    def test_upload_directory_check_empty_dir(self, home_directory_res):
+    def test_upload_directory_check_empty_dir_fails(self, home_directory_res):
         """returns appropiate status message on detecting empty directory."""
+
+    def test_upload_directory_check_no_csvs_fails(self, home_directory_res):
+        """returns appropiate status message on detecting no csv files
+        in the csv directory.
+        """
 
     @mock_s3
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
