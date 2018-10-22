@@ -11,7 +11,7 @@
 
 
 ---
-### Prerequisites 
+### <a name="prereqs">Prerequisites</a> 
 
 1. [Python](http://www.python.org) and [Virtualenv](https://virtualenv.pypa.io/en/stable/)
 	* author's Python and virtualenv versions are `3.6` and `16.0.0` respectively.
@@ -25,7 +25,7 @@
 	* Create two AWS S3 buckets with your account. Name them `tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`. These buckets will hold the final csv transformations and the project-code *expects* these two buckets to already exist, as it **does not** programmatically create them before
 	uploading and will throw errors if they are detected not to exist in S3.
 
-### <a name="something">Optional Prerequisites </a> - for running Integration test with a Fake Amazon S3 server
+### <a name="optional-prereqs">Optional Prerequisites</a> - for running Integration test with a Fake Amazon S3 server
 1. [RubyGems](https://rubygems.org/) [installation](https://rubygems.org/pages/download)
 2. Register for a free [FakeS3 server license](https://supso.org/projects/fake-s3)
 3. [Install FakeS3](https://github.com/jubos/fake-s3#installation)
@@ -93,7 +93,7 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 
 - Transformations involves a separate predefined python function that reads the top-headlines JSON data from the 'headlines' folder, and using Pandas converts it into an intermidiary DataFrame object which is flattened into CSV. The flattened CSV files are stored in the 'csv' folder. If **no news articles were found** in the data *then no CSV file is created*, the application logs this csv-file absence to the Airflow Logs.
 
-- The sixth task, the Upload task, involves a defined custom Airflow PythonOperator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. The Operator is built ontop of the Amazon Python Boto library, using [preexisting credentials setup](#setup), and moves the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
+- The sixth task, the Upload task, involves a defined custom Airflow PythonOperator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. The Operator is built ontop of the Amazon Python Boto library, using [preexisting credentials setup](#prereqs), and moves the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
 Two Amazon S3 buckets were setup by the author:
 	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
 	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
@@ -166,7 +166,7 @@ The Amazon S3 integrations mock tests were done with moto library standalone as 
 
 ---
 
-- With [FakeS3 installed](#something) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
+- With [FakeS3 installed](#optional-prereqs) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`. This starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
 - Run `make test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
