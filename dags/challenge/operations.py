@@ -1809,8 +1809,8 @@ class UploadOperations:
         # list of all csv files in the directory
         csv_files = []
 
-        if not csv_dir:
-            csv_dir = pipeline_info.csv_directory
+        # if not csv_dir:
+        #     csv_dir = pipeline_info.csv_directory
 
         # check existence of csv files in the directory
         if not os.listdir(csv_dir):

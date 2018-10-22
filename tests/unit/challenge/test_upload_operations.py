@@ -372,17 +372,19 @@ class TestUploadOperations:
 
             # path to fakes news and csv directories the function
             # under test uses
-            csv_dir = os.path.join('tempdata',
+            csv_dir = os.path.join(os.environ['HOME'],
+                                   'tempdata',
                                    name,
                                    'csv')
 
-            # create dummy non-csv files
+            # create a fake filesystem directory and files to test the method
+            patcher.fs.create_dir(csv_dir)
+
+            # create dummy csv files
             file_path_one = os.path.join(csv_dir, 'stuff1.csv')
             file_path_two = os.path.join(csv_dir, 'stuff2.csv')
             file_path_three = os.path.join(csv_dir, 'stuff3.csv')
 
-            # create a fake filesystem directory and files to test the method
-            patcher.fs.create_dir(csv_dir)
             patcher.fs.create_file(file_path_one, contents='1,dummy,txt')
             patcher.fs.create_file(file_path_two, contents='2,dummy,rtf')
             patcher.fs.create_file(file_path_three, contents='3,dummy,doc')
@@ -398,7 +400,7 @@ class TestUploadOperations:
         # Assert
         assert "CSV files present" in msg
         assert stat is True
-        assert val is True
+        assert val == ['stuff1.csv', 'stuff2.csv', 'stuff3.csv']
 
     @pytest.mark.skip
     def test_upload_directory_check_empty_dir_fails(self, home_directory_res):
