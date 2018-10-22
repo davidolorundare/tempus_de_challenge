@@ -1882,14 +1882,14 @@ class UploadOperations:
         log.info("Running upload_csv_to_s3 method")
 
         # get information about the current pipeline
-        pipeline_name = context['dag'].dag_id
-        pipeline_info = NewsInfoDTO(pipeline_name)
-        pipeline_csv_dir = pipeline_info.csv_directory
+        # pipeline_name = context['dag'].dag_id
+        # pipeline_info = NewsInfoDTO(pipeline_name)
+        # pipeline_csv_dir = pipeline_info.csv_directory
 
-        # inspect the pipeline's csv directory contents
-        return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
-        status = None
-        files = None
+        # # inspect the pipeline's csv directory contents
+        # return_status, msg, data = cls.upload_directory_check(pipeline_csv_dir)
+        # status = None
+        # files = None
 
         # if return_status and msg == "Directory is empty":
         #     status = return_status
@@ -1911,6 +1911,14 @@ class UploadOperations:
         # of a VALID S3 bucket.
         # if not bucket_name:
         #     bucket_name = pipeline_info.s3_bucket_name
+
+        log.info(os.listdir("."))
+
+        log.info("credentials path")
+        log.info(os.environ["AWS_SHARED_CREDENTIALS_FILE"])
+        log.info(os.environ["AWS_CONFIG_FILE"])
+        log.info("home path")
+        log.info(os.environ["HOME"])
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
