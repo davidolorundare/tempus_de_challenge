@@ -547,9 +547,6 @@ class NetworkOperations:
             FileStorage.write_json_to_file(data=json_data,
                                            path_to_dir=news_dir,
                                            filename=fname)
-            # airflow logging
-            log.info("Files in Directory {} :-".format(news_dir))
-            log.info(os.listdir(news_dir))
 
             return [True, status_code]
         elif status_code >= 400:
