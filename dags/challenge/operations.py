@@ -1676,9 +1676,6 @@ class TransformOperations:
 
         log.info("Running transform_key_headlines_to_csv method")
 
-        log.info("Printing csv Filename")
-        log.info(csv_filename)
-
         # ensure status of operation is communicated to caller function
         op_status = None
         status_msg = None
@@ -1734,13 +1731,7 @@ class TransformOperations:
         csv_save_path = os.path.join(csv_dir, csv_filename)
         transformed_df.to_csv(csv_save_path)
 
-        log.info("Splitting filename")
-        log.info(csv_filename.split("_"))
-
         query_key = csv_filename.split("_")[1]
-
-        log.info("Fiinal filepath")
-        log.info(csv_save_path)
 
         if os.path.isfile(csv_save_path):
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
