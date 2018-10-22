@@ -1743,6 +1743,9 @@ class TransformOperations:
 
         query_key = csv_filename.split("_")[1]
 
+        log.info("Fiinal filepath")
+        log.info(csv_save_path)
+
         if os.path.isfile(csv_save_path):
             log.info("{} headlines csv saved in {}".format(query_key, csv_dir))
             op_status = True
