@@ -37,7 +37,7 @@
 
 2. Open a command line terminal and navigate to the root of the repo directory.
 
-3. Setup a Python virtual environment with the command `virtualenv ENV` where ENV is the root directory path of the project.
+3. Setup a Python virtual environment with the command `virtualenv ENV` where ENV is the directory path to where the virtual environment will be created.
 
 4. The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file and `.aws` directory respectively, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step. During Docker build-time, these files are copied into the container and made available to the application.
 	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0). This command needs to be run **before** `make init` in the next step, so that this environmental varible is available to Airflow prior to its installation.
@@ -61,7 +61,7 @@
 6. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
 
 7. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures Airflow to begin running. 
-	- After a few seconds, Airflow's webserver starts up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
+	- This takes a few seconds to about three minutes; for the container images to be downloaded and setup. Thereafter, Airflow's scheduler and webserver start up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
 	- By default, Airflow loads DAGs *paused*. The pipelines are preconfigured to be unpaused, and thereafter run at the scheduled times of 12AM and 1AM each day (i.e. 1hour apart). They can be run immediately by clicking on the "Trigger Dag" icon, shown below in the Airflow UI. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 	- In the Console UI (shown below) click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each. The steps are numbered in order.
