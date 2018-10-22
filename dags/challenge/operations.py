@@ -36,12 +36,12 @@ merged_df = pd.DataFrame()
 
 
 class MissingApiKeyError(ValueError):
-    """raised when no api key is found or set."""
+    """Raised when no api key is found or set."""
     pass
 
 
 class NoFilesFoundError(FileNotFoundError):
-    """raised no files of a particular type exist in a directory"""
+    """Raised no files of a particular type exist in a directory"""
     pass
 
 
