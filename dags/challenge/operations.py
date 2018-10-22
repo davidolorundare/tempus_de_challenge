@@ -1917,8 +1917,7 @@ class UploadOperations:
         # There are csv files to be uploaded. Check pre-existence
         # of a VALID S3 bucket.
         if not bucket_name:
-            status = False
-            raise ValueError("Bucket name cannot be empty")
+            bucket_name = pipeline_info.bucket_name
 
         # instantiate an S3 objects which will perform the uploads
         if not aws_service_client:
