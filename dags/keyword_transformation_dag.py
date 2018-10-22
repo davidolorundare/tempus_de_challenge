@@ -24,7 +24,7 @@ import challenge as c
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2018, 10, 19),
+    'start_date': datetime(2018, 10, 22),
     'email': ['david.o@ieee.org'],
     'email_on_failure': False,
     'email_on_retry': False,
