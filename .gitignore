@@ -1,5 +1,5 @@
 # Python Virtual environment for working on the Tempus project
-tempus_env/
+tempus_user_env/
 
 # Pytest Cache folder
 .pytest_cache/
