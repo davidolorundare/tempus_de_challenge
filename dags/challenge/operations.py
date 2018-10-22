@@ -1790,12 +1790,12 @@ class UploadOperations:
         """performs file checks in a given csv directory.
 
         # Arguments:
-            :param csv_directory: path to the directory
-                containing all the csv headline files.
-            :type csv_directory: str
-            :type csv_directory: str
-            :param bucket_name: name of an existing s3 bucket.
-            :type bucket_name: str
+            :param csv_dir: path to the directory containing
+                all the csv headline files.
+            :type csv_dir: str
+
+        # Raises:
+            ValueError: if the csv directory path argument is left blank.
         """
 
         log.info("Running upload_directory_check method")
