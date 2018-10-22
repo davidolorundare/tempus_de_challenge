@@ -365,6 +365,13 @@ class TestUploadOperations:
         in the csv directory.
         """
 
+    @pytest.mark.skip
+    def test_upload_directory_check_unknown_error_fails(self,
+                                                        home_directory_res):
+        """returns appropiate status message on encountering errors
+        reading the csv directory.
+        """
+
     @mock_s3
     def test_upload_csv_to_s3_fails_with_empty_csv_dir(self,
                                                        airflow_context,
