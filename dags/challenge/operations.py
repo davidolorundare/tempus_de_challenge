@@ -1806,6 +1806,9 @@ class UploadOperations:
         # list of all csv files in the directory
         csv_files = []
 
+        if not csv_dir:
+            raise ValueError("CSV directory path cannot be left blank")
+
         # check existence of csv files in the directory
         if not os.listdir(csv_dir):
             status = True
@@ -1826,11 +1829,6 @@ class UploadOperations:
             status = True
             message = "CSV files present"
             return status, message, csv_files
-
-        # some other error occured
-        status = False
-        message = "Unknown error encountered"
-        return status, message, csv_files
 
     @classmethod
     def upload_csv_to_s3(cls,
