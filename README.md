@@ -146,7 +146,7 @@ For each the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus
 ---
 ### Running Tests (Unit and Integration)
 
-* This project's unit and integration tests can be found in the `tests` folder in the root directory; with the unit tests in the `unit` subdirectory and the integration tests in the `integration` subdirectory. 
+* This project's unit and integration tests can be found in the `tests` folder in the root directory.
 	- Running `make test` from the command line runs all the tests for the associated Python functions used in the project.
 * The project uses [Flake8](http://flake8.pycqa.org/en/latest/) as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and [Codecov](https://Codecov.io/); these can be further integrated in a [Continuous Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
 
