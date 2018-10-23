@@ -203,7 +203,7 @@ file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_i
 - For the bonus challenge, on experimenting with the News API, it was discovered that
 using all four keywords in the same api-request returned 0 hits. Hence, I decided four separate api-request calls would made; for each individual keyword.
 
-- To reduce the number of calls to the News API in the task of DAG pipeline 1 `tempus_challenge_dag`, to retrieve the source headlines, the list of sources from the previous upstream task can be batched up and fed as a comma-separated string of identifiers to the `sources` parameter of the `headlines` endpoint. 
+- To reduce the number of calls to the News API in the task of DAG pipeline 1 `tempus_challenge_dag`, to retrieve the source headlines, the list of sources from the previous upstream task can be batched up and fed as a comma-separated string of identifiers to the `sources` parameter of the `top-headlines` endpoint. 
 	* However, the returned Response object will be very large and would can consist of a mix of headlines from all these news sources, which can be very confusing to parse programmatically (without some ample patience for writing more unit tests to extensively validate the behaviors. 
 	* The alternative then, which was what I chose, was to make the calls to the News API `headlines` endpoint be separate for each news source. While this amounts to more calls to endpoint, it is easier and more understandable to parse the returned response object, programmatically.
 
