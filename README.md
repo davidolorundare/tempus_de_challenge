@@ -58,7 +58,7 @@
 5. Run the command `make init` ; this downloads all of the project's dependencies.
 	- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
 
-6. Run the command `make test` and `make integration-test` ; this runs all the unit and integration tests, respectively, for the project and ensures they are passing.
+6. Run the commands `make test` and `make integration-test` ; this runs all the unit and integration tests, respectively, for the project and ensures they are passing.
 
 7. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures the container with Airflow to begin running. 
 	- This takes a few seconds to about three minutes; for the container images to be downloaded and setup. Thereafter, Airflow's scheduler and webserver start up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
