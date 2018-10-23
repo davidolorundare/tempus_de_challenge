@@ -161,7 +161,7 @@ The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit test
 
 **Integration tests** exercise the overall combination of components interacting with each and other and external services. This implies that for tasks in the pipelines it would particularly test their interaction with the two main external services used: the News API and Amazon S3. Integration tests were written only for the UploadOperation interaction with an external Amazon S3 server; using Moto. [Moto](http://docs.getmoto.org/en/latest/) an (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
 
-The Amazon S3 integrations mock tests were done with the moto library standalone, as well as with live running [FakeS3 server](https://github.com/jubos/fake-s3). The **test with the FakeS3 server** is *by default skipped* in the test suite. Details on how to run the integration test with the FakeS3 server are describe below:
+The Amazon S3 integrations mock tests were done with the moto library standalone, as well as with a live running [FakeS3 server](https://github.com/jubos/fake-s3). The **test with the FakeS3 server** is *by default skipped* in the test suite. Details on how to run the integration test with the FakeS3 server are describe below:
 
 ---
 
