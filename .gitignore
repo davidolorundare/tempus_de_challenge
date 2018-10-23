@@ -1,5 +1,5 @@
 # Python Virtual environment for working on the Tempus project
-tempus_user_env/
+tempus_env/
 
 # Pytest Cache folders
 .pytest_cache/
@@ -11,9 +11,6 @@ dags/challenge/network/__pycache__/
 dags/challenge/storage/__pycache__/
 dags/challenge/transform/__pycache__/
 dags/challenge/upload/__pycache__/
-dags/challenge/.DS_Store
-dags/.DS_Store
-tempus_de_challenge/.DS_Store
 .cache/
 
 # pytest coverage info

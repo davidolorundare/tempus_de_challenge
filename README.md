@@ -75,7 +75,7 @@ Discusses the breakdown of the project goals into the two pipelines.
 
 #### DAG Pipeline 1
 
-The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of seven tasks (five of which are the core). Its structure is shown below:
+The first pipeline, named 'tempus_challenge_dag' is scheduled to run once a day at 12AM, and consists of eight tasks (six of which are the core). Its structure is shown below:
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/tempus_dag_pipeline-1-success_image.jpeg "Image of Pipeline-1 structure")
 
@@ -89,11 +89,11 @@ The 'news', 'headlines', and 'csv' folders are created under the parent 'tempdat
 
 - The fourth task involves a defined [Airflow FileSensor](https://airflow.apache.org/code.html#airflow.contrib.sensors.file_sensor.FileSensor) detects whenever the JSON news files have landed in the appropriate directory, this kicks off the subsequent ETL stages of the pipeline.
 
-- The fifth task -Extract and Transform- involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator), which calls a predefined python function that reads the news JSON data from its folder and using JSON and Pandas libraries extracts the top-headlines from it, storing the result in the 'headlines' folder.
+- The fifth task - Extraction - involves a defined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator) which reads from the news sources directory and for each source in the JSON file it makes a remote api call to get the latest headlines; then using JSON and Pandas libraries extracts the top-headlines from it, storing the result in the 'headlines' folder.
 
-- Transformations involves a separate predefined python function that reads the top-headlines JSON data from the 'headlines' folder, and using Pandas converts it into an intermidiary DataFrame object which is flattened into CSV. The flattened CSV files are stored in the 'csv' folder. If **no news articles were found** in the data *then no CSV file is created*, the application logs this csv-file absence to the Airflow Logs.
+- The sixth task, extraction and transformation of the headlines take place and it involves a separate predefined [Airflow PythonOperator](https://airflow.apache.org/code.html#airflow.operators.python_operator.PythonOperator) using a python function that reads the top-headlines JSON data from the 'headlines' folder, and using Pandas converts it into an intermidiary DataFrame object which is flattened into CSV. The flattened CSV files are stored in the 'csv' folder. If **no news articles were found** in the data *then no CSV file is created*, the application logs this csv-file absence to the Airflow Logs.
 
-- The sixth task, the Upload task, involves a defined custom Airflow PythonOperator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. The Operator is built ontop of the Amazon Python Boto library, using [preexisting credentials setup](#prereqs), and moves the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
+- The seventh task, the Upload task, involves a defined custom Airflow PythonOperator, as Airflow does not have an existing Operator for transferring data directly from the local filesystem to Amazon S3. The Operator is built ontop of the Amazon Python Boto library, using [preexisting credentials setup](#prereqs), and moves the transformed data from the 'csv' folder to an S3 bucket already setup by the author.
 Two Amazon S3 buckets were setup by the author:
 	* [`tempus-challenge-csv-headlines`](http://tempus-challenge-csv-headlines.s3.amazonaws.com/) 
 	* [`tempus-bonus-challenge-headlines`](http://tempus-bonus-challenge-csv-headlines.s3.amazonaws.com/) 
@@ -115,13 +115,15 @@ By default a `dummy.txt` file is all that exists in the buckets. To view or down
 
 
 #### DAG Pipeline 2
-The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first; also consisting of eight tasks. It is scheduled to run once a day at 1AM. Its structure is shown below:
+The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first; but consisting of seven tasks. It is scheduled to run once a day at 1AM. Its structure is shown below:
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/tempus_dag_pipeline-2-success_image.jpeg "Image of Pipeline-2 structure")
 
-The pipeline tasks are identical to that of the first. The only difference is in the third task of calling the News API:
+The pipeline tasks are identical to that of the first. The only main difference is in the third task of calling the News API:
 
 - Four [Airflow SimpleHTTPOperators](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) are defined, which make separate parallel HTTP GET requests to the News API's 'top-headlines' endpoint directly with the assigned API Key and a query for specific keywords: 'Tempus Labs', 'Eric Lefokosky', 'Cancer', and Immunotherapy. This fetches data on each of these keywords. The Python callback function which handles the return Response object stores them as four JSON files in the 'headlines' folder, created in an earlier step, for the 'tempus_bonus_challenge_dag'.
+
+- In its fifth task, extraction and transformation sub-operations take place in this task, named `flatten_to_csv_kw_task`, this is similar to Pipeline 1's sixth task.
 
 #### Transformations Notes
 The end transformations are stored in the respective `csv` datastore folders of the respective pipelines.
