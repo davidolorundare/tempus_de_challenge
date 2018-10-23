@@ -210,8 +210,8 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 	* After doing some research on the topic of 'api key storage and security', I decide based on reading some discussions online - for example from [here](https://12factor.net/config), [here](https://github.com/geosolutions-it/evo-odas/issues/159), [here](https://github.com/geosolutions-it/evo-odas/issues/118) and [here](https://issues.apache.org/jira/browse/AIRFLOW-45) - to store the key in an environmental variable that is injected into the Docker container and then accessed in the Airflow instance and Python at runtime. 
 	* Airflow has an option of storing keys in a [Variable](https://airflow.apache.org/concepts.html#variables) but it based on the Airflow documentation it doesn't seem to be a very secure approach. Might want to look into better ways of api key encryption ?
 
-- No S3 bucket link was given in the requirements, thus I created my own S3 bucket.
-
+- No S3 bucket link was given in the project requirements, thus I created my own S3 bucket. The project implementation was designed such that anyone could use their own preexisting S3 buckets when running the code locally, as long as their bucket name corresponded to the two developed for in this project: `
+tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`.
 - Added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`, to ensure an up to date version of pip is always used.
 
 - The Boto library doesn't detect the AWS API keys when set in the environmental variables. Workaround was to create the `.aws` directory inside the container during Docker build-time and inject the `config` and `credentials` files with the keys.
