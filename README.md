@@ -63,10 +63,11 @@
 7. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures the container with Airflow to begin running. 
 	- This takes a few seconds to about three minutes; for the container images to be downloaded and setup. Thereafter, Airflow's scheduler and webserver start up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
 	- The two data pipelines "tempus_challenge_dag" and "tempus_bonus_challenge_dag" will have been loaded and are visible.
-	- By default, Airflow loads DAGs *paused*. The pipelines are preconfigured to be unpaused, and thereafter run at the scheduled times of 12AM and 1AM each day (i.e. 1hour apart). They can be run immediately by clicking on the "Trigger Dag" icon, shown below in the Airflow UI. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 	- In the Console UI (shown below) click on the toggle next to each pipeline name to activate them, and click on the the play button icon on the right to start each. The steps are numbered in order.
 
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/airflow_ui_console.jpeg "Airflow Console UI - Activate and Trigger Dags")
+	---
+	- By default, Airflow loads DAGs *paused*, clicking on toggle described previously will unpause them. For convenience the pipelines are preconfigured to be unpaused when Airflow starts, and thereafter to run at their prescheduled times of 12AM and 1AM each day (i.e. 1hour apart). They *can* be run immediately, however, by clicking on the "Trigger Dag" icon, described previously and shown above in the Airflow UI. Their respective logs can be viewed from their [Task Instance Context Menus](https://airflow.readthedocs.io/en/latest/ui.html#task-instance-context-menu)
 
 ---
 ### Getting Started: Pipeline Overview 
