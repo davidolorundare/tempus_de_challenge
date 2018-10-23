@@ -150,14 +150,14 @@ For each the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus
 	- Running `make test` from the command line runs all the tests for the associated Python functions used in the project.
 * The project uses [Flake8](http://flake8.pycqa.org/en/latest/) as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and [Codecov](https://Codecov.io/) reports test-coverage for the project; these can be further integrated in a [Continuous Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
 
-The **unit tests** consists of six test suites corresponding to the six core tasks in the two data pipelines. They are split into python files with the prefix `test_xxxxx`, where xxxxx is the name of the kind of functionality being tested.
+The **unit tests** consists of six test suites corresponding to the core tasks in the two data pipelines. They are split into python files with the prefix `test_xxxxx`, where xxxxx is the name of the kind of functionality being tested.
 The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit testing and test coverage checks, as well as the [Python Mocking library](https://docs.python.org/dev/library/unittest.mock.html) and [PyFakeFS](https://pypi.org/project/pyfakefs/) for simulating I/O dependencies such as functions interacting with the filesystem or making external network calls. The test core suites are:
 - *TestFileStorage* which runs tests on the task involving creation of the datastore folders and actions on them.
 - *TestNetworkOperations* which run tests on the task involving HTTP calls to the News API.
 - *TestExtractOperations* which run tests on the task involving extracting headlines from the news data.
 - *TestTransformOperations* which run tests on the task involving conversion of the news headlines JSON data into CSV.
 - *TestUploadOperations* which run tests on the task involving data-transfer of the flattened CSVs to a predefined Amazon S3 bucket.
-- *TestNewsInfoDTO* which run tests on the NewsInfoDTO, a Data Transfer Object Python class, used by many of the other python class and module functions for moving information about news data between processing functions.
+- *TestNewsInfoDTO* which run tests on NewsInfoDTO, a Data Transfer Object Python class, used by many of the other python class and module functions for moving information about news data between processing functions.
 
 **Integration tests** exercise the overall combination of components interacting with each and other and external services. This implies that for tasks in the pipelines it would particularly test their interaction with the two main external services used: the News API and Amazon S3. Integration tests were written only for the UploadOperation interaction with an external Amazon S3 server; using Moto. [Moto](http://docs.getmoto.org/en/latest/) an (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
 
