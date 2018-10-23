@@ -200,7 +200,7 @@ file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_i
 	* Although Airflow has an inter-task mechanism (called XCom) for passing data between tasks, from reading the Airflow documentation and research on the topic it was generally not recommended Xcoms be used for transferring large data between tasks (though the news json data in this project is small it could become large if the news data returned from the newsapi increases). Hence why, ultimately, the data-at-rest decision was narrowed down to only the filesystem or database options.
 	* In a production environment I would rather configure a real database, like PostgreSQL, to serve as a data warehouse for the News data retrieved, as well as setup tempoary data-staging areas for the intermediate data created during the ETL tasks.
 
-- For the bonus challenge, on experimenting with the News API it was discovered that
+- For the bonus challenge, on experimenting with the News API, it was discovered that
 using all four keywords in the same api-request returned 0 hits. Hence, I decided four separate api-request calls would made; for each individual keyword.
 
 - To reduce the number of calls to the News API in the task of DAG pipeline 1 `tempus_challenge_dag`, to retrieve the source headlines, the list of sources from the previous upstream task can be batched up and fed as a comma-separated string of identifiers to the `sources` parameter of the `headlines` endpoint. 
