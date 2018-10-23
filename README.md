@@ -111,7 +111,7 @@ By default a `dummy.txt` file is all that exists in the buckets. To view or down
 
 ---
 
-- The final task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to signify the end of the pipeline.
+- The eight and final task is an [Airflow DummyOperator](https://airflow.apache.org/code.html#airflow.operators.dummy_operator.DummyOperator) which does nothing and is used merely to signify the end of the pipeline.
 
 
 #### DAG Pipeline 2
