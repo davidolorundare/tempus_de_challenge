@@ -58,7 +58,7 @@
 5. Run the command `make init` ; this downloads all of the project's dependencies.
 	- `make init` installs the Amazon Python (Boto) SDK library. **Ensure your AWS account credentials are setup**, to use the SDK, after this step. See [here](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/quickstart.html) for more details.
 
-6. Run the command `make test` ; this runs all the unit and integration tests for the project and ensures they are passing.
+6. Run the command `make test` and `make integration-test` ; this runs all the unit and integration tests, respectively, for the project and ensures they are passing.
 
 7. Run the command `make run` ; this starts up Docker, reads in the Dockerfile, and configures the container with Airflow to begin running. 
 	- This takes a few seconds to about three minutes; for the container images to be downloaded and setup. Thereafter, Airflow's scheduler and webserver start up and the User interface and Admin Console becomes accessible. Open a web browser a navigate to http://localhost:9090 to access the Console.
@@ -148,7 +148,7 @@ For each of the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tem
 ### Running Tests (Unit and Integration)
 
 * This project's unit and integration tests can be found in the `tests` folder in the root directory.
-	- Running `make test` from the command line runs all the tests for the associated Python functions used in the project.
+	- Running `make test` and `make integration-test` from the command line run all the tests for the associated Python functions used in the project.
 * The project uses [Flake8](http://flake8.pycqa.org/en/latest/) as its Python Linter, ensuring code conformance to the [Python PEP-8 standards](http://pep8.org/). It is also setup with [Travis CI](http://travis-ci.com/) to remotely run all the tests and [Codecov](https://Codecov.io/) reports test-coverage for the project; these can be further integrated in a [Continuous Build/Integration](https://en.wikipedia.org/wiki/Continuous_integration)/Delivery pipeline later on if needed.
 
 The **unit tests** consists of six test suites corresponding to the core tasks in the two data pipelines. They are split into python files with the prefix `test_xxxxx`, where xxxxx is the name of the kind of functionality being tested.
