@@ -157,6 +157,7 @@ The tests make use of [Pytest](https://docs.pytest.org/en/latest/) for unit test
 - *TestExtractOperations* which run tests on the task involving extracting headlines from the news data.
 - *TestTransformOperations* which run tests on the task involving conversion of the news headlines JSON data into CSV.
 - *TestUploadOperations* which run tests on the task involving data-transfer of the flattened CSVs to a predefined Amazon S3 bucket.
+- *TestNewsInfoDTO* which run tests on the NewsInfoDTO, a Data Transfer Object Python class, used by many of the other python class and module functions for moving information about news data between processing functions.
 
 The **integration tests** exercise the overall combination of components interacting with each and other and external services. This implies the tasks in the pipelines, particularly their interaction with the two main external services used: the News API and Amazon S3. Tests were written using Moto. [Moto](http://docs.getmoto.org/en/latest/) a (embedded) Amazon S3 Mock Server, is used to mock/simulate the behavior of running the project's csv-file upload operations (the last main task in each pipeline) interacting with the external Amazon S3 storage service.
 
