@@ -24,7 +24,10 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.http_operator import SimpleHttpOperator
 from airflow.operators.python_operator import PythonOperator
 
-import dags as c
+from challenge.network.network_operations import NetworkOperations
+from challenge.transform.transform_operations import TransformOperations
+from challenge.upload.upload_operations import UploadOperations
+from challenge.storage.filestorage_operations import FileStorage
 
 
 default_args = {
@@ -83,10 +86,11 @@ start_task = DummyOperator(task_id='start', dag=dag)
 
 # use an alias since the length of the real function call is more than
 # PEP-8's 79 line-character limit.
-storage_func_alias = c.FileStorage.create_storage
-headlines_func_alias = c.NetworkOperations.get_news_headlines
-transform_func_alias = c.TransformOperations.transform_headlines_to_csv
-upload_func_alias = c.UploadOperations.upload_csv_to_s3
+storage_func_alias = FileStorage.create_storage
+news_func_alias = NetworkOperations.get_news,
+headlines_func_alias = NetworkOperations.get_news_headlines
+transform_func_alias = TransformOperations.transform_headlines_to_csv
+upload_func_alias = UploadOperations.upload_csv_to_s3
 
 # creates a folder for storing retrieved data on the local filesystem
 datastore_creation_task = PythonOperator(task_id='create_storage_task',
@@ -102,7 +106,7 @@ get_news_task = SimpleHttpOperator(endpoint='/v2/sources?',
                                    method='GET',
                                    data={'language': 'en',
                                          'apiKey': API_KEY},
-                                   response_check=c.NetworkOperations.get_news,
+                                   response_check=news_func_alias,
                                    http_conn_id='newsapi',
                                    task_id='get_news_sources_task',
                                    dag=dag,

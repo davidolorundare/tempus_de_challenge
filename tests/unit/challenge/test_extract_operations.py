@@ -14,7 +14,7 @@ import requests
 
 from unittest.mock import patch
 
-from dags import challenge as c
+import dags as c
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 

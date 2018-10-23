@@ -6,13 +6,16 @@ DAG pipelines.
 """
 
 import numpy as np
+
 import json
 import logging
 import os
 import requests
+
 import pandas as pd
 
-
+# ensures that function outputs and any errors encountered
+# are logged to the Airflow console
 log = logging.getLogger(__name__)
 
 # store the current directory of the airflow home folder

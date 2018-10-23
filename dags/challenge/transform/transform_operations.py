@@ -8,11 +8,13 @@ import datetime
 import gc
 import logging
 import os
+
 import pandas as pd
 
-import dags as c
+import challenge as c
 
-
+# ensures that function outputs and any errors encountered
+# are logged to the Airflow console
 log = logging.getLogger(__name__)
 
 # store the current directory of the airflow home folder

@@ -5,12 +5,14 @@ CSV files to an Amazon S3 bucket in the DAG pipelines.
 """
 
 import boto3
+
 import logging
 import os
 
-import dags as c
+import challenge as c
 
-
+# ensures that function outputs and any errors encountered
+# are logged to the Airflow console
 log = logging.getLogger(__name__)
 
 

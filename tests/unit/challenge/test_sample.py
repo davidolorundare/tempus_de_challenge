@@ -22,7 +22,7 @@ class TestSample:
         # Assert
         assert hello == 'Hello, World!'
 
-    def test_hello_world(self, airflow_context):
+    def test_hello_world_date(self, airflow_context):
         # Arrange
         now = datetime.datetime.now().isoformat().split('T')[0]
         expected = 'Date: ' + now
