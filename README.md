@@ -197,7 +197,7 @@ file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_i
 ### Footnotes
 
 - Where to store the data at rest: locally as files or using a database ? There are a number of tradeoffs using either, but given the scope of the project I decided to use a local filesystem. 
-	* Although Airflow has an inter-task mechanism (called XCom) for passing data between tasks, from reading the Airflow documentation and research on the topic it was generally not recommended Xcoms be used for transferring large data between tasks (though the json data in this project is rather smaller). Hence why the data-at-rest decision was narrowed down to only the filesystem or database options.
+	* Although Airflow has an inter-task mechanism (called XCom) for passing data between tasks, from reading the Airflow documentation and research on the topic it was generally not recommended Xcoms be used for transferring large data between tasks (though the news json data in this project is small it could become large if the news data returned from the newsapi increases). Hence why, ultimately, the data-at-rest decision was narrowed down to only the filesystem or database options.
 	* In a production environment I would rather configure a real database, like PostgreSQL, to serve as a data warehouse for the News data retrieved, as well as setup tempoary data-staging areas for the intermediate data created during the ETL tasks.
 
 - For the bonus challenge, on experimenting with the News API it was discovered that
