@@ -215,7 +215,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`.
 - I added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`, to ensure an up to date version of pip is always used when the code is run. Though, in hindsight, this *could potentially* cause build-breaking issues; if there are new changes in pip to the python packages used in the project that weren't supported.
 
-- It was observed that in some instances the Amazon Boto library doesn't detect the AWS API keys when set from within the Docker container environmental variables. The workaround was to create an `.aws` directory inside the container during Docker build-time and inject the `config` and `credentials` files with the keys. The dockerfile was modified for this purpose. Due to the obvious security concerns around this approach these two **files are never kept** in git. 
+- It was observed that in some instances the Amazon Boto library doesn't detect the AWS API keys when set from within the Docker container environmental variables. The workaround was to create an `.aws` directory inside the container during Docker build-time and inject the `config` and `credentials` files with the keys. The dockerfile was modified for this purpose. Due to the obvious security concerns around this approach **these two files are never kept** in git. 
 
 #### Versioning Issues
 
