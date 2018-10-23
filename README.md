@@ -121,7 +121,7 @@ The second pipeline, named 'tempus_bonus_challenge_dag' is similar to the first;
 
 The pipeline tasks are identical to that of the first. The only main difference is in the third task of calling the News API:
 
-- Four [Airflow SimpleHTTPOperators](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) are defined, which make separate parallel HTTP GET requests to the News API's 'top-headlines' endpoint directly with the assigned API Key and a query for specific keywords: 'Tempus Labs', 'Eric Lefokosky', 'Cancer', and Immunotherapy. This fetches data on each of these keywords. The Python callback function which handles the return Response object stores them as four JSON files in the 'headlines' folder, created in an earlier step, for the 'tempus_bonus_challenge_dag'.
+- Four [Airflow SimpleHTTPOperators](https://airflow.apache.org/code.html#airflow.operators.http_operator.SimpleHttpOperator) are defined which make separate, but parallel, HTTP GET requests to the News API's 'top-headlines' endpoint directly with the assigned API Key and a query for specific keywords: 'Tempus Labs', 'Eric Lefokosky', 'Cancer', and Immunotherapy. This fetches data on each of these keywords. The Python callback function which handles the return Response object stores them as four JSON files in the 'headlines' folder, created in an earlier step, for the 'tempus_bonus_challenge_dag'.
 
 - In its fifth task, extraction and transformation sub-operations take place in this task, named `flatten_to_csv_kw_task`, this is similar to Pipeline 1's sixth task.
 
