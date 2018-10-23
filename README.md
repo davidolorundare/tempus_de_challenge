@@ -170,7 +170,7 @@ The Amazon S3 integrations mock tests were done with the moto library standalone
 
 ---
 
-- With [FakeS3 installed](#optional-prereqs) already, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`, replacing 'YOUR_LICENSE_KEY with the key you obtained during the FakeS3 registration. This command then starts the Fake Amazon S3 server.
+- With [FakeS3 installed](#optional-prereqs) already and the license key obtained, in the terminal navigate to a directory of your choice and run the following command: `fakes3 -r . -p 4567 --license YOUR_LICENSE_KEY`, replacing 'YOUR_LICENSE_KEY with the obtained key. This command then starts the Fake Amazon S3 server.
 - In the `tests` directory of the project open the `test_upload_operations.py`
 file, remove the `@pytest.mark.skip` line on the `test_upload_csv_to_s3_fakes3_integration_succeeds` test.
 - Run `make integration-test` to execute the test case, which invokes live calls to the fake Amazon S3 server.
