@@ -40,7 +40,7 @@
 3. Setup a Python virtual environment with the command `virtualenv ENV` where ENV is the directory path to where the virtual environment will be created.
 
 4. The application uses [environmental variables](https://en.wikipedia.org/wiki/Environment_variable) to access the api keys needed for the News API and Amazon S3 usage. These keys are read from an `.env` file and `.aws` directory respectively, in the root directory of the repo, which you **must** create (and place in that directory) before proceeding to the next step. During Docker build-time, these files are copied into the container and made available to the application.
-	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0). This command needs to be run **before** `make init` in the next step, so that this environmental varible is available to Airflow prior to its installation.
+	* In the terminal run the command `export AIRFLOW_GPL_UNIDECODE=yes`, this resolves a dependency issue with the Airflow version used in this project (version 1.10.0). This command **needs to be run before** `make init` in the next step, so that this environmental variable is available to Airflow prior to its installation.
 	* An example of an `.env` is shown below, the generated News API Key you obtained after registration is given the environmental variable name `NEWS_API_KEY` and its value should be set to the key you obtained.
 	![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/project-with-moto-integration/readme_images/configure_newsapi_key_image.jpeg "Configuring API Keys")
 	* An example of the `.aws` directory, `config` and `credentials` files are shown below.
