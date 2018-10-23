@@ -213,7 +213,7 @@ using all four keywords in the same api-request returned 0 hits. Hence, I decide
 
 - No S3 bucket link was given in the project requirements, thus I created my own S3 bucket. The project implementation was designed such that anyone could use their own preexisting S3 buckets when running the code locally, as long as their bucket names corresponded to the two developed for this project: `
 tempus-challenge-csv-headlines` and `tempus-bonus-challenge-csv-headlines`.
-- I added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`, to ensure an up to date version of pip is always used when the code is run. Though, in hindsight, this could potential caused build-breaking issues; if there are new changes in pip to the python packages used in the project that weren't supported.
+- I added `pip install --upgrade pip` and `pip install --upgrade setuptools` commands to the Makefile, under `init`, to ensure an up to date version of pip is always used when the code is run. Though, in hindsight, this *could potentially* cause build-breaking issues; if there are new changes in pip to the python packages used in the project that weren't supported.
 
 - It was observed that in some instances the Amazon Boto library doesn't detect the AWS API keys when set from within the Docker container environmental variables. The workaround was to create an `.aws` directory inside the container during Docker build-time and inject the `config` and `credentials` files with the keys. The dockerfile was modified for this purpose. Due to the obvious security concerns around this approach these two **files are never kept** in git. 
 
