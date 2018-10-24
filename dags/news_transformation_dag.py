@@ -156,8 +156,8 @@ end_task = DummyOperator(task_id='end', dag=dag)
 start_task >> datastore_creation_task >> get_news_task >> file_exists_sensor
 
 # ensure the data has been retrieved before beginning the ETL process.
-# all the news sources are retrieved, the top headlines
-# extracted, and the data transform by flattening into CSV.
+# all the news sources are retrieved, the top headlines extracted,
+# and the data transform by flattening into CSV.
 file_exists_sensor >> headlines_task >> flatten_csv_task
 
 # perform a file transfer operation, uploading the CSV data
