@@ -129,24 +129,21 @@ headlines_task = PythonOperator(task_id='extract_headlines_task',
                                 provide_context=True,
                                 python_callable=headlines_func_alias,
                                 retries=3,
-                                dag=dag,
-                                depends_on_past=True)
+                                dag=dag)
 
 # extract and transform the data, resulting in a flattened csv
 flatten_csv_task = PythonOperator(task_id='flatten_to_csv_task',
                                   provide_context=True,
                                   python_callable=transform_func_alias,
                                   retries=3,
-                                  dag=dag,
-                                  depends_on_past=True)
+                                  dag=dag)
 
 # upload the flattened csv into my S3 bucket
 upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_task',
                                  provide_context=True,
                                  python_callable=upload_func_alias,
                                  retries=3,
-                                 dag=dag,
-                                 depends_on_past=True)
+                                 dag=dag)
 
 # end workflow
 end_task = DummyOperator(task_id='end', dag=dag)
