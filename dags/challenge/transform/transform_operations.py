@@ -96,7 +96,7 @@ class TransformOperations:
         # get active pipeline information
         pipeline_name = context['dag'].dag_id
         if not pipeline_information:
-            pipeline_information = NewsInfoDTO
+            pipeline_information = c.NewsInfoDTO
 
         pipeline_info = pipeline_information(pipeline_name)
         headline_dir = pipeline_info.headlines_directory

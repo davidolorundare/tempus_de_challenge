@@ -107,8 +107,7 @@ news_kw1_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    task_id='get_headlines_first_kw_task',
                                    dag=dag,
                                    retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True,
-                                   depends_on_past=True)
+                                   retry_exponential_backoff=True)
 
 news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
@@ -119,8 +118,7 @@ news_kw2_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    task_id='get_headlines_second_kw_task',
                                    dag=dag,
                                    retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True,
-                                   depends_on_past=True)
+                                   retry_exponential_backoff=True)
 
 news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
@@ -131,8 +129,7 @@ news_kw3_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    task_id='get_headlines_third_kw_task',
                                    dag=dag,
                                    retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True,
-                                   depends_on_past=True)
+                                   retry_exponential_backoff=True)
 
 news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    method='GET',
@@ -143,8 +140,7 @@ news_kw4_task = SimpleHttpOperator(endpoint='/v2/top-headlines?',
                                    task_id='get_headlines_fourth_kw_task',
                                    dag=dag,
                                    retry_delay=timedelta(minutes=3),
-                                   retry_exponential_backoff=True,
-                                   depends_on_past=True)
+                                   retry_exponential_backoff=True)
 
 # # detect existence of retrieved news data
 file_exists_sensor = FileSensor(filepath=NEWS_DIR,
@@ -160,8 +156,7 @@ flatten_to_csv_task = PythonOperator(task_id='flatten_to_csv_kw_task',
                                      provide_context=True,
                                      python_callable=flatten_csv_func_alias,
                                      retries=3,
-                                     dag=dag,
-                                     depends_on_past=True)
+                                     dag=dag)
 
 # # upload the flattened csv into my S3 bucket
 upload_csv_task = PythonOperator(task_id='upload_csv_to_s3_kw_task',
