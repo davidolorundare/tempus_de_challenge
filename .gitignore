@@ -2,6 +2,7 @@
 tempus_env/
 
 # Pytest Cache folders
+__pycache__/
 .pytest_cache/
 dags/__pycache__/
 dags/challenge/__pycache__/

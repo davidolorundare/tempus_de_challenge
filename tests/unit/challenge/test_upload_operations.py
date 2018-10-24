@@ -16,7 +16,7 @@ from moto import mock_s3
 
 from airflow.models import DAG
 
-import dags as c
+from dags import challenge as c
 
 from pyfakefs.fake_filesystem_unittest import Patcher
 

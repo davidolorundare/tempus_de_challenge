@@ -650,9 +650,10 @@ class TestTransformOperations:
         # directory exists
         assert result[0] is False
 
-    @pytest.mark.skip
     def test_transform_news_headlines_json_to_csv_no_articles_fails(self):
-        """function behaves properly in the absence of news articles."""
+        """news_headlines_json_to_csv function behaves properly in the
+        absence of news articles.
+        """
 
         # Arrange
 
@@ -720,9 +721,10 @@ class TestTransformOperations:
         assert result[0] is True
         assert "No News articles found" in result[1]
 
-    @pytest.mark.skip
     def test_transform_key_headlines_to_csv_no_articles_fails(self):
-        """function behaves properly in the absence of news articles."""
+        """keyword_headlines_to_csv function behaves properly in the
+        absence of news articles.
+        """
 
         # Arrange
 
