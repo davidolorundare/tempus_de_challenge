@@ -127,7 +127,7 @@ The pipeline tasks are identical to that of the first. The only main difference 
 - In its fifth task, extraction and transformation sub-operations take place in this task, named `flatten_to_csv_kw_task`, this is similar to Pipeline 1's sixth task.
 
 #### Transformations Notes
-The end transformations are stored in the respective `csv` datastore folders of the respective pipelines.
+The end transformations are stored in the `csv` datastore folders of the respective pipelines.
 
 ##### 				Pipeline 1  CSV: Tempus Challenge DAG
 For the 'tempus_challenge_dag' pipeline all the news headlines from all the english sources are flattened and transformed into one single csv file, the pipeline execution date is appended to the end transformed csv. It is of the form: `pipeline-execution-date_headlines.csv`
