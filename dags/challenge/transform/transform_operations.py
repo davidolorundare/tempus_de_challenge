@@ -350,7 +350,7 @@ class TransformOperations:
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
         if not extract_func:
-            extract_func = ExtractOperations.extract_news_data_from_dataframe
+            extract_func = c.ExtractOperations.extract_news_data_from_dataframe
         if not transform_func:
             transform_func = cls.transform_data_to_dataframe
         if not read_js_func:
