@@ -130,10 +130,10 @@ The pipeline tasks are identical to that of the first. The only main difference 
 The end transformations are stored in the respective `csv` datastore folders of the respective pipelines.
 
 ##### 				Pipeline 1  CSV: Tempus Challenge DAG
-For the 'tempus_challenge_dag' pipeline all the news headlines from all the english sources are flattened and transformed into one single csv file, the pipeline execution date is appended to the end transformed csv. It is of the form: `pipeline_execution_date_headlines.csv`
+For the 'tempus_challenge_dag' pipeline all the news headlines from all the english sources are flattened and transformed into one single csv file, the pipeline execution date is appended to the end transformed csv. It is of the form: `pipeline-execution-date_headlines.csv`
 
 ##### 				Pipeline 2 CSVs: Tempus Bonus Challenge DAG
-For each of the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', 'Immunotheraphy' - the result is four separate csv files, each representing all the headlines about that particular keyword. The pipeline execution date is appended to the end transformed csv's. The keyword headline files are of form:`pipeline_execution_date_keyword_headlines.csv`
+For each of the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', 'Immunotheraphy' - the result is four separate csv files, each representing all the headlines about that particular keyword. The pipeline execution date is appended to the end transformed csv's. The keyword headline files are of form:`pipeline-execution-date_keyword_headlines.csv`
 
 ---
 ### Usage Demo
