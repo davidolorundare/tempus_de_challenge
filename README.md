@@ -136,7 +136,7 @@ For the 'tempus_challenge_dag' pipeline all the news headlines from all the engl
 For each of the four keywords queries of the 'tempus_bonus_challenge_dag' - 'Tempus Labs', 'Eric Lefkofsky', 'Cancer', 'Immunotheraphy' - the result is four separate csv files, each representing all the headlines about that particular keyword. The pipeline execution date is appended to the end transformed csv's. The keyword headline files are of form:`pipeline_execution_date_keyword_headlines.csv`
 
 ---
-### Demo Usage
+### Usage Demo
 
 ![alt text](https://github.com/davidolorundare/tempus_de_challenge/blob/master/readme_images/tempus_de_challenge.gif "Activating and Triggering a Pipeline Run")
 
