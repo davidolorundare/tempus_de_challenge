@@ -87,7 +87,7 @@ start_task = DummyOperator(task_id='start', dag=dag)
 # use an alias since the length of the real function call is more than
 # PEP-8's 79 line-character limit.
 storage_func_alias = FileStorage.create_storage
-news_func_alias = NetworkOperations.get_news,
+news_func_alias = NetworkOperations.get_news
 headlines_func_alias = NetworkOperations.get_news_headlines
 transform_func_alias = TransformOperations.transform_headlines_to_csv
 upload_func_alias = UploadOperations.upload_csv_to_s3

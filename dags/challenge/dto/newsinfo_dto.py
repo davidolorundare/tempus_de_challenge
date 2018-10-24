@@ -37,8 +37,9 @@ class NewsInfoDTO:
         # Arguments:
             :param pipeline_name: name of the current DAG pipeline.
             :type pipeline_name: str
-            :param news_dir_path: path to the news directory of this pipeline.
-            :type news_dir_path: function
+            :param dir_check_func: function that returns the appropiate path
+                to the news directory of the active pipeline.
+            :type dir_check_func: function
 
         # Raises:
             ValueError: if the required 'pipeline_name' argument entered is
