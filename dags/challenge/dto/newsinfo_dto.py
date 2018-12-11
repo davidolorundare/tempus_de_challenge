@@ -8,6 +8,7 @@ used in several Airflow task functions, in the DAG pipelines.
 import logging
 import os
 
+# It's generally a better idea to import the specific modules you need rather than the whole project
 import challenge as c
 
 # ensures that function outputs and any errors encountered
@@ -48,6 +49,8 @@ class NewsInfoDTO:
         """
 
         def __init__(self, pipeline_name, dir_check_func=None):
+                
+            #### These could be class attributes
             self.valid_dags = ['tempus_challenge_dag',
                                'tempus_bonus_challenge_dag']
 
@@ -68,6 +71,12 @@ class NewsInfoDTO:
             if self.pipeline == "tempus_challenge_dag":
                 self.news_json_files = self.load_news_files(dir_check_func)
 
+        """
+        Generally speaking you don't want @property methods to conduct much logic,
+        let alone reach out to other modules/classes and call their methods.
+
+        Also, should a DTO really conduct this kind of logic? This seems more like a service-DTO hybrid.
+        """
         @property
         def headlines_directory(self) -> str:
             """Returns the path to this pipeline's headline directory."""
@@ -83,6 +92,7 @@ class NewsInfoDTO:
             """Returns the path to this pipeline's csv directory."""
             return c.FileStorage.get_csv_directory(self.pipeline)
 
+        ### This is a better example of how the @property decorator should be used.
         @property
         def news_files(self) -> list:
             """Returns json files in the news directory of this pipeline."""
