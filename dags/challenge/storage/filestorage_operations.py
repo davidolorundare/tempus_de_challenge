@@ -48,9 +48,19 @@ class FileStorage:
             :param context: current Airflow context in which the function or
                 operator is being run in.
             :type context: dict
+            - The issue here (and in other areas where you require kwargs like this)
+            is that the user can pass in any dict, rather than a specific, defined
+            set of arguments. There are two ways of handling this: one is direct
+            dependency injection (i.e., the user has to just pass in each and every argument).
+            The other is to bundle the values the user will need into a DTO of sorts.
+            See: collections.namedtuple
+            
         """
 
         log.info("Running create_storage method")
+
+        
+        ### Inline comments should generally be more concise
 
         # stores the dag_id which will be the name of the created folder
         dag_id = str(context['dag'].dag_id)
@@ -304,10 +314,15 @@ class FileStorage:
         # Function Aliases
         # use an alias since the length of the real function call when used
         # is more than PEP-8's 79 line-character limit.
+        """
+        PEP-8 is like the Pirate's Code to me. They're guidelines that you'll sometimes have
+        to break in order to preserve conciseness, practicality, and readability.
+        """
         if not headline_func:
             headline_func = c.NetworkOperations.get_source_headlines
 
         # error check for non-set arguments
+        ### I would specify which argument(s) is/are blank.
         if not source_ids:
             raise ValueError("Argument '{}' is blank".format(source_ids))
         if not source_names:
