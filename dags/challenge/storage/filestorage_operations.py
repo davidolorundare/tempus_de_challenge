@@ -202,6 +202,12 @@ class FileStorage:
             # reset validated_data to None, since we don't really use it
             # outside of logging, and having many print  statements of this
             # same function running will just fill up the logs quickly.
+            """
+            This won't actually reset validated_data to None.
+            I'm also not sure how large parsed JSON data will end up in the logs -
+            You're excepting the error and the only thing that should end up
+            logged is the error under the except statement.
+            """
             cls.dummy_function(validated_data)
         except ValueError:
             raise ValueError("Error Decoding - Data is not Valid JSON")
