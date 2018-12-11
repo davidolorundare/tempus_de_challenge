@@ -22,7 +22,12 @@ log = logging.getLogger(__name__)
 # airflow creates a home environment variable pointing to the location
 HOME_DIRECTORY = str(os.environ['HOME'])
 
-
+"""
+Many of these methods all look like they could be functions in a separate module.
+The giveaway for that is that this class isn't really stateful. There also isn't
+really a sense that this class obey the single responsibility principle (SRP) -
+even the class name suggests it could be either split up or converted into a .py file.
+"""
 class ExtractOperations:
     """Handles functionality for extracting headlines."""
 
@@ -268,6 +273,9 @@ class ExtractOperations:
         if num_of_articles < 1:
             return extracted_data
 
+        """
+        Can this section be modularized into its own method?
+        """
         # Using Pandas, extract required information from the given dataframe
         # each is a return list of data.
         source_id = [frame['articles'][0][index]['source']['id']
